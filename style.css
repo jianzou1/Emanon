@@ -7,13 +7,14 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center; /* 水平居中内容 */
-  background-image: linear-gradient(0deg, #008507 25%, #000000 25%, #000000 50%, #008507 50%, #008507 75%, #000000 75%, #000000 100%);
+  background-image: linear-gradient(0deg, #00b51a 25%, #000000 25%, #000000 50%, #00b51a 50%, #00b51a 75%, #000000 75%, #000000 100%);
   background-size: 4.00px 4.00px;
 }
 
 .logo {
   margin-top: 5%; 
   margin-bottom: 1%; 
+  cursor:pointer;
 }
 
 menu[role=tablist] > li {
@@ -44,6 +45,7 @@ menu[role=tablist] > li {
   margin-top: 5px;
   margin-bottom: 2%;
   padding: 2px;
+
 }
 .status-bar p{
   font-size: 12px;
@@ -54,7 +56,17 @@ p {
   font-size: 14px;
   font-family: Microsoft Yahei,SimSun, NSimSun, SimHei;
   margin-bottom: 20px;
+
 }
+ul.tree-view li {
+  margin-top: 1%;
+  font-family: "Pixelated MS Sans Serif", Arial, Microsoft Yahei;
+  font-size: 11px;
+  line-height: 0.2!important;
+  text-decoration: underline dotted;
+  text-decoration-color: blue;
+}
+
 .window li {
   line-height: 1.4;
   font-size: 14px;

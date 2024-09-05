@@ -16,11 +16,12 @@
     padding: 10px;
   }
 </style>
-<body onload="showExternalContent('post/catalog.html')">
-  <img src="logo.png" alt="Shelton Logo" class="logo">
+<body onload="showExternalContent('post/game_design.html')">
+  <img src="logo.png" alt="Shelton Logo" class="logo" onclick="window.location.href='index.html'">
   <div class="window-body">
     <menu role="tablist">
-      <li onclick="showExternalContent('post/catalog.html')" role="tab" aria-selected="true"><a href="#tabs">Catalog</a></li>
+      <li onclick="showExternalContent('post/game_design.html')" role="tab" aria-selected="true"><a href="#tabs">Home Page</a></li>
+      <li onclick="showExternalContent('post/game_design.html')" role="tab" aria-selected="false"><a href="#tabs">Game Design</a></li>
       <li onclick="showExternalContent('post/about_me.html')" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
     </menu>
     <div class="window" role="tabpanel">
@@ -58,7 +59,7 @@
       const currentTitle = document.title.split(' - ')[0];
       document.title = `${currentTitle} - ${externalTitle}`;
 
-      const titleElement = document.createElement('h1');
+      const titleElement = document.createElement('h3');
       titleElement.textContent = externalTitle;
 
       const bodyContent = doc.querySelector('body').innerHTML;
