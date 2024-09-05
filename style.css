@@ -14,7 +14,37 @@ body {
 .logo {
   margin-top: 5%; 
   margin-bottom: 1%; 
-  cursor:pointer;
+  cursor: pointer;
+  background-image: url('ui/logo.png'); /* 默认图片路径 */
+  background-size: cover; /* 确保图片覆盖整个元素 */
+  width: 200px; /* 设置宽度 */
+  height: 158px; /* 设置高度 */
+  scale: 0.9;
+}
+
+.logo {
+  margin-top: 5%; 
+  margin-bottom: 1%; 
+  cursor: pointer;
+  background-image: url('ui/logo.png'); /* 默认图片路径 */
+  background-size: cover; /* 确保图片覆盖整个元素 */
+  width: 200px; /* 设置宽度 */
+  height: 158px; /* 设置高度 */
+  scale: 0.9;
+  animation: imageChange 2s infinite steps(1); /* 5秒轮播一次 */
+}
+
+@keyframes imageChange {
+  50% {
+    background-image: url('ui/logo.png'); 
+  }
+  50% {
+    background-image: url('ui/logo2.png'); 
+  }
+}
+
+.logo:hover {
+  animation-duration: 0.3s; /* 悬停时加速轮播 */
 }
 
 menu[role=tablist] > li {
