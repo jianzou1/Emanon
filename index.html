@@ -16,7 +16,7 @@
     padding: 10px;
   }
 </style>
-<body onload="showExternalContent('post/game_design.html')">
+<body onload="showExternalContent('post/game_design.html'); showDailyPopup()">
   <img src="logo.png" alt="Shelton Logo" class="logo" onclick="window.location.href='index.html'">
   <div class="window-body">
     <menu role="tablist">
@@ -31,10 +31,17 @@
 
   <button class="back-to-top" onclick="scrollToTop()">▲</button>
   <div class="crt monitor"></div>
-  
+
   <script>
+    // 配置项：弹窗展示时间间隔，单位为秒
+    const popupInterval = 86400; // 默认值为 24 小时（86400 秒）
+
     function showExternalContent(url) {
       console.log('showExternalContent called with url:', url);
+      fetchAndProcess(url, displayContent, displayError);
+    }
+
+    function fetchAndProcess(url, successCallback, errorCallback) {
       fetch(url)
         .then(response => {
           if (!response.ok) {
@@ -42,10 +49,10 @@
           }
           return response.text();
         })
-        .then(data => displayContent(data))
+        .then(data => successCallback(data))
         .catch(error => {
-          console.error('Error loading external content:', error);
-          displayError(error);
+          console.error('Error loading content:', error);
+          errorCallback(error);
         });
     }
 
@@ -94,6 +101,43 @@
       button.style.display = window.scrollY > 300 ? 'block' : 'none';
     }
 
+    function showDailyPopup() {
+      const now = new Date();
+      const lastShown = localStorage.getItem('dailyPopupLastShown');
+      const lastShownDate = lastShown ? new Date(lastShown) : null;
+
+      if (!lastShownDate || (now - lastShownDate) / 1000 >= popupInterval) {
+        fetchAndProcess('ui/dailyPopup.html', displayPopupContent, error => {
+          console.error('Error loading daily popup:', error);
+        });
+      }
+    }
+
+    function displayPopupContent(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+
+      const popupContent = doc.querySelector('body').innerHTML;
+      const popupContainer = document.createElement('div');
+      popupContainer.innerHTML = popupContent;
+      document.body.appendChild(popupContainer);
+
+      // 确保 CSS 和 JS 代码生效
+      const styles = doc.querySelectorAll('style');
+      styles.forEach(style => {
+        document.head.appendChild(style);
+      });
+
+      const scripts = doc.querySelectorAll('script');
+      scripts.forEach(script => {
+        const newScript = document.createElement('script');
+        newScript.textContent = script.textContent;
+        document.body.appendChild(newScript);
+      });
+
+      localStorage.setItem('dailyPopupLastShown', new Date().toISOString());
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       const tabs = document.querySelectorAll('[role="tab"]');
 
@@ -107,20 +151,13 @@
       window.addEventListener('scroll', handleScroll);
       handleScroll();
 
-      fetch('/ui/footer.html')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.text();
-        })
-        .then(data => {
-          document.querySelector('.dynamic-footer').innerHTML = data;
-        })
-        .catch(error => {
-          console.error('Error loading footer:', error);
-        });
+      fetchAndProcess('/ui/footer.html', data => {
+        document.querySelector('.dynamic-footer').innerHTML = data;
+      }, error => {
+        console.error('Error loading footer:', error);
+      });
     });
+
   </script>
 </body>
 <div class="dynamic-footer"></div>
