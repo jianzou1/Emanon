@@ -22,13 +22,19 @@
         <button aria-label="Close" onclick="goBack()"></button>
       </div>
     </div>
-    <div class="window-body">
-    </div>
+    <div class="window-body"></div>
   </div>
 
   <button class="back-to-top" onclick="scrollToTop()">▲</button>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+      showExternalContent('layout.html');
+      loadFooter();
+    });
+
     function showExternalContent(url) {
       fetch(url)
         .then(response => {
@@ -37,9 +43,7 @@
           }
           return response.text();
         })
-        .then(data => {
-          displayContent(data);
-        })
+        .then(data => displayContent(data))
         .catch(error => {
           console.error('Error loading external content:', error);
           displayError(error);
@@ -47,16 +51,15 @@
     }
 
     function displayContent(html) {
-      var content = document.querySelector('.window-body');
+      const content = document.querySelector('.window-body');
       content.innerHTML = '';
 
-      var parser = new DOMParser();
-      var doc = parser.parseFromString(html, "text/html");
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      const bodyContent = doc.querySelector('body').innerHTML;
 
-      var bodyContent = doc.querySelector('body').innerHTML;
-
-      var fragment = document.createDocumentFragment();
-      var tempDiv = document.createElement('div');
+      const fragment = document.createDocumentFragment();
+      const tempDiv = document.createElement('div');
       tempDiv.innerHTML = bodyContent;
 
       while (tempDiv.firstChild) {
@@ -65,13 +68,13 @@
 
       content.appendChild(fragment);
 
-      var title = doc.querySelector('title').innerText;
+      const title = doc.querySelector('title').innerText;
       document.getElementById('dynamic-title').innerText = title;
     }
 
     function displayError(error) {
-      var content = document.querySelector('.window-body');
-      content.innerHTML = '<p>Error loading content: ' + error.message + '</p>';
+      const content = document.querySelector('.window-body');
+      content.innerHTML = `<p>Error loading content: ${error.message}</p>`;
     }
 
     function goBack() {
@@ -84,11 +87,7 @@
 
     function handleScroll() {
       const button = document.querySelector('.back-to-top');
-      if (window.scrollY > 300) {
-        button.style.display = 'block';
-      } else {
-        button.style.display = 'none';
-      }
+      button.style.display = window.scrollY > 300 ? 'block' : 'none';
     }
 
     function loadFooter() {
@@ -101,13 +100,6 @@
           console.error('Error loading status-bar:', error);
         });
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      window.addEventListener('scroll', handleScroll);
-      handleScroll();
-      showExternalContent('layout.html');
-      loadFooter();
-    });
   </script>
   <div class="crt monitor"></div>
 </body>

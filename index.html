@@ -24,8 +24,7 @@
       <li onclick="showExternalContent('post/about_me.html')" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
     </menu>
     <div class="window" role="tabpanel">
-      <div class="window-body">
-      </div>
+      <div class="window-body"></div>
     </div>
   </div>
 
@@ -42,9 +41,7 @@
           }
           return response.text();
         })
-        .then(data => {
-          displayContent(data);
-        })
+        .then(data => displayContent(data))
         .catch(error => {
           console.error('Error loading external content:', error);
           displayError(error);
@@ -52,39 +49,38 @@
     }
 
     function displayContent(html) {
-    var content = document.querySelector('.window');
-    content.classList.remove('active'); // 移除.active类
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(html, "text/html");
+      const content = document.querySelector('.window');
+      content.classList.remove('active');
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
 
-    var externalTitle = doc.querySelector('title')?.innerText || "Default Title";
-    var currentTitle = document.title.split(' - ')[0]; // 获取当前页面的原始标题
-    document.title = currentTitle + " - " + externalTitle; // 将当前页面的原始标题与外部页面的title拼接
+      const externalTitle = doc.querySelector('title')?.innerText || "Default Title";
+      const currentTitle = document.title.split(' - ')[0];
+      document.title = `${currentTitle} - ${externalTitle}`;
 
-    var titleElement = document.createElement('h1');
-    titleElement.textContent = externalTitle;
+      const titleElement = document.createElement('h1');
+      titleElement.textContent = externalTitle;
 
-    var bodyContent = doc.querySelector('body').innerHTML;
-    var content = document.querySelector('.window');
-    content.innerHTML = '';
+      const bodyContent = doc.querySelector('body').innerHTML;
+      content.innerHTML = '';
 
-    var fragment = document.createDocumentFragment();
-    fragment.appendChild(titleElement);
+      const fragment = document.createDocumentFragment();
+      fragment.appendChild(titleElement);
 
-    var tempDiv = document.createElement('div');
-    tempDiv.innerHTML = bodyContent;
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = bodyContent;
 
-    while (tempDiv.firstChild) {
-    fragment.appendChild(tempDiv.firstChild);
-  }
+      while (tempDiv.firstChild) {
+        fragment.appendChild(tempDiv.firstChild);
+      }
 
-  content.appendChild(fragment);
-  setTimeout(() => content.classList.add('active'), 10); // 添加.active类来触发动画
-}
+      content.appendChild(fragment);
+      setTimeout(() => content.classList.add('active'), 10);
+    }
 
     function displayError(error) {
-      var content = document.querySelector('.window');
-      content.innerHTML = '<p>Error loading content: ' + error.message + '</p>';
+      const content = document.querySelector('.window');
+      content.innerHTML = `<p>Error loading content: ${error.message}</p>`;
       content.classList.add('active');
     }
 
@@ -94,11 +90,7 @@
 
     function handleScroll() {
       const button = document.querySelector('.back-to-top');
-      if (window.scrollY > 300) { // 滚动距离大于300px时显示按钮
-        button.style.display = 'block';
-      } else {
-        button.style.display = 'none';
-      }
+      button.style.display = window.scrollY > 300 ? 'block' : 'none';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -112,9 +104,8 @@
       });
 
       window.addEventListener('scroll', handleScroll);
-      handleScroll(); // 初始化时调用一次
+      handleScroll();
 
-      // 动态加载页脚
       fetch('/ui/footer.html')
         .then(response => {
           if (!response.ok) {
