@@ -23,7 +23,6 @@ menu[role=tablist] > li {
 
 .window {
   transition: width 1.5s ease-in-out, height 1.5s ease-in-out; /* 添加宽度和高度的过渡效果 */
-  padding: 15px;
   width: 768px;
   max-width: 768px; /* 确保最大宽度也为750px */
   overflow: hidden;

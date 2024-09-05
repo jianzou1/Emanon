@@ -11,6 +11,11 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="manifest" href="favicon/site.webmanifest">
 </head>
+<style>
+  .window {
+    padding: 10px;
+  }
+</style>
 <body onload="showExternalContent('post/catalog.html')">
   <img src="logo.png" alt="Shelton Logo" class="logo">
   <div class="window-body">
@@ -25,7 +30,8 @@
   </div>
 
   <button class="back-to-top" onclick="scrollToTop()">▲</button>
-
+  <div class="crt monitor"></div>
+  
   <script>
     function showExternalContent(url) {
       console.log('showExternalContent called with url:', url);
@@ -107,12 +113,23 @@
 
       window.addEventListener('scroll', handleScroll);
       handleScroll(); // 初始化时调用一次
+
+      // 动态加载页脚
+      fetch('/ui/footer.html')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.text();
+        })
+        .then(data => {
+          document.querySelector('.dynamic-footer').innerHTML = data;
+        })
+        .catch(error => {
+          console.error('Error loading footer:', error);
+        });
     });
   </script>
-  <div class="crt monitor"></div>
 </body>
-<div class="status-bar">
-  <p class="status-bar-field"> Created by Shelton </p>
-  <p class="status-bar-field"> Artistic by Cry </p>
-</div>
+<div class="dynamic-footer"></div>
 </html>

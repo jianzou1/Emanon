@@ -8,58 +8,15 @@
   <link href="style.css" rel="stylesheet" type="text/css" media="all">
 </head>
 
-<body onload="showExternalContent('gd_sample_ingame_recoil.html')">
-
+<body>
 
   <ul class="tree-view">
-    <li><a href="javascript:void(0);" onclick="showExternalContent('post/gd_sample_ingame_recoil.html')">枪械后坐力规则</a></li>
-    <li><a href="javascript:void(0);" onclick="showExternalContent('post/gd_sample_ingame_capture.html')">占领模式战场规则</a></li>
-    <li><a href="javascript:void(0);" onclick="showExternalContent('post/心经.html')">❤</a></li>
+    <li><a href="post/gd_sample_ingame_recoil">枪械后坐力规则</a></li>
+    <li><a href="post/gd_sample_ingame_capture">占领模式战场规则</a></li>
+    <li><a href="post/heart">❤</a></li>
   </ul>
 
   <script>
-    function showExternalContent(url) {
-      console.log('showExternalContent called with url:', url);
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.text();
-        })
-        .then(data => {
-          displayContent(data);
-        })
-        .catch(error => {
-          console.error('Error loading external content:', error);
-          displayError(error);
-        });
-    }
-
-    function displayContent(html) {
-      var parser = new DOMParser();
-      var doc = parser.parseFromString(html, "text/html");
-
-      var title = doc.querySelector('title')?.innerText || "Default Title";
-      document.title = title;
-
-      var titleElement = document.createElement('h1');
-      titleElement.textContent = title;
-
-      var bodyContent = doc.querySelector('body').innerHTML;
-      var content = document.querySelector('.window');
-      content.innerHTML = '';
-      content.appendChild(titleElement);
-      content.innerHTML += bodyContent;
-      content.classList.add('active');
-    }
-
-    function displayError(error) {
-      var content = document.querySelector('.window');
-      content.innerHTML = '<p>Error loading content: ' + error.message + '</p>';
-      content.classList.add('active');
-    }
-
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -73,16 +30,16 @@
       }
     }
     
-document.addEventListener('DOMContentLoaded', function() {
-  const tabs = document.querySelectorAll('[role="tab"]');
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('[role="tab"]');
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', function() {
-      tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
-      this.setAttribute('aria-selected', 'true');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+          this.setAttribute('aria-selected', 'true');
+        });
+      });
     });
-  });
-});
   </script>
 </body>
 </html>
