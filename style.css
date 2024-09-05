@@ -1,0 +1,178 @@
+@import "crt.css";
+@import url(https://unpkg.com/98.css);
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* 水平居中内容 */
+  background-image: linear-gradient(0deg, #008507 25%, #000000 25%, #000000 50%, #008507 50%, #008507 75%, #000000 75%, #000000 100%);
+  background-size: 4.00px 4.00px;
+}
+
+.logo {
+  margin-top: 5%; 
+  margin-bottom: 1%; 
+}
+
+menu[role=tablist] > li {
+  width: 100px;
+  background-color: #C0C0C0;
+}
+
+.window {
+  transition: width 1.5s ease-in-out, height 1.5s ease-in-out; /* 添加宽度和高度的过渡效果 */
+  padding: 15px;
+  width: 768px;
+  max-width: 768px; /* 确保最大宽度也为750px */
+  overflow: hidden;
+  margin: 0 auto; /* 水平居中 */
+}
+
+.window img {
+  border: 2px solid #000; /* 添加一个黑色边框，模拟旧式图片的边框 */
+  background-color: #fff; /* 图片背景色为白色，模拟纸张背景 */
+  padding: 2px; /* 添加一些内边距，使图片看起来像是嵌入在纸张中 */
+  box-shadow: 2px 2px 0px #808080; /* 添加阴影，模拟旧式图片的立体感 */
+  max-width: 95%; /* 确保图片不会超出其容器 */
+  height: auto; /* 保持图片的纵横比 */
+  overflow: hidden;
+}
+
+.status-bar {
+  background-color: #C0C0C0;
+  margin-top: 5px;
+  margin-bottom: 2%;
+  padding: 2px;
+}
+.status-bar p{
+  font-size: 12px;
+}
+
+p {
+  line-height: 1.4;
+  font-size: 14px;
+  font-family: Microsoft Yahei,SimSun, NSimSun, SimHei;
+  margin-bottom: 20px;
+}
+.window li {
+  line-height: 1.4;
+  font-size: 14px;
+  font-family: Microsoft Yahei,SimSun, NSimSun, SimHei;
+  margin-bottom: 20px;
+}
+h1 {
+  line-height: 1.4;
+  font-size: 30px;
+  font-family: Microsoft Yahei,SimSun, NSimSun, SimHei;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+h2 {
+  line-height: 1.4;
+  font-size: 25px;
+  font-family: Microsoft Yahei,SimSun, NSimSun, SimHei;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+h3 {
+  line-height: 1.4;
+  font-size: 20px;
+  font-family: Microsoft Yahei,SimSun, NSimSun, SimHei;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+h4 {
+  line-height: 1.4;
+  font-size: 18px;
+  font-family: Microsoft Yahei,SimSun, NSimSun, SimHei;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+code {
+  font-family: Microsoft Yahei,SimSun, NSimSun, SimHei;
+  background-color: #f4f4f4;
+  padding: 2px 2px;
+  margin: 0 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #333;
+}
+
+.table-figure {
+  border-collapse: collapse;
+  margin: 20px auto; /* 水平居中 */
+  font-size: 14px;
+  overflow: auto;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  margin-right: 10%;
+  z-index: 1000;
+  display: none; /* 默认隐藏 */
+  text-align: center; /* 文本居中 */
+  line-height: center; /* 使文本垂直居中 */
+}
+@media (max-width: 768px) {
+  body {
+    background-size: 2.00px 2.00px; /* 调整背景网格大小 */
+  }
+
+  .logo {
+    margin: 5% auto 20px; /* 水平居中 */
+  }
+
+  .window {
+    width: 90%; /* 调整窗口宽度 */
+    max-width: 320px; /* 取消最大宽度限制 */
+    padding: 15px; /* 调整内边距 */
+    margin: 0 auto; /* 水平居中 */
+  }
+
+  .window img {
+    max-width: 100%; /* 确保图片不会超出其容器 */
+  }
+
+  .status-bar {
+    margin-bottom: 5%; /* 调整状态栏底部间距 */
+  }
+
+  p, .window li, h1, h2, h3, h4 {
+    font-size: 16px; /* 调整字体大小 */
+    margin-bottom: 10px; /* 调整底部间距 */
+  }
+
+  code {
+    font-size: 12px; /* 调整代码字体大小 */
+  }
+
+  .table-figure {
+    font-size: 12px; /* 调整表格字体大小 */
+    margin: 20px auto; /* 水平居中 */
+  }
+
+  .back-to-top {
+    margin-right: 5%; /* 调整返回顶部按钮的右边距 */
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.6;
+    transform: scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.window.active {
+  animation: fadeIn 0.15s ease-in-out;
+}
