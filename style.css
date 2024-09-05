@@ -31,7 +31,7 @@ body {
   width: 200px; /* 设置宽度 */
   height: 158px; /* 设置高度 */
   scale: 0.9;
-  animation: imageChange 2s infinite steps(1); /* 5秒轮播一次 */
+  animation: imageChange 2.5s infinite steps(1); /* 5秒轮播一次 */
 }
 
 @keyframes imageChange {
