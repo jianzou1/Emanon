@@ -20,9 +20,9 @@
   <div class="logo" onclick="window.location.href='index.html'"> </div>
   <div class="window-body">
     <menu role="tablist">
-      <li onclick="showExternalContent('post/game_design.html')" role="tab" aria-selected="true"><a href="#tabs">Home Page</a></li>
-      <li onclick="showExternalContent('post/game_design.html')" role="tab" aria-selected="false"><a href="#tabs">Game Design</a></li>
-      <li onclick="showExternalContent('post/about_me.html')" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
+      <li data-url="post/game_design.html" role="tab" aria-selected="true"><a href="#tabs">Home Page</a></li>
+      <li data-url="post/game_design.html" role="tab" aria-selected="false"><a href="#tabs">Game Design</a></li>
+      <li data-url="post/about_me.html" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
     </menu>
     <div class="window" role="tabpanel">
       <div class="window-body"></div>
@@ -36,24 +36,23 @@
     // 配置项：弹窗展示时间间隔，单位为秒
     const popupInterval = 86400; // 默认值为 24 小时（86400 秒）
 
-    function showExternalContent(url) {
+    async function showExternalContent(url) {
       console.log('showExternalContent called with url:', url);
-      fetchAndProcess(url, displayContent, displayError);
+      await fetchAndProcess(url, displayContent, displayError);
     }
 
-    function fetchAndProcess(url, successCallback, errorCallback) {
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.text();
-        })
-        .then(data => successCallback(data))
-        .catch(error => {
-          console.error('Error loading content:', error);
-          errorCallback(error);
-        });
+    async function fetchAndProcess(url, successCallback, errorCallback) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const data = await response.text();
+        successCallback(data);
+      } catch (error) {
+        console.error('Error loading content:', error);
+        errorCallback(error);
+      }
     }
 
     function displayContent(html) {
@@ -101,13 +100,13 @@
       button.style.display = window.scrollY > 300 ? 'block' : 'none';
     }
 
-    function showDailyPopup() {
+    async function showDailyPopup() {
       const now = new Date();
       const lastShown = localStorage.getItem('dailyPopupLastShown');
       const lastShownDate = lastShown ? new Date(lastShown) : null;
 
       if (!lastShownDate || (now - lastShownDate) / 1000 >= popupInterval) {
-        fetchAndProcess('ui/dailyPopup.html', displayPopupContent, error => {
+        await fetchAndProcess('ui/dailyPopup.html', displayPopupContent, error => {
           console.error('Error loading daily popup:', error);
         });
       }
@@ -139,13 +138,18 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+      const tabList = document.querySelector('[role="tablist"]');
       const tabs = document.querySelectorAll('[role="tab"]');
 
-      tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-          tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
-          this.setAttribute('aria-selected', 'true');
-        });
+      tabList.addEventListener('click', function(event) {
+        if (event.target.closest('[role="tab"]')) {
+          const clickedTab = event.target.closest('[role="tab"]');
+          const url = clickedTab.getAttribute('data-url');
+          showExternalContent(url);
+
+          tabs.forEach(tab => tab.setAttribute('aria-selected', 'false'));
+          clickedTab.setAttribute('aria-selected', 'true');
+        }
       });
 
       window.addEventListener('scroll', handleScroll);

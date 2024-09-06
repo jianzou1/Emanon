@@ -1,46 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="style.css" rel="stylesheet" type="text/css" media="all">
+  <link href="style.css" rel="stylesheet" type="text/css">
   <style>
     /* 半透明黑色背景 */
     .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
-      z-index: 1000; /* 确保背景层级高于其他内容 */
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
     }
 
     /* 弹窗样式 */
     #welcome-popup {
-      padding: 3px !important;
+      display: inline-block;
+      padding: 3px;
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%); /* 使弹窗居中 */
-      z-index: 1001; /* 确保弹窗层级高于背景 */
-      width: 450px; /* 固定宽度 */
-      min-height: 100px; /* 最小高度 */
-      max-height: 50vh; /* 最大高度为视口高度的80% */
-      overflow-y: auto; /* 如果内容超出最大高度，显示滚动条 */
+      transform: translate(-50%, -50%);
+      z-index: 1001;
+      width: 450px;
+      min-height: 200px;
+      max-height: 80vh;
+      overflow-y: auto;
+      user-select: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .window-body p{
-      line-height: 0.2;
+    .window-body p {
+      line-height: 1.2;
       font-size: 12px;
+      text-align: left;
     }
 
     /* 关闭按钮居中 */
     #close-popup {
       display: block;
-      margin: 0 auto;
-      margin-top: 10px; /* 可以根据需要调整上边距 */
-      margin-bottom: 3px; /* 可以根据需要调整上边距 */
+      margin: 10px auto 3px;
+    }
+
+    .icon {
+      background-image: url(../icon/network-transmit-receive.png);
+      width: 64px;
+      height: 64px;
+      margin: auto;
+      margin-bottom: 5%;
+      animation: imageChangePopupIcon 2s infinite steps(1);
+    }
+
+    @keyframes imageChangePopupIcon {
+      33% { background-image: url(../icon/network-receive.png); }
+      66% { background-image: url(../icon/network-transmit.png); }
     }
   </style>
 </head>
@@ -50,19 +63,21 @@
 
   <!-- 弹窗 -->
   <div id="welcome-popup" class="window">
-    <div class="title-bar">
+    <header class="title-bar">
       <div class="title-bar-text">Changelog</div>
       <div class="title-bar-controls">
         <button aria-label="Close" onclick="closePopup()"></button>
       </div>
-    </div>
-    <div class="window-body">
-      <p style="text-align: center;"><strong style="color: purple">✨ Welcom to DrunkFrog! Please read what's new. ✨</strong></p>
-      <p><strong style="color:green">24-09 Dev Version 0.1.0</strong></p>
+    </header>
+    <section class="window-body">
+      <div class="icon"></div>
+      <p style="text-align: center; line-height: 1;"><strong style="color: purple">✨ Welcom to DrunkFrog! Please read what's new. ✨</strong></p>
+      <p><strong style="color: green">24-09 Dev Version 0.1.0</strong></p>
+      <p>bcf0799 - added cheers animate</p>
+      <p>6aa6fbb - added dailyPopup window</p>
       <p>37b249f - added game_design instead of catalog</p>
-      <p>597e105 - 新增文章的index页并封装页脚</p>
       <p>e21464d - init DrunkFrog website</p>
-    </div>
+    </section>
     <button id="close-popup">Confirm</button>
   </div>
 
@@ -73,7 +88,7 @@
     const popup = document.getElementById('welcome-popup');
 
     // 添加点击事件监听器
-    closeButton.addEventListener('click', closePopup);
+    closeButton.onclick = closePopup;
 
     function closePopup() {
       popup.style.display = 'none';
@@ -88,9 +103,7 @@
     }
 
     // 页面加载完成后调整弹窗高度
-    window.addEventListener('load', adjustPopupHeight);
+    window.onload = adjustPopupHeight;
   </script>
 </body>
 </html>
-
-
