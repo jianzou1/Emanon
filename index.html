@@ -9,24 +9,23 @@
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-  <link rel="manifest" href="favicon/site.webmanifest">
+  <link rel="manifest" href="site.webmanifest">
+  <style>
+    .window {
+      padding: 10px;
+    }
+  </style>
 </head>
-<style>
-  .window {
-    padding: 10px;
-  }
-</style>
+
 <body onload="showExternalContent('post/game_design.html'); showDailyPopup()">
-  <div class="logo" onclick="window.location.href='index.html'"> </div>
+  <div class="logo" onclick="window.location.href='index.html'"></div>
   <div class="window-body">
     <menu role="tablist">
       <li data-url="post/game_design.html" role="tab" aria-selected="true"><a href="#tabs">Home Page</a></li>
       <li data-url="post/game_design.html" role="tab" aria-selected="false"><a href="#tabs">Game Design</a></li>
       <li data-url="post/about_me.html" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
     </menu>
-    <div class="window" role="tabpanel">
-      <div class="window-body"></div>
-    </div>
+    <div class="window" role="tabpanel"></div>
   </div>
 
   <button class="back-to-top" onclick="scrollToTop()">▲</button>
@@ -123,9 +122,7 @@
 
       // 确保 CSS 和 JS 代码生效
       const styles = doc.querySelectorAll('style');
-      styles.forEach(style => {
-        document.head.appendChild(style);
-      });
+      styles.forEach(style => document.head.appendChild(style));
 
       const scripts = doc.querySelectorAll('script');
       scripts.forEach(script => {
@@ -135,6 +132,26 @@
       });
 
       localStorage.setItem('dailyPopupLastShown', new Date().toISOString());
+    }
+
+    function displayFooterContent(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+
+      const footerContent = doc.querySelector('body').innerHTML;
+      const footerContainer = document.querySelector('.dynamic-footer');
+      footerContainer.innerHTML = footerContent;
+
+      // 确保 CSS 和 JS 代码生效
+      const styles = doc.querySelectorAll('style');
+      styles.forEach(style => document.head.appendChild(style));
+
+      const scripts = doc.querySelectorAll('script');
+      scripts.forEach(script => {
+        const newScript = document.createElement('script');
+        newScript.textContent = script.textContent;
+        document.body.appendChild(newScript);
+      });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -155,13 +172,10 @@
       window.addEventListener('scroll', handleScroll);
       handleScroll();
 
-      fetchAndProcess('/ui/footer.html', data => {
-        document.querySelector('.dynamic-footer').innerHTML = data;
-      }, error => {
+      fetchAndProcess('/ui/footer.html', displayFooterContent, error => {
         console.error('Error loading footer:', error);
       });
     });
-
   </script>
 </body>
 <div class="dynamic-footer"></div>

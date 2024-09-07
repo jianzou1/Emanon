@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-  <link rel="manifest" href="../../favicon/site.webmanifest">
+  <link rel="manifest" href="../../site.webmanifest">
   <link href="status-bar.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -91,15 +91,22 @@
     }
 
     function loadFooter() {
-      fetch('../../ui/footer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.body.insertAdjacentHTML('beforeend', data);
-        })
-        .catch(error => {
-          console.error('Error loading status-bar:', error);
-        });
-    }
+  fetch('../../ui/footer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.body.insertAdjacentHTML('beforeend', data);
+      // 手动执行脚本
+      const scripts = document.querySelectorAll('script');
+      scripts.forEach(script => {
+        const newScript = document.createElement('script');
+        newScript.textContent = script.textContent;
+        document.body.appendChild(newScript);
+      });
+    })
+    .catch(error => {
+      console.error('Error loading status-bar:', error);
+    });
+}
   </script>
   <div class="crt monitor"></div>
 </body>
