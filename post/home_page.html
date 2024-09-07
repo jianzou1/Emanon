@@ -1,180 +1,200 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home Page</title>
-  <style>
-    .progress-container {
-      width: 100%;
-      height: 30px;
-      background-color: #C0C0C0;
-      overflow: hidden;
-      position: relative;
-      box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.5);
-      border: rgb(177, 176, 176) 1px solid;
-      border-bottom: white 2px solid;
-      border-right: white 2px solid;
-      margin-bottom: 10px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        .progress-container {
+            width: 100%;
+            height: 30px;
+            background-color: #C0C0C0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.5);
+            border: rgb(177, 176, 176) 1px solid;
+            border-bottom: white 2px solid;
+            border-right: white 2px solid;
+            margin-bottom: 10px;
+        }
 
-    .progress-bar {
-      padding: 3px;
-      height: 30px;
-      display: flex;
-      flex-wrap: wrap;
-      box-sizing: border-box;
-    }
+        .progress-bar {
+            padding: 3px;
+            height: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
 
-    .progress-bar .grid {
-      width: 28px;
-      height: 100%;
-      background-color: #0000A8;
-      margin-top: 1px;
-      margin-right: 2px;
-    }
+        .progress-bar .grid {
+            width: 28px;
+            height: 100%;
+            background-color: #0000A8;
+            margin-top: 1px;
+            margin-right: 2px;
+        }
 
-    #progress-percentage, #month-percentage, #day-percentage {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      color: #09ff00;
-      font-size: 15px;
-      font-weight: bold;
-      user-select: none;
-    }
+        #progress-percentage,
+        #month-percentage,
+        #day-percentage {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+            user-select: none;
+        }
 
-    #refresh-timer {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      padding: 5px;
-      text-align: center;
-      font-size: 11px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-  </style>
+        #refresh-timer {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 5px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
 </head>
+
 <body>
-  <span><strong style="color: rgb(0, 0, 0)">Year Progress:</strong></span>
-  <div class="progress-container">
-    <div id="progress-bar" class="progress-bar"></div>
-    <span id="progress-percentage">0%</span>
-  </div>
+    <span><strong style="color: rgb(0, 0, 0)">Year Progress:</strong></span>
+    <div class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+        <span id="progress-percentage">0%</span>
+    </div>
 
-  <span><strong style="color: rgb(0, 0, 0)">Month Progress:</strong></span>
-  <div class="progress-container">
-    <div id="month-progress-bar" class="progress-bar"></div>
-    <span id="month-percentage">0%</span>
-  </div>
+    <span><strong style="color: rgb(0, 0, 0)">Month Progress:</strong></span>
+    <div class="progress-container">
+        <div id="month-progress-bar" class="progress-bar"></div>
+        <span id="month-percentage">0%</span>
+    </div>
 
-  <span><strong style="color: rgb(0, 0, 0)">Day Progress:</strong></span>
-  <div class="progress-container">
-    <div id="day-progress-bar" class="progress-bar"></div>
-    <span id="day-percentage">0%</span>
-  </div>
+    <span><strong style="color: rgb(0, 0, 0)">Day Progress:</strong></span>
+    <div class="progress-container">
+        <div id="day-progress-bar" class="progress-bar"></div>
+        <span id="day-percentage">0%</span>
+    </div>
 
-  <span id="refresh-timer">0</span>
+    <span id="refresh-timer">Refresh in 60 seconds</span>
 
-  <script>
-    function updateProgressBar() {
-      const now = new Date();
-      const gridWidth = 28; // 每个方格的宽度
-      const containerWidth = document.querySelector('.progress-container').clientWidth;
-      const totalGrids = Math.floor(containerWidth / (gridWidth + 2)); // 2px 是间隙的宽度
+    <script>
+        let isUpdating = false; // 全局标志位，用于控制进度条动画的播放
 
-      function updateProgress(start, end, percentageId, progressBarId) {
-        const totalDuration = (end - start) / (1000 * 60);
-        const passedDuration = (now - start) / (1000 * 60);
-        const percentage = (passedDuration / totalDuration) * 100;
+        function updateProgressBar() {
+            if (isUpdating) return; // 如果已经在更新，则直接返回
+            isUpdating = true;
 
-        // 更新进度百分比文本，精确到整数，向下取整
-        document.getElementById(percentageId).innerText = Math.floor(percentage) + '%';
+            const now = new Date();
+            const gridWidth = 28; // 每个方格的宽度
+            const containerWidth = document.querySelector('.progress-container').clientWidth;
+            const totalGrids = Math.floor(containerWidth / (gridWidth + 2)); // 2px 是间隙的宽度
 
-        // 计算进度对应的方格数量
-        let gridCount = Math.floor((percentage / 100) * totalGrids);
+            function updateProgress(start, end, percentageId, progressBarId) {
+                const totalDuration = (end - start) / (1000 * 60);
+                const passedDuration = (now - start) / (1000 * 60);
+                const targetPercentage = (passedDuration / totalDuration) * 100;
 
-        // 确保在进度条文本不为0时，至少展示1个方格
-        if (percentage > 0 && gridCount === 0) {
-          gridCount = 1;
-        }
+                const percentageElement = document.getElementById(percentageId);
+                if (!percentageElement) return;
 
-        // 清空进度条内容
-        const progressBar = document.getElementById(progressBarId);
-        progressBar.innerHTML = '';
+                const gridCount = Math.max(1, Math.floor((targetPercentage / 100) * totalGrids)); // 确保至少展示1个方格
 
-        // 逐个生成方格
-        let i = 0;
-        function addGrid() {
-          if (i < gridCount) {
-            const grid = document.createElement('div');
-            grid.className = 'grid';
-            progressBar.appendChild(grid);
-            i++;
-            setTimeout(addGrid, 50); // 每50毫秒添加一个方格
-          } else {
-            // 动画结束后，确保最终的方格数量正确
-            while (progressBar.children.length < gridCount) {
-              const grid = document.createElement('div');
-              grid.className = 'grid';
-              progressBar.appendChild(grid);
+                const progressBar = document.getElementById(progressBarId);
+                if (progressBar) {
+                    progressBar.innerHTML = '';
+                }
+
+                let i = 0;
+                function addGrid() {
+                    if (i < gridCount) {
+                        const grid = document.createElement('div');
+                        grid.className = 'grid';
+                        if (progressBar) {
+                            progressBar.appendChild(grid);
+                        }
+                        i++;
+                        setTimeout(addGrid, 50); // 每50毫秒添加一个方格
+                    } else {
+                        while (progressBar && progressBar.children.length < gridCount) {
+                            const grid = document.createElement('div');
+                            grid.className = 'grid';
+                            progressBar.appendChild(grid);
+                        }
+                        isUpdating = false; // 更新完成，重置标志位
+                    }
+                }
+                addGrid();
+
+                let currentPercentage = 0;
+                function animatePercentage() {
+                    if (currentPercentage < targetPercentage) {
+                        currentPercentage += 0.5; // 每次增加1%
+                        percentageElement.innerText = Math.floor(currentPercentage) + '%';
+                        requestAnimationFrame(animatePercentage);
+                    } else {
+                        percentageElement.innerText = Math.floor(targetPercentage) + '%'; // 确保最终值正确
+                    }
+                }
+                animatePercentage();
             }
-          }
+
+            // 更新年进度
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
+            updateProgress(startOfYear, endOfYear, 'progress-percentage', 'progress-bar');
+
+            // 更新月进度
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+            updateProgress(startOfMonth, endOfMonth, 'month-percentage', 'month-progress-bar');
+
+            // 更新天进度
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            updateProgress(startOfDay, endOfDay, 'day-percentage', 'day-progress-bar');
         }
-        addGrid();
-      }
 
-      // 更新年进度
-      const startOfYear = new Date(now.getFullYear(), 0, 1);
-      const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
-      updateProgress(startOfYear, endOfYear, 'progress-percentage', 'progress-bar');
+        // 页面加载时立即更新进度条
+        window.onload = function () {
+            try {
+                updateProgressBar();
+            } catch (error) {
+                console.error('Error updating progress bar:', error);
+            }
+        };
 
-      // 更新月进度
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-      updateProgress(startOfMonth, endOfMonth, 'month-percentage', 'month-progress-bar');
+        // 每跨分钟时更新进度条
+        function updateOnMinuteChange() {
+            const now = new Date();
+            const secondsUntilNextMinute = 60 - now.getSeconds();
+            let secondsLeft = secondsUntilNextMinute;
 
-      // 更新天进度
-      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-      updateProgress(startOfDay, endOfDay, 'day-percentage', 'day-progress-bar');
-    }
-
-    // 页面加载时立即更新进度条
-    window.onload = function() {
-      try {
-        updateProgressBar();
-      } catch (error) {
-        console.error('Error updating progress bar:', error);
-      }
-    };
-
-    // 每跨分钟时更新进度条
-    function updateOnMinuteChange() {
-      const now = new Date();
-      const secondsUntilNextMinute = 60 - now.getSeconds();
-      let secondsLeft = secondsUntilNextMinute;
-
-      function updateTimer() {
-        document.getElementById('refresh-timer').innerText = `Refresh in ${secondsLeft} seconds`;
-        secondsLeft--;
-        if (secondsLeft >= 0) {
-          setTimeout(updateTimer, 1000);
-        } else {
-          try {
-            updateProgressBar();
-          } catch (error) {
-            console.error('Error updating progress bar:', error);
-          }
-          updateOnMinuteChange();
+            function updateTimer() {
+                const refreshTimerElement = document.getElementById('refresh-timer');
+                if (refreshTimerElement) {
+                    refreshTimerElement.innerText = `Refresh in ${secondsLeft} seconds`;
+                }
+                secondsLeft--;
+                if (secondsLeft >= 0) {
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    try {
+                        updateProgressBar();
+                    } catch (error) {
+                        console.error('Error updating progress bar:', error);
+                    }
+                    updateOnMinuteChange();
+                }
+            }
+            updateTimer();
         }
-      }
-      updateTimer();
-    }
-    updateOnMinuteChange();
-    
-  </script>
+        updateOnMinuteChange();
+    </script>
 </body>
+
 </html>

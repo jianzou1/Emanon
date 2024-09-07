@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +15,6 @@
     }
   </style>
 </head>
-
 <body onload="showExternalContent('post/home_page.html'); showDailyPopup()">
   <div class="logo" onclick="window.location.href='index.html'"></div>
   <div class="window-body">
@@ -32,36 +30,26 @@
   <div class="crt monitor"></div>
 
   <script>
-let addedStyles = []; // 用于存储添加的 CSS 元素
-let addedScripts = []; // 用于存储添加的 JS 元素
-
 document.addEventListener('DOMContentLoaded', function() {
   const tabList = document.querySelector('[role="tablist"]');
   const tabs = document.querySelectorAll('[role="tab"]');
   let currentUrl = null; // 用于存储当前显示的内容的 URL
 
   tabList.addEventListener('click', function(event) {
-    if (event.target.closest('[role="tab"]')) {
-      const clickedTab = event.target.closest('[role="tab"]');
-      const url = clickedTab.getAttribute('data-url');
+    const clickedTab = event.target.closest('[role="tab"]');
+    if (!clickedTab) return;
 
-      if (url === currentUrl) return; // 如果点击的标签与当前显示的内容相同，则不进行重新加载
+    const url = clickedTab.getAttribute('data-url');
+    if (url === currentUrl) return; // 如果点击的标签与当前显示的内容相同，则不进行重新加载
 
-      const content = document.querySelector('.window');
-      content.innerHTML = ''; // 清空之前的内容
+    const content = document.querySelector('.window');
+    content.innerHTML = ''; // 清空之前的内容
 
-      addedStyles.forEach(style => style.remove()); // 移除之前添加的 CSS 元素
-      addedScripts.forEach(script => script.remove()); // 移除之前添加的 JS 元素
-      addedStyles = [];
-      addedScripts = [];
-
-      showExternalContent(url);
-
+    showExternalContent(url).then(() => {
       tabs.forEach(tab => tab.setAttribute('aria-selected', 'false'));
       clickedTab.setAttribute('aria-selected', 'true');
-
       currentUrl = url; // 更新当前显示的内容的 URL
-    }
+    });
   });
 
   window.addEventListener('scroll', handleScroll);
@@ -88,7 +76,7 @@ async function fetchAndProcess(url, successCallback, errorCallback) {
     successCallback(data);
   } catch (error) {
     console.error('Error loading content:', error);
-    errorCallback(error);
+    if (errorCallback) errorCallback(error); // 确保 errorCallback 存在时才调用
   }
 }
 
@@ -102,21 +90,21 @@ function displayContent(html, url) {
   document.title = `${document.title.split(' - ')[0]} - ${externalTitle}`;
 
   content.innerHTML = doc.querySelector('body').innerHTML;
-  setTimeout(() => content.classList.add('active'), 10);
+  setTimeout(() => content.classList.add('active'), 10); // 确保内容完全加载后再显示
 
   // 确保 CSS 和 JS 代码生效
   doc.querySelectorAll('style').forEach(style => {
-    const newStyle = document.createElement('style');
-    newStyle.textContent = style.textContent;
-    document.head.appendChild(newStyle);
-    addedStyles.push(newStyle); // 记录添加的 CSS 元素
+    if (!document.head.querySelector(`style[data-id="${style.getAttribute('data-id')}"]`)) {
+      document.head.appendChild(style);
+    }
   });
 
   doc.querySelectorAll('script').forEach(script => {
-    const newScript = document.createElement('script');
-    newScript.textContent = script.textContent;
-    document.body.appendChild(newScript);
-    addedScripts.push(newScript); // 记录添加的 JS 元素
+    if (!document.body.querySelector(`script[data-id="${script.getAttribute('data-id')}"]`)) {
+      const newScript = document.createElement('script');
+      newScript.textContent = script.textContent;
+      document.body.appendChild(newScript);
+    }
   });
 
   if (url === 'post/home_page.html') updateProgressBar();
@@ -157,11 +145,18 @@ function displayPopupContent(html) {
   popupContainer.innerHTML = doc.querySelector('body').innerHTML;
   document.body.appendChild(popupContainer);
 
-  doc.querySelectorAll('style').forEach(style => document.head.appendChild(style));
+  doc.querySelectorAll('style').forEach(style => {
+    if (!document.head.querySelector(`style[data-id="${style.getAttribute('data-id')}"]`)) {
+      document.head.appendChild(style);
+    }
+  });
+
   doc.querySelectorAll('script').forEach(script => {
-    const newScript = document.createElement('script');
-    newScript.textContent = script.textContent;
-    document.body.appendChild(newScript);
+    if (!document.body.querySelector(`script[data-id="${script.getAttribute('data-id')}"]`)) {
+      const newScript = document.createElement('script');
+      newScript.textContent = script.textContent;
+      document.body.appendChild(newScript);
+    }
   });
 
   localStorage.setItem('dailyPopupLastShown', new Date().toISOString());
@@ -174,14 +169,20 @@ function displayFooterContent(html) {
   const footerContainer = document.querySelector('.dynamic-footer');
   footerContainer.innerHTML = doc.querySelector('body').innerHTML;
 
-  doc.querySelectorAll('style').forEach(style => document.head.appendChild(style));
+  doc.querySelectorAll('style').forEach(style => {
+    if (!document.head.querySelector(`style[data-id="${style.getAttribute('data-id')}"]`)) {
+      document.head.appendChild(style);
+    }
+  });
+
   doc.querySelectorAll('script').forEach(script => {
-    const newScript = document.createElement('script');
-    newScript.textContent = script.textContent;
-    document.body.appendChild(newScript);
+    if (!document.body.querySelector(`script[data-id="${script.getAttribute('data-id')}"]`)) {
+      const newScript = document.createElement('script');
+      newScript.textContent = script.textContent;
+      document.body.appendChild(newScript);
+    }
   });
 }
-
   </script>
 </body>
 <div class="dynamic-footer"></div>

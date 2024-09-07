@@ -132,8 +132,31 @@ code {
 }
 
 @keyframes fadeIn { /* 淡入动画 */
-  from { opacity: 0.6; transform: scale(0.995); } /* 起始状态 */
-  to { opacity: 1; transform: scale(1); } /* 结束状态 */
+  from { 
+    opacity: 0; 
+    transform: scale(1.001) rotate(0.05deg); /* 非常非常轻微的放大和旋转 */
+    filter: brightness(1.02) contrast(1.02); /* 非常非常轻微的增加亮度和对比度 */
+  }
+  25% {
+    opacity: 0.5; 
+    transform: scale(0.999) rotate(-0.05deg); /* 非常非常轻微的缩小和反向旋转 */
+    filter: brightness(0.98) contrast(0.98); /* 非常非常轻微的降低亮度和对比度 */
+  }
+  50% {
+    opacity: 0.8; 
+    transform: scale(1.001) rotate(0.05deg); /* 非常非常轻微的放大和旋转 */
+    filter: brightness(1.02) contrast(1.02); /* 非常非常轻微的增加亮度和对比度 */
+  }
+  75% {
+    opacity: 0.5; 
+    transform: scale(0.999) rotate(-0.05deg); /* 非常非常轻微的缩小和反向旋转 */
+    filter: brightness(0.98) contrast(0.98); /* 非常非常轻微的降低亮度和对比度 */
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) rotate(0deg); /* 恢复正常 */
+    filter: brightness(1) contrast(1); /* 恢复正常 */
+  }
 }
 
 .window.active { animation: fadeIn 0.15s ease-in-out; } /* 窗口激活时的动画 */
