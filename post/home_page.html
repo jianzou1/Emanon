@@ -16,7 +16,7 @@
             border: rgb(177, 176, 176) 1px solid;
             border-bottom: white 2px solid;
             border-right: white 2px solid;
-            margin-bottom: 10px;
+            margin-bottom: 13px;
         }
 
         .progress-bar {
@@ -47,16 +47,26 @@
             font-weight: bold;
             user-select: none;
         }
-
-        #refresh-timer {
+        .refresh-container {
+            display: flex;
             position: absolute;
             bottom: 0;
-            right: 0;
-            padding: 5px;
+            right: 3px;
+            padding: 3px;
+            align-items: center;
+        }
+
+        .refreshIcon {
+            background-image: url(../icon/view-refresh.png);
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+
+        #refresh-timer {
             text-align: center;
             font-size: 11px;
             font-weight: bold;
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -79,8 +89,11 @@
         <div id="day-progress-bar" class="progress-bar"></div>
         <span id="day-percentage">0%</span>
     </div>
-
-    <span id="refresh-timer">Refresh in 60 seconds</span>
+    
+    <div class="refresh-container">
+        <div class="refreshIcon"></div>
+        <span id="refresh-timer">Refresh in 60 seconds</span>
+    </div>
 
     <script>
         let isUpdating = false; // 全局标志位，用于控制进度条动画的播放
