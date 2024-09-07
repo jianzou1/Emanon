@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DrunkFrog</title>
+  <title>Drunk Frog</title>
   <link href="../../style.css" rel="stylesheet" type="text/css" media="all">
   <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
   <link rel="manifest" href="../../site.webmanifest">
-  <link href="status-bar.css" rel="stylesheet" type="text/css">
 </head>
-
 <body>
   <div class="logo" onclick="window.location.href='index.html'"> </div>
-  
   <div class="window">
     <div class="title-bar">
       <div class="title-bar-text" id="dynamic-title"></div>
@@ -24,90 +21,8 @@
     </div>
     <div class="window-body"></div>
   </div>
-
   <button class="back-to-top" onclick="scrollToTop()">▲</button>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      window.addEventListener('scroll', handleScroll);
-      handleScroll();
-      showExternalContent('layout.html');
-      loadFooter();
-    });
-
-    function showExternalContent(url) {
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.text();
-        })
-        .then(data => displayContent(data))
-        .catch(error => {
-          console.error('Error loading external content:', error);
-          displayError(error);
-        });
-    }
-
-    function displayContent(html) {
-      const content = document.querySelector('.window-body');
-      content.innerHTML = '';
-
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-      const bodyContent = doc.querySelector('body').innerHTML;
-
-      const fragment = document.createDocumentFragment();
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = bodyContent;
-
-      while (tempDiv.firstChild) {
-        fragment.appendChild(tempDiv.firstChild);
-      }
-
-      content.appendChild(fragment);
-
-      const title = doc.querySelector('title').innerText;
-      document.getElementById('dynamic-title').innerText = title;
-    }
-
-    function displayError(error) {
-      const content = document.querySelector('.window-body');
-      content.innerHTML = `<p>Error loading content: ${error.message}</p>`;
-    }
-
-    function goBack() {
-      window.history.back();
-    }
-
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function handleScroll() {
-      const button = document.querySelector('.back-to-top');
-      button.style.display = window.scrollY > 300 ? 'block' : 'none';
-    }
-
-    function loadFooter() {
-  fetch('../../ui/footer.html')
-    .then(response => response.text())
-    .then(data => {
-      document.body.insertAdjacentHTML('beforeend', data);
-      // 手动执行脚本
-      const scripts = document.querySelectorAll('script');
-      scripts.forEach(script => {
-        const newScript = document.createElement('script');
-        newScript.textContent = script.textContent;
-        document.body.appendChild(newScript);
-      });
-    })
-    .catch(error => {
-      console.error('Error loading status-bar:', error);
-    });
-}
-  </script>
-  <div class="crt monitor"></div>
+  <script src="../../js/post-template.js"></script>
 </body>
+  <div class="crt monitor"></div>
 </html>
