@@ -17,11 +17,11 @@
   </style>
 </head>
 
-<body onload="showExternalContent('post/game_design.html'); showDailyPopup()">
+<body onload="showExternalContent('post/home_page.html'); showDailyPopup()">
   <div class="logo" onclick="window.location.href='index.html'"></div>
   <div class="window-body">
     <menu role="tablist">
-      <li data-url="post/game_design.html" role="tab" aria-selected="true"><a href="#tabs">Home Page</a></li>
+      <li data-url="post/home_page.html" role="tab" aria-selected="true"><a href="#tabs">Home Page</a></li>
       <li data-url="post/game_design.html" role="tab" aria-selected="false"><a href="#tabs">Game Design</a></li>
       <li data-url="post/about_me.html" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
     </menu>
@@ -32,150 +32,156 @@
   <div class="crt monitor"></div>
 
   <script>
-    // 配置项：弹窗展示时间间隔，单位为秒
-    const popupInterval = 86400; // 默认值为 24 小时（86400 秒）
+let addedStyles = []; // 用于存储添加的 CSS 元素
+let addedScripts = []; // 用于存储添加的 JS 元素
 
-    async function showExternalContent(url) {
-      console.log('showExternalContent called with url:', url);
-      await fetchAndProcess(url, displayContent, displayError);
-    }
+document.addEventListener('DOMContentLoaded', function() {
+  const tabList = document.querySelector('[role="tablist"]');
+  const tabs = document.querySelectorAll('[role="tab"]');
+  let currentUrl = null; // 用于存储当前显示的内容的 URL
 
-    async function fetchAndProcess(url, successCallback, errorCallback) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
-        }
-        const data = await response.text();
-        successCallback(data);
-      } catch (error) {
-        console.error('Error loading content:', error);
-        errorCallback(error);
-      }
-    }
+  tabList.addEventListener('click', function(event) {
+    if (event.target.closest('[role="tab"]')) {
+      const clickedTab = event.target.closest('[role="tab"]');
+      const url = clickedTab.getAttribute('data-url');
 
-    function displayContent(html) {
+      if (url === currentUrl) return; // 如果点击的标签与当前显示的内容相同，则不进行重新加载
+
       const content = document.querySelector('.window');
-      content.classList.remove('active');
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
+      content.innerHTML = ''; // 清空之前的内容
 
-      const externalTitle = doc.querySelector('title')?.innerText || "Default Title";
-      const currentTitle = document.title.split(' - ')[0];
-      document.title = `${currentTitle} - ${externalTitle}`;
+      addedStyles.forEach(style => style.remove()); // 移除之前添加的 CSS 元素
+      addedScripts.forEach(script => script.remove()); // 移除之前添加的 JS 元素
+      addedStyles = [];
+      addedScripts = [];
 
-      const titleElement = document.createElement('h3');
-      titleElement.textContent = externalTitle;
+      showExternalContent(url);
 
-      const bodyContent = doc.querySelector('body').innerHTML;
-      content.innerHTML = '';
+      tabs.forEach(tab => tab.setAttribute('aria-selected', 'false'));
+      clickedTab.setAttribute('aria-selected', 'true');
 
-      const fragment = document.createDocumentFragment();
-      fragment.appendChild(titleElement);
-
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = bodyContent;
-
-      while (tempDiv.firstChild) {
-        fragment.appendChild(tempDiv.firstChild);
-      }
-
-      content.appendChild(fragment);
-      setTimeout(() => content.classList.add('active'), 10);
+      currentUrl = url; // 更新当前显示的内容的 URL
     }
+  });
 
-    function displayError(error) {
-      const content = document.querySelector('.window');
-      content.innerHTML = `<p>Error loading content: ${error.message}</p>`;
-      content.classList.add('active');
-    }
+  window.addEventListener('scroll', handleScroll);
+  handleScroll();
 
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  fetchAndProcess('/ui/footer.html', displayFooterContent, error => {
+    console.error('Error loading footer:', error);
+  });
+});
 
-    function handleScroll() {
-      const button = document.querySelector('.back-to-top');
-      button.style.display = window.scrollY > 300 ? 'block' : 'none';
-    }
+// 配置项：弹窗展示时间间隔，单位为秒
+const popupInterval = 86400; // 默认值为 24 小时（86400 秒）
 
-    async function showDailyPopup() {
-      const now = new Date();
-      const lastShown = localStorage.getItem('dailyPopupLastShown');
-      const lastShownDate = lastShown ? new Date(lastShown) : null;
+async function showExternalContent(url) {
+  console.log('showExternalContent called with url:', url);
+  await fetchAndProcess(url, (data) => displayContent(data, url), displayError);
+}
 
-      if (!lastShownDate || (now - lastShownDate) / 1000 >= popupInterval) {
-        await fetchAndProcess('ui/dailyPopup.html', displayPopupContent, error => {
-          console.error('Error loading daily popup:', error);
-        });
-      }
-    }
+async function fetchAndProcess(url, successCallback, errorCallback) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Network response was not ok ' + response.statusText);
+    const data = await response.text();
+    successCallback(data);
+  } catch (error) {
+    console.error('Error loading content:', error);
+    errorCallback(error);
+  }
+}
 
-    function displayPopupContent(html) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
+function displayContent(html, url) {
+  const content = document.querySelector('.window');
+  content.classList.remove('active');
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
 
-      const popupContent = doc.querySelector('body').innerHTML;
-      const popupContainer = document.createElement('div');
-      popupContainer.innerHTML = popupContent;
-      document.body.appendChild(popupContainer);
+  const externalTitle = doc.querySelector('title')?.innerText || "Default Title";
+  document.title = `${document.title.split(' - ')[0]} - ${externalTitle}`;
 
-      // 确保 CSS 和 JS 代码生效
-      const styles = doc.querySelectorAll('style');
-      styles.forEach(style => document.head.appendChild(style));
+  content.innerHTML = doc.querySelector('body').innerHTML;
+  setTimeout(() => content.classList.add('active'), 10);
 
-      const scripts = doc.querySelectorAll('script');
-      scripts.forEach(script => {
-        const newScript = document.createElement('script');
-        newScript.textContent = script.textContent;
-        document.body.appendChild(newScript);
-      });
+  // 确保 CSS 和 JS 代码生效
+  doc.querySelectorAll('style').forEach(style => {
+    const newStyle = document.createElement('style');
+    newStyle.textContent = style.textContent;
+    document.head.appendChild(newStyle);
+    addedStyles.push(newStyle); // 记录添加的 CSS 元素
+  });
 
-      localStorage.setItem('dailyPopupLastShown', new Date().toISOString());
-    }
+  doc.querySelectorAll('script').forEach(script => {
+    const newScript = document.createElement('script');
+    newScript.textContent = script.textContent;
+    document.body.appendChild(newScript);
+    addedScripts.push(newScript); // 记录添加的 JS 元素
+  });
 
-    function displayFooterContent(html) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
+  if (url === 'post/home_page.html') updateProgressBar();
+}
 
-      const footerContent = doc.querySelector('body').innerHTML;
-      const footerContainer = document.querySelector('.dynamic-footer');
-      footerContainer.innerHTML = footerContent;
+function displayError(error) {
+  const content = document.querySelector('.window');
+  content.innerHTML = `<p>Error loading content: ${error.message}</p>`;
+  content.classList.add('active');
+}
 
-      // 确保 CSS 和 JS 代码生效
-      const styles = doc.querySelectorAll('style');
-      styles.forEach(style => document.head.appendChild(style));
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-      const scripts = doc.querySelectorAll('script');
-      scripts.forEach(script => {
-        const newScript = document.createElement('script');
-        newScript.textContent = script.textContent;
-        document.body.appendChild(newScript);
-      });
-    }
+function handleScroll() {
+  const button = document.querySelector('.back-to-top');
+  button.style.display = window.scrollY > 300 ? 'block' : 'none';
+}
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const tabList = document.querySelector('[role="tablist"]');
-      const tabs = document.querySelectorAll('[role="tab"]');
+async function showDailyPopup() {
+  const now = new Date();
+  const lastShown = localStorage.getItem('dailyPopupLastShown');
+  const lastShownDate = lastShown ? new Date(lastShown) : null;
 
-      tabList.addEventListener('click', function(event) {
-        if (event.target.closest('[role="tab"]')) {
-          const clickedTab = event.target.closest('[role="tab"]');
-          const url = clickedTab.getAttribute('data-url');
-          showExternalContent(url);
-
-          tabs.forEach(tab => tab.setAttribute('aria-selected', 'false'));
-          clickedTab.setAttribute('aria-selected', 'true');
-        }
-      });
-
-      window.addEventListener('scroll', handleScroll);
-      handleScroll();
-
-      fetchAndProcess('/ui/footer.html', displayFooterContent, error => {
-        console.error('Error loading footer:', error);
-      });
+  if (!lastShownDate || (now - lastShownDate) / 1000 >= popupInterval) {
+    await fetchAndProcess('ui/dailyPopup.html', displayPopupContent, error => {
+      console.error('Error loading daily popup:', error);
     });
+  }
+}
+
+function displayPopupContent(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  const popupContainer = document.createElement('div');
+  popupContainer.innerHTML = doc.querySelector('body').innerHTML;
+  document.body.appendChild(popupContainer);
+
+  doc.querySelectorAll('style').forEach(style => document.head.appendChild(style));
+  doc.querySelectorAll('script').forEach(script => {
+    const newScript = document.createElement('script');
+    newScript.textContent = script.textContent;
+    document.body.appendChild(newScript);
+  });
+
+  localStorage.setItem('dailyPopupLastShown', new Date().toISOString());
+}
+
+function displayFooterContent(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  const footerContainer = document.querySelector('.dynamic-footer');
+  footerContainer.innerHTML = doc.querySelector('body').innerHTML;
+
+  doc.querySelectorAll('style').forEach(style => document.head.appendChild(style));
+  doc.querySelectorAll('script').forEach(script => {
+    const newScript = document.createElement('script');
+    newScript.textContent = script.textContent;
+    document.body.appendChild(newScript);
+  });
+}
+
   </script>
 </body>
 <div class="dynamic-footer"></div>
