@@ -121,27 +121,30 @@
                 if (progressBar) {
                     progressBar.innerHTML = '';
                 }
-
+                
                 let i = 0;
-                function addGrid() {
-                    if (i < gridCount) {
-                        const grid = document.createElement('div');
-                        grid.className = 'grid';
-                        if (progressBar) {
-                            progressBar.appendChild(grid);
-                        }
-                        i++;
-                        setTimeout(addGrid, 50); // 每50毫秒添加一个方格
-                    } else {
-                        while (progressBar && progressBar.children.length < gridCount) {
-                            const grid = document.createElement('div');
-                            grid.className = 'grid';
-                            progressBar.appendChild(grid);
-                        }
-                        isUpdating = false; // 更新完成，重置标志位
-                    }
+        function addGrid() {
+            if (i < gridCount) {
+                const grid = document.createElement('div');
+                grid.className = 'grid';
+                if (progressBar) {
+                    progressBar.appendChild(grid);
                 }
-                addGrid();
+                i++;
+                const minDelay = 0; // 最小延迟时间（毫秒）
+                const maxDelay = 100; // 最大延迟时间（毫秒）
+                const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay; // 生成一个最小值到最大值之间的随机延迟
+                setTimeout(addGrid, randomDelay); // 使用随机延迟
+            } else {
+                while (progressBar && progressBar.children.length < gridCount) {
+                    const grid = document.createElement('div');
+                    grid.className = 'grid';
+                    progressBar.appendChild(grid);
+                }
+                isUpdating = false; // 更新完成，重置标志位
+            }
+        }
+        addGrid();
 
                 let currentPercentage = 0;
                 function animatePercentage() {

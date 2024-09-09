@@ -30,12 +30,14 @@ body {
 }
 
 menu[role=tablist] > li {
-  width: 100px; /* 宽度 */
+  text-align: center;
+  width: 90px; /* 宽度 */
   background-color: #C0C0C0; /* 背景色 */
 }
 
+
 .window {
-  transition: width 1.5s ease-in-out, height 1.5s ease-in-out; /* 宽度和高度的过渡效果 */
+  transition: width 0.15s ease-in-out, height 0.15s ease-in-out; /* 宽度和高度的过渡效果 */
   width: 768px; /* 宽度 */
   max-width: 768px; /* 最大宽度 */
   overflow: hidden; /* 溢出隐藏 */
@@ -129,6 +131,10 @@ code {
   code { font-size: 12px; } /* 代码字体大小 */
   .table-figure { font-size: 12px; } /* 表格字体大小 */
   .back-to-top { margin-right: 5%; } /* 右侧外边距 */
+
+  menu[role=tablist] {
+    max-width: 320px;
+    }
 }
 
 @keyframes fadeIn { /* 淡入动画 */
