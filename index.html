@@ -15,13 +15,14 @@
     }
   </style>
 </head>
-<body onload="showExternalContent('post/home_page.html'); showDailyPopup()">
+<body onload="showExternalContent('page/progress.html'); showDailyPopup()">
   <div class="logo" onclick="window.location.href='index.html'"></div>
   <div class="window-body">
     <menu role="tablist">
-      <li data-url="post/home_page.html" role="tab" aria-selected="true"><a href="#tabs">Home Page</a></li>
-      <li data-url="post/game_design.html" role="tab" aria-selected="false"><a href="#tabs">Game Design</a></li>
-      <li data-url="post/about_me.html" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
+      <li data-url="page/progress.html" role="tab" aria-selected="true"><a href="#tabs">Progress</a></li>
+      <li data-url="page/article.html" role="tab" aria-selected="False"><a href="#tabs">Article</a></li>
+      <li data-url="page/game_design.html" role="tab" aria-selected="false"><a href="#tabs">Game Design</a></li>
+      <li data-url="page/about.html" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
     </menu>
     <div class="window" role="tabpanel"></div>
     <div class="window-body">
@@ -110,7 +111,7 @@ function displayContent(html, url) {
     }
   });
 
-  if (url === 'post/home_page.html') updateProgressBar();
+  if (url === 'page/progress.html') updateProgressBar();
 }
 
 function displayError(error) {

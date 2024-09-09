@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article</title>
+    <style>
+        .link-preview {
+            width: 96%;
+            padding: 15px;
+            background-color: #C0C0C0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
+            border: rgb(177, 176, 176) 1px solid;
+            border-bottom: white 2px solid;
+            border-right: white 2px solid;
+            margin-bottom: 20px;
+        }
+
+        .link-preview p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+            color: #333;
+        }
+
+        .link-preview h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .link-preview h3 a {
+            color: blue; /* 设置链接颜色 */
+            text-decoration: none; /* 去掉下划线 */
+        }
+
+        .link-preview h3 a:hover {
+            text-decoration: underline; /* 鼠标悬停时显示下划线 */
+        }
+    </style>
+</head>
+<body>
+
+<div id="links-container">
+    <!-- 预览内容将在此处展示 -->
+</div>
+
+<script>
+    (function () {
+        const links = [
+            { id: 1, url: 'post/gd_sample_ingame_recoil', name: '页面1' },
+            { id: 2, url: 'post/gd_system', name: '页面2' },
+            // 可以继续添加链接
+        ];
+
+        const charLimit = 500; // 限制字符数
+        const linksContainer = document.getElementById('links-container');
+
+        links.forEach(link => {
+            const layoutUrl = `${link.url}/layout.html`;
+
+            fetch(layoutUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+                    const title = doc.querySelector('title').textContent || '未命名';
+
+                    // 移除所有<strong>标签
+                    const bodyContent = doc.body.innerHTML || '';
+                    const contentWithoutStrong = bodyContent.replace(/<\/?strong\b[^>]*>/gi, '');
+
+                    // 替换内容中的所有标签为<p>
+                    const replacedContent = contentWithoutStrong.replace(/<(\/?)(?!strong\b)[^>]+>/gi, (match, p1) => {
+                        return p1 ? '</p>' : '<p>';
+                    });
+
+                    const truncatedContent = replacedContent.length > charLimit 
+                        ? replacedContent.substring(0, charLimit) + '...' 
+                        : replacedContent;
+
+                    const linkDiv = document.createElement('div');
+                    linkDiv.className = 'link-preview';
+                    linkDiv.id = `link-${link.id}`;
+                    linkDiv.innerHTML = `
+                        <h3><a href="${link.url}" target="_blank">${title}</a></h3>
+                        <p>${truncatedContent}</p>
+                    `;
+
+                    linksContainer.appendChild(linkDiv);
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                    const linkDiv = document.createElement('div');
+                    linkDiv.className = 'link-preview';
+                    linkDiv.id = `link-${link.id}`;
+                    linkDiv.innerHTML = `
+                        <h3><a href="${link.url}" target="_blank">${link.name}</a></h3>
+                        <p>无法加载内容</p>
+                    `;
+
+                    linksContainer.appendChild(linkDiv);
+                });
+        });
+    })();
+</script>
+
+</body>
+</html>

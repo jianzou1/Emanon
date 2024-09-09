@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Time Progress</title>
     <style>
         .progress-container {
             width: 100%;
@@ -149,7 +149,7 @@
                 let currentPercentage = 0;
                 function animatePercentage() {
                     if (currentPercentage < targetPercentage) {
-                        currentPercentage += 0.5; // 每次增加1%
+                        currentPercentage += 1; // 每次增加1%
                         percentageElement.innerText = Math.floor(currentPercentage) + '%';
                         requestAnimationFrame(animatePercentage);
                     } else {

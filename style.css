@@ -135,6 +135,9 @@ code {
   menu[role=tablist] {
     max-width: 320px;
     }
+  .link-preview {
+     max-width: 290px;
+      }
 }
 
 @keyframes fadeIn { /* 淡入动画 */
