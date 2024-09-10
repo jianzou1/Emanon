@@ -1,196 +1,128 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drunk Frog</title>
-  <link href="style.css" rel="stylesheet" type="text/css" media="all">
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <style>
-    .window {
-      padding: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Progress</title>
+    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        .progress-container {
+            width: 100%;
+            height: 30px;
+            background-color: #C0C0C0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.5);
+            border: rgb(177, 176, 176) 1px solid;
+            border-bottom: white 2px solid;
+            border-right: white 2px solid;
+            margin-bottom: 13px;
+        }
+        
+        .progress-bar {
+            padding: 3px;
+            height: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+
+        .progress-bar .grid {
+            width: 28px;
+            height: 100%;
+            background-color: #0000A8;
+            margin-top: 1px;
+            margin-right: 2px;
+        }
+
+        #progress-percentage,
+        #month-percentage,
+        #day-percentage {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .refresh-container {
+            display: none; /* 初始状态为隐藏 */
+            position: absolute;
+            bottom: 0;
+            right: 3px;
+            padding: 3px;
+            align-items: center;
+        }
+
+        .refreshIcon {
+            background-image: url(/icon/view-refresh.png);
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+
+        #refresh-timer {
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+    </style>
 </head>
-<body onload="showExternalContent('page/progress.html'); showDailyPopup()">
-  <div class="logo" onclick="window.location.href='index.html'"></div>
-  <div class="window-body">
-    <menu role="tablist">
-      <li data-url="page/progress.html" role="tab" aria-selected="true"><a href="#tabs">Progress</a></li>
-      <li data-url="page/article.html" role="tab" aria-selected="False"><a href="#tabs">Article</a></li>
-      <li data-url="page/game_design.html" role="tab" aria-selected="false"><a href="#tabs">Game Design</a></li>
-      <li data-url="page/about.html" role="tab" aria-selected="false"><a href="#tabs">About Me</a></li>
-    </menu>
-    <div class="window" role="tabpanel"></div>
+
+<body onload="showDailyPopup()">
+    <div class="logo" onclick="window.location.href='/index.html'"></div>
     <div class="window-body">
-  </div>
-</div>
-</div>
+        <menu role="tablist"></menu>
+        <div class="window" role="tabpanel">
+            <span><strong style="color: rgb(0, 0, 0)">Year Progress:</strong></span>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+                <span id="progress-percentage">0%</span>
+            </div>
 
+            <span><strong style="color: rgb(0, 0, 0)">Month Progress:</strong></span>
+            <div class="progress-container">
+                <div id="month-progress-bar" class="progress-bar"></div>
+                <span id="month-percentage">0%</span>
+            </div>
 
-<button class="back-to-top" onclick="scrollToTop()">
-  <img src="\icon\go-top.png" alt="Back to Top" style="vertical-align: middle;">
-</button>
-  <div class="crt monitor"></div>
+            <span><strong style="color: rgb(0, 0, 0)">Day Progress:</strong></span>
+            <div class="progress-container">
+                <div id="day-progress-bar" class="progress-bar"></div>
+                <span id="day-percentage">0%</span>
+            </div>
+            
+            <div class="refresh-container" id="refresh-container">
+                <div class="refreshIcon"></div>
+                <span id="refresh-timer">Refresh in 00m 00s</span>
+            </div>
+        </div>
+        <div class="window-body"></div>
+    </div>
 
-  <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const tabList = document.querySelector('[role="tablist"]');
-  const tabs = document.querySelectorAll('[role="tab"]');
-  let currentUrl = null; // 用于存储当前显示的内容的 URL
+    <button class="back-to-top" onclick="scrollToTop()">
+        <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
+    </button>
+    <div class="crt monitor"></div>
 
-  tabList.addEventListener('click', function(event) {
-    const clickedTab = event.target.closest('[role="tab"]');
-    if (!clickedTab) return;
-
-    const url = clickedTab.getAttribute('data-url');
-    if (url === currentUrl) return; // 如果点击的标签与当前显示的内容相同，则不进行重新加载
-
-    const content = document.querySelector('.window');
-    content.innerHTML = ''; // 清空之前的内容
-
-    showExternalContent(url).then(() => {
-      tabs.forEach(tab => tab.setAttribute('aria-selected', 'false'));
-      clickedTab.setAttribute('aria-selected', 'true');
-      currentUrl = url; // 更新当前显示的内容的 URL
-    });
-  });
-
-  window.addEventListener('scroll', handleScroll);
-  handleScroll();
-
-  fetchAndProcess('/ui/footer.html', displayFooterContent, error => {
-    console.error('Error loading footer:', error);
-  });
-});
-
-// 配置项：弹窗展示时间间隔，单位为秒
-const popupInterval = 86400; // 默认值为 24 小时（86400 秒）
-
-async function showExternalContent(url) {
-  console.log('showExternalContent called with url:', url);
-  await fetchAndProcess(url, (data) => displayContent(data, url), displayError);
-}
-
-async function fetchAndProcess(url, successCallback, errorCallback) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Network response was not ok ' + response.statusText);
-    const data = await response.text();
-    successCallback(data);
-  } catch (error) {
-    console.error('Error loading content:', error);
-    if (errorCallback) errorCallback(error); // 确保 errorCallback 存在时才调用
-  }
-}
-
-function displayContent(html, url) {
-  const content = document.querySelector('.window');
-  content.classList.remove('active');
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-
-  const externalTitle = doc.querySelector('title')?.innerText || "Default Title";
-  document.title = `${document.title.split(' - ')[0]} - ${externalTitle}`;
-
-  content.innerHTML = doc.querySelector('body').innerHTML;
-  setTimeout(() => content.classList.add('active'), 10); // 确保内容完全加载后再显示
-
-  // 确保 CSS 和 JS 代码生效
-  doc.querySelectorAll('style').forEach(style => {
-    if (!document.head.querySelector(`style[data-id="${style.getAttribute('data-id')}"]`)) {
-      document.head.appendChild(style);
-    }
-  });
-
-  doc.querySelectorAll('script').forEach(script => {
-    if (!document.body.querySelector(`script[data-id="${script.getAttribute('data-id')}"]`)) {
-      const newScript = document.createElement('script');
-      newScript.textContent = script.textContent;
-      document.body.appendChild(newScript);
-    }
-  });
-
-  if (url === 'page/progress.html') updateProgressBar();
-}
-
-function displayError(error) {
-  const content = document.querySelector('.window');
-  content.innerHTML = `<p>Error loading content: ${error.message}</p>`;
-  content.classList.add('active');
-}
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function handleScroll() {
-  const button = document.querySelector('.back-to-top');
-  button.style.display = window.scrollY > 300 ? 'block' : 'none';
-}
-
-async function showDailyPopup() {
-  const now = new Date();
-  const lastShown = localStorage.getItem('dailyPopupLastShown');
-  const lastShownDate = lastShown ? new Date(lastShown) : null;
-
-  if (!lastShownDate || (now - lastShownDate) / 1000 >= popupInterval) {
-    await fetchAndProcess('ui/dailyPopup.html', displayPopupContent, error => {
-      console.error('Error loading daily popup:', error);
-    });
-  }
-}
-
-function displayPopupContent(html) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-
-  const popupContainer = document.createElement('div');
-  popupContainer.innerHTML = doc.querySelector('body').innerHTML;
-  document.body.appendChild(popupContainer);
-
-  doc.querySelectorAll('style').forEach(style => {
-    if (!document.head.querySelector(`style[data-id="${style.getAttribute('data-id')}"]`)) {
-      document.head.appendChild(style);
-    }
-  });
-
-  doc.querySelectorAll('script').forEach(script => {
-    if (!document.body.querySelector(`script[data-id="${script.getAttribute('data-id')}"]`)) {
-      const newScript = document.createElement('script');
-      newScript.textContent = script.textContent;
-      document.body.appendChild(newScript);
-    }
-  });
-
-  localStorage.setItem('dailyPopupLastShown', new Date().toISOString());
-}
-
-function displayFooterContent(html) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-
-  const footerContainer = document.querySelector('.dynamic-footer');
-  footerContainer.innerHTML = doc.querySelector('body').innerHTML;
-
-  doc.querySelectorAll('style').forEach(style => {
-    if (!document.head.querySelector(`style[data-id="${style.getAttribute('data-id')}"]`)) {
-      document.head.appendChild(style);
-    }
-  });
-
-  doc.querySelectorAll('script').forEach(script => {
-    if (!document.body.querySelector(`script[data-id="${script.getAttribute('data-id')}"]`)) {
-      const newScript = document.createElement('script');
-      newScript.textContent = script.textContent;
-      document.body.appendChild(newScript);
-    }
-  });
-}
-  </script>
+    <script src="/js/footerLoader.js"></script> <!-- 引入footerLoader.js -->
+    <script src="/js/scrollToTop.js"></script> <!-- 引入scrollToTop.js -->
+    <script src="/js/tabHandler.js"></script> <!-- 引入tabHandler.js -->
+    <script src="/js/progressBar.js"></script> <!-- 引入progressBar.js -->
+    <script src="/js/dailyPopup.js"></script> <!-- 引入dailyPopup.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        showDailyPopup();
+      });
+      </script> 
 </body>
 <div class="dynamic-footer"></div>
 </html>

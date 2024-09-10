@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Design</title>
+  <title>Drunk Frog</title>
   <link href="/style.css" rel="stylesheet" type="text/css" media="all">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
 </head>
-
-<body>
+<body onload="showDailyPopup()">
   <div class="logo" onclick="window.location.href='/index.html'"></div>
   <div class="window-body">
     <menu role="tablist"></menu>
-    <div class="window" role="tabpanel">
-      <ul class="tree-view">
-        <li><a href="/post/gd_sample_ingame_recoil">枪械后坐力规则</a></li>
-        <li><a href="/post/gd_sample_ingame_capture">占领模式战场规则</a></li>
-        <li><a href="/post/gd_system">复杂游戏系统设计与“涌现”理论</a></li>
-      </ul>
-    </div>
+    <div class="window" role="tabpanel"></div>
     <div class="window-body"></div>
   </div>
 
@@ -32,6 +24,7 @@
   <div class="crt monitor"></div>
 
   <script src="/js/footerLoader.js"></script> <!-- 引入footerLoader.js -->
+  <script src="/js/dailyPopup.js"></script> <!-- 引入dailyPopup.js -->
   <script src="/js/scrollToTop.js"></script> <!-- 引入scrollToTop.js -->
   <script src="/js/tabHandler.js"></script> <!-- 引入tabHandler.js -->
 </body>
