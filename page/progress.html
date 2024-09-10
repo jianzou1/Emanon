@@ -18,7 +18,7 @@
             border-right: white 2px solid;
             margin-bottom: 13px;
         }
-
+        
         .progress-bar {
             padding: 3px;
             height: 30px;
@@ -47,8 +47,9 @@
             font-weight: bold;
             user-select: none;
         }
+
         .refresh-container {
-            display: flex;
+            display: none; /* 初始状态为隐藏 */
             position: absolute;
             bottom: 0;
             right: 3px;
@@ -90,9 +91,9 @@
         <span id="day-percentage">0%</span>
     </div>
     
-    <div class="refresh-container">
+    <div class="refresh-container" id="refresh-container">
         <div class="refreshIcon"></div>
-        <span id="refresh-timer">Refresh in 60 seconds</span>
+        <span id="refresh-timer">Refresh in 00m 00s</span>
     </div>
 
     <script>
@@ -123,28 +124,28 @@
                 }
                 
                 let i = 0;
-        function addGrid() {
-            if (i < gridCount) {
-                const grid = document.createElement('div');
-                grid.className = 'grid';
-                if (progressBar) {
-                    progressBar.appendChild(grid);
+                function addGrid() {
+                    if (i < gridCount) {
+                        const grid = document.createElement('div');
+                        grid.className = 'grid';
+                        if (progressBar) {
+                            progressBar.appendChild(grid);
+                        }
+                        i++;
+                        const minDelay = 0; // 最小延迟时间（毫秒）
+                        const maxDelay = 100; // 最大延迟时间（毫秒）
+                        const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay; // 生成一个最小值到最大值之间的随机延迟
+                        setTimeout(addGrid, randomDelay); // 使用随机延迟
+                    } else {
+                        while (progressBar && progressBar.children.length < gridCount) {
+                            const grid = document.createElement('div');
+                            grid.className = 'grid';
+                            progressBar.appendChild(grid);
+                        }
+                        isUpdating = false; // 更新完成，重置标志位
+                    }
                 }
-                i++;
-                const minDelay = 0; // 最小延迟时间（毫秒）
-                const maxDelay = 100; // 最大延迟时间（毫秒）
-                const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay; // 生成一个最小值到最大值之间的随机延迟
-                setTimeout(addGrid, randomDelay); // 使用随机延迟
-            } else {
-                while (progressBar && progressBar.children.length < gridCount) {
-                    const grid = document.createElement('div');
-                    grid.className = 'grid';
-                    progressBar.appendChild(grid);
-                }
-                isUpdating = false; // 更新完成，重置标志位
-            }
-        }
-        addGrid();
+                addGrid();
 
                 let currentPercentage = 0;
                 function animatePercentage() {
@@ -184,16 +185,23 @@
             }
         };
 
-        // 每跨分钟时更新进度条
-        function updateOnMinuteChange() {
+        // 每跨小时时更新进度条
+        function updateOnHourChange() {
             const now = new Date();
-            const secondsUntilNextMinute = 60 - now.getSeconds();
-            let secondsLeft = secondsUntilNextMinute;
+            const minutesUntilNextHour = 60 - now.getMinutes();
+            const secondsUntilNextHour = minutesUntilNextHour * 60 - now.getSeconds();
+            let secondsLeft = secondsUntilNextHour;
 
             function updateTimer() {
                 const refreshTimerElement = document.getElementById('refresh-timer');
+                const refreshContainer = document.getElementById('refresh-container');
                 if (refreshTimerElement) {
-                    refreshTimerElement.innerText = `Refresh in ${secondsLeft} seconds`;
+                    const minutesLeft = Math.floor(secondsLeft / 60);
+                    const secondsLeftWithinMinute = secondsLeft % 60;
+                    refreshTimerElement.innerText = `Refresh in ${minutesLeft}m ${secondsLeftWithinMinute}s`;
+                    if (refreshContainer && !refreshContainer.style.display) {
+                        refreshContainer.style.display = 'flex'; // 第一次更新后显示
+                    }
                 }
                 secondsLeft--;
                 if (secondsLeft >= 0) {
@@ -204,12 +212,12 @@
                     } catch (error) {
                         console.error('Error updating progress bar:', error);
                     }
-                    updateOnMinuteChange();
+                    updateOnHourChange();
                 }
             }
             updateTimer();
         }
-        updateOnMinuteChange();
+        updateOnHourChange();
     </script>
 </body>
 
