@@ -72,6 +72,8 @@
     <section class="window-body">
       <div class="popUpIcon"></div>
       <p style="text-align: center; line-height: 1;"><strong style="color: purple">✨ Welcom to DrunkFrog! Please read what's new. ✨</strong></p>
+      <p><strong style="color: green">24-09-11 Dev Version 0.3.0</strong></p>
+      <p>encapsulate all js css and remove fetch api</p>
       <p><strong style="color: green">24-09-08 Dev Version 0.2.1</strong></p>
       <p>3981cc3 - added year&month&day progress!</p>
       <p>d2dae4f - update popup animate</p>
@@ -82,30 +84,6 @@
     </section>
     <button id="close-popup">Confirm</button>
   </div>
-
-  <script>
-    // 获取关闭按钮和弹窗元素
-    const closeButton = document.getElementById('close-popup');
-    const overlay = document.getElementById('overlay');
-    const popup = document.getElementById('welcome-popup');
-
-    // 添加点击事件监听器
-    closeButton.onclick = closePopup;
-
-    function closePopup() {
-      popup.style.display = 'none';
-      overlay.style.display = 'none';
-    }
-
-    // 动态调整弹窗高度
-    function adjustPopupHeight() {
-      const windowBody = document.querySelector('#welcome-popup .window-body');
-      const contentHeight = windowBody.scrollHeight;
-      popup.style.height = `${contentHeight + 50}px`; // 加上标题栏和按钮的高度
-    }
-
-    // 页面加载完成后调整弹窗高度
-    window.onload = adjustPopupHeight;
-  </script>
+  <script src="/js/dailyPopup.js"></script>
 </body>
 </html>

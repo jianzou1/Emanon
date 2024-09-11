@@ -1,5 +1,6 @@
 // tabHandler.js
 
+
 document.addEventListener('DOMContentLoaded', function() {
   const tabList = document.querySelector('[role="tablist"]');
 
@@ -40,7 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
   tabs.forEach(tab => {
     const tabUrl = tab.getAttribute('data-url');
     if (currentUrl !== tabUrl) {
-      fetch(tabUrl).catch(error => console.error('Error preloading:', error));
+      console.log(`Preloading: ${tabUrl}`); // 添加日志输出
+      fetch(tabUrl).then(response => {
+        console.log(`Preloaded: ${tabUrl} - Status: ${response.status}`); // 添加日志输出
+      }).catch(error => {
+        console.error(`Error preloading: ${tabUrl}`, error); // 添加日志输出
+      });
     }
   });
 
