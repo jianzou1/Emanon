@@ -30,23 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     console.error('Element with class "dynamic-footer" not found.');
   }
-
-  // 异步加载不蒜子统计脚本
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
-  script.onload = function() {
-    // 监听不蒜子脚本的回调函数
-    window.BusuanziCallback = function(data) {
-      const busuanziValue = document.getElementById('busuanzi_value_site_uv');
-      if (busuanziValue) {
-        console.log('不蒜子脚本返回的 UV 结果:', busuanziValue.textContent);
-      } else {
-        console.error('Element with id "busuanzi_value_site_uv" not found.');
-      }
-    };
-  };
-  document.head.appendChild(script);
 });
 
 // 从 GitHub API 获取更新日期
