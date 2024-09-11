@@ -47,7 +47,7 @@
                 linkDiv.className = 'link-preview';
                 linkDiv.id = `link-${link.id}`;
                 linkDiv.innerHTML = `
-                    <h3><a href="${link.url}" target="_blank">${title}</a></h3>
+                    <h3><a href="${link.url}" target="_self">${title}</a></h3>
                     <p>${truncatedContent}</p>
                 `;
 
@@ -59,7 +59,7 @@
                 linkDiv.className = 'link-preview';
                 linkDiv.id = `link-${link.id}`;
                 linkDiv.innerHTML = `
-                    <h3><a href="${link.url}" target="_blank">无法加载标题</a></h3>
+                    <h3><a href="${link.url}" target="_self">无法加载标题</a></h3>
                     <p>无法加载内容</p>
                 `;
 
