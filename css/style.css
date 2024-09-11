@@ -64,7 +64,7 @@ menu[role=tablist] > li {
   font-size: 12px; /* 字体大小 */
 }
 
-p, .window li, h1, h2, h3, h4 {
+p, .window li, h1, h2, h3, h4, h5 {
   line-height: 1.4; /* 行高 */
   font-size: 14px; /* 字体大小 */
   font-family: Microsoft Yahei, SimSun, NSimSun, SimHei; /* 字体系列 */
@@ -79,7 +79,7 @@ ul.tree-view li {
   text-decoration: underline dotted blue; /* 下划线样式 */
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5 {
   font-weight: bold; /* 加粗 */
 }
 
@@ -87,6 +87,7 @@ h1 { font-size: 30px; } /* 字体大小 */
 h2 { font-size: 25px; } /* 字体大小 */
 h3 { font-size: 20px; } /* 字体大小 */
 h4 { font-size: 18px; } /* 字体大小 */
+h5 { font-size: 16px; } /* 字体大小 */
 
 code {
   font-family: Microsoft Yahei, SimSun, NSimSun, SimHei; /* 字体系列 */

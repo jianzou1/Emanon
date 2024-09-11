@@ -2,10 +2,13 @@
 
 (function () {
     const links = [
-        { id: 4, url: '/post/gd_sample_ingame_capture' },
-        { id: 3, url: '/post/gd_sample_ingame_recoil' },
-        { id: 2, url: '/post/gd_system' },
-        { id: 1, url: '/post/gd_occams_razor' },
+        { id: 10000, url: '/post/gd_occams_razor' },
+        { id: 10100, url: '/post/gd_sample_hero_ape' },
+        { id: 10200, url: '/post/gd_sample_ingame_capture' },
+        { id: 10300, url: '/post/gd_sample_ingame_party_point' },
+        { id: 10400, url: '/post/gd_sample_ingame_recoil' },
+        { id: 10500, url: '/post/gd_sample_system_battlepass' },
+        { id: 10001, url: '/post/gd_system' },
         // 可以继续添加链接
     ];
 
@@ -28,7 +31,7 @@
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                const title = doc.querySelector('title').textContent || '未命名';
+                const title = doc.querySelector('title')?.textContent || '未命名';
 
                 // 移除所有<strong>标签
                 const bodyContent = doc.body.innerHTML || '';
@@ -51,7 +54,13 @@
                     <p>${truncatedContent}</p>
                 `;
 
-                linksContainer.appendChild(linkDiv);
+                // 确保按id升序插入
+                const insertBeforeElement = document.querySelector(`#link-${link.id + 1}`);
+                if (insertBeforeElement) {
+                    linksContainer.insertBefore(linkDiv, insertBeforeElement);
+                } else {
+                    linksContainer.appendChild(linkDiv);
+                }
             })
             .catch(error => {
                 console.error('Error fetching content:', error);
@@ -63,7 +72,13 @@
                     <p>无法加载内容</p>
                 `;
 
-                linksContainer.appendChild(linkDiv);
+                // 确保按id升序插入
+                const insertBeforeElement = document.querySelector(`#link-${link.id + 1}`);
+                if (insertBeforeElement) {
+                    linksContainer.insertBefore(linkDiv, insertBeforeElement);
+                } else {
+                    linksContainer.appendChild(linkDiv);
+                }
             });
     });
 })();

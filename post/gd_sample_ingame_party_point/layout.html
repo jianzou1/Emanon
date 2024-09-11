@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>局内派对点奖励规则</title>
+</head>
+<body>
+<h2 id='一设计目的'>一、设计目的</h2>
+<p>玩家可以通过在游戏中获取派对点，增加游戏的趣味性和奖励；这个功能的目标是让玩家在游戏中的行为有正向奖励反馈，同时也为OGX在游戏内使用卡牌技能提供正当性。</p>
+<h2 id='二功能概述'>二、功能概述</h2>
+<ul>
+<li><p>此规则主要围绕派对点的产出、掉落交互、奖池、奖池表现及派对点的局内掉落方式进行设计。</p>
+</li>
+<li><p>OGX玩家在游戏中使用技能卡牌将消耗派对点，这些派对点将通过各种方式返回给普通玩家。</p>
+<ul>
+<li>玩家通过开启宝箱、击杀NPC等枚举行为可获得派对点。</li>
+<li>玩家一旦成功撤离，将根据场上玩家存活的数量，从撤离奖励池获得派对点。</li>
+
+</ul>
+</li>
+
+</ul>
+<h2 id='三流程示意图'>三、流程示意图</h2>
+<h3 id='31-完整流程'>3.1 完整流程</h3>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1his9xghw2uj30ox0y2n11.jpg" referrerpolicy="no-referrer" alt="image-20230915140853929.png"></p>
+<h3 id='32-抽奖流程'>3.2 抽奖流程</h3>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1his9xghx4tj30ph11djvd.jpg" referrerpolicy="no-referrer" alt="image-20230918111733363.png"></p>
+<h2 id='四新增配置'>四、新增配置</h2>
+<h3 id='41-partypointactioncfg'>4.1 <code>party_point_action_cfg</code></h3>
+<ul>
+<li>新增配置表<code>party_point_action_cfg</code>，用于配置玩家获得派对点奖励的不同行为。</li>
+
+</ul>
+<p>[TABLE_BEGIN]</p>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>字段</th><th>字段名</th><th>备注</th></tr></thead>
+<tbody><tr><td>id#string</td><td>行为id</td><td>&nbsp;</td></tr><tr><td>completedAction#int</td><td>玩家完成行为枚举</td><td>根据枚举类型读取actionValue字段读取参数<br />100=开启宝箱，读取宝箱id<br />200=击杀指定NPC，读取npc的id</td></tr><tr><td>actionValue#int</td><td>行为参数</td><td>&nbsp;</td></tr><tr><td>actionPro</td><td>完成该枚举增加的概率</td><td>&nbsp;</td></tr></tbody>
+</table></figure>
+<p>[TABLE_END]</p>
+<h3 id='42-partypointrewardcfg'>4.2 <code>party_point_reward_cfg</code></h3>
+<ul>
+<li>新增配置表<code>party_point_reward_cfg</code>，用于配置玩家获得的派对点奖励。</li>
+
+</ul>
+<p>[CONFIG_BEGIN]</p>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>字段</th><th>字段名</th><th>备注</th></tr></thead>
+<tbody><tr><td>jackpotPercent#int</td><td>配置进入奖池的派对币百分比</td><td>&nbsp;</td></tr><tr><td>loseAddPro#string</td><td>每次抽奖失败增加保底概率</td><td>配置对象<br />第一个数为失败次数<br />第二个数为增加的概率</td></tr><tr><td>onceWinEmptyTimes#int</td><td>中奖一次轮空次数</td><td>&nbsp;</td></tr></tbody>
+</table></figure>
+<p>[CONFIG_END]</p>
+<p>[TABLE_BEGIN]</p>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>字段</th><th>字段名</th><th>备注</th></tr></thead>
+<tbody><tr><td>id#int</td><td>奖励id</td><td>&nbsp;</td></tr><tr><td>partyPointReward#int</td><td>获得的派对点</td><td>获得当前奖池内千分比</td></tr><tr><td>pro</td><td>档位权重</td><td>千分比</td></tr><tr><td>noticeId#int</td><td>通知id</td><td>获得该奖励时的全局播报，配空则不触发播报</td></tr></tbody>
+</table></figure>
+<p>[TABLE_END]</p>
+<h4 id='421-配置示例'>4.2.1 配置示例</h4>
+<p><code>party_point_reward_cfg</code>
+<code>[</code>
+  <code>[</code>
+    <code>{</code>
+      <code>&quot;jackpotPercent&quot;: 500,</code>
+      <code>&quot;loseAddPro&quot;: &quot;{3:1500,5:3000}&quot;,</code>
+      <code>&quot;onceWinEmptyTimes&quot;: 5</code>
+    <code>}</code>
+  <code>],</code>
+  <code>[</code>
+    <code>{</code>
+      <code>&quot;id&quot;: 1,</code>
+      <code>&quot;partyPointReward&quot;: 90,</code>
+      <code>&quot;pro&quot;: &quot;1000&quot;,</code>
+      <code>&quot;noticeId&quot;: 500011</code>
+    <code>},</code>
+    <code>{</code>
+      <code>&quot;id&quot;: 2,</code>
+      <code>&quot;partyPointReward&quot;: 80,</code>
+      <code>&quot;pro&quot;: &quot;800&quot;,</code>
+      <code>&quot;noticeId&quot;: 500011</code>
+    <code>},</code>
+    <code>{</code>
+      <code>&quot;id&quot;: 3,</code>
+      <code>&quot;partyPointReward&quot;: 70,</code>
+      <code>&quot;pro&quot;: &quot;600&quot;,</code>
+      <code>&quot;noticeId&quot;: 500011</code>
+    <code>},</code>
+    <code>{</code>
+      <code>&quot;id&quot;: 4,</code>
+      <code>&quot;partyPointReward&quot;: 60,</code>
+      <code>&quot;pro&quot;: &quot;400&quot;,</code>
+      <code>&quot;noticeId&quot;: 500011</code>
+    <code>},</code>
+    <code>{</code>
+      <code>&quot;id&quot;: 5,</code>
+      <code>&quot;partyPointReward&quot;: 50,</code>
+      <code>&quot;pro&quot;: &quot;200&quot;,</code>
+      <code>&quot;noticeId&quot;: 500011</code>
+    <code>}</code>
+  <code>]</code>
+<code>]</code></p>
+<h2 id='五功能规则'>五、功能规则</h2>
+<h3 id='51-功能开关'>5.1 功能开关</h3>
+<ul>
+<li><p>判断当前匹配对局内是否有OGX玩家或AI上帝。</p>
+<ul>
+<li>如果有OGX玩家或AI上帝：启用派对点奖励规则。</li>
+<li>如果没有OGX玩家或AI上帝：禁用派对点奖励规则。</li>
+
+</ul>
+</li>
+
+</ul>
+<h3 id='52-派对点产出'>5.2 派对点产出</h3>
+<ul>
+<li><p>局内目前有奖池设计，OGX玩家在局内消耗的所有派对点都将进入奖池，产出派对点的方式与来源请查看系统案：<a href='http://doc.easegame/pgproject/designerdoc/-/wikis/新主玩法战斗相关/W-玩法模式/OB模式系统功能/O-OB卡牌功能'>O OB卡牌功能 </a>。</p>
+<ul>
+<li>消耗派对点的途径包括：使用卡牌，读取<code>ob_card_cfg</code>配置表的<code>bonus</code>字段进行产出。</li>
+<li>BOSS一旦死亡，OGX玩家消耗的派对点，不进行任何处理。</li>
+
+</ul>
+</li>
+<li><p>派对点校验：在结算过程中，玩家获得的派对点，不允许大于OGX在局内消耗的派对点，若结算时检测到该情况，则没收玩家所有派对点。</p>
+</li>
+
+</ul>
+<h3 id='53-派对点分配'>5.3 派对点分配</h3>
+<ul>
+<li><p>OGX产出的派对点，一部分进入“派对点奖池”，另一部分进入“撤离奖励池”，分配方式如下：</p>
+<ul>
+<li>派对点奖池：OGX产出派对点 * <code>jackpotPercent</code>字段，得出的派对点进入派对点奖池。</li>
+<li>撤离奖励池：剩余派对点，计入撤离奖励池。</li>
+
+</ul>
+</li>
+
+</ul>
+<h3 id='54-撤离奖励池'>5.4 撤离奖励池</h3>
+<ul>
+<li><p>OGX附身的BOSS死亡时，将“派对点奖池”内的所有派对点，计入“撤离奖励池”，派对点奖池不复存在。此后OGX玩家花费的派对点也计入“撤离奖励池”。</p>
+</li>
+<li><p>该奖励不会立即获得，只有成功撤离，进入结算流程的玩家，才可获得从撤离奖励池中分得奖励，具体表现查看系统案：<a href='http://doc.easegame/pgproject/designerdoc/-/wikis/新主玩法战斗相关/W-玩法模式/D-夺金模式/D-夺金模式-战斗结算'>D 夺金模式 战斗结算</a>。</p>
+<ul>
+<li>在BOSS死亡时，系统将记录击杀BOSS的队伍与队伍情况，供结算使用。</li>
+<li>若为是，则将 撤离奖励池中的派对点数量 / 击杀BOSS时队内存活的玩家数量 = 玩家获得的撤离派对点奖励。玩家获得派对点奖励后，将所获得的派对点从“撤离奖励池”中扣除。</li>
+
+</ul>
+</li>
+
+</ul>
+<h3 id='55-派对点奖池'>5.5 派对点奖池</h3>
+<ul>
+<li><p>奖池抽取条件：当玩家完成指定的枚举行为时，有可能在派对点奖池中完成一次抽取，枚举行为根据<code>party_point_action_cfg</code>配置表的<code>completedAction</code>字段读取，具体如下：</p>
+<ul>
+<li><code>100</code>=开启宝箱，读取<code>actionValue</code>的宝箱id。关于夺金模式内开启宝箱的具体规则，查看系统案：夺金模式宝箱规则。</li>
+<li><code>200</code>=击杀指定NPC，读取<code>actionValue</code>的NPC的id。关于夺金模式内击杀NPC的具体规则，查看系统案：NPC系统。</li>
+
+</ul>
+</li>
+<li><p>奖池抽取概率：能否进行1次抽奖，是由 行为概率 与 保底概率 相加决定的。</p>
+<ul>
+<li><p>完成指定行为后，可根据<code>party_point_action_cfg</code>中所完成行为的<code>actionPro</code>字段，获得行为概率。</p>
+</li>
+<li><p>若某次抽奖失败，失败次数+1，失败次数可累加；每次抽奖时根据<code>party_point_reward_cfg</code>的<code>loseAddPro</code>字段增加抽奖保底概率。</p>
+<ul>
+<li><code>loseAddPro</code>为对象字段，第一个数配置失败次数，第二个数配置增加的概率。抽奖失败次数≥第一个数时，读取该数组的第二个数增加保底概率，失败次数只会判断对象中最大的失败次数值生效。</li>
+<li>玩家成功获得1次抽奖资格后，失败次数清零。</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><p>奖池轮空：成功进行1次抽取后，玩家的任何行为都不再触发抽奖以及失败次数  ，直到玩家完成的行为次数大于等于<code>onceWinEmptyTimes</code>字段值。</p>
+</li>
+<li><p>奖池抽取：玩家获得抽取资格后，进入<code>party_point_reward_cfg</code>进行抽取，具体规则如下：</p>
+<ul>
+<li><p>读取各个奖励id的千分比<code>pro</code>字段，随机出玩家所获得的奖励。</p>
+</li>
+<li><p>最终获得的奖励根据随机到奖励实例的<code>partyPointReward</code>字段进行配置，该字段配置值为千分比。</p>
+<ul>
+<li>当前奖池的派对点总额 * <code>partyPointReward</code>字段值，为玩家最终获得的奖励。</li>
+
+</ul>
+</li>
+<li><p>玩家获得奖励后，需将获得的派对点从奖池中扣除。</p>
+<ul>
+<li>从奖池内获得的派对点，保底为1。</li>
+<li>若当前奖池派对点总额为0，则玩家抽取后不会获得任何奖励。</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><p>玩家从派对点奖池获得的派对点奖励，视为玩家在局内所携带的物品，玩家一旦死亡，其携带的派对点将会作为物品掉落，供其他玩家拾取。</p>
+</li>
+
+</ul>
+<h4 id='551-派对点奖池常态交互'>5.5.1 派对点奖池：常态交互</h4>
+<ul>
+<li><p>当前奖池内派对点的总数量如下图所示，该界面表现为功能常态。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1his9xh1cdfj30yh0jhnas.jpg" referrerpolicy="no-referrer" alt="image-20230817113418157.png"></p>
+<ul>
+<li><p>展示派对点图标、当前奖池内的派对点总额。</p>
+</li>
+<li><p>每当OGX玩家消耗派对点时，经过分配的派对点，会在派对点总额后方，以加号附带白色数字方式进行动效展示，在动效播放完成后，派对点总额数值应有当前值到目标值的逐步数字跳动表现。</p>
+<ul>
+<li>派对点来源展示：派对点增加时，需附带派对点来源信息（OGX使用了什么卡牌导致的奖池派对点增长），如图所示。</li>
+<li>卡牌图标读取<code>ob_card_cfg</code>配置表的<code>icon</code>字段。</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+<h4 id='552-派对点奖池奖池抽取'>5.5.2 派对点奖池：奖池抽取</h4>
+<ul>
+<li><p>当玩家完成了指定行为，获得派对点时，该界面播放奖池抽取表现。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1his9xgvzwsj30vy0htn80.jpg" referrerpolicy="no-referrer" alt="image-20230815155234198.png"></p>
+<ul>
+<li><p>组件内出现3个老虎机形式的滚动数字框，框内数字快速跳动，相关的数字停止逻辑如下</p>
+<ul>
+<li>若服务端下发的奖励id中<code>partyPointReward</code>值为A，则数字有可能表现为：A + A + A 或 A + B + A 或 B + A + A ，三种数字停止逻辑中随机一种进行表现。</li>
+<li>数字应该由左至右逐个停止，每个停止时间为0.7秒。</li>
+<li>B的数值随机在<code>party_point_reward_cfg</code>配置表中取与玩家所获得奖励相同的<code>actionId</code>的<code>partyPointReward</code>进行展示。</li>
+
+</ul>
+</li>
+<li><p>数字停止后，玩家获得派对点奖励，播放奖励获得表现。</p>
+</li>
+
+</ul>
+</li>
+
+</ul>
+<h4 id='553-派对点奖池奖励获得'>5.5.3 派对点奖池：奖励获得</h4>
+<ul>
+<li><p>当玩家获得了派对点奖励，抽取表现播放完成，应播放奖励获得表现。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1his9xh28pkj30vy0hwk2q.jpg" referrerpolicy="no-referrer" alt="image-20230815161138019.png"></p>
+<ul>
+<li><p>展示派对点图标、先展示所获得的百分比，随后百分比数字会变化为根据百分比换算的具体派对点数。</p>
+</li>
+<li><p>派对点图标从组件中飞出，目标点为背包图标的UI位置，图中“+999”在过程中变为0，同时播放逐步数字跳动表现。</p>
+<ul>
+<li>派对点以道具形式进入背包，若此时背包已满，则掉落在场景中。</li>
+
+</ul>
+</li>
+<li><p>该表现播放完成后，该界面组件恢复为常态；若当前还有未展示完成的奖励，则恢复为&quot;奖池抽取&quot;态继续播放表现。</p>
+</li>
+
+</ul>
+</li>
+
+</ul>
+<h4 id='554-派对点奖池通知相关'>5.5.4 派对点奖池：通知相关</h4>
+<ul>
+<li><p>奖池通知：获得一个派对点奖励时，该奖励ID中的<code>noticeId</code>有配置值时，则去<code>tips_cfg</code>读取通知信息，进行全局广播。</p>
+<ul>
+<li><p>该奖励的格式应该为：“{0}掠夺了派对奖池，获得了{1}派对点数！”</p>
+<ul>
+<li>{0} = 玩家昵称</li>
+<li>{1} = 所获得的派对点数</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><p>BOSS死亡通知：OGX附身的BOSS一旦死亡，则去<code>tips_cfg</code>读取通知信息id为<code>ogx_dead_info</code>的字段，进行全局广播。</p>
+<ul>
+<li><p>该通知的格式应该为：“BOSS已经死亡，击杀的队伍总计获得{0}派对点！”</p>
+<ul>
+<li>{0} = 当前撤离奖池中的派对点数</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+<h4 id='555-派对点奖池奖池消失表现'>5.5.5 派对点奖池：奖池消失表现</h4>
+<ul>
+<li><p>OGX附身的国王死亡时，将“派对点奖池”内的所有派对点，计入“撤离奖励池”；此时派对点奖池的UI组件应做消失表现。</p>
+<p>		<img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1his9xgft9hj30e104h3zy.jpg" referrerpolicy="no-referrer" alt="image-20230818182615387.png"></p>
+<ul>
+<li>先播放碎裂特效，碎裂特效播放完成后，UI消失。</li>
+
+</ul>
+</li>
+
+</ul>
