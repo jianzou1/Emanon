@@ -14,7 +14,7 @@ body {
 .logo {
   margin: 5% auto 1%; /* 上下外边距为5%和1%，水平居中 */
   cursor: pointer; /* 鼠标悬停时显示手型 */
-  background: url('ui/logo.png') no-repeat center / cover; /* 背景图片，居中且覆盖 */
+  background: url('/ui/logo.png') no-repeat center / cover; /* 背景图片，居中且覆盖 */
   width: 200px; /* 宽度 */
   height: 158px; /* 高度 */
   scale: 0.9; /* 缩放比例 */
@@ -22,7 +22,7 @@ body {
 }
 
 @keyframes imageChange {
-  50% { background-image: url('ui/logo2.png'); } /* 动画到50%时更换背景图片 */
+  50% { background-image: url('/ui/logo2.png'); } /* 动画到50%时更换背景图片 */
 }
 
 .logo:hover {

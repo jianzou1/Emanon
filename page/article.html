@@ -4,53 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article</title>
-    <link href="../style.css" rel="stylesheet" type="text/css" media="all">
-    <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
-    <link rel="manifest" href="../site.webmanifest">
-    <style>
-        .link-preview {
-            width: 720px;
-            padding: 15px;
-            background-color: #C0C0C0;
-            overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
-            border: rgb(177, 176, 176) 1px solid;
-            border-bottom: white 2px solid;
-            border-right: white 2px solid;
-            margin: auto;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        .link-preview p {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin: 0;
-            color: #333;
-        }
-
-        .link-preview h3 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .link-preview h3 a {
-            color: blue; /* 设置链接颜色 */
-            text-decoration: none; /* 去掉下划线 */
-        }
-
-        .link-preview h3 a:hover {
-            text-decoration: underline; /* 鼠标悬停时显示下划线 */
-        }
-    </style>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/css/article.css" rel="stylesheet" type="text/css"> <!-- 引入article.css -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 <body>
-    <div class="logo" onclick="window.location.href='../index.html'"></div>
+    <div class="logo" onclick="window.location.href='/index.html'"></div>
     <div class="window-body">
         <menu role="tablist"></menu>
         <div class="window" role="tabpanel">
@@ -62,14 +24,14 @@
     </div>
 
     <button class="back-to-top" onclick="scrollToTop()">
-        <img src="../icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
+        <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
     </button>
     <div class="crt monitor"></div>
 
-    <script src="../js/footerLoader.js"></script> <!-- 引入footerLoader.js -->
-    <script src="../js/scrollToTop.js"></script> <!-- 引入scrollToTop.js -->
-    <script src="../js/tabHandler.js"></script> <!-- 引入tabHandler.js -->
-    <script src="../js/previewLoader.js"></script> <!-- 引入previewLoader.js -->
+    <script src="/js/footerLoader.js"></script> <!-- 引入footerLoader.js -->
+    <script src="/js/scrollToTop.js"></script> <!-- 引入scrollToTop.js -->
+    <script src="/js/tabHandler.js"></script> <!-- 引入tabHandler.js -->
+    <script src="/js/previewLoader.js"></script> <!-- 引入previewLoader.js -->
 </body>
 <div class="dynamic-footer"></div>
 </html>

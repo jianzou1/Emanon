@@ -2,14 +2,17 @@
 
 (function () {
     const links = [
-        { id: 1, url: '../post/gd_sample_ingame_recoil', name: '页面1' },
-        { id: 2, url: '../post/gd_system', name: '页面2' },
-        { id: 3, url: '../post/gd_occams_razor', name: '页面2' },
+        { id: 3, url: '../post/gd_sample_ingame_recoil' },
+        { id: 2, url: '../post/gd_system' },
+        { id: 1, url: '../post/gd_occams_razor' },
         // 可以继续添加链接
     ];
 
-    const charLimit = 500; // 限制字符数
+    const charLimit = 200; // 限制字符数
     const linksContainer = document.getElementById('links-container');
+
+    // 排序链接数组按id升序
+    links.sort((a, b) => a.id - b.id);
 
     links.forEach(link => {
         const layoutUrl = `${link.url}/layout.html`;
@@ -55,7 +58,7 @@
                 linkDiv.className = 'link-preview';
                 linkDiv.id = `link-${link.id}`;
                 linkDiv.innerHTML = `
-                    <h3><a href="${link.url}" target="_blank">${link.name}</a></h3>
+                    <h3><a href="${link.url}" target="_blank">无法加载标题</a></h3>
                     <p>无法加载内容</p>
                 `;
 
