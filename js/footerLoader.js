@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     footerContainer.innerHTML = footerContent;
 
     // 获取 id 为 last-updated 的元素并插入更新日期
-    const lastUpdatedElement = document.getElementById('last-updated');
+    const lastUpdatedElement = footerContainer.querySelector('#last-updated');
     if (lastUpdatedElement) {
       getLastUpdatedDateFromGitHub()
         .then(lastUpdatedDate => {
@@ -23,8 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
           console.error('Failed to fetch last updated date:', error);
-          // 移除失败时展示本地时间的逻辑
-          // lastUpdatedElement.textContent = `Last Updated: ${new Date().toLocaleDateString()}`;
         });
     } else {
       console.error('Element with id "last-updated" not found.');
@@ -38,13 +36,15 @@ document.addEventListener('DOMContentLoaded', function() {
   script.async = true;
   script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
   script.onload = function() {
-    // 打印不蒜子脚本返回的 UV 结果
-    const busuanziValue = document.getElementById('busuanzi_value_site_uv');
-    if (busuanziValue) {
-      console.log('不蒜子脚本返回的 UV 结果:', busuanziValue.textContent);
-    } else {
-      console.error('Element with id "busuanzi_value_site_uv" not found.');
-    }
+    // 监听不蒜子脚本的回调函数
+    window.BusuanziCallback = function(data) {
+      const busuanziValue = document.getElementById('busuanzi_value_site_uv');
+      if (busuanziValue) {
+        console.log('不蒜子脚本返回的 UV 结果:', busuanziValue.textContent);
+      } else {
+        console.error('Element with id "busuanzi_value_site_uv" not found.');
+      }
+    };
   };
   document.head.appendChild(script);
 });
