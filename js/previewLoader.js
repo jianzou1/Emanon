@@ -2,9 +2,10 @@
 
 (function () {
     const links = [
-        { id: 3, url: '../post/gd_sample_ingame_recoil' },
-        { id: 2, url: '../post/gd_system' },
-        { id: 1, url: '../post/gd_occams_razor' },
+        { id: 4, url: '/post/gd_sample_ingame_capture' },
+        { id: 3, url: '/post/gd_sample_ingame_recoil' },
+        { id: 2, url: '/post/gd_system' },
+        { id: 1, url: '/post/gd_occams_razor' },
         // 可以继续添加链接
     ];
 
