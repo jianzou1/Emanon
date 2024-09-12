@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,16 +12,18 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
 </head>
+
 <body>
     <div class="logo" onclick="window.location.href='/index.html'"></div>
     <div class="window-body">
         <menu role="tablist"></menu>
         <div class="window" role="tabpanel">
-            <div id="links-container">
-                <!-- 预览内容将在此处展示 -->
+            <div class="window-body">
+                <div id="links-container">
+                    <!-- 预览内容将在此处展示 -->
+                </div>
             </div>
         </div>
-        <div class="window-body"></div>
     </div>
 
     <button class="back-to-top" onclick="scrollToTop()">
@@ -34,4 +37,5 @@
     <script src="/js/previewLoader.js"></script> <!-- 引入previewLoader.js -->
 </body>
 <div class="dynamic-footer"></div>
+
 </html>

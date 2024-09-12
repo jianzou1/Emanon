@@ -61,11 +61,11 @@
   <p>EXIT THE APPLICATION OR <span id="home">CLICK HERE</span> TO REBOOT THE DRUNKFROG OPERATING SYSTEM</p>
 
   <script>
-    document.getElementById('home').addEventListener('click', function() {
+    document.getElementById('home').addEventListener('click', function () {
       window.location.href = '/'; // 返回主页
     });
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
       try {
         if (event.key === 'Enter') {
           if (document.referrer && document.referrer !== '') {
