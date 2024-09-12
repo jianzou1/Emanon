@@ -8,7 +8,12 @@ function updateProgressBar() {
 
     const now = new Date();
     const gridWidth = 28; // 每个方格的宽度
-    const containerWidth = document.querySelector('.progress-container').clientWidth;
+    const containerWidth = document.querySelector('.progress-container')?.clientWidth;
+    if (!containerWidth) {
+        console.error('Progress container not found.');
+        isUpdating = false;
+        return;
+    }
     const totalGrids = Math.floor(containerWidth / (gridWidth + 2)); // 2px 是间隙的宽度
 
     function updateProgress(start, end, percentageId, progressBarId) {
@@ -17,38 +22,35 @@ function updateProgressBar() {
         const targetPercentage = (passedDuration / totalDuration) * 100;
 
         const percentageElement = document.getElementById(percentageId);
-        if (!percentageElement) return;
+        if (!percentageElement) {
+            console.error(`Element with id ${percentageId} not found.`);
+            return;
+        }
 
         const gridCount = Math.max(1, Math.floor((targetPercentage / 100) * totalGrids)); // 确保至少展示1个方格
 
         const progressBar = document.getElementById(progressBarId);
         if (progressBar) {
             progressBar.innerHTML = '';
+        } else {
+            console.error(`Element with id ${progressBarId} not found.`);
+            return;
         }
-        
-        let i = 0;
-        function addGrid() {
+
+        function addGrid(i) {
             if (i < gridCount) {
                 const grid = document.createElement('div');
                 grid.className = 'grid';
-                if (progressBar) {
-                    progressBar.appendChild(grid);
-                }
-                i++;
+                progressBar.appendChild(grid);
                 const minDelay = 0; // 最小延迟时间（毫秒）
                 const maxDelay = 100; // 最大延迟时间（毫秒）
                 const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay; // 生成一个最小值到最大值之间的随机延迟
-                setTimeout(addGrid, randomDelay); // 使用随机延迟
+                setTimeout(() => addGrid(i + 1), randomDelay); // 使用随机延迟
             } else {
-                while (progressBar && progressBar.children.length < gridCount) {
-                    const grid = document.createElement('div');
-                    grid.className = 'grid';
-                    progressBar.appendChild(grid);
-                }
                 isUpdating = false; // 更新完成，重置标志位
             }
         }
-        addGrid();
+        addGrid(0);
 
         let currentPercentage = 0;
         function animatePercentage() {

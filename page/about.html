@@ -11,6 +11,18 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
 </head>
+<style>
+    .computer-fail-icon {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 50px;
+        height: 50px; /* 确保高度与宽度一致 */
+        background-image: url('/icon/computer-fail.png');
+        background-size: cover; /* 确保图片覆盖整个 div */
+        cursor: pointer; /* 添加鼠标指针样式 */
+    }
+</style>
 
 <body>
     <div class="logo" onclick="window.location.href='/index.html'"></div>
@@ -18,7 +30,7 @@
         <menu role="tablist"></menu>
         <div class="window" role="tabpanel">
             <div class="window-body">
-                <img src="/favicon/android-chrome-192x192.png" width="100px" alt="icon">
+                <img src="/favicon/android-chrome-192x192.png" width="100px" alt="icon" class="portrait">
                 <p>Hi! I'm a webmaster and artist from the CN. It was my childhood dream to have my own website, so here
                     we are!</p>
                 <p>The best way to know more about me is to look around this site. To start exploring you can look at
@@ -31,6 +43,7 @@
                 <p>Drinking ✨✨✨✨✨</p>
                 <p>Favorite song: Anti-Climax - Eason Chan</p>
                 <p>Favorite girl: Cry</p>
+                <div class="computer-fail-icon" onclick="window.location.href='/404.html'"></div>
             </div>
         </div>
     </div>
