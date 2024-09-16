@@ -12,10 +12,8 @@
         // 可以继续添加链接
     ];
 
-    const charLimit = 200; // 限制字符数
     const linksContainer = document.getElementById('links-container');
 
-    // 排序链接数组按id升序
     links.sort((a, b) => a.id - b.id);
 
     links.forEach(link => {
@@ -33,28 +31,17 @@
                 const doc = parser.parseFromString(data, 'text/html');
                 const title = doc.querySelector('title')?.textContent || '未命名';
 
-                // 移除所有<strong>标签
-                const bodyContent = doc.body.innerHTML || '';
-                const contentWithoutStrong = bodyContent.replace(/<\/?strong\b[^>]*>/gi, '');
-
-                // 替换内容中的所有标签为<p>
-                const replacedContent = contentWithoutStrong.replace(/<(\/?)(?!strong\b)[^>]+>/gi, (match, p1) => {
-                    return p1 ? '</p>' : '<p>';
-                });
-
-                const truncatedContent = replacedContent.length > charLimit 
-                    ? replacedContent.substring(0, charLimit) + '...' 
-                    : replacedContent;
+                // 获取body内容并移除所有HTML标签
+                const bodyContent = doc.body.textContent || '';
 
                 const linkDiv = document.createElement('div');
                 linkDiv.className = 'link-preview';
                 linkDiv.id = `link-${link.id}`;
                 linkDiv.innerHTML = `
                     <h3><a href="${link.url}" target="_self">${title}</a></h3>
-                    <p>${truncatedContent}</p>
+                    <div class="content"><p>${bodyContent}</p></div>
                 `;
 
-                // 确保按id升序插入
                 const insertBeforeElement = document.querySelector(`#link-${link.id + 1}`);
                 if (insertBeforeElement) {
                     linksContainer.insertBefore(linkDiv, insertBeforeElement);
@@ -69,10 +56,9 @@
                 linkDiv.id = `link-${link.id}`;
                 linkDiv.innerHTML = `
                     <h3><a href="${link.url}" target="_self">无法加载标题</a></h3>
-                    <p>无法加载内容</p>
+                    <div class="content"><p>无法加载内容</p></div>
                 `;
 
-                // 确保按id升序插入
                 const insertBeforeElement = document.querySelector(`#link-${link.id + 1}`);
                 if (insertBeforeElement) {
                     linksContainer.insertBefore(linkDiv, insertBeforeElement);
