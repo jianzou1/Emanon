@@ -35,6 +35,18 @@ document.addEventListener('DOMContentLoaded', function() {
 // 从 GitHub API 获取更新日期
 async function getLastUpdatedDateFromGitHub() {
   const url = 'https://api.github.com/repos/jianzou1/drunkfrog';
+  const cacheKey = 'lastUpdatedDate';
+  const cacheExpiration = 3600000; // 1小时的毫秒数
+
+  // 检查缓存
+  const cachedData = localStorage.getItem(cacheKey);
+  if (cachedData) {
+    const { timestamp, date } = JSON.parse(cachedData);
+    if (Date.now() - timestamp < cacheExpiration) {
+      return date;
+    }
+  }
+
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -47,9 +59,21 @@ async function getLastUpdatedDateFromGitHub() {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit'
-    }); // 精确到分钟
+    });
+
+    // 缓存结果
+    localStorage.setItem(cacheKey, JSON.stringify({
+      timestamp: Date.now(),
+      date: lastUpdatedDate
+    }));
+
     return lastUpdatedDate;
   } catch (error) {
-    throw new Error(`Failed to fetch last updated date: ${error.message}`);
+    // 如果请求失败，尝试返回缓存的数据（如果有的话）
+    if (cachedData) {
+      const { date } = JSON.parse(cachedData);
+      return date;
+    }
+    throw new Error(`获取最后更新日期失败: ${error.message}`);
   }
 }
