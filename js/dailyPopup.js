@@ -73,17 +73,6 @@ function initPopup() {
     popup.style.display = 'none';
     overlay.style.display = 'none';
   }
-
-  function adjustPopupHeight() {
-    const windowBody = document.querySelector('#welcome-popup .window-body');
-    if (!windowBody) {
-      console.error('Window body not found');
-      return;
-    }
-    popup.style.height = `${windowBody.scrollHeight + 50}px`; // 加上标题栏和按钮的高度
-  }
-
-  window.onload = adjustPopupHeight;
 }
 
 // 确保 closePopup 函数在全局作用域中可用

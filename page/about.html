@@ -10,19 +10,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <script src="https://cdn.bootcdn.net/ajax/libs/pjax/0.2.8/pjax.js"></script>
 </head>
-<style>
-    .computer-fail-icon {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        width: 50px;
-        height: 50px; /* 确保高度与宽度一致 */
-        background-image: url('/icon/computer-fail.png');
-        background-size: cover; /* 确保图片覆盖整个 div */
-        cursor: pointer; /* 添加鼠标指针样式 */
-    }
-</style>
 
 <body>
     <div class="logo" onclick="window.location.href='/index.html'"></div>
@@ -30,22 +19,27 @@
         <menu role="tablist"></menu>
         <div class="window" role="tabpanel">
             <div class="window-body">
-                <img src="/favicon/android-chrome-192x192.png" width="100px" alt="icon" class="portrait">
-                <p>Hi! I'm a webmaster and artist from the CN. It was my childhood dream to have my own website, so here
-                    we are!</p>
-                <p>The best way to know more about me is to look around this site. To start exploring you can look at
-                    the navigation bar to the top. I hope you enjoy your visit!</p>
-                <p>Name: Shelton</p>
-                <p>Occupations: Game Designer, Farmer</p>
-                <p>Age: 27</p>
-                <p>Game Design ✨✨✨✨✨</p>
-                <p>Photography ✨✨✨✨</p>
-                <p>Drinking ✨✨✨✨✨</p>
-                <p>Favorite song: Anti-Climax - Eason Chan</p>
-                <p>Favorite girl: Cry</p>
-                <div class="computer-fail-icon" onclick="window.location.href='/404.html'"></div>
+                <main id="main" class="main">
+                    <img src="/favicon/android-chrome-192x192.png" width="100px" alt="icon" class="portrait">
+                    <p>Hi! I'm a webmaster and artist from the CN. It was my childhood dream to have my own website, so
+                        here
+                        we are!</p>
+                    <p>The best way to know more about me is to look around this site. To start exploring you can look
+                        at
+                        the navigation bar to the top. I hope you enjoy your visit!</p>
+                    <p>Name: Shelton</p>
+                    <p>Occupations: Game Designer, Farmer</p>
+                    <p>Age: 27</p>
+                    <p>Game Design ✨✨✨✨✨</p>
+                    <p>Photography ✨✨✨✨</p>
+                    <p>Drinking ✨✨✨✨✨</p>
+                    <p>Favorite song: Anti-Climax - Eason Chan</p>
+                    <p>Favorite girl: Cry</p>
+                    <div class="computer-fail-icon" onclick="window.location.href='/404.html'"></div>
+                </main>
             </div>
         </div>
+    </div>
     </div>
 
     <button class="back-to-top" onclick="scrollToTop()">
@@ -56,7 +50,7 @@
     <script src="/js/footerLoader.js"></script> <!-- 引入footerLoader.js -->
     <script src="/js/dailyPopup.js"></script> <!-- 引入dailyPopup.js -->
     <script src="/js/scrollToTop.js"></script> <!-- 引入scrollToTop.js -->
-    <script src="/js/tabHandler.js"></script> <!-- 引入tabHandler.js -->
+    <script src="/js/tabHandler.js"></script>
 </body>
 <div class="dynamic-footer"></div>
 

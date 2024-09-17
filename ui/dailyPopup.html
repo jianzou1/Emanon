@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
 
     /* 弹窗样式 */
     #welcome-popup {
+      height: auto;
       display: inline-block;
       padding: 3px;
       position: fixed;
@@ -23,14 +25,15 @@
       transform: translate(-50%, -50%);
       z-index: 1001;
       width: 450px;
-      min-height: 200px;
       max-height: 80vh;
+      /* 设置最大高度 */
       overflow-y: auto;
+      /* 内容溢出时出现滚动条 */
       user-select: none;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .window-body p {
+    #welcome-popup p {
       line-height: 0;
       font-size: 12px;
       text-align: left;
@@ -52,11 +55,17 @@
     }
 
     @keyframes imageChangePopupIcon {
-      33% { background-image: url(../icon/network-receive.png); }
-      66% { background-image: url(../icon/network-transmit.png); }
+      33% {
+        background-image: url(../icon/network-receive.png);
+      }
+
+      66% {
+        background-image: url(../icon/network-transmit.png);
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- 半透明黑色背景 -->
   <div id="overlay" class="overlay"></div>
@@ -71,8 +80,10 @@
     </header>
     <section class="window-body">
       <div class="popUpIcon"></div>
-      <p style="text-align: center; line-height: 1;"><strong style="color: purple">✨ Welcom to DrunkFrog! Please read what's new. ✨</strong></p>
-      <p><strong style="color: green">24-09-11 Dev Version 0.3.0</strong></p>
+      <p style="text-align: center; line-height: 1;"><strong style="color: purple">✨ Welcom to DrunkFrog! Please read
+          what's new. ✨</strong></p>
+      <p><strong style="color: green">24-09-17 Dev Version 1.0.0</strong></p>
+      <p>added PJAX </p>
       <p>encapsulate all js css and remove fetch api</p>
       <p><strong style="color: green">24-09-08 Dev Version 0.2.1</strong></p>
       <p>3981cc3 - added year&month&day progress!</p>
@@ -86,4 +97,5 @@
   </div>
   <script src="/js/dailyPopup.js"></script>
 </body>
+
 </html>

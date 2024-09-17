@@ -1,6 +1,10 @@
 // previewLoader.js
+// 直接在 window.onload 中调用
+window.onload = loadPreviewLinks;
 
-(function () {
+function loadPreviewLinks() {
+    console.log('loadPreviewLinks called'); // 调试输出
+
     const links = [
         { id: 10000, url: '/post/gd_occams_razor' },
         { id: 10100, url: '/post/gd_sample_hero_ape' },
@@ -9,10 +13,15 @@
         { id: 10400, url: '/post/gd_sample_ingame_recoil' },
         { id: 10500, url: '/post/gd_sample_system_battlepass' },
         { id: 10001, url: '/post/gd_system' },
-        // 可以继续添加链接
     ];
 
     const linksContainer = document.getElementById('links-container');
+    if (!linksContainer) {
+        console.error('Links container not found');
+    } else {
+        // 清空容器，重新加载内容
+        linksContainer.innerHTML = '';
+    }
 
     links.sort((a, b) => a.id - b.id);
 
@@ -30,8 +39,6 @@
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
                 const title = doc.querySelector('title')?.textContent || '未命名';
-
-                // 获取body内容并移除所有HTML标签
                 const bodyContent = doc.body.textContent || '';
 
                 const linkDiv = document.createElement('div');
@@ -42,15 +49,14 @@
                     <div class="content"><p>${bodyContent}</p></div>
                 `;
 
-                const insertBeforeElement = document.querySelector(`#link-${link.id + 1}`);
-                if (insertBeforeElement) {
-                    linksContainer.insertBefore(linkDiv, insertBeforeElement);
-                } else {
+                // 动态插入内容
+                if (linksContainer) {
                     linksContainer.appendChild(linkDiv);
                 }
+                console.log(`Content loaded for: ${link.url}`);
             })
             .catch(error => {
-                console.error('Error fetching content:', error);
+                console.error(`Error fetching content for: ${layoutUrl}`, error);
                 const linkDiv = document.createElement('div');
                 linkDiv.className = 'link-preview';
                 linkDiv.id = `link-${link.id}`;
@@ -59,12 +65,10 @@
                     <div class="content"><p>无法加载内容</p></div>
                 `;
 
-                const insertBeforeElement = document.querySelector(`#link-${link.id + 1}`);
-                if (insertBeforeElement) {
-                    linksContainer.insertBefore(linkDiv, insertBeforeElement);
-                } else {
+                // 动态插入错误内容
+                if (linksContainer) {
                     linksContainer.appendChild(linkDiv);
                 }
             });
     });
-})();
+}

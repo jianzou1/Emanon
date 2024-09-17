@@ -9,11 +9,14 @@ function updateProgressBar() {
     const now = new Date();
     const gridWidth = 28; // 每个方格的宽度
     const containerWidth = document.querySelector('.progress-container')?.clientWidth;
+    
+    // 检查容器宽度
     if (!containerWidth) {
-        console.error('Progress container not found.');
-        isUpdating = false;
+        console.error('Progress container not found or has no width.');
+        isUpdating = false; // 切记要重置标志位
         return;
     }
+
     const totalGrids = Math.floor(containerWidth / (gridWidth + 2)); // 2px 是间隙的宽度
 
     function updateProgress(start, end, percentageId, progressBarId) {
@@ -24,16 +27,18 @@ function updateProgressBar() {
         const percentageElement = document.getElementById(percentageId);
         if (!percentageElement) {
             console.error(`Element with id ${percentageId} not found.`);
+            isUpdating = false;
             return;
         }
 
-        const gridCount = Math.max(1, Math.floor((targetPercentage / 100) * totalGrids)); // 确保至少展示1个方格
+        const gridCount = Math.max(1, Math.floor((targetPercentage / 100) * totalGrids)); // 确保至少展示 1 个方格
 
         const progressBar = document.getElementById(progressBarId);
         if (progressBar) {
             progressBar.innerHTML = '';
         } else {
             console.error(`Element with id ${progressBarId} not found.`);
+            isUpdating = false; // 更新过程中发生错误也重置标志位
             return;
         }
 
@@ -55,7 +60,7 @@ function updateProgressBar() {
         let currentPercentage = 0;
         function animatePercentage() {
             if (currentPercentage < targetPercentage) {
-                currentPercentage += 1; // 每次增加1%
+                currentPercentage += 1; // 每次增加 1%
                 percentageElement.innerText = Math.floor(currentPercentage) + '%';
                 requestAnimationFrame(animatePercentage);
             } else {
@@ -81,14 +86,6 @@ function updateProgressBar() {
     updateProgress(startOfDay, endOfDay, 'day-percentage', 'day-progress-bar');
 }
 
-// 页面加载时立即更新进度条
-window.onload = function () {
-    try {
-        updateProgressBar();
-    } catch (error) {
-        console.error('Error updating progress bar:', error);
-    }
-};
 
 // 每跨小时时更新进度条
 function updateOnHourChange() {
@@ -122,4 +119,4 @@ function updateOnHourChange() {
     }
     updateTimer();
 }
-updateOnHourChange();
+updateOnHourChange(); 

@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
-    <link href="/css/article.css" rel="stylesheet" type="text/css"> <!-- 引入article.css -->
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <script src="https://cdn.bootcdn.net/ajax/libs/pjax/0.2.8/pjax.js"></script>
 </head>
 
 <body>
@@ -19,9 +19,11 @@
         <menu role="tablist"></menu>
         <div class="window" role="tabpanel">
             <div class="window-body">
-                <div id="links-container">
-                    <!-- 预览内容将在此处展示 -->
-                </div>
+                <main id="main" class="main">
+                    <div id="links-container">
+                        <!-- 预览内容将在此处展示 -->
+                    </div>
+                </main>
             </div>
         </div>
     </div>
@@ -31,10 +33,10 @@
     </button>
     <div class="crt monitor"></div>
 
+
     <script src="/js/footerLoader.js"></script> <!-- 引入footerLoader.js -->
     <script src="/js/scrollToTop.js"></script> <!-- 引入scrollToTop.js -->
     <script src="/js/tabHandler.js"></script> <!-- 引入tabHandler.js -->
-    <script src="/js/previewLoader.js"></script> <!-- 引入previewLoader.js -->
 </body>
 <div class="dynamic-footer"></div>
 

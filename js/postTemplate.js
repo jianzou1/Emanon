@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('scroll', handleScroll);
   handleScroll();
   showExternalContent('layout.html');
-  loadFooter();
 });
 
 function showExternalContent(url) {
@@ -67,20 +66,3 @@ function handleScroll() {
   button.style.display = window.scrollY > 300 ? 'block' : 'none';
 }
 
-function loadFooter() {
-  // 加载页脚内容，并在成功时插入到页面底部，失败时记录错误
-  fetch('../../ui/footer.html')
-    .then(response => response.text())
-    .then(data => {
-      document.body.insertAdjacentHTML('beforeend', data);
-      const scripts = document.querySelectorAll('script');
-      scripts.forEach(script => {
-        const newScript = document.createElement('script');
-        newScript.textContent = script.textContent;
-        document.body.appendChild(newScript);
-      });
-    })
-    .catch(error => {
-      console.error('Error loading status-bar:', error);
-    });
-}

@@ -1,4 +1,8 @@
 @import "crt.css"; /* 导入外部样式表 crt.css */
+@import "progress.css"; 
+@import "article.css"; 
+@import "fail.css"; 
+@import url(fail.css);
 @import url(https://unpkg.com/98.css); /* 导入外部样式表 98.css */
 
 body {

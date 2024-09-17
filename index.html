@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drunk Frog</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
-    <link href="/css/progress.css" rel="stylesheet" type="text/css"> <!-- 引入progress.css -->
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <script src="https://cdn.bootcdn.net/ajax/libs/pjax/0.2.8/pjax.js"></script>
 </head>
 
 <body>
@@ -19,30 +19,32 @@
         <menu role="tablist"></menu>
         <div class="window" role="tabpanel">
             <div class="window-body">
-            <span><strong style="color: rgb(0, 0, 0)">Year Progress:</strong></span>
-            <div class="progress-container">
-                <div id="progress-bar" class="progress-bar"></div>
-                <span id="progress-percentage">0%</span>
-            </div>
+                <main id="main" class="main">
+                    <span><strong style="color: rgb(0, 0, 0)">Year Progress:</strong></span>
+                    <div class="progress-container">
+                        <div id="progress-bar" class="progress-bar"></div>
+                        <span id="progress-percentage">0%</span>
+                    </div>
 
-            <span><strong style="color: rgb(0, 0, 0)">Month Progress:</strong></span>
-            <div class="progress-container">
-                <div id="month-progress-bar" class="progress-bar"></div>
-                <span id="month-percentage">0%</span>
-            </div>
+                    <span><strong style="color: rgb(0, 0, 0)">Month Progress:</strong></span>
+                    <div class="progress-container">
+                        <div id="month-progress-bar" class="progress-bar"></div>
+                        <span id="month-percentage">0%</span>
+                    </div>
 
-            <span><strong style="color: rgb(0, 0, 0)">Day Progress:</strong></span>
-            <div class="progress-container">
-                <div id="day-progress-bar" class="progress-bar"></div>
-                <span id="day-percentage">0%</span>
-            </div>
-            
-            <div class="refresh-container" id="refresh-container">
-                <div class="refreshIcon"></div>
-                <span id="refresh-timer">Refresh in 00m 00s</span>
+                    <span><strong style="color: rgb(0, 0, 0)">Day Progress:</strong></span>
+                    <div class="progress-container">
+                        <div id="day-progress-bar" class="progress-bar"></div>
+                        <span id="day-percentage">0%</span>
+                    </div>
+
+                    <div class="refresh-container" id="refresh-container">
+                        <div class="refreshIcon"></div>
+                        <span id="refresh-timer">Refresh in 00m 00s</span>
+                </main>
             </div>
         </div>
-       </div>
+    </div>
     </div>
     <button class="back-to-top" onclick="scrollToTop()">
         <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
@@ -53,7 +55,8 @@
     <script src="/js/footerLoader.js"></script>
     <script src="/js/scrollToTop.js"></script>
     <script src="/js/tabHandler.js"></script>
-    <script src="/js/progressBar.js"></script>
+
 </body>
 <div class="dynamic-footer"></div>
+
 </html>
