@@ -2,11 +2,11 @@
 
 class TabHandler {
     constructor(tabListSelector, tabData, pjaxInstance) {
-        this.tabList = document.querySelector(tabListSelector);
+        this.tabList = $(tabListSelector);
         this.tabData = tabData;
         this.pjax = pjaxInstance;
 
-        if (!this.tabList) {
+        if (this.tabList.length === 0) {
             console.error('Tab list element not found');
             return;
         }
@@ -18,35 +18,34 @@ class TabHandler {
     // 初始化选项卡
     initTabs() {
         this.tabData.forEach(tab => {
-            const li = document.createElement('li');
-            li.setAttribute('data-url', tab.url);
-            li.setAttribute('role', 'tab');
-            li.innerHTML = `<a href="${tab.url}" data-pjax>${tab.text}</a>`;
-            this.tabList.appendChild(li);
+            const li = $(`
+                <li data-url="${tab.url}" role="tab">
+                    <a href="${tab.url}" data-pjax>${tab.text}</a>
+                </li>
+            `);
+            this.tabList.append(li);
         });
-        this.tabList.addEventListener('click', this.handleTabClick.bind(this));
+        this.tabList.on('click', '[role="tab"]', this.handleTabClick.bind(this));
     }
 
     // 处理选项卡点击事件
     handleTabClick(event) {
-        const clickedTab = event.target.closest('[role="tab"]');
-        if (clickedTab) {
-            event.preventDefault();
-            const clickedTabUrl = clickedTab.getAttribute('data-url');
-            if (clickedTabUrl !== window.location.pathname) {
-                this.updateSelectedTab(clickedTabUrl);
-                this.pjax.loadUrl(clickedTabUrl); // 使用 PJAX 加载新 URL
-            }
+        const clickedTab = $(event.currentTarget);
+        const clickedTabUrl = clickedTab.data('url');
+
+        if (clickedTabUrl !== window.location.pathname) {
+            this.updateSelectedTab(clickedTabUrl);
+            this.pjax.loadUrl(clickedTabUrl); // 使用 PJAX 加载新 URL
         }
+        event.preventDefault(); // 阻止默认链接行为
     }
 
     // 更新选项卡的选择状态
     updateSelectedTab(currentUrl) {
-        const tabs = this.tabList.querySelectorAll('[role="tab"]');
-        tabs.forEach(tab => {
-            const tabUrl = tab.getAttribute('data-url');
+        this.tabList.find('[role="tab"]').each(function() {
+            const tabUrl = $(this).data('url');
             const normalizedTabUrl = tabUrl === '/index.html' ? '/' : tabUrl;
-            tab.setAttribute('aria-selected', currentUrl === normalizedTabUrl);
+            $(this).attr('aria-selected', currentUrl === normalizedTabUrl);
         });
     }
 }
@@ -57,14 +56,12 @@ function loadScripts(scripts, callback) {
 
     const loadNext = () => {
         if (index < scripts.length) {
-            const script = document.createElement('script');
-            script.src = scripts[index++];
-            script.onload = loadNext;
-            script.onerror = () => {
-                console.error('Error loading script:', script.src);
-                loadNext(); // 继续加载下一个脚本
-            };
-            document.head.appendChild(script);
+            $.getScript(scripts[index++])
+                .done(loadNext)
+                .fail(() => {
+                    console.error('Error loading script:', scripts[index - 1]);
+                    loadNext(); // 继续加载下一个脚本
+                });
         } else if (callback) {
             callback(); // 所有脚本均已加载完成
         }
@@ -75,16 +72,16 @@ function loadScripts(scripts, callback) {
 
 // 处理 PJAX 事件
 function handlePjaxEvents(tabHandler) {
-    document.addEventListener('pjax:send', () => console.log('PJAX: send'));
+    $(document).on('pjax:send', () => console.log('PJAX: send'));
 
-    document.addEventListener('pjax:complete', () => {
+    $(document).on('pjax:complete', () => {
         console.log('PJAX: complete');
         tabHandler.updateSelectedTab(window.location.pathname);
         updateProgressBarIfAvailable();
-        loadPreviewLinksIfAvailable();
+        loadPreviewLinksIfAvailable(); // 在 PJAX 完成后调用预览链接更新
     });
 
-    document.addEventListener('pjax:error', (event) => {
+    $(document).on('pjax:error', (event) => {
         console.error('PJAX: 请求失败', event);
     });
 }
@@ -132,7 +129,7 @@ function initializeApp() {
 }
 
 // 当文档加载完毕时，初始化脚本
-document.addEventListener('DOMContentLoaded', () => {
+$(document).ready(() => {
     console.log('DOM fully loaded and parsed');
 
     const scriptsToLoad = [
@@ -144,5 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('所有指定的 JS 文件已加载');
         initializeApp();
         updateProgressBarIfAvailable(); // 初次加载时更新进度条
+        loadPreviewLinksIfAvailable(); // 初次加载时尝试更新预览链接
     });
 });
