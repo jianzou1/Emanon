@@ -110,7 +110,6 @@ export function updateProgressBar() {
             } catch (error) {
                 console.log('Error updating progress bar:', error); // 打印普通日志
             }
-            updateOnHourChange(); // 递归调用更新方法
         }
     }
     updateTimer();
