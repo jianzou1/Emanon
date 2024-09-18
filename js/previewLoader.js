@@ -1,8 +1,7 @@
 // previewLoader.js
-// 直接在 window.onload 中调用
-window.onload = loadPreviewLinks;
 
-function loadPreviewLinks() {
+// 导出 loadPreviewLinks 函数
+export function loadPreviewLinks() {
     console.log('loadPreviewLinks called'); // 调试输出
 
     const links = [

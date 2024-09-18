@@ -2,7 +2,7 @@
 
 let isUpdating = false; // 全局标志位，用于控制进度条动画的播放
 
-function updateProgressBar() {
+export function updateProgressBar() {
     if (isUpdating) return; // 如果已经在更新，则直接返回
     isUpdating = true;
 
@@ -86,8 +86,7 @@ function updateProgressBar() {
     updateProgress(startOfDay, endOfDay, 'day-percentage', 'day-progress-bar');
 }
 
-// 每跨小时时更新进度条
-function updateOnHourChange() {
+export function updateOnHourChange() {
     const now = new Date();
     const minutesUntilNextHour = 60 - now.getMinutes();
     const secondsUntilNextHour = minutesUntilNextHour * 60 - now.getSeconds();
@@ -118,4 +117,4 @@ function updateOnHourChange() {
     }
     updateTimer();
 }
-updateOnHourChange(); 
+
