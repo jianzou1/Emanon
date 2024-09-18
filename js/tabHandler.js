@@ -32,11 +32,17 @@ class TabHandler {
     handleTabClick(event) {
         const clickedTab = $(event.currentTarget);
         const clickedTabUrl = clickedTab.data('url');
+        const windowElement = $('.window'); // 选择窗口元素
 
         if (clickedTabUrl !== window.location.pathname) {
             this.updateSelectedTab(clickedTabUrl);
             this.pjax.loadUrl(clickedTabUrl); // 使用 PJAX 加载新 URL
+            
+            // 激活窗口并触发动画
+            windowElement.addClass('active');
+            setTimeout(() => windowElement.removeClass('active'), 150); // 根据 CSS 动画时间设置延迟
         }
+        
         event.preventDefault(); // 阻止默认链接行为
     }
 
@@ -45,7 +51,10 @@ class TabHandler {
         this.tabList.find('[role="tab"]').each(function() {
             const tabUrl = $(this).data('url');
             const normalizedTabUrl = tabUrl === '/index.html' ? '/' : tabUrl;
-            $(this).attr('aria-selected', currentUrl === normalizedTabUrl);
+            const isActive = currentUrl === normalizedTabUrl;
+
+            $(this).attr('aria-selected', isActive);
+            $(this).toggleClass('active', isActive); // 添加或移除 active 类
         });
     }
 }
@@ -72,18 +81,16 @@ function loadScripts(scripts, callback) {
 
 // 处理 PJAX 事件
 function handlePjaxEvents(tabHandler) {
-    $(document).on('pjax:send', () => console.log('PJAX: send'));
-
-    $(document).on('pjax:complete', () => {
-        console.log('PJAX: complete');
-        tabHandler.updateSelectedTab(window.location.pathname);
-        updateProgressBarIfAvailable();
-        loadPreviewLinksIfAvailable(); // 在 PJAX 完成后调用预览链接更新
-    });
-
-    $(document).on('pjax:error', (event) => {
-        console.error('PJAX: 请求失败', event);
-    });
+    $(document).on('pjax:send', () => console.log('PJAX: send'))
+               .on('pjax:complete', () => {
+                   console.log('PJAX: complete');
+                   tabHandler.updateSelectedTab(window.location.pathname);
+                   updateProgressBarIfAvailable();
+                   loadPreviewLinksIfAvailable(); // 在 PJAX 完成后调用预览链接更新
+               })
+               .on('pjax:error', (event) => {
+                   console.error('PJAX: 请求失败', event);
+               });
 }
 
 // 检查并更新进度条

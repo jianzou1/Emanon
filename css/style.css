@@ -2,7 +2,6 @@
 @import "progress.css"; 
 @import "article.css"; 
 @import "fail.css"; 
-@import url(fail.css);
 @import url(https://unpkg.com/98.css); /* 导入外部样式表 98.css */
 
 body {
@@ -11,18 +10,18 @@ body {
   flex-direction: column; /* 主轴方向为垂直 */
   align-items: center; /* 垂直居中对齐 */
   justify-content: center; /* 水平居中对齐 */
-  background-image: linear-gradient(0deg, #00b51a 25%, #000000 25%, #000000 50%, #00b51a 50%, #00b51a 75%, #000000 75%, #000000 100%); /* 背景渐变 */
-  background-size: 4.00px 4.00px; /* 背景网格大小 */
+  background: linear-gradient(0deg, #00b51a 25%, #000000 25%, #000000 50%, #00b51a 50%, #00b51a 75%, #000000 75%, #000000 100%); /* 背景渐变 */
+  background-size: 4px 4px; /* 背景网格大小 */
 }
 
 .logo {
-  margin: 5% auto 1%; /* 上下外边距为5%和1%，水平居中 */
+  margin: 5% auto 1%; /* 上下外边距 */
   cursor: pointer; /* 鼠标悬停时显示手型 */
   background: url('/ui/logo.png') no-repeat center / cover; /* 背景图片，居中且覆盖 */
   width: 200px; /* 宽度 */
   height: 158px; /* 高度 */
-  scale: 0.9; /* 缩放比例 */
-  animation: imageChange 2.5s infinite steps(1); /* 图片轮播动画，2.5秒一次 */
+  transform: scale(0.9); /* 缩放比例 */
+  animation: imageChange 2.5s infinite steps(1); /* 图片轮播动画 */
 }
 
 @keyframes imageChange {
@@ -38,7 +37,6 @@ menu[role=tablist] > li {
   width: 90px; /* 宽度 */
   background-color: #C0C0C0; /* 背景色 */
 }
-
 
 .window {
   padding: 8px;
@@ -57,7 +55,7 @@ menu[role=tablist] > li {
   max-width: 95%; /* 最大宽度 */
   height: auto; /* 高度自适应 */
 }
-.window body {padding: 50px;}
+
 .status-bar {
   background-color: #C0C0C0; /* 背景色 */
   margin: 5px 0 2%; /* 上下外边距 */
@@ -137,41 +135,11 @@ code {
   code { font-size: 12px; } /* 代码字体大小 */
   .table-figure { font-size: 12px; } /* 表格字体大小 */
   .back-to-top { margin-right: 5%; } /* 右侧外边距 */
-
-  menu[role=tablist] {
-    max-width: 320px;
-    }
-  .link-preview {
-     max-width: 290px;
-      }
 }
 
 @keyframes fadeIn { /* 淡入动画 */
-  from { 
-    opacity: 0; 
-    transform: scale(1.001) rotate(0.05deg); /* 非常非常轻微的放大和旋转 */
-    filter: brightness(1.02) contrast(1.02); /* 非常非常轻微的增加亮度和对比度 */
-  }
-  25% {
-    opacity: 0.5; 
-    transform: scale(0.999) rotate(-0.05deg); /* 非常非常轻微的缩小和反向旋转 */
-    filter: brightness(0.98) contrast(0.98); /* 非常非常轻微的降低亮度和对比度 */
-  }
-  50% {
-    opacity: 0.8; 
-    transform: scale(1.001) rotate(0.05deg); /* 非常非常轻微的放大和旋转 */
-    filter: brightness(1.02) contrast(1.02); /* 非常非常轻微的增加亮度和对比度 */
-  }
-  75% {
-    opacity: 0.5; 
-    transform: scale(0.999) rotate(-0.05deg); /* 非常非常轻微的缩小和反向旋转 */
-    filter: brightness(0.98) contrast(0.98); /* 非常非常轻微的降低亮度和对比度 */
-  }
-  to { 
-    opacity: 1; 
-    transform: scale(1) rotate(0deg); /* 恢复正常 */
-    filter: brightness(1) contrast(1); /* 恢复正常 */
-  }
+  0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); } /* 开始和结束状态 */
+  25%, 75% { opacity: 0.5; } /* 中间状态 */
 }
 
 .window.active { animation: fadeIn 0.15s ease-in-out; } /* 窗口激活时的动画 */

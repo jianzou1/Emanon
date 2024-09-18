@@ -12,7 +12,7 @@ function updateProgressBar() {
     
     // 检查容器宽度
     if (!containerWidth) {
-        console.error('Progress container not found or has no width.');
+        console.log('Progress container not found or has no width.'); // 打印普通日志
         isUpdating = false; // 切记要重置标志位
         return;
     }
@@ -26,8 +26,8 @@ function updateProgressBar() {
 
         const percentageElement = document.getElementById(percentageId);
         if (!percentageElement) {
-            console.error(`Element with id ${percentageId} not found.`);
-            isUpdating = false;
+            console.log(`Element with id ${percentageId} not found.`); // 打印普通日志
+            isUpdating = false; // 重置标志位
             return;
         }
 
@@ -37,7 +37,7 @@ function updateProgressBar() {
         if (progressBar) {
             progressBar.innerHTML = '';
         } else {
-            console.error(`Element with id ${progressBarId} not found.`);
+            console.log(`Element with id ${progressBarId} not found.`); // 打印普通日志
             isUpdating = false; // 更新过程中发生错误也重置标志位
             return;
         }
@@ -86,7 +86,6 @@ function updateProgressBar() {
     updateProgress(startOfDay, endOfDay, 'day-percentage', 'day-progress-bar');
 }
 
-
 // 每跨小时时更新进度条
 function updateOnHourChange() {
     const now = new Date();
@@ -112,7 +111,7 @@ function updateOnHourChange() {
             try {
                 updateProgressBar();
             } catch (error) {
-                console.error('Error updating progress bar:', error);
+                console.log('Error updating progress bar:', error); // 打印普通日志
             }
             updateOnHourChange();
         }

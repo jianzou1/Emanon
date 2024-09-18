@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404</title>
+  <title>404 Not Found</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <style>
-    @import url(https://unpkg.com/98.css);
-    /* 导入外部样式表 98.css */
+    @import url(https://unpkg.com/98.css); /* 导入外部样式表 98.css */
 
     body {
       position: fixed;
       display: flex;
-      flex-flow: column;
+      flex-direction: column; /* 使用 flex-direction 简化写法 */
       background-color: #026317;
       color: white;
-      font-family: "Pixelated MS Sans Serif", Arial;
+      font-family: "Pixelated MS Sans Serif", Arial, sans-serif; /* 增加安全字体 */
       font-weight: bold;
       font-size: 18px;
       justify-content: center;
@@ -40,18 +39,20 @@
 
     p {
       line-height: 1.5;
+      margin: 5px 0; /* 增加段落间距 */
     }
 
     #home {
       cursor: pointer;
+      text-decoration: underline; /* 增加可点击效果 */
     }
   </style>
 </head>
 
 <body>
-  <span> Drunk Frog OS </span>
+  <span>Drunk Frog OS</span>
   <p>
-    A fatal exception has occurred and I am unable to can. <br>
+    A fatal exception has occurred and I am unable to continue.<br>
     ERROR CODE {<span>404</span> INSIDE OF A BEER BOTTLE 0414:C11B4008}<br>
   </p>
   <p>
@@ -66,21 +67,22 @@
     });
 
     document.addEventListener('keydown', function (event) {
-      try {
-        if (event.key === 'Enter') {
-          if (document.referrer && document.referrer !== '') {
+      if (event.key === 'Enter') {
+        try {
+          if (document.referrer) {
             // 如果有上一页，返回上一页
             window.history.back();
           } else {
             // 如果没有上一页，关闭窗口
             window.close();
           }
+        } catch (error) {
+          console.error("Error handling keydown event:", error);
         }
-      } catch (error) {
-        console.error("Error handling keydown event:", error);
       }
     });
   </script>
 </body>
 
 </html>
+ 

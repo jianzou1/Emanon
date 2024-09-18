@@ -17,11 +17,12 @@ function loadPreviewLinks() {
 
     const linksContainer = document.getElementById('links-container');
     if (!linksContainer) {
-        console.error('Links container not found');
-    } else {
-        // 清空容器，重新加载内容
-        linksContainer.innerHTML = '';
-    }
+        console.log('Links container not found, stopping execution logic'); // 打印普通日志
+        return; // 找不到容器，停止执行逻辑
+    } 
+
+    // 清空容器，重新加载内容
+    linksContainer.innerHTML = '';
 
     links.sort((a, b) => a.id - b.id);
 
@@ -50,10 +51,7 @@ function loadPreviewLinks() {
                 `;
 
                 // 动态插入内容
-                if (linksContainer) {
-                    linksContainer.appendChild(linkDiv);
-                }
-                console.log(`Content loaded for: ${link.url}`);
+                linksContainer.appendChild(linkDiv);
             })
             .catch(error => {
                 console.error(`Error fetching content for: ${layoutUrl}`, error);
@@ -66,9 +64,7 @@ function loadPreviewLinks() {
                 `;
 
                 // 动态插入错误内容
-                if (linksContainer) {
-                    linksContainer.appendChild(linkDiv);
-                }
+                linksContainer.appendChild(linkDiv);
             });
     });
 }
