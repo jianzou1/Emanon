@@ -22,7 +22,7 @@ export class TabHandler {
                 <a href="${tab.url}" data-pjax>${tab.text}</a>
             </li>
         `).join('');
-        
+
         this.tabList.append(tabElements);
         this.tabList.on('click', '[role="tab"]', this.handleTabClick.bind(this));
     }
@@ -32,16 +32,29 @@ export class TabHandler {
         const clickedTab = $(event.currentTarget);
         const clickedTabUrl = clickedTab.data('url');
 
-        // 检查是否需要加载新页面
+        // 如果点击的标签已激活，直接返回
         if (clickedTabUrl === window.location.pathname) {
-            event.preventDefault(); // 阻止默认链接行为
-            return; // 直接返回
+            event.preventDefault();
+            return;
         }
 
-        this.updateSelectedTab(clickedTabUrl);
-        this.pjax.loadUrl(clickedTabUrl); // 使用 PJAX 加载新 URL
-
         event.preventDefault(); // 阻止默认链接行为
+
+        // 添加激活态类到 .window
+        $('.window').addClass('active'); // 激活窗口
+
+        this.updateSelectedTab(clickedTabUrl);
+
+        try {
+            await this.pjax.loadUrl(clickedTabUrl); // 使用 PJAX 加载新 URL
+        } catch (error) {
+            console.error('Error loading URL:', error);
+            // 可以在这里添加用户友好的提示，例如弹窗或通知
+        } finally {
+            setTimeout(() => {
+                $('.window').removeClass('active'); // 从 .window 移除激活态
+            }, 150); // 150 毫秒后移除激活态，以匹配动画持续时间
+        }
     }
 
     // 更新选项卡的选择状态

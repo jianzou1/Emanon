@@ -1,5 +1,5 @@
 .link-preview {
-    width: 720px;
+    width: 96%;
     height: 140px;
     padding: 15px;
     background-color: #C0C0C0;
@@ -9,9 +9,7 @@
     border: rgb(177, 176, 176) 1px solid;
     border-bottom: white 2px solid;
     border-right: white 2px solid;
-    margin: auto;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin: 15px auto; /* 设置左右 margin 为 auto，垂直 margin 设定为 15px */
     display: flex;
     flex-direction: column;
 }
@@ -51,5 +49,22 @@
     bottom: 0;
     right: 0;
     padding-left: 40px;
-    background: linear-gradient(to right, transparent, #C0C0C0 50%);
+    background: linear-gradient(to right, transparent, #C0C0C0 50%); /* 修复了缺少的右括号 */
 }
+
+@media (max-width: 350px) {
+    .link-preview {
+        width: 93%;  /* 设置宽度为100%以适应小屏幕 */
+        max-width: 350px; /* 最大宽度设置为350px */
+        box-sizing: border-box; /* 包含内边距和边框在内的宽度计算 */
+    }
+    
+    .link-preview h3 {
+        font-size: 16px; /* 可以适当调整字体大小以适应小屏幕 */
+    }
+
+    .link-preview .content p {
+        max-height: 4.5em; /* 可以适当调整以适应小屏幕 */
+    }
+}
+

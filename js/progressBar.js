@@ -8,12 +8,13 @@ export function updateProgressBar() {
 
     const now = new Date();
     const gridWidth = 28; // 每个方格的宽度
-    const containerWidth = document.querySelector('.progress-container')?.clientWidth;
-    
+    const container = document.querySelector('.progress-container');
+    const containerWidth = container?.clientWidth;
+
     // 检查容器宽度
     if (!containerWidth) {
-        console.log('Progress container not found or has no width.'); // 打印普通日志
-        isUpdating = false; // 切记要重置标志位
+        console.error('Progress container not found or has no width.'); // 记录错误信息
+        isUpdating = false; // 重置标志位
         return;
     }
 
@@ -22,11 +23,11 @@ export function updateProgressBar() {
     function updateProgress(start, end, percentageId, progressBarId) {
         const totalDuration = (end - start) / (1000 * 60);
         const passedDuration = (now - start) / (1000 * 60);
-        const targetPercentage = (passedDuration / totalDuration) * 100;
+        const targetPercentage = Math.min((passedDuration / totalDuration) * 100, 100); // 确保不超过100%
 
         const percentageElement = document.getElementById(percentageId);
         if (!percentageElement) {
-            console.log(`Element with id ${percentageId} not found.`); // 打印普通日志
+            console.error(`Element with id ${percentageId} not found.`); // 记录错误信息
             isUpdating = false; // 重置标志位
             return;
         }
@@ -34,22 +35,20 @@ export function updateProgressBar() {
         const gridCount = Math.max(1, Math.floor((targetPercentage / 100) * totalGrids)); // 确保至少展示 1 个方格
 
         const progressBar = document.getElementById(progressBarId);
-        if (progressBar) {
-            progressBar.innerHTML = '';
-        } else {
-            console.log(`Element with id ${progressBarId} not found.`); // 打印普通日志
-            isUpdating = false; // 更新过程中发生错误也重置标志位
+        if (!progressBar) {
+            console.error(`Element with id ${progressBarId} not found.`); // 记录错误信息
+            isUpdating = false; // 重置标志位
             return;
         }
+
+        progressBar.innerHTML = ''; // 清空进度条
 
         function addGrid(i) {
             if (i < gridCount) {
                 const grid = document.createElement('div');
                 grid.className = 'grid';
                 progressBar.appendChild(grid);
-                const minDelay = 0; // 最小延迟时间（毫秒）
-                const maxDelay = 100; // 最大延迟时间（毫秒）
-                const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay; // 生成一个最小值到最大值之间的随机延迟
+                const randomDelay = Math.random() * 80; // 生成随机延迟
                 setTimeout(() => addGrid(i + 1), randomDelay); // 使用随机延迟
             } else {
                 isUpdating = false; // 更新完成，重置标志位
@@ -71,28 +70,24 @@ export function updateProgressBar() {
     }
 
     // 更新年进度
-    const startOfYear = new Date(now.getFullYear(), 0, 1);
-    const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
-    updateProgress(startOfYear, endOfYear, 'progress-percentage', 'progress-bar');
+    updateProgress(new Date(now.getFullYear(), 0, 1), new Date(now.getFullYear() + 1, 0, 1), 'progress-percentage', 'progress-bar');
 
     // 更新月进度
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-    updateProgress(startOfMonth, endOfMonth, 'month-percentage', 'month-progress-bar');
+    updateProgress(new Date(now.getFullYear(), now.getMonth(), 1), new Date(now.getFullYear(), now.getMonth() + 1, 1), 'month-percentage', 'month-progress-bar');
 
     // 更新天进度
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    updateProgress(startOfDay, endOfDay, 'day-percentage', 'day-progress-bar');
+    updateProgress(new Date(now.getFullYear(), now.getMonth(), now.getDate()), new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1), 'day-percentage', 'day-progress-bar');
 
     // 定时更新
-    const minutesUntilNextHour = 60 - now.getMinutes();
-    const secondsUntilNextHour = minutesUntilNextHour * 60 - now.getSeconds();
-    let secondsLeft = secondsUntilNextHour;
+    let timerId;
 
     function updateTimer() {
         const refreshTimerElement = document.getElementById('refresh-timer');
         const refreshContainer = document.getElementById('refresh-container');
+
+        const now = new Date(); // 重新获取当前时间
+        const secondsLeft = 3600 - (now.getMinutes() * 60 + now.getSeconds()); // 剩余秒数
+
         if (refreshTimerElement) {
             const minutesLeft = Math.floor(secondsLeft / 60);
             const secondsLeftWithinMinute = secondsLeft % 60;
@@ -101,16 +96,26 @@ export function updateProgressBar() {
                 refreshContainer.style.display = 'flex'; // 第一次更新后显示
             }
         }
-        secondsLeft--;
-        if (secondsLeft >= 0) {
-            setTimeout(updateTimer, 1000);
+
+        if (secondsLeft > 0) {
+            timerId = setTimeout(updateTimer, 1000);
         } else {
             try {
+                // 倒计时结束，更新进度条
                 updateProgressBar(); // 每小时更新进度
             } catch (error) {
-                console.log('Error updating progress bar:', error); // 打印普通日志
+                console.error('Error updating progress bar:', error); // 记录错误信息
             }
         }
     }
-    updateTimer();
+
+    // 监听页面状态变化
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            clearTimeout(timerId); // 清除现有的计时器
+            updateTimer(); // 重新启动计时器
+        }
+    });
+
+    updateTimer(); // 启动初始计时器
 }
