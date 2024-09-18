@@ -84,10 +84,8 @@ export function updateProgressBar() {
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     updateProgress(startOfDay, endOfDay, 'day-percentage', 'day-progress-bar');
-}
 
-export function updateOnHourChange() {
-    const now = new Date();
+    // 定时更新
     const minutesUntilNextHour = 60 - now.getMinutes();
     const secondsUntilNextHour = minutesUntilNextHour * 60 - now.getSeconds();
     let secondsLeft = secondsUntilNextHour;
@@ -108,13 +106,12 @@ export function updateOnHourChange() {
             setTimeout(updateTimer, 1000);
         } else {
             try {
-                updateProgressBar();
+                updateProgressBar(); // 每小时更新进度
             } catch (error) {
                 console.log('Error updating progress bar:', error); // 打印普通日志
             }
-            updateOnHourChange();
+            updateOnHourChange(); // 递归调用更新方法
         }
     }
     updateTimer();
 }
-
