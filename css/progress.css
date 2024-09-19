@@ -1,4 +1,6 @@
 .progress-container {
+    position: relative; /* 使得绝对定位的子元素相对于该容器定位 */
+    background-color: #f3f3f3; /* 背景色可以根据需要调整 */
     width: 100%;
     height: 30px;
     background-color: #C0C0C0;
@@ -8,8 +10,8 @@
     border: rgb(177, 176, 176) 1px solid;
     border-bottom: white 2px solid;
     border-right: white 2px solid;
-    margin-bottom: 5px;
-    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-top: 12px;
 }
 
 .progress-bar {
@@ -62,5 +64,11 @@
 }
 
 .progress-text {
-    font-weight: bold!important;
+    position: relative; /* 绝对定位 */
+    bottom: -8px; /* 距离顶部 */
+    left: 0; /* 距离左侧 */
+    font-size: 12px; /* 字体大小 */
+    color: #000; /* 字体颜色 */
+    padding: 5px; /* 内边距 */
+    font-weight: bold; /* 字体加粗 */
 }

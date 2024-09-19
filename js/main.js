@@ -19,7 +19,6 @@ $(document).ready(() => {
     const tabData = [
         { url: '/', text: 'Time Progress' },
         { url: '/page/article.html', text: 'Article' },
-        { url: '/page/game_design.html', text: 'Game Design' },
         { url: '/page/about.html', text: 'About Me' }
     ];
 
@@ -30,13 +29,11 @@ $(document).ready(() => {
             const currentUrl = window.location.pathname;
             switch (currentUrl) {
                 case '/':
-                    console.log('Home page loaded.');
                     updateProgressBar();
                     initializeDailyPopup();
                     break;
                 case '/page/article.html':
-                    console.log('Article page loaded.');
-                    loadPreviewLinks();
+                    loadPreviewLinks(); // 传入 pjax 实例
                     break;
             }
 
@@ -44,15 +41,6 @@ $(document).ready(() => {
             handleScrollAndScrollToTop();
             $('[role="tablist"]').empty();
             tabHandler = new TabHandler('[role="tablist"]', tabData, pjax);
-            
-            $(document).on('click', '.link-preview a', function(event) {
-                event.preventDefault();
-                const newUrl = $(this).attr('href');
-                console.log(`Loading URL: ${newUrl}`);
-                pjax.loadUrl(newUrl);
-                tabHandler.updateSelectedTab(newUrl);
-            });
-
         } catch (error) {
             console.error('Error during page load:', error);
         }
@@ -73,5 +61,17 @@ $(document).ready(() => {
 
     // 初始页面加载时调用
     handlePageLoad();
-});
 
+    // 处理图标容器的点击事件以使用 PJAX
+    $(document).on('click', '.link-container', function(event) {
+        event.preventDefault(); // 防止默认行为
+        const newUrl = $(this).data('url'); // 获取 URL
+        
+        if (newUrl) {
+            pjax.loadUrl(newUrl); // 使用 PJAX 加载新页面
+            tabHandler.updateSelectedTab(newUrl); // 更新选中标签
+        } else {
+            console.error('No URL found for this link container');
+        }
+    });
+});
