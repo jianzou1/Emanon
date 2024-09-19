@@ -8,7 +8,8 @@
     border: rgb(177, 176, 176) 1px solid;
     border-bottom: white 2px solid;
     border-right: white 2px solid;
-    margin-bottom: 13px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .progress-bar {
@@ -42,10 +43,8 @@
 
 .refresh-container {
     display: none; /* 初始状态为隐藏 */
-    position: absolute;
-    bottom: 0;
-    right: 3px;
-    padding: 3px;
+    position: relative;
+    justify-content: flex-end; /* 水平方向上靠右对齐 */
     align-items: center;
 }
 
@@ -60,4 +59,8 @@
     text-align: center;
     font-size: 11px;
     font-weight: bold;
+}
+
+.progress-text {
+    font-weight: bold!important;
 }

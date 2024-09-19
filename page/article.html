@@ -17,19 +17,20 @@
 
 <body>
     <div class="logo" onclick="window.location.href='/index.html'"></div>
-    <div class="window-body">
-        <menu role="tablist"></menu>
-        <div class="window" role="tabpanel">
-            <div class="window-body">
-                <main id="main" class="main">
+    <main id="main" class="main">
+        <div class="window-body">
+            <menu role="tablist"></menu>
+            <div class="window" role="tabpanel">
+                <div class="window-body">
+
                     <div id="links-container">
                         <!-- 预览内容将在此处展示 -->
                     </div>
-                </main>
+
+                </div>
             </div>
         </div>
-    </div>
-
+    </main>
     <button class="back-to-top" onclick="scrollToTop()">
         <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
     </button>

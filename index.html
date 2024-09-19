@@ -17,24 +17,25 @@
 
 <body>
     <div class="logo" style="cursor: pointer;"></div>
-    <div class="window-body">
-        <menu role="tablist"></menu>
-        <div class="window" role="tabpanel">
-            <div class="window-body">
-                <main id="main" class="main">
-                    <span><strong style="color: rgb(0, 0, 0)">Year Progress:</strong></span>
+    <main id="main" class="main">
+        <div class="window-body">
+            <menu role="tablist"></menu>
+            <div class="window" role="tabpanel">
+                <div class="window-body">
+
+                    <span class="progress-text">Year Progress:</span>
                     <div class="progress-container">
                         <div id="progress-bar" class="progress-bar"></div>
                         <span id="progress-percentage">0%</span>
                     </div>
 
-                    <span><strong style="color: rgb(0, 0, 0)">Month Progress:</strong></span>
+                    <span class="progress-text">Month Progress:</span>
                     <div class="progress-container">
                         <div id="month-progress-bar" class="progress-bar"></div>
                         <span id="month-percentage">0%</span>
                     </div>
 
-                    <span><strong style="color: rgb(0, 0, 0)">Day Progress:</strong></span>
+                    <span class="progress-text">Day Progress:</span>
                     <div class="progress-container">
                         <div id="day-progress-bar" class="progress-bar"></div>
                         <span id="day-percentage">0%</span>
@@ -43,16 +44,17 @@
                     <div class="refresh-container" id="refresh-container">
                         <div class="refreshIcon"></div>
                         <span id="refresh-timer">Refresh in 00m 00s</span>
-                </main>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
+    </main>
     <button class="back-to-top" onclick="scrollToTop()">
         <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
     </button>
     <div class="crt monitor"></div>
-
+    <content id="content" class="content">
+    </content>
 
 </body>
 <div class="dynamic-footer"></div>

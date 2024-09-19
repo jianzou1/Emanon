@@ -41,7 +41,7 @@ menu[role=tablist] > li {
 }
 
 .window {
-  padding: 8px;
+  padding: 2px;
   transition: width 0.15s ease-in-out, height 0.15s ease-in-out; /* 宽度和高度的过渡效果 */
   width: 768px; /* 宽度 */
   max-width: 768px; /* 最大宽度 */

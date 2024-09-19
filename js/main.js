@@ -1,7 +1,7 @@
 // main.js
 
 import { TabHandler } from '/js/tabHandler.js'; // 使用绝对路径导入 TabHandler
-import { updateProgressBar} from '/js/progressBar.js'; // 导入进度条功能
+import { updateProgressBar } from '/js/progressBar.js'; // 导入进度条功能
 import { loadPreviewLinks } from '/js/previewLoader.js';
 import { footerLoader } from '/js/footerLoader.js';
 import { handleScrollAndScrollToTop } from '/js/scrollToTop.js';
@@ -23,44 +23,55 @@ $(document).ready(() => {
         { url: '/page/about.html', text: 'About Me' }
     ];
 
-    // 创建 TabHandler 实例
-    const tabHandler = new TabHandler('[role="tablist"]', tabData, pjax);
+    let tabHandler = new TabHandler('[role="tablist"]', tabData, pjax);
 
-    // 准备函数的调用逻辑
     function handlePageLoad() {
         try {
-            const currentUrl = window.location.pathname; // 获取当前路径
-
-            // 根据 currentUrl 调用对应的函数
+            const currentUrl = window.location.pathname;
             switch (currentUrl) {
                 case '/':
                     console.log('Home page loaded.');
-                    updateProgressBar(); // 初始化进度条
-                    initializeDailyPopup(); // 每日弹窗
+                    updateProgressBar();
+                    initializeDailyPopup();
                     break;
                 case '/page/article.html':
                     console.log('Article page loaded.');
-                    loadPreviewLinks(); // 加载文章预览
+                    loadPreviewLinks();
                     break;
             }
 
-            footerLoader(); // 加载页脚
-            handleScrollAndScrollToTop(); // 回到顶部
+            footerLoader();
+            handleScrollAndScrollToTop();
+            $('[role="tablist"]').empty();
+            tabHandler = new TabHandler('[role="tablist"]', tabData, pjax);
+            
+            $(document).on('click', '.link-preview a', function(event) {
+                event.preventDefault();
+                const newUrl = $(this).attr('href');
+                console.log(`Loading URL: ${newUrl}`);
+                pjax.loadUrl(newUrl);
+                tabHandler.updateSelectedTab(newUrl);
+            });
+
         } catch (error) {
-            console.error('Error during page load:', error); // 错误处理
+            console.error('Error during page load:', error);
         }
     }
 
     // 处理 PJAX 完成事件
-    $(document).on('pjax:complete', handlePageLoad); // PJAX 完成后调用相应函数
+    $(document).on('pjax:complete', () => {
+        console.log('PJAX 完成，页面已加载');
+        handlePageLoad();
+    });
 
     // LOGO互动事件处理
     $('.logo').on('click', () => {
-        const newUrl = '/'; // 要加载的新 URL
-        pjax.loadUrl(newUrl); // 使用 PJAX 加载主页
-        tabHandler.updateSelectedTab(newUrl); // 更新选项卡的激活状态
+        const newUrl = '/'; 
+        pjax.loadUrl(newUrl);
+        tabHandler.updateSelectedTab(newUrl);
     });
 
     // 初始页面加载时调用
     handlePageLoad();
 });
+

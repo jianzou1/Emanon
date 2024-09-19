@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drunk Frog</title>
+  <title>这里替换标题</title>
   <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -12,28 +12,31 @@
   <link rel="manifest" href="/site.webmanifest">
 </head>
 <style>
-  .window {
-    padding: 2px !important;
+
+
+  .window-body {
+    padding: 10px !important;
   }
 </style>
 
 <body>
   <div class="logo" onclick="window.location.href='index.html'"> </div>
-  <div class="window">
-    <div class="title-bar">
-      <div class="title-bar-text" id="dynamic-title"></div>
-      <div class="title-bar-controls">
-        <button aria-label="Close" onclick="goBack()"></button>
+  <main id="main" class="main">
+    <div class="window">
+      <div class="title-bar">
+        <div class="title-bar-text" id="dynamic-title">这里替换标题2</div>
+        <div class="title-bar-controls">
+          <button aria-label="Close" onclick="window.history.back()"></button>
+        </div>
       </div>
+      <div class="window-body">这里替换内容</div>
     </div>
-    <div class="window-body"></div>
-  </div>
+  </main>
   <button class="back-to-top" onclick="scrollToTop()">
     <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
   </button>
-  <script src="/js/postTemplate.js"></script>
-  <script src="/js/footerLoader.js"></script> <!-- 引入footerLoader.js -->
 </body>
 <div class="crt monitor"></div>
 <div class="dynamic-footer"></div>
+
 </html>
