@@ -16,50 +16,46 @@
 </head>
 
 <body>
-    <div class="logo" style="cursor: pointer;"></div>
+    <div class="logo" onclick="window.location.href='/index.html'"></div>
     <main id="main" class="main">
         <div class="window-body">
             <menu role="tablist"></menu>
             <div class="window" role="tabpanel">
                 <div class="window-body">
 
-                    <span class="progress-text">Year Progress:</span>
+                    <span class="progress-text" data-tips="This progress bar indicates how much of the year has passed.">Year Progress:</span>
                     <div class="progress-container">
-
                         <div id="progress-bar" class="progress-bar"></div>
                         <span id="progress-percentage">0%</span>
                     </div>
 
-                    <span class="progress-text">Month Progress:</span>
+                    <span class="progress-text" data-tips="This progress bar indicates how much of the month has passed.">Month Progress:</span>
                     <div class="progress-container">
-
                         <div id="month-progress-bar" class="progress-bar"></div>
                         <span id="month-percentage">0%</span>
                     </div>
 
-                    <span class="progress-text">Day Progress:</span>
+                    <span class="progress-text" data-tips="This progress bar indicates how much of the day has passed.">Day Progress:</span>
                     <div class="progress-container">
-
                         <div id="day-progress-bar" class="progress-bar"></div>
                         <span id="day-percentage">0%</span>
                     </div>
 
                     <div class="refresh-container" id="refresh-container">
                         <div class="refreshIcon"></div>
-                        <span id="refresh-timer">Refresh in 00m 00s</span>
+                        <span id="refresh-timer" data-tips="After the countdown ends, all progress bars will be refreshed.
+                        ">Refresh in 00m 00s</span>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="tips" class="tips" style="display: none;"></div>
     </main>
     <button class="back-to-top" onclick="scrollToTop()">
         <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
     </button>
     <div class="crt monitor"></div>
-    <content id="content" class="content">
-    </content>
 
 </body>
 <div class="dynamic-footer"></div>
-
 </html>

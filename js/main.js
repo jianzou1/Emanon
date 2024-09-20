@@ -6,6 +6,7 @@ import { loadPreviewLinks } from '/js/previewLoader.js';
 import { footerLoader } from '/js/footerLoader.js';
 import { handleScrollAndScrollToTop } from '/js/scrollToTop.js';
 import { initializeDailyPopup } from '/js/dailyPopup.js';
+import { initializeTips } from '/js/tips.js';
 
 $(document).ready(() => {
     console.log('DOM fully loaded and parsed');
@@ -39,6 +40,7 @@ $(document).ready(() => {
 
             footerLoader();
             handleScrollAndScrollToTop();
+            initializeTips();
             $('[role="tablist"]').empty();
             tabHandler = new TabHandler('[role="tablist"]', tabData, pjax);
         } catch (error) {

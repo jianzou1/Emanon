@@ -148,3 +148,18 @@ code {
 }
 
 .window.active { animation: fadeIn 0.15s ease-in-out; } /* 窗口激活时的动画 */
+
+.tips {
+  position: absolute; /* 绝对定位 */
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  line-height: 1.2;
+  background-color: #FFFFE1; /* 背景颜色 */
+  border: #000 1px solid; /* 边框 */
+  color: black; /* 字体颜色 */
+  padding: 3px 6px; /* 内边距 */
+  z-index: 9000; /* 确保在其他元素之上 */
+  transition: opacity 0.1s; /* 平滑过渡效果 */
+  opacity: 0; /* 初始状态不可见 */
+  white-space: normal; /* 允许换行 */
+  max-width: 180px; /* 可选：设置最大宽度以控制换行 */
+}
