@@ -7,6 +7,8 @@ import { footerLoader } from '/js/footerLoader.js';
 import { handleScrollAndScrollToTop } from '/js/scrollToTop.js';
 import { initializeDailyPopup } from '/js/dailyPopup.js';
 import { initializeTips } from '/js/tips.js';
+import { initializeLoadingAnimation } from '/js/loadingAnimation.js'; // 导入初始化加载动画函数
+import { showLoadingAnimation, hideLoadingAnimation } from '/js/loadingAnimation.js';
 
 $(document).ready(() => {
     console.log('DOM fully loaded and parsed');
@@ -24,6 +26,22 @@ $(document).ready(() => {
     ];
 
     let tabHandler = new TabHandler('[role="tablist"]', tabData, pjax);
+
+    // PJAX 发送请求时显示加载动画
+    $(document).on('pjax:send', function() {
+        initializeLoadingAnimation().then(() => {
+            showLoadingAnimation(); // 开始加载时显示加载动画
+        });
+    });
+
+    // PJAX 完成请求时
+    $(document).on('pjax:complete', () => {
+        console.log('PJAX 完成，页面已加载');
+        
+        // 在内容加载完成后，先隐藏加载动画，然后再展示内容
+        hideLoadingAnimation(); // 先隐藏加载动画
+        handlePageLoad(); // 然后处理页面加载
+    });
 
     function handlePageLoad() {
         try {
@@ -47,12 +65,6 @@ $(document).ready(() => {
             console.error('Error during page load:', error);
         }
     }
-
-    // 处理 PJAX 完成事件
-    $(document).on('pjax:complete', () => {
-        console.log('PJAX 完成，页面已加载');
-        handlePageLoad();
-    });
 
     // LOGO互动事件处理
     $('.logo').on('click', () => {

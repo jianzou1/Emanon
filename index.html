@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/pjax/0.2.8/pjax.js"></script>
     <script type="module" src="/js/main.js" defer></script>
 </head>
@@ -22,7 +22,6 @@
             <menu role="tablist"></menu>
             <div class="window" role="tabpanel">
                 <div class="window-body">
-
                     <span class="progress-text" data-tips="This progress bar indicates how much of the year has passed.">Year Progress:</span>
                     <div class="progress-container">
                         <div id="progress-bar" class="progress-bar"></div>
@@ -56,6 +55,7 @@
     </button>
     <div class="crt monitor"></div>
 
+    <div class="dynamic-footer"></div>
+    <div id="loading-container" style="display: none;"></div> <!-- 加载动画容器 -->
 </body>
-<div class="dynamic-footer"></div>
 </html>

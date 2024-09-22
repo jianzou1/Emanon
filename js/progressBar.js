@@ -60,10 +60,10 @@ export function updateProgressBar() {
         function animatePercentage() {
             if (currentPercentage < targetPercentage) {
                 currentPercentage += 1; // 每次增加 1%
-                percentageElement.innerText = Math.floor(currentPercentage) + '%';
+                percentageElement.innerText = Math.max(Math.floor(currentPercentage), 1) + '%'; // 确保最低为 1%
                 requestAnimationFrame(animatePercentage);
             } else {
-                percentageElement.innerText = Math.floor(targetPercentage) + '%'; // 确保最终值正确
+                percentageElement.innerText = Math.max(Math.floor(targetPercentage), 1) + '%'; // 确保最终值正确，最低为 1%
             }
         }
         animatePercentage();
