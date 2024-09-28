@@ -2,13 +2,13 @@
 
 export class TabHandler {
     constructor(tabListSelector, tabData, pjaxInstance) {
-        this.tabList = $(tabListSelector);
+        this.tabList = document.querySelector(tabListSelector);
         this.tabData = tabData;
         this.pjax = pjaxInstance;
 
-        if (this.tabList.length === 0) {
+        if (!this.tabList) {
             console.error('Tab list element not found');
-            return;
+            return; // 如果元素不存在，停止执行
         }
 
         this.initTabs();
@@ -23,14 +23,18 @@ export class TabHandler {
             </li>
         `).join('');
 
-        this.tabList.append(tabElements);
-        this.tabList.on('click', '[role="tab"]', this.handleTabClick.bind(this));
+        this.tabList.innerHTML = tabElements;
+
+        // 绑定选项卡点击事件
+        this.tabList.addEventListener('click', this.handleTabClick.bind(this));
     }
 
     // 处理选项卡点击事件
     async handleTabClick(event) {
-        const clickedTab = $(event.currentTarget);
-        const clickedTabUrl = clickedTab.data('url');
+        const clickedTab = event.target.closest('[role="tab"]');
+        if (!clickedTab) return;
+
+        const clickedTabUrl = clickedTab.dataset.url;
 
         // 如果点击的标签已激活，直接返回
         if (clickedTabUrl === window.location.pathname) {
@@ -41,7 +45,10 @@ export class TabHandler {
         event.preventDefault(); // 阻止默认链接行为
 
         // 添加激活态类到 .window
-        $('.window').addClass('active'); // 激活窗口
+        const windowElement = document.querySelector('.window');
+        if (windowElement) {
+            windowElement.classList.add('active'); // 激活窗口
+        }
 
         this.updateSelectedTab(clickedTabUrl);
 
@@ -51,20 +58,26 @@ export class TabHandler {
             console.error('Error loading URL:', error);
             // 可以在这里添加用户友好的提示，例如弹窗或通知
         } finally {
-            setTimeout(() => {
-                $('.window').removeClass('active'); // 从 .window 移除激活态
-            }, 150); // 150 毫秒后移除激活态，以匹配动画持续时间
+            if (windowElement) {
+                setTimeout(() => {
+                    windowElement.classList.remove('active'); // 从 .window 移除激活态
+                }, 150); // 150 毫秒后移除激活态，以匹配动画持续时间
+            }
         }
     }
 
     // 更新选项卡的选择状态
     updateSelectedTab(currentUrl) {
-        this.tabList.find('[role="tab"]').each(function() {
-            const tabUrl = $(this).data('url');
+        this.tabList.querySelectorAll('[role="tab"]').forEach(tab => {
+            const tabUrl = tab.dataset.url;
             const isActive = currentUrl === tabUrl;
 
-            $(this).attr('aria-selected', isActive);
-            $(this).toggleClass('active', isActive); // 添加或移除 active 类
+            tab.setAttribute('aria-selected', isActive);
+            if (isActive) {
+                tab.classList.add('active'); // 添加 active 类
+            } else {
+                tab.classList.remove('active'); // 移除 active 类
+            }
         });
     }
 }

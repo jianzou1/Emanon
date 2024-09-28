@@ -54,13 +54,21 @@ function preloadImages(images) {
 // 加载动画 DOM 结构
 export function loadLoadingAnimation() {
     return new Promise((resolve, reject) => {
-        $('#loading-container').load('/ui/loading.html', (response, status, xhr) => {
-            if (status === 'error') {
-                reject(new Error(`Error loading loading.html: ${xhr.status} - ${xhr.statusText}`)); // 使用 Error 对象
-            } else {
+        const loadingContainer = document.getElementById('loading-container');
+        fetch('/ui/loading.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error loading loading.html: ${response.status} - ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                loadingContainer.innerHTML = html;
                 resolve(); // 加载成功
-            }
-        });
+            })
+            .catch(error => {
+                reject(error); // 处理错误
+            });
     });
 }
 

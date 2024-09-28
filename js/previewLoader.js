@@ -2,7 +2,6 @@
 
 // 导出 loadPreviewLinks 函数
 export async function loadPreviewLinks() {
-    console.log('loadPreviewLinks called');
 
     const links = [
         { id: 1, url: '/post/gd_occams_razor/index.html', icon: '/icon/text-markdown.png' },
