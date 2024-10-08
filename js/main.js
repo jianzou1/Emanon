@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('PJAX 完成，页面已加载');
         toggleLoadingAnimation(false); // 隐藏加载动画
         handlePageLoad(); // 处理页面加载
-        setupLinksContainer(); // 设置链接容器的事件监听
     });
 
     // 处理页面加载的函数
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 initializeDailyPopup();
             } else if (currentUrl === '/page/article.html') {
                 // 文章页面：加载预览链接
-                loadPreviewLinks(); 
+                loadPreviewLinks(pjax, tabHandler); // 传递 pjax 和 tabHandler
             }
 
             footerLoader(); // 加载页脚内容
@@ -89,22 +88,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     handlePageLoad(); // 初始页面加载时调用
-
-    // 设置链接容器的点击事件处理
-    function setupLinksContainer() {
-        const linksContainer = document.getElementById('links-container'); // 获取链接容器
-        if (linksContainer) {
-            linksContainer.addEventListener('click', (event) => {
-                const target = event.target.closest('.link-container'); // 获取点击的链接容器
-                if (target && target.dataset.url) {
-                    event.preventDefault(); // 防止默认链接跳转
-                    pjax.loadUrl(target.dataset.url); // 使用 PJAX 加载新页面
-                    tabHandler.updateSelectedTab(target.dataset.url); // 更新选中标签
-                } else {
-                    // 如果没有找到 URL，记录错误
-                    console.error('No URL found for this link container');
-                }
-            });
-        }
-    }
 });
