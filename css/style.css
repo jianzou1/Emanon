@@ -156,10 +156,40 @@ code {
   background-color: #FFFFE1; /* 背景颜色 */
   border: #000 1px solid; /* 边框 */
   color: black; /* 字体颜色 */
-  padding: 3px 6px; /* 内边距 */
+  padding: 3px 3px; /* 内边距 */
   z-index: 9000; /* 确保在其他元素之上 */
   transition: opacity 0.1s; /* 平滑过渡效果 */
   opacity: 0; /* 初始状态不可见 */
   white-space: normal; /* 允许换行 */
-  max-width: 180px; /* 可选：设置最大宽度以控制换行 */
+  max-width: 160px; /* 可选：设置最大宽度以控制换行 */
+}
+
+.game-list ul {
+  list-style-type: none; /* 去掉默认列表样式 */
+  padding: 0;
+}
+
+.game-list li {
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: space-between; /* 游戏名与时间两端对齐 */
+  margin: 5px 0; /* 列表项上下间距 */
+}
+
+.recently {
+  background-color: rgba(128, 0, 128, 0.3); /* 半透明紫色背景 */
+  padding: 2px; /* 内边距 */
+  border-radius: 2px; /* 圆角边框 */
+}
+
+.game-list {
+  padding: 0 15px; /* 统一左右内边距 */
+}
+
+.explain {
+  font-weight: bold; /* 使解释信息加粗 */
+  margin-bottom: 10px; /* 给解释信息添加下边距 */
+  color: #333; /* 文字颜色 */
+  background-color: rgba(255, 255, 0, 0.2); /* 半透明黄色背景 */
+  padding: 10px; /* 内边距 */
+  border-radius: 5px; /* 圆角边框 */
 }

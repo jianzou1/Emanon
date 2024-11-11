@@ -28,8 +28,3 @@ export function initializeTips() {
         });
     });
 }
-
-// 在 DOMContentLoaded 事件中调用该函数
-document.addEventListener('DOMContentLoaded', () => {
-    initializeTips(); // 初始化提示功能
-});

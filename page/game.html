@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏列表</title>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script src="https://unpkg.com/pjax@0.2.8/pjax.min.js"></script>
+    <script type="module" src="/js/main.js" defer></script>
+</head>
+
+<body>
+    <div class="logo" onclick="window.location.href='/index.html'"></div>
+    <main id="main" class="main">
+        <div class="window-body">
+            <menu role="tablist"></menu>
+            <div class="window" role="tabpanel">
+                <div class="window-body">
+                    <div class="game-list">
+                        <!-- 游戏列表将被插入在这里 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tips" class="tips" style="display: none;"></div>
+    </main>
+    <button class="back-to-top" onclick="scrollToTop()">
+        <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
+    </button>
+    <div class="crt monitor"></div>
+    <div id="loading-container" style="display: none;"></div> <!-- 加载动画容器 -->
+</body>
+<div class="dynamic-footer"></div>
+</html>

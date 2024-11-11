@@ -9,6 +9,7 @@ import { handleScrollAndScrollToTop } from '/js/scrollToTop.js';
 import { initializeDailyPopup } from '/js/dailyPopup.js';
 import { initializeTips } from '/js/tips.js';
 import { initializeLoadingAnimation, showLoadingAnimation, hideLoadingAnimation } from '/js/loadingAnimation.js';
+import { gameList } from '/js/gameList.js';
 
 // 当DOM完全加载后执行
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,7 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabData = [
         { url: '/', text: 'Time Progress' },
         { url: '/page/article.html', text: 'Article' },
-        { url: '/page/about.html', text: 'About Me' }
+        { url: '/page/about.html', text: 'About Me' },
+        { url: '/page/game.html', text: 'Game List' }
     ];
 
     // 创建 TabHandler 实例
@@ -62,6 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (currentUrl === '/page/article.html') {
                 // 文章页面：加载预览链接
                 loadPreviewLinks(pjax, tabHandler); // 传递 pjax 和 tabHandler
+            } else if (currentUrl === '/page/game.html') {
+                // 游戏列表页面：调用 gameList 函数
+                gameList(); // 直接调用 gameList 函数
             }
 
             footerLoader(); // 加载页脚内容
