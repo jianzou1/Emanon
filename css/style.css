@@ -193,3 +193,8 @@ code {
   padding: 10px; /* 内边距 */
   border-radius: 5px; /* 圆角边框 */
 }
+
+
+li[onclick] {
+  cursor: pointer; /* 鼠标悬停时变为手指 */
+}
