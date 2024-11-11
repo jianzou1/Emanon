@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏列表</title>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script src="https://unpkg.com/pjax@0.2.8/pjax.min.js"></script>
+    <script type="module" src="/js/main.js" defer></script>
+    <style>
+        /* 添加 CSS 样式以控制游戏名和游戏时间的布局 */
+        .game-list ul {
+            list-style-type: none; /* 去掉默认列表样式 */
+            padding: 0;
+        }
+
+        .game-list li {
+            display: flex; /* 使用 Flexbox 布局 */
+            justify-content: space-between; /* 游戏名与时间两端对齐 */
+            margin: 5px 0; /* 列表项上下间距 */
+        }
+
+        .recently {
+            background-color: rgba(128, 0, 128, 0.3); /* 半透明紫色背景 */
+            padding: 2px; /* 内边距 */
+            border-radius: 2px; /* 圆角边框 */
+        }
+
+        .game-list {
+            padding: 0 15px; /* 统一左右内边距 */
+        }
+
+        .explain {
+            font-weight: bold; /* 使解释信息加粗 */
+            margin-bottom: 10px; /* 给解释信息添加下边距 */
+            color: #333; /* 文字颜色 */
+            background-color: rgba(255, 255, 0, 0.2); /* 半透明黄色背景 */
+            padding: 10px; /* 内边距 */
+            border-radius: 5px; /* 圆角边框 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo" onclick="window.location.href='/index.html'"></div>
+    <main id="main" class="main">
+        <div class="window-body">
+            <menu role="tablist"></menu>
+            <div class="window" role="tabpanel">
+                <div class="window-body">
+                    <div class="game-list">
+                        <!-- 游戏列表将被插入在这里 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button class="back-to-top" onclick="scrollToTop()">
+        <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
+    </button>
+    <div class="crt monitor"></div>
+    <div id="loading-container" style="display: none;"></div> <!-- 加载动画容器 -->
+
+    <script>
+        const CONFIG_URL = 'game_time_cfg.json';
+        const GAME_LIST_HTML_CLASS = '.game-list';
+        
+        async function fetchGameData() {
+            try {
+                const response = await fetch(CONFIG_URL);
+                const data = await response.json();
+    
+                const typeNames = parseTypeNames(data[0][0].typeName);
+                const explain = formatExplain(data[0][0], data[1]); // 传入游戏数据以计算总时长
+                const games = data[1];
+    
+                // 全局排序，根据游戏时长进行降序排序
+                const sortedGames = games.sort((a, b) => b.time - a.time);
+    
+                const groupedGames = groupGames(sortedGames); // 进行分组
+                const htmlContent = generateHtmlContent(groupedGames, typeNames, explain); 
+                
+                document.querySelector(GAME_LIST_HTML_CLASS).innerHTML = htmlContent;
+    
+            } catch (error) {
+                console.error("读取游戏数据失败:", error);
+            }
+        }
+        
+        function parseTypeNames(typeNameStr) {
+            return typeNameStr.split(',').reduce((acc, curr) => {
+                const [key, value] = curr.split(':');
+                acc[key] = value;
+                return acc;
+            }, {});
+        }
+        
+        function formatExplain(data, games) {
+            const explainText = data.explain.replace(/\n/g, '<br>') || '';
+            const jsonLink = data.jsonLink ? `<br><a href="${data.jsonLink}" target="_blank">查看配置文件</a>` : '';
+            
+            // 计算游戏总时长
+            const totalTime = games.reduce((sum, game) => sum + game.time, 0);
+            const totalDays = Math.floor(totalTime / 24); // 计算总天数
+            const totalYears = (totalTime / 24 / 365).toFixed(2); // 计算总年份并保留两位小数
+    
+            // 在解释文本中添加总时长信息
+            return explainText + jsonLink + `<br>游戏总计时长：${totalTime}小时，相当于${totalDays}天，相当于${totalYears}年。`;
+        }
+    
+        function groupGames(games) {
+            return games.reduce((acc, game) => {
+                const type = game.type;
+                const seriesTag = game.seriesTag || "无系列"; // 如果没有 seriesTag，赋值为 "无系列"
+    
+                if (!acc[type]) {
+                    acc[type] = {};
+                }
+    
+                if (!acc[type][seriesTag]) {
+                    acc[type][seriesTag] = [];
+                }
+    
+                acc[type][seriesTag].push(game);
+                return acc;
+            }, {});
+        }
+        
+        function generateHtmlContent(groupedGames, typeNames, explain) {
+            let htmlContent = explain ? `<div class="explain">${explain}</div>` : '';
+            const types = Object.keys(groupedGames); // 获取类型的数组
+            
+            for (let i = 0; i < types.length; i++) {
+                const type = types[i];
+                htmlContent += `<h3>${typeNames[type]}</h3>`;
+                const seriesTags = Object.keys(groupedGames[type]); // 获取系列标签的数组
+                
+                for (const seriesTag of seriesTags) {
+                    const sortedGames = groupedGames[type][seriesTag]; // 排序后的游戏列表
+    
+                    sortedGames.forEach(game => {
+                        const recentlyClass = game.isRecently ? 'recently' : ''; // 如果 isRecently 为 true，添加类
+                        const heart = game.isLoved ? '💜' : ''; // 如果 isLoved 为 true，展示爱心符号
+                        const sign = game.sign ? game.sign : ''; // 获取 sign 字段
+    
+                        // 判断游戏名称是否为纯英文
+                        const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${game.name}</i>` : game.name;
+                        
+                        htmlContent += `
+                            <li class="${recentlyClass}">
+                                <span><strong>${gameName}</strong> ${heart}</span>
+                                <span>${sign} ${game.time}小时</span>
+                            </li>
+                        `;
+                    });
+                }
+    
+                if (i < types.length - 1) {
+                    htmlContent += `<hr>`; // 在每组游戏列表后插入分隔线
+                }
+            }
+    
+            return htmlContent;
+        }
+    
+        // 页面加载时执行 fetchGameData 函数
+        window.onload = fetchGameData;
+    </script>
+    
+    
+    
+
+</body>
+<div class="dynamic-footer"></div>
+</html>

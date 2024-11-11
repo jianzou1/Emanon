@@ -1,0 +1,2 @@
+copy:index为文章的模板，修改模板后运行copy对所有文章进行模板修改
+merge:将layout合并到所有文章中

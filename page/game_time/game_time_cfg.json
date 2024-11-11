@@ -1,0 +1,701 @@
+[
+  [
+    {
+      "typeName": "1:竞技类,2:动作&沙盒类,3:模拟经营类,4:独立游戏&Rougelike,5:RTS,6:集换式卡牌&自走棋,7:手游,8:其他网游",
+      "explain": "🟪：近期游玩<br>💜：喜欢的游戏",
+      "jsonLink": "/page/game_time/game_time_cfg.json"
+    }
+  ],
+  [
+    {
+      "id": 1,
+      "name": "CSGO/CS2",
+      "sign": "",
+      "time": 266,
+      "type": "1",
+      "isRecently": true,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 2,
+      "name": "《守望先锋》",
+      "sign": "",
+      "time": 400,
+      "type": "1",
+      "isRecently": false,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 3,
+      "name": "《绝地求生》",
+      "sign": "",
+      "time": 1757,
+      "type": "1",
+      "isRecently": true,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 4,
+      "name": "《英雄联盟》",
+      "sign": "＞",
+      "time": 8000,
+      "type": "1",
+      "isRecently": true,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 5,
+      "name": "《战地风云2042》",
+      "sign": "≈",
+      "time": 50,
+      "type": "1",
+      "isRecently": true,
+      "isLoved": false,
+      "seriesTag": "Battlefield"
+    },
+    {
+      "id": 6,
+      "name": "《战地风云3》",
+      "sign": "＞",
+      "time": 100,
+      "type": "1",
+      "isRecently": false,
+      "isLoved": true,
+      "seriesTag": "Battlefield"
+    },
+    {
+      "id": 7,
+      "name": "Apex Legends",
+      "sign": "",
+      "time": 25,
+      "type": "1",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 8,
+      "name": "《侠盗猎车手5》",
+      "sign": "",
+      "time": 445,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": true,
+      "seriesTag": "GTA"
+    },
+    {
+      "id": 9,
+      "name": "《侠盗猎车手4》",
+      "sign": "≈",
+      "time": 100,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "GTA"
+    },
+    {
+      "id": 10,
+      "name": "《侠盗猎车手：圣安地列斯》",
+      "sign": "≈",
+      "time": 50,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "GTA"
+    },
+    {
+      "id": 11,
+      "name": "《侠盗猎车手：罪恶都市》",
+      "sign": "≈",
+      "time": 200,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "GTA"
+    },
+    {
+      "id": 12,
+      "name": "《对马岛之魂》",
+      "sign": "≈",
+      "time": 50,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 13,
+      "name": "《全境封锁1》",
+      "sign": "",
+      "time": 19,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "TheDivision"
+    },
+    {
+      "id": 14,
+      "name": "《全境封锁2》",
+      "sign": "",
+      "time": 42,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "TheDivision"
+    },
+    {
+      "id": 15,
+      "name": "Far Cry5",
+      "sign": "",
+      "time": 8,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "FarCry"
+    },
+    {
+      "id": 16,
+      "name": "Far Cry4",
+      "sign": "",
+      "time": 32,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "FarCry"
+    },
+    {
+      "id": 17,
+      "name": "《丧尸围城4》",
+      "sign": "",
+      "time": 20,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "DeadRising"
+    },
+    {
+      "id": 18,
+      "name": "《丧尸围城3》",
+      "sign": "",
+      "time": 10,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "DeadRising"
+    },
+    {
+      "id": 19,
+      "name": "《丧尸围城2》",
+      "sign": "",
+      "time": 15,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "DeadRising"
+    },
+    {
+      "id": 20,
+      "name": "《求生之路2》",
+      "sign": "",
+      "time": 53,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "L4D"
+    },
+    {
+      "id": 21,
+      "name": "《求生之路1》",
+      "sign": "",
+      "time": 6,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "L4D"
+    },
+    {
+      "id": 22,
+      "name": "《僵尸世界大战》",
+      "sign": "",
+      "time": 15,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 23,
+      "name": "《遗迹：灰烬重生》",
+      "sign": "",
+      "time": 12,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 24,
+      "name": "《赛博朋克2077》",
+      "sign": "≈",
+      "time": 70,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 25,
+      "name": "《原子之心》",
+      "sign": "",
+      "time": 16,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 26,
+      "name": "《黑神话:悟空》",
+      "sign": "≈",
+      "time": 30,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 27,
+      "name": "《看门狗1》",
+      "sign": "≈",
+      "time": 10,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "WatchDogs"
+    },
+    {
+      "id": 28,
+      "name": "《看门狗2》",
+      "sign": "≈",
+      "time": 10,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "WatchDogs"
+    },
+    {
+      "id": 29,
+      "name": "《虐杀原形1》",
+      "sign": "≈",
+      "time": 15,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "Prototype"
+    },
+    {
+      "id": 30,
+      "name": "《虐杀原形2》",
+      "sign": "≈",
+      "time": 5,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "Prototype"
+    },
+    {
+      "id": 31,
+      "name": "《消逝的光芒1》",
+      "sign": "≈",
+      "time": 8,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 32,
+      "name": "《荒野大镖客2》",
+      "sign": "",
+      "time": 20,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 33,
+      "name": "《死亡岛1》",
+      "sign": "",
+      "time": 45,
+      "type": "2",
+      "isRecently": true,
+      "isLoved": false,
+      "seriesTag": "DeadIsland"
+    },
+    {
+      "id": 34,
+      "name": "《死亡岛2》",
+      "sign": "",
+      "time": 20,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "DeadIsland"
+    },
+    {
+      "id": 35,
+      "name": "《热血无赖》",
+      "sign": "",
+      "time": 20,
+      "type": "2",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 36,
+      "name": "《使命召唤6:现代战争》",
+      "sign": "",
+      "time": 30,
+      "type": "2",
+      "isRecently": true,
+      "isLoved": false,
+      "seriesTag": "COD"
+    },
+    {
+      "id": 37,
+      "name": "《潜水员戴夫》",
+      "sign": "",
+      "time": 13,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 38,
+      "name": "《星露谷物语》",
+      "sign": "",
+      "time": 10,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 39,
+      "name": "《牧场物语：矿石镇的伙伴》(GBA)",
+      "sign": "≈",
+      "time": 30,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 40,
+      "name": "《戴森球计划》",
+      "sign": "",
+      "time": 27,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 41,
+      "name": "《缺氧》",
+      "sign": "",
+      "time": 9,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 42,
+      "name": "《模拟城市4：尖峰时刻》",
+      "sign": "≈",
+      "time": 200,
+      "type": "3",
+      "isRecently": true,
+      "isLoved": true,
+      "seriesTag": "SimCity"
+    },
+    {
+      "id": 43,
+      "name": "《模拟城市3000》",
+      "sign": "≈",
+      "time": 10,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "SimCity"
+    },
+    {
+      "id": 44,
+      "name": "《模拟城市5:未来之城》",
+      "sign": "≈",
+      "time": 50,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "SimCity"
+    },
+    {
+      "id": 45,
+      "name": "《都市天际线1》",
+      "sign": "",
+      "time": 36,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": "Skyline"
+    },
+    {
+      "id": 46,
+      "name": "《都市天际线2》",
+      "sign": "",
+      "time": 20,
+      "type": "3",
+      "isRecently": true,
+      "isLoved": false,
+      "seriesTag": "Skyline"
+    },
+    {
+      "id": 47,
+      "name": "《冰汽时代》",
+      "sign": "",
+      "time": 6,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 48,
+      "name": "《双点医院》",
+      "sign": "",
+      "time": 18,
+      "type": "3",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 49,
+      "name": "Blatro（小丑牌）",
+      "sign": "",
+      "time": 104,
+      "type": "4",
+      "isRecently": true,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 50,
+      "name": "《哈迪斯1》",
+      "sign": "≈",
+      "time": 10,
+      "type": "4",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 51,
+      "name": "《哈迪斯2》",
+      "sign": "",
+      "time": 39,
+      "type": "4",
+      "isRecently": false,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 52,
+      "name": "《土豆兄弟》",
+      "sign": "≈",
+      "time": 10,
+      "type": "4",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 53,
+      "name": "《幸运房东》",
+      "sign": "",
+      "time": 16,
+      "type": "4",
+      "isRecently": true,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 54,
+      "name": "《文明4》",
+      "sign": "",
+      "time": 50,
+      "type": "5",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 55,
+      "name": "《帝国时代2》",
+      "sign": "＞",
+      "time": 100,
+      "type": "5",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 56,
+      "name": "《红色警戒2》",
+      "sign": "＞",
+      "time": 100,
+      "type": "5",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 57,
+      "name": "《要塞：十字军东征2》",
+      "sign": "＞",
+      "time": 150,
+      "type": "5",
+      "isRecently": false,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 58,
+      "name": "《星际争霸1》",
+      "sign": "≈",
+      "time": 20,
+      "type": "5",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 59,
+      "name": "《魔兽争霸3》",
+      "sign": "＞",
+      "time": 100,
+      "type": "5",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 60,
+      "name": "《海岛大亨5》",
+      "sign": "",
+      "time": 30,
+      "type": "5",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 61,
+      "name": "《炉石传说》",
+      "sign": "≈",
+      "time": 150,
+      "type": "6",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 62,
+      "name": "Kards",
+      "sign": "",
+      "time": 56,
+      "type": "6",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 63,
+      "name": "《绝区零》",
+      "sign": "",
+      "time": 40,
+      "type": "7",
+      "isRecently": false,
+      "isLoved": true,
+      "seriesTag": ""
+    },
+    {
+      "id": 64,
+      "name": "《荒野乱斗》",
+      "sign": "≈",
+      "time": 200,
+      "type": "7",
+      "isRecently": true,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 65,
+      "name": "《云顶之弈》",
+      "sign": "＞",
+      "time": 300,
+      "type": "8",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 66,
+      "name": "《地下城与勇士》",
+      "sign": "≈",
+      "time": 40,
+      "type": "8",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 67,
+      "name": "《彩虹岛》",
+      "sign": "≈",
+      "time": 80,
+      "type": "8",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 68,
+      "name": "《龙之谷》",
+      "sign": "≈",
+      "time": 20,
+      "type": "8",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    },
+    {
+      "id": 69,
+      "name": "《穿越火线》",
+      "sign": "≈",
+      "time": 100,
+      "type": "8",
+      "isRecently": false,
+      "isLoved": false,
+      "seriesTag": ""
+    }
+  ]
+]
