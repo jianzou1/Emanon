@@ -1,6 +1,6 @@
 // gameList.js
 export function gameList() {
-    const CONFIG_URL = 'game_time_cfg.json'; // 配置文件的 URL
+    const CONFIG_URL = '/cfg/game_time_cfg.json'; // 配置文件的 URL
     const GAME_LIST_HTML_CLASS = '.game-list'; // 游戏列表的 HTML 类选择器
 
     fetchGameData();  // 在调用 gameList 时执行 fetchGameData
