@@ -187,14 +187,22 @@ code {
 
 .explain {
   font-weight: bold; /* 使解释信息加粗 */
-  margin-bottom: 10px; /* 给解释信息添加下边距 */
+  margin-top: 20px;
+  margin-bottom: 115px; /* 给解释信息添加下边距 */
   color: #333; /* 文字颜色 */
   background-color: rgba(255, 255, 0, 0.2); /* 半透明黄色背景 */
   padding: 10px; /* 内边距 */
   border-radius: 5px; /* 圆角边框 */
 }
 
-
 li[onclick] {
   cursor: pointer; /* 鼠标悬停时变为手指 */
+}
+
+.achievement-info {
+  font-size: 12px; /* 字体大小 */
+  font-family: Microsoft Yahei, SimSun, NSimSun, SimHei; /* 字体系列 */
+  background-color: rgba(255, 255, 0, 0.2); /* 半透明黄色背景 */
+  padding: 10px; /* 内边距 */
+  border-radius: 5px; /* 圆角边框 */
 }

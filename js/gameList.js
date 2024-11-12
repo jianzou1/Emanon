@@ -38,8 +38,7 @@ export function gameList() {
     // 格式化解释文本，包括总时间和链接
     function formatExplain(data, games) {
         const explainText = data.explain.replace(/\n/g, '<br>') || ''; // 将换行符替换为 <br> 标签
-        const jsonLink = data.jsonLink ? `<br><a href="${data.jsonLink}" target="_blank">查看配置文件</a>` : ''; // 如果有链接，则生成链接 HTML
-        
+        const jsonLink = `<br><a href="${CONFIG_URL}" target="_blank">查看配置文件</a>`; // 使用 CONFIG_URL 生成链接 HTML
         const totalTime = games.reduce((sum, game) => sum + game.time, 0); // 计算总时间
         const totalDays = Math.floor(totalTime / 24); // 计算总天数
         const totalYears = (totalTime / 24 / 365).toFixed(2); // 计算总年数，并保留两位小数
