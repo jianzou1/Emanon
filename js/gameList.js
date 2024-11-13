@@ -42,10 +42,21 @@ export function gameList() {
         const totalTime = games.reduce((sum, game) => sum + game.time, 0); // 计算总时间
         const totalDays = Math.floor(totalTime / 24); // 计算总天数
         const totalYears = (totalTime / 24 / 365).toFixed(2); // 计算总年数，并保留两位小数
-
+    
+        // 添加 <select> 元素并放入一个 div 中
+        const selectHtml = `
+            <div class="select-container">
+                <select>
+                    <option selected>按游戏类型排序</option>
+                    <option>按游戏时长排序</option>
+                </select>
+            </div>
+        `;
+    
         // 返回最终格式化的文本
-        return explainText + jsonLink + `<br>游戏并非人生，但是我已经玩了：${totalTime}小时，相当于${totalDays}天，相当于${totalYears}年。`;
+        return `<div class="explain-content">${explainText + jsonLink + `<br>游戏并非人生，但是我已经玩了：${totalTime}小时，相当于${totalDays}天，相当于${totalYears}年。`}</div>` + selectHtml;
     }
+    
 
     // 将游戏根据类型和系列标签分组
     function groupGames(games) {
