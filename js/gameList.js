@@ -2,144 +2,146 @@
 export function gameList() {
     const CONFIG_URL = '/cfg/game_time_cfg.json'; // 配置文件的 URL
     const GAME_LIST_HTML_CLASS = '.game-list'; // 游戏列表的 HTML 类选择器
+    const EXPLAIN_TEXT_CLASS = '.explain-text'; // 解释文本的类选择器
+    const TOTAL_TIME_CLASS = '.total-time'; // 总时间的类选择器
+    const TOTAL_DAYS_CLASS = '.total-days'; // 总天数的类选择器
+    const TOTAL_YEARS_CLASS = '.total-years'; // 总年数的类选择器
 
     fetchGameData();  // 在调用 gameList 时执行 fetchGameData
 
     // 异步函数获取游戏数据
     async function fetchGameData() {
         try {
-            const response = await fetch(CONFIG_URL); // 从配置 URL 获取数据
-            const data = await response.json(); // 解析 JSON 数据
+            const response = await fetch(CONFIG_URL);
+            if (!response.ok) throw new Error(`网络错误: ${response.status}`); // 检查响应状态
+            const data = await response.json();
 
-            const typeNames = parseTypeNames(data[0][0].typeName); // 解析类型名称
-            const explain = formatExplain(data[0][0], data[1]); // 格式化解释文本
-            const games = data[1]; // 获取游戏列表
+            const typeNames = parseTypeNames(data[0][0].typeName);
+            const games = data[1] || []; // 确保获取到游戏数据
 
-            const sortedGames = games.sort((a, b) => b.time - a.time); // 按时间排序游戏
-            const groupedGames = groupGames(sortedGames); // 将游戏分组
-            const htmlContent = generateHtmlContent(groupedGames, typeNames, explain); // 生成 HTML 内容
-            
-            document.querySelector(GAME_LIST_HTML_CLASS).innerHTML = htmlContent; // 更新游戏列表的 HTML 内容
+            const { text, totalTime, totalDays, totalYears } = formatExplain(data[0][0], games);
+            const groupedGames = groupGames(games.sort((a, b) => b.time - a.time));
+            const htmlContent = generateHtmlContent(groupedGames, typeNames);
+
+            updateHtmlContent(text, totalTime, totalDays, totalYears, htmlContent); // 更新内容
 
         } catch (error) {
-            console.error("读取游戏数据失败:", error); // 捕获错误并输出
+            console.error("读取游戏数据失败:", error.message); // 捕获并输出错误信息
         }
+    }
+
+    // 更新页面的 HTML 内容
+    function updateHtmlContent(explainText, totalTime, totalDays, totalYears, htmlContent) {
+        document.querySelector(EXPLAIN_TEXT_CLASS).innerHTML = explainText;
+        document.querySelector(TOTAL_TIME_CLASS).textContent = `${totalTime}小时`;
+        document.querySelector(TOTAL_DAYS_CLASS).textContent = `，相当于${totalDays}天`;
+        document.querySelector(TOTAL_YEARS_CLASS).textContent = `，相当于${totalYears}年。`;
+        document.querySelector(GAME_LIST_HTML_CLASS).innerHTML += htmlContent;
     }
 
     // 解析类型名称字符串为对象
     function parseTypeNames(typeNameStr) {
         return typeNameStr.split(',').reduce((acc, curr) => {
-            const [key, value] = curr.split(':'); // 将 key 和 value 分开
-            acc[key] = value; // 填充对象
+            const [key, value] = curr.split(':');
+            acc[key] = value;
             return acc;
         }, {});
     }
 
     // 格式化解释文本，包括总时间和链接
     function formatExplain(data, games) {
-        const explainText = data.explain.replace(/\n/g, '<br>') || ''; // 将换行符替换为 <br> 标签
-        const jsonLink = `<br><a href="${CONFIG_URL}" target="_blank">查看配置文件</a>`; // 使用 CONFIG_URL 生成链接 HTML
-        const totalTime = games.reduce((sum, game) => sum + game.time, 0); // 计算总时间
-        const totalDays = Math.floor(totalTime / 24); // 计算总天数
-        const totalYears = (totalTime / 24 / 365).toFixed(2); // 计算总年数，并保留两位小数
-    
-        // 添加 <select> 元素并放入一个 div 中
-        const selectHtml = `
-            <div class="select-container">
-                <select>
-                    <option selected>按游戏类型排序</option>
-                    <option>按游戏时长排序</option>
-                </select>
-            </div>
-        `;
-    
-        // 返回最终格式化的文本
-        return `<div class="explain-content">${explainText + jsonLink + `<br>游戏并非人生，但是我已经玩了：${totalTime}小时，相当于${totalDays}天，相当于${totalYears}年。`}</div>` + selectHtml;
+        const explainText = data.explain.replace(/\n/g, '<br>') || '';
+        const totalTime = games.reduce((sum, game) => sum + game.time, 0);
+        const totalDays = Math.floor(totalTime / 24);
+        const totalYears = (totalTime / 24 / 365).toFixed(2);
+        const jsonLink = `<br><a href="${CONFIG_URL}" target="_blank">查看配置文件</a>`;
+
+        return {
+            text: explainText + jsonLink,
+            totalTime,
+            totalDays,
+            totalYears
+        };
     }
-    
 
     // 将游戏根据类型和系列标签分组
     function groupGames(games) {
         return games.reduce((acc, game) => {
-            const type = game.type; // 获取游戏类型
-            const seriesTag = game.seriesTag || "无系列"; // 获取系列标签，默认为无系列
+            const type = game.type;
+            const seriesTag = game.seriesTag || "无系列";
 
             if (!acc[type]) {
-                acc[type] = {}; // 如果没有该类型，则新建一个对象
+                acc[type] = {};
             }
 
             if (!acc[type][seriesTag]) {
-                acc[type][seriesTag] = []; // 如果没有该系列标签，则新建一个数组
+                acc[type][seriesTag] = [];
             }
 
-            acc[type][seriesTag].push(game); // 将游戏加入对应的数组中
+            acc[type][seriesTag].push(game);
             return acc;
         }, {});
     }
 
     // 生成 HTML 内容
-    function generateHtmlContent(groupedGames, typeNames, explain) {
-        let htmlContent = explain ? `<div class="explain">${explain}</div>` : ''; // 如果有解释，则添加解释内容
-        const types = Object.keys(groupedGames); // 获取分组的类型
-        
-        types.forEach((type, i) => {
-            htmlContent += `<h3>${typeNames[type]}</h3>`; // 对每种类型添加标题
-            const seriesTags = Object.keys(groupedGames[type]); // 获取该类型的所有系列标签
+    function generateHtmlContent(groupedGames, typeNames) {
+        let htmlContent = '';
+    
+        const types = Object.keys(groupedGames);
+        types.forEach((type, index) => {
+            htmlContent += `<h3>${typeNames[type]}</h3>`;
+            for (const seriesTag of Object.keys(groupedGames[type])) {
+                htmlContent += groupedGames[type][seriesTag].map(game => createGameListItem(game)).join('');
+            }
             
-            seriesTags.forEach(seriesTag => {
-                const sortedGames = groupedGames[type][seriesTag]; // 获取该系列的游戏
-
-                sortedGames.forEach(game => {
-                    const recentlyClass = game.isRecently ? 'recently' : ''; // 如果是最近玩的游戏，添加对应的类
-                    const heart = game.isLoved ? '💜' : ''; // 如果喜欢该游戏，添加心形图标
-                    const sign = game.sign ? game.sign : ''; // 获取游戏的标记
-                    const trophy = game.spacialAchievements ? '🏆' : ''; // 如果有成就，添加奖杯图标
-                    const achievementText = game.spacialAchievements || ''; // 获取成就文本
-
-                    const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${game.name}</i>` : game.name; // 如果游戏名称只包含字母和数字，使用斜体展示
-
-                    // 动态插入游戏和成就信息
-                    htmlContent += `
-                        <li class="${recentlyClass}" ${achievementText ? 'onclick="toggleAchievement(this)"' : ''}>
-                            <span>
-                                <strong>${gameName}</strong> ${heart} ${trophy}
-                            </span>
-                            <span>${sign} ${game.time}小时 <span class="toggle-icon">${achievementText ? '🙈' : ''}</span></span>
-                            <div class="achievement" style="display: none;">${achievementText}</div>
-                        </li>
-                    `;
-                });
-            });
-
-            if (i < types.length - 1) {
-                htmlContent += `<hr>`; // 每种类型之间添加水平分隔符
+            // 只有在不是最后一个类型时才添加水平分隔符
+            if (index < types.length - 1) {
+                htmlContent += '<hr>'; // 每种类型之间添加水平分隔符
             }
         });
+    
+        return htmlContent;
+    }
 
-        return htmlContent; // 返回生成的 HTML 内容
+    // 创建游戏列表项的 HTML
+    function createGameListItem(game) {
+        const recentlyClass = game.isRecently ? 'recently' : '';
+        const heart = game.isLoved ? '💜' : '';
+        const sign = game.sign || '';
+        const trophy = game.spacialAchievements ? '🏆' : '';
+        const achievementText = game.spacialAchievements || '';
+        const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${game.name}</i>` : game.name;
+
+        return `
+            <li class="${recentlyClass}" ${achievementText ? 'onclick="toggleAchievement(this)"' : ''}>
+                <span>
+                    <strong>${gameName}</strong> ${heart} ${trophy}
+                </span>
+                <span>${sign} ${game.time}小时 <span class="toggle-icon">${achievementText ? '🙈' : ''}</span></span>
+                <div class="achievement" style="display: none;">${achievementText}</div>
+            </li>
+        `;
     }
 
     // 处理点击事件的函数，切换成就显示
-    function toggleAchievement(li) {
-        const achievementDiv = li.querySelector('.achievement'); // 查找成就 div
-        const toggleIcon = li.querySelector('.toggle-icon'); // 查找切换图标
+    window.toggleAchievement = function(li) {
+        const achievementDiv = li.querySelector('.achievement');
+        const toggleIcon = li.querySelector('.toggle-icon');
 
         if (achievementDiv) {
-            const achievementText = achievementDiv.innerHTML; // 获取成就文本
-            const nextElement = li.nextElementSibling; // 获取下一个兄弟元素
+            const achievementText = achievementDiv.innerHTML;
+            const nextElement = li.nextElementSibling;
 
             if (nextElement && nextElement.classList.contains('achievement-info')) {
-                nextElement.remove(); // 如果下一个元素是成就信息，移除它
-                toggleIcon.innerHTML = achievementText ? '🙈' : ''; // 还原图标
+                nextElement.remove();
+                toggleIcon.innerHTML = achievementText ? '🙈' : '';
             } else {
-                const achievementInfoDiv = document.createElement('div'); // 创建成就信息 div
-                achievementInfoDiv.className = 'achievement-info'; // 设置类名
-                achievementInfoDiv.innerHTML = achievementText; // 填充成就信息
-                li.parentNode.insertBefore(achievementInfoDiv, nextElement); // 在当前 li 前插入成就信息
-                toggleIcon.innerHTML = '👀'; // 更改切换图标
+                const achievementInfoDiv = document.createElement('div');
+                achievementInfoDiv.className = 'achievement-info';
+                achievementInfoDiv.innerHTML = achievementText;
+                li.parentNode.insertBefore(achievementInfoDiv, nextElement);
+                toggleIcon.innerHTML = '👀';
             }
         }
     }
-
-    window.toggleAchievement = toggleAchievement; // 将 toggleAchievement 暴露到窗口上，以供 HTML 点击事件使用
 }
