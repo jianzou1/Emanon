@@ -21,7 +21,7 @@
     padding: 0 15px; /* 统一左右内边距 */
   }
   
-  .explain {
+  .explain-content {
     line-height: 15px;
     font-weight: bold; /* 使解释信息加粗 */
     margin-top: 20px;
@@ -30,6 +30,7 @@
     padding: 10px; /* 内边距 */
     border-radius: 5px; /* 圆角边框 */
     position: relative; /* 添加相对定位以便于绝对定位的子元素 */
+    margin-bottom: 15px;
   }
   
   .select-container {

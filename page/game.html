@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game List</title>
+    <title>游戏列表</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class="logo" onclick="window.location.href='/index.html'"></div>
+    <header class="logo" onclick="window.location.href='/index.html'"></header>
     <main id="main" class="main">
         <div class="window-body">
             <menu role="tablist"></menu>
@@ -24,13 +24,14 @@
                     <div class="explain-content">
                         <div class="explain-text"></div>
                         <br>
-                        游戏并非人生，但是我已经玩了：<span class="total-time"></span>
+                        游戏并非人生，但是我已经玩了：
+                        <span class="total-time"></span>
                         <span class="total-days"></span>
                         <span class="total-years"></span>
                         <div class="select-container">
                             <select>
-                                <option selected>按游戏类型排序</option>
-                                <option>按游戏时长排序</option>
+                                <option value="按游戏类型排序" selected>按游戏类型排序</option>
+                                <option value="按游戏时长排序">按游戏时长排序</option>
                             </select>
                         </div>
                     </div>
@@ -43,10 +44,11 @@
         <div id="tips" class="tips" style="display: none;"></div>
     </main>
     <button class="back-to-top" onclick="scrollToTop()">
-        <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
+        <img src="/icon/go-top.png" alt="回到顶部" style="vertical-align: middle;">
     </button>
     <div class="crt monitor"></div>
+    <footer class="dynamic-footer"></footer>
     <div id="loading-container" style="display: none;"></div> <!-- 加载动画容器 -->
 </body>
-<div class="dynamic-footer"></div>
+
 </html>

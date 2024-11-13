@@ -7,36 +7,66 @@ export function gameList() {
     const TOTAL_DAYS_CLASS = '.total-days'; // 总天数的类选择器
     const TOTAL_YEARS_CLASS = '.total-years'; // 总年数的类选择器
 
-    fetchGameData();  // 在调用 gameList 时执行 fetchGameData
+    let games = []; // 存储游戏数据
+    let typeNames = {}; // 存储类型名称
+    let explainText = ''; // 存储解释文本
+
+    fetchGameData(); // 获取游戏数据
 
     // 异步函数获取游戏数据
     async function fetchGameData() {
         try {
-            const response = await fetch(CONFIG_URL);
-            if (!response.ok) throw new Error(`网络错误: ${response.status}`); // 检查响应状态
-            const data = await response.json();
+            const data = await fetchData(CONFIG_URL);
+            typeNames = parseTypeNames(data[0][0].typeName);
+            games = data[1] || [];
 
-            const typeNames = parseTypeNames(data[0][0].typeName);
-            const games = data[1] || []; // 确保获取到游戏数据
-
-            const { text, totalTime, totalDays, totalYears } = formatExplain(data[0][0], games);
-            const groupedGames = groupGames(games.sort((a, b) => b.time - a.time));
-            const htmlContent = generateHtmlContent(groupedGames, typeNames);
-
-            updateHtmlContent(text, totalTime, totalDays, totalYears, htmlContent); // 更新内容
-
+            // 更新内容
+            updateHtmlContent(formatExplain(data[0][0], games));
         } catch (error) {
-            console.error("读取游戏数据失败:", error.message); // 捕获并输出错误信息
+            console.error("读取游戏数据失败:", error.message);
         }
     }
 
+    // 统一的 fetch 函数
+    async function fetchData(url) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`网络错误: ${response.status}`);
+        return response.json();
+    }
+
     // 更新页面的 HTML 内容
-    function updateHtmlContent(explainText, totalTime, totalDays, totalYears, htmlContent) {
+    function updateHtmlContent({ text, totalTime, totalDays, totalYears }) {
+        explainText = text;
         document.querySelector(EXPLAIN_TEXT_CLASS).innerHTML = explainText;
         document.querySelector(TOTAL_TIME_CLASS).textContent = `${totalTime}小时`;
         document.querySelector(TOTAL_DAYS_CLASS).textContent = `，相当于${totalDays}天`;
         document.querySelector(TOTAL_YEARS_CLASS).textContent = `，相当于${totalYears}年。`;
-        document.querySelector(GAME_LIST_HTML_CLASS).innerHTML += htmlContent;
+        const htmlContent = generateHtmlContent(groupGames(games), typeNames);
+        document.querySelector(GAME_LIST_HTML_CLASS).innerHTML = htmlContent; // 更新游戏列表
+    }
+
+    // 当选择变化时更新游戏列表
+    document.querySelector('select').addEventListener('change', function(event) {
+        sortGames(event.target.value);
+    });
+
+    // 封装排序逻辑
+    function sortGames(selectedOption) {
+        const groupedGames = groupGames(games);
+        let htmlContent;
+
+        if (selectedOption === '按游戏类型排序') {
+            htmlContent = generateHtmlContent(groupedGames, typeNames);
+        } else if (selectedOption === '按游戏时长排序') {
+            const sortedGames = [...games].sort((a, b) => b.time - a.time);
+            htmlContent = sortedGames.map(game => createGameListItem(game)).join('');
+        }
+
+        updateHtmlContentDetails(htmlContent);
+    }
+
+    function updateHtmlContentDetails(htmlContent) {
+        document.querySelector(GAME_LIST_HTML_CLASS).innerHTML = htmlContent; // 更新游戏列表
     }
 
     // 解析类型名称字符串为对象
@@ -68,14 +98,14 @@ export function gameList() {
     function groupGames(games) {
         return games.reduce((acc, game) => {
             const type = game.type;
-            const seriesTag = game.seriesTag || "无系列";
+            const seriesTag = game.seriesTag || "无系列"; // 默认系列标签
 
             if (!acc[type]) {
                 acc[type] = {};
             }
 
             if (!acc[type][seriesTag]) {
-                acc[type][seriesTag] = [];
+                acc[type][seriesTag] = []; // 一定要是数组
             }
 
             acc[type][seriesTag].push(game);
@@ -84,22 +114,27 @@ export function gameList() {
     }
 
     // 生成 HTML 内容
-    function generateHtmlContent(groupedGames, typeNames) {
+    function generateHtmlContent(groupedGames, typeNames = {}) {
         let htmlContent = '';
-    
+
         const types = Object.keys(groupedGames);
         types.forEach((type, index) => {
-            htmlContent += `<h3>${typeNames[type]}</h3>`;
+            htmlContent += `<h3>${typeNames[type] || ''}</h3>`;
             for (const seriesTag of Object.keys(groupedGames[type])) {
-                htmlContent += groupedGames[type][seriesTag].map(game => createGameListItem(game)).join('');
+                const gamesInSeries = groupedGames[type][seriesTag];
+                if (Array.isArray(gamesInSeries)) {
+                    htmlContent += gamesInSeries.map(game => createGameListItem(game)).join('');
+                } else {
+                    console.warn(`警告: ${seriesTag} 下没有游戏列表或者它不是数组。`, gamesInSeries);
+                }
             }
-            
+
             // 只有在不是最后一个类型时才添加水平分隔符
             if (index < types.length - 1) {
                 htmlContent += '<hr>'; // 每种类型之间添加水平分隔符
             }
         });
-    
+
         return htmlContent;
     }
 
