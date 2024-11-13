@@ -18,7 +18,7 @@ export function gameList() {
         try {
             const data = await fetchData(CONFIG_URL);
             typeNames = parseTypeNames(data[0][0].typeName);
-            games = data[1] || [];
+            games = data[1] || []; // 确保获取到游戏数据
 
             // 更新内容
             updateHtmlContent(formatExplain(data[0][0], games));
@@ -52,20 +52,29 @@ export function gameList() {
 
     // 封装排序逻辑
     function sortGames(selectedOption) {
-        const groupedGames = groupGames(games);
-        let htmlContent;
+        let sortedGames;
 
         if (selectedOption === '按游戏类型排序') {
-            htmlContent = generateHtmlContent(groupedGames, typeNames);
+            // 按游戏类型分组并内部倒序排序
+            sortedGames = groupGames(games);
+            Object.keys(sortedGames).forEach(type => {
+                Object.keys(sortedGames[type]).forEach(seriesTag => {
+                    sortedGames[type][seriesTag].sort((a, b) => b.time - a.time); // 按时间倒序排序
+                });
+            });
         } else if (selectedOption === '按游戏时长排序') {
-            const sortedGames = [...games].sort((a, b) => b.time - a.time);
-            htmlContent = sortedGames.map(game => createGameListItem(game)).join('');
+            // 按游戏时长倒序排序
+            sortedGames = [...games].sort((a, b) => b.time - a.time);
         }
 
-        updateHtmlContentDetails(htmlContent);
+        updateHtmlContentDetails(sortedGames);
     }
 
-    function updateHtmlContentDetails(htmlContent) {
+    function updateHtmlContentDetails(sortedGames) {
+        const htmlContent = (Array.isArray(sortedGames) ? 
+            sortedGames.map(game => createGameListItem(game)).join('') : 
+            generateHtmlContent(sortedGames, typeNames));
+
         document.querySelector(GAME_LIST_HTML_CLASS).innerHTML = htmlContent; // 更新游戏列表
     }
 
@@ -122,6 +131,8 @@ export function gameList() {
             htmlContent += `<h3>${typeNames[type] || ''}</h3>`;
             for (const seriesTag of Object.keys(groupedGames[type])) {
                 const gamesInSeries = groupedGames[type][seriesTag];
+
+                // 确保是数组，否则输出警告并跳过
                 if (Array.isArray(gamesInSeries)) {
                     htmlContent += gamesInSeries.map(game => createGameListItem(game)).join('');
                 } else {
