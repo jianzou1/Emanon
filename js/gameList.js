@@ -133,7 +133,9 @@ export function gameList() {
         const heart = game.isLoved ? '💜' : '';
         const sign = game.sign || '';
         const trophy = game.spacialAchievements ? '🏆' : '';
-        const achievementText = game.spacialAchievements || '';
+        
+        // 对spacialAchievements进行处理
+        const achievementText = game.spacialAchievements ? game.spacialAchievements.replace(/\n/g, '<br>') : '';
         const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${game.name}</i>` : game.name;
 
         return `
