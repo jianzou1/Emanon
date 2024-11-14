@@ -4,6 +4,7 @@
   }
   
   .game-list li {
+    opacity: 0; /* 初始状态为透明 */
     display: flex; /* 使用 Flexbox 布局 */
     justify-content: space-between; /* 游戏名与时间两端对齐 */
     margin-bottom: 2px !important; 
@@ -53,3 +54,22 @@
     cursor: pointer; /* 鼠标悬停时变为手指 */
   }
   
+  .flip-in {
+    animation: flipIn 0.2s forwards;
+}
+
+@keyframes flipIn {
+    0% {
+        transform: translate(150%) scale(0.2);
+        opacity: 0;
+    }
+    25% {
+      transform: translate(150%) scale(3);
+      opacity: 0;
+  }
+    
+    100% {
+        opacity: 1;
+    }
+}
+

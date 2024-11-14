@@ -63,11 +63,21 @@ export function gameList() {
     }
 
     function updateHtmlContentDetails(sortedGames) {
+        const gameListElement = document.querySelector(GAME_LIST_HTML_CLASS);
         const htmlContent = Array.isArray(sortedGames) ?
             sortedGames.map(game => createGameListItem(game)).join('') :
             generateHtmlContent(sortedGames, typeNames);
 
-        document.querySelector(GAME_LIST_HTML_CLASS).innerHTML = htmlContent; // 更新游戏列表
+        gameListElement.innerHTML = htmlContent; // 更新游戏列表
+
+        // 获取所有游戏项目
+        const gameItems = gameListElement.querySelectorAll('li');
+        gameItems.forEach((item, index) => {
+            // 使用 setTimeout 来逐个添加动画类
+            setTimeout(() => {
+                item.classList.add('flip-in'); 
+            }, index * 50); // 每个游戏延迟 100ms 动画效果
+        });
     }
 
     function parseTypeNames(typeNameStr) {
