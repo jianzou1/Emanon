@@ -76,7 +76,7 @@ export function gameList() {
             // 使用 setTimeout 来逐个添加动画类
             setTimeout(() => {
                 item.classList.add('flip-in'); 
-            }, index * 50); // 每个游戏延迟 100ms 动画效果
+            }, index * 12); // 每个游戏延迟 100ms 动画效果
         });
     }
 
