@@ -164,3 +164,30 @@ code {
   white-space: normal; /* 允许换行 */
   max-width: 160px; /* 可选：设置最大宽度以控制换行 */
 }
+
+.gallery-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px 0;
+  padding: 20px;
+}
+
+.gallery-images img {
+  max-width: 100%;
+  height: auto;
+  margin: 10px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.navigation-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#pageIndicator {
+  margin: 0 10px;
+}
+#titleSelect{margin: 5px;}
