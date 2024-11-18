@@ -1,10 +1,11 @@
 <!doctype html>
-<html>
+<html lang="zh">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me</title>
+    <meta name="referrer" content="no-referrer">
+    <title>Gallery</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -12,27 +13,63 @@
     <link rel="manifest" href="/site.webmanifest">
     <script src="https://unpkg.com/pjax@0.2.8/pjax.min.js"></script>
     <script type="module" src="/js/main.js" defer></script>
+    <style>
+        /* 添加 CSS 样式以居中内容 */
+        .gallery-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 10px 0;
+            padding: 20px;
+        }
+
+        .gallery-images img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .navigation-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #pageIndicator {
+            margin: 0 10px;
+        }
+        #titleSelect{margin: 5px;}
+    </style>
 </head>
 
 <body>
     <div class="logo" onclick="window.location.href='/index.html'"></div>
     <main id="main" class="main">
-    <div class="window-body">
-        <menu role="tablist"></menu>
-        <div class="window" role="tabpanel">
-            <div class="window-body">
-                <p>This is test page for gallery.</p>
+        <div class="window-body">
+            <menu role="tablist"></menu>
+            <div class="window" role="tabpanel">
+                <div class="window-body">
+                    <select id="titleSelect"></select>
+                    <div class="gallery-images" id="gallery-images"></div>
+                    <div class="navigation-bar">
+                        <button id="prevPage">上一页</button>
+                        <span id="pageIndicator">第 1 页</span>
+                        <button id="nextPage">下一页</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-    </div>
+    </main>
 
     <button class="back-to-top" onclick="scrollToTop()">
         <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
     </button>
     <div class="crt monitor"></div>
-    <div id="loading-container" style="display: none;"></div> <!-- 加载动画容器 -->
+    <div id="loading-container" style="display: none;"></div>
+
 </body>
 <div class="dynamic-footer"></div>
+
 </html>
