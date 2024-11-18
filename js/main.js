@@ -23,10 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 定义标签数据，用于TabHandler
     const tabData = [
-        { url: '/', text: 'Time Progress' },
+        { url: '/', text: 'Progress' },
         { url: '/page/article.html', text: 'Article' },
-        { url: '/page/about.html', text: 'About Me' },
-        { url: '/page/game.html', text: 'Game List' }
+        { url: '/page/game.html', text: 'Game List' },
+        { url: '/page/gallery.html', text: 'Gallery' },
+        { url: '/page/about.html', text: 'About Me' }
     ];
 
     // 创建 TabHandler 实例
