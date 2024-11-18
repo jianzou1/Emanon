@@ -37,7 +37,7 @@ menu[role=tablist] > li {
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
   font-weight: bold;
   text-align: center;
-  width: 100px; /* 宽度 */
+  width: 80px; /* 宽度 */
   background-color: #C0C0C0; /* 背景色 */
 }
 
