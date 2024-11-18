@@ -15,7 +15,7 @@ export async function initializeGallery() {
         let maxPage = 1;
 
         const response = await fetch(CONFIG_URL);
-        if (!response.ok) throw new Error('网络错误，请重试'); // 错误处理
+        if (!response.ok) throw new Error('网络错误，请重试');
         const data = await response.json();
 
         additional = data[0][0]?.additional || '';
@@ -39,12 +39,9 @@ export async function initializeGallery() {
 
             const selectedTitle = titleSelect.value;
             const imagesForTitle = allImages.filter(image => image.title === selectedTitle);
-
             maxPage = Math.max(...imagesForTitle.map(image => image.page)) || 1;
 
-            const imagesToDisplay = imagesForTitle.filter(image => image.page === currentPage)
-                .sort((a, b) => a.id - b.id);
-
+            const imagesToDisplay = imagesForTitle.filter(image => image.page === currentPage);
             imagesToDisplay.forEach(image => {
                 const imgElement = document.createElement('img');
                 imgElement.setAttribute('data-src', image.url + additional);
@@ -65,22 +62,18 @@ export async function initializeGallery() {
         }
 
         function lazyLoadImages() {
-            const imgs = document.querySelectorAll('.gallery-images img');
+            const imgs = document.querySelectorAll('#gallery-images img');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         img.src = img.getAttribute('data-src');
-                        img.onload = () => {
-                            img.style.opacity = 1;
-                        };
+                        img.onload = () => { img.style.opacity = 1; };
                         observer.unobserve(img);
                     }
                 });
             });
-            imgs.forEach(img => {
-                observer.observe(img);
-            });
+            imgs.forEach(img => observer.observe(img));
         }
 
         prevButton.addEventListener('click', () => {
@@ -99,7 +92,7 @@ export async function initializeGallery() {
 
         displayImages();
     } catch (error) {
-        console.error(error);
+        console.error('错误:', error);
         alert('加载失败: ' + error.message);
     }
 }
