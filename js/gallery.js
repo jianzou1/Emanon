@@ -8,6 +8,11 @@ export async function initializeGallery() {
         const nextButton = document.getElementById('nextPage');
         const pageIndicator = document.getElementById('pageIndicator');
         const titleSelect = document.getElementById('titleSelect');
+        const topTitleDisplay = document.getElementById('topTitleDisplay');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const caption = document.getElementById('caption');
+        const modalClose = document.getElementById('modalClose');
 
         let currentPage = 1;
         let allImages = [];
@@ -16,16 +21,17 @@ export async function initializeGallery() {
 
         const response = await fetch(CONFIG_URL);
         if (!response.ok) throw new Error('网络错误，请重试');
+        
         const data = await response.json();
-
         additional = data[0][0]?.additional || '';
         allImages = data[1];
 
         const titles = [...new Set(allImages.map(image => image.title))];
         titles.forEach(title => {
+            const imagesCount = allImages.filter(image => image.title === title).length;
             const option = document.createElement('option');
             option.value = title;
-            option.textContent = title;
+            option.textContent = `${title} (${imagesCount}p)`;
             titleSelect.appendChild(option);
         });
 
@@ -36,7 +42,6 @@ export async function initializeGallery() {
 
         function displayImages() {
             galleryImages.innerHTML = '';
-
             const selectedTitle = titleSelect.value;
             const imagesForTitle = allImages.filter(image => image.title === selectedTitle);
             maxPage = Math.max(...imagesForTitle.map(image => image.page)) || 1;
@@ -48,13 +53,31 @@ export async function initializeGallery() {
                 imgElement.alt = image.mark;
                 imgElement.title = image.mark;
                 imgElement.style.opacity = 0;
+
+                imgElement.addEventListener('click', () => {
+                    modalImage.src = image.url;
+                    caption.textContent = image.mark;
+                    imageModal.style.display = "flex";
+                });
+
                 galleryImages.appendChild(imgElement);
             });
 
             pageIndicator.textContent = `第 ${currentPage} / ${maxPage} 页`;
+            topTitleDisplay.textContent = `${selectedTitle}`;
             lazyLoadImages();
             updateNavigationButtons();
         }
+
+        modalClose.addEventListener('click', () => {
+            imageModal.style.display = "none";
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === imageModal) {
+                imageModal.style.display = "none";
+            }
+        });
 
         function updateNavigationButtons() {
             prevButton.disabled = currentPage === 1;

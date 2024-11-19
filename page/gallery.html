@@ -22,25 +22,42 @@
             <menu role="tablist"></menu>
             <div class="window" role="tabpanel">
                 <div class="window-body">
-                    <select id="titleSelect"></select>
+                    <h2 id="topTitleDisplay">标题</h2>
+                    <select id="titleSelect" aria-label="选择标题"></select>
                     <div class="gallery-images" id="gallery-images"></div>
-                    <div class="navigation-bar">
-                        <button id="prevPage">上一页</button>
+                    <div class="navigation-bar" aria-label="图库导航">
+                        <button id="prevPage" aria-label="上一页">上一页</button>
                         <span id="pageIndicator">第 1 页</span>
-                        <button id="nextPage">下一页</button>
+                        <button id="nextPage" aria-label="下一页">下一页</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div id="imageModal" class="modal" style="display:none;" role="dialog" aria-labelledby="modalClose" aria-modal="true">
+            <div class="window" style="width: 800px;">
+                <div class="title-bar">
+                    <div class="title-bar-text">原图</div>
+                    <div class="title-bar-controls">
+                        <button aria-label="关闭" id="modalClose">&times;</button>
+                    </div>
+                </div>
+                <div class="window-body">
+                    <img class="modal-content" id="modalImage" alt="模态图像">
+                    <div class="caption" id="caption"></div> 
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <button class="back-to-top" onclick="scrollToTop()">
-        <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
+    <button class="back-to-top" onclick="scrollToTop()" aria-label="回到顶部">
+        <img src="/icon/go-top.png" alt="回到顶部" style="vertical-align: middle;">
     </button>
+    
     <div class="crt monitor"></div>
     <div id="loading-container" style="display: none;"></div>
-
+    <div class="dynamic-footer"></div>
 </body>
-<div class="dynamic-footer"></div>
 
 </html>

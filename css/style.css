@@ -3,6 +3,7 @@
 @import "article.css"; 
 @import "fail.css"; 
 @import "game.css";
+@import "gallery.css";
 @import url(https://unpkg.com/98.css); /* 导入外部样式表 98.css */
 
 body {
@@ -37,7 +38,7 @@ menu[role=tablist] > li {
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
   font-weight: bold;
   text-align: center;
-  width: 80px; /* 宽度 */
+  width: 75px; /* 宽度 */
   background-color: #C0C0C0; /* 背景色 */
 }
 
@@ -120,7 +121,7 @@ code {
   bottom: 20px; /* 底部距离 */
   right: 20px; /* 右侧距离 */
   margin-right: 10%; /* 右侧外边距 */
-  z-index: 1000; /* 层级 */
+  z-index: 99; /* 层级 */
   display: none; /* 默认隐藏 */
   text-align: center; /* 文本居中 */
 }
@@ -130,7 +131,7 @@ code {
   .window {
     width: 100%; /* 宽度 */
     max-width: 375px; /* 最大宽度 */
-    padding: 15px; /* 内边距 */
+    padding: 5px; /* 内边距 */
   }
   .window img { max-width: 100%; } /* 图片最大宽度 */
   .status-bar { margin-bottom: 5%; } /* 底部外边距 */
@@ -164,30 +165,3 @@ code {
   white-space: normal; /* 允许换行 */
   max-width: 160px; /* 可选：设置最大宽度以控制换行 */
 }
-
-.gallery-images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 10px 0;
-  padding: 20px;
-}
-
-.gallery-images img {
-  max-width: 100%;
-  height: auto;
-  margin: 10px;
-  opacity: 0;
-  transition: opacity 0.5s;
-}
-
-.navigation-bar {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-#pageIndicator {
-  margin: 0 10px;
-}
-#titleSelect{margin: 5px;}
