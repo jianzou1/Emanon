@@ -9,7 +9,7 @@ export function gameList() {
 
     let games = [];
     let typeNames = {};
-    
+
     fetchGameData(); // 获取游戏数据
 
     async function fetchGameData() {
@@ -39,8 +39,11 @@ export function gameList() {
         document.querySelector(GAME_LIST_HTML_CLASS).innerHTML = htmlContent; // 更新游戏列表
     }
 
-    document.querySelector('select').addEventListener('change', function(event) {
-        sortGames(event.target.value);
+    // 更新单选框的事件监听器
+    document.querySelectorAll('input[name="sort-option"]').forEach((radio) => {
+        radio.addEventListener('change', function (event) {
+            sortGames(event.target.value);
+        });
     });
 
     function sortGames(selectedOption) {
@@ -75,7 +78,7 @@ export function gameList() {
         gameItems.forEach((item, index) => {
             // 使用 setTimeout 来逐个添加动画类
             setTimeout(() => {
-                item.classList.add('flip-in'); 
+                item.classList.add('flip-in');
             }, index * 12); // 每个游戏延迟 100ms 动画效果
         });
     }
@@ -143,7 +146,7 @@ export function gameList() {
         const heart = game.isLoved ? '💜' : '';
         const sign = game.sign || '';
         const trophy = game.spacialAchievements ? '🏆' : '';
-        
+
         // 对spacialAchievements进行处理
         const achievementText = game.spacialAchievements ? game.spacialAchievements.replace(/\n/g, '<br>') : '';
         const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${game.name}</i>` : game.name;
@@ -159,7 +162,7 @@ export function gameList() {
         `;
     }
 
-    window.toggleAchievement = function(li) {
+    window.toggleAchievement = function (li) {
         const achievementDiv = li.querySelector('.achievement');
         const toggleIcon = li.querySelector('.toggle-icon');
 
