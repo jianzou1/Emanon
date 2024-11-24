@@ -10,7 +10,8 @@ import { initializeDailyPopup } from '/js/dailyPopup.js';
 import { initializeTips } from '/js/tips.js';
 import { initializeLoadingAnimation, showLoadingAnimation, hideLoadingAnimation } from '/js/loadingAnimation.js';
 import { gameList } from '/js/gameList.js';
-import { initializeGallery } from '/js/gallery.js'; // 新增导入 gallery.js
+import { initializeGallery } from '/js/gallery.js'; 
+import { initCRT } from '/js/crtEffect.js'; 
 
 // 当DOM完全加载后执行
 document.addEventListener('DOMContentLoaded', () => {
@@ -57,20 +58,28 @@ document.addEventListener('DOMContentLoaded', () => {
     function handlePageLoad() {
         try {
             const currentUrl = window.location.pathname; // 获取当前URL
-            if (currentUrl === '/') {
-                updateProgressBar();
-                initializeDailyPopup();
-            } else if (currentUrl === '/page/article.html') {
-                loadPreviewLinks(pjax, tabHandler);
-            } else if (currentUrl === '/page/game.html') {
-                gameList(); 
-            } else if (currentUrl === '/page/gallery.html') { // 添加对 Gallery 页面的处理
-                initializeGallery(); // 调用初始化画廊函数
+            switch (currentUrl) {
+                case '/':
+                    updateProgressBar();
+                    initializeDailyPopup();
+                    break;
+                case '/page/article.html':
+                    loadPreviewLinks(pjax, tabHandler);
+                    break;
+                case '/page/game.html':
+                    gameList(); 
+                    break;
+                case '/page/gallery.html':
+                    initializeGallery(); 
+                    break;
+                default:
+                    break;
             }
 
             footerLoader();
             handleScrollAndScrollToTop();
             initializeTips();
+            initCRT(); 
 
             const tablist = document.querySelector('[role="tablist"]'); 
             if (tablist) {

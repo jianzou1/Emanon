@@ -42,20 +42,18 @@
 
                     <div class="refresh-container" id="refresh-container">
                         <div class="refreshIcon"></div>
-                        <span id="refresh-timer" data-tips="After the countdown ends, all progress bars will be refreshed.
-                        ">Refresh in 00m 00s</span>
+                        <span id="refresh-timer" data-tips="After the countdown ends, all progress bars will be refreshed.">Refresh in 00m 00s</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="tips" class="tips" style="display: none;"></div>
     </main>
-    <button class="back-to-top" onclick="scrollToTop()">
-        <img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;">
-    </button>
+    <canvas class="crt-effect"></canvas>
+    <div id="tips" class="tips" style="display: none;"></div>
+    <button class="back-to-top" onclick="scrollToTop()"><img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;"></button>
     <div class="crt monitor"></div>
-
+    <div id="loading-container" style="display: none;"></div>
     <div class="dynamic-footer"></div>
-    <div id="loading-container" style="display: none;"></div> <!-- 加载动画容器 -->
 </body>
+
 </html>
