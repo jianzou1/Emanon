@@ -2,43 +2,54 @@
 
 // 导出 initCRT 函数以供其他模块使用
 export function initCRT() {
-    // 查找画布元素
     const canvas = document.querySelector('.crt-effect');
     if (!canvas) {
         console.error('CRT canvas not found');
         return;
     }
 
-    // 获取绘图上下文
     const ctx = canvas.getContext('2d');
-    let offset = 0; // 控制扫描线的偏移量
-    const speed = 0.5; // 控制扫描线移动的速度
+    let offset = 0; 
+    const speed = 0.06; // 进一步减小更新速度
 
-    // 定义绘制 CRT 效果的函数
+    // 初始化函数
     function drawCRT() {
-        // 设置画布的宽度和高度为窗口的宽度和高度
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // 清除画布
+        // 清除并填充背景
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // 填充一个半透明的黑色矩形作为滤镜背景
         ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 设置扫描线的颜色和透明度
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        // 绘制动态扫描线
+        drawScanLines();
+        
+        // 更新偏移量
+        offset += speed;
+        requestAnimationFrame(drawCRT); 
+    }
 
-        // 在画布上绘制动态扫描线
-        for (let i = 0; i < canvas.height; i += 4) {
-            // 每隔4像素绘制一条线，线条根据偏移量动态下移
-            ctx.fillRect(0, (i + offset) % canvas.height, canvas.width, 1);
+    // 执行扫描线的绘制
+    function drawScanLines() {
+        for (let i = 0; i < canvas.height; i += 4) { // 增加扫描线间隔到8像素
+            const baseOffset = (offset % 4); // 基本偏移量，保持一致
+            const redOffset = baseOffset + Math.sin(i / 50) * 0.2; // 红色偏移，减少幅度
+            const greenOffset = baseOffset + Math.sin(i / 50) * 0.2; // 绿色偏移，减少幅度
+            const blueOffset = baseOffset + Math.sin(i / 50) * 0.2; // 蓝色偏移，减少幅度
+
+            // 绘制红色扫描线
+            ctx.fillStyle = `rgba(255, 0, 0, 0.08)`; // 降低透明度
+            ctx.fillRect(0, (i + redOffset) % canvas.height, canvas.width, 1);
+            
+            // 绘制绿色扫描线
+            ctx.fillStyle = `rgba(0, 255, 0, 0.08)`; // 降低透明度
+            ctx.fillRect(0, (i + greenOffset) % canvas.height, canvas.width, 1);
+            
+            // 绘制蓝色扫描线
+            ctx.fillStyle = `rgba(0, 0, 255, 0.08)`; // 降低透明度
+            ctx.fillRect(0, (i + blueOffset) % canvas.height, canvas.width, 1);
         }
-
-        // 更新偏移量，以创建动态效果
-        offset = (offset + speed) % 4; // 当偏移量达到4时重置
-        requestAnimationFrame(drawCRT); // 请求下一帧的绘制
     }
 
     // 启动绘制函数
