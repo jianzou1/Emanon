@@ -11,9 +11,12 @@ export function initCRT() {
     const ctx = canvas.getContext('2d');
     let offset = 0; 
     const speed = 0.06; // 进一步减小更新速度
+    let isEffectEnabled = true; // 开关变量，初始为启用状态
 
     // 初始化函数
     function drawCRT() {
+        if (!isEffectEnabled) return; // 如果效果关闭，则直接返回
+        
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -56,6 +59,28 @@ export function initCRT() {
     function startCRT() {
         drawCRT();
     }
+
+    // 切换效果的函数
+    function toggleEffect() {
+        isEffectEnabled = !isEffectEnabled; // 切换状态
+        if (isEffectEnabled) {
+            startCRT(); // 如果启用，则重新启动绘制
+        } else {
+            // 如果效果关闭，清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+
+    // 监听复选框状态变更
+    const checkbox = document.getElementById('crtToggle');
+    checkbox.addEventListener('change', () => {
+        isEffectEnabled = checkbox.checked; // 更新状态
+        if (isEffectEnabled) {
+            startCRT(); // 如果启用，则重新启动绘制
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布内容
+        }
+    });
 
     // 添加事件监听器以处理窗口加载和调整大小的事件
     window.addEventListener('load', startCRT);
