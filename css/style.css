@@ -51,13 +51,17 @@ menu[role=tablist] > li {
 }
 
 .window img {
-  border: 2px solid #000; /* 黑色边框 */
-  background-color: #fff; /* 白色背景 */
-  padding: 2px; /* 内边距 */
-  box-shadow: 2px 2px 0px #808080; /* 灰色阴影 */
+  border-image: url('/ui/border.png') 15 fill; /* 边框图像切片为15，46/3≈15 */
+  border-image-slice: 15; /* 切片大小为15，分成九宫格 */
+  border-image-width: 15px; /* 设置边框宽度 */
+  border-image-outset: 0; /* 不需要外延 */
+  background-color: transparent; /* 背景透明 */
+  padding: 3px; /* 内边距，保持图片在边框内 */
   max-width: 95%; /* 最大宽度 */
   height: auto; /* 高度自适应 */
+  border-style: solid; /* 设置边框样式 */
 }
+
 
 .status-bar {
   background-color: #C0C0C0; /* 背景色 */
