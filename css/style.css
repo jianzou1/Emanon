@@ -3,6 +3,7 @@
 @import "fail.css"; 
 @import "game.css";
 @import "gallery.css";
+@import "about.css";
 @import url(https://unpkg.com/98.css); /* 导入外部样式表 98.css */
 
 body {
