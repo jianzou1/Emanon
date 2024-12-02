@@ -13,6 +13,42 @@
     <link rel="manifest" href="/site.webmanifest">
     <script src="https://unpkg.com/pjax@0.2.8/pjax.min.js"></script>
     <script type="module" src="/js/main.js" defer></script>
+    <style>
+        table {
+            border-top: 1px solid #333;
+            border-left: 1px solid #333;
+            border-spacing: 0;
+            background-color: #fff;
+            width: 100%;
+        }
+
+        table td {
+            border-bottom: 1px solid #333;
+            border-right: 1px solid #333;
+            padding: 5px;
+        }
+
+        .xl65 {
+            color: rgb(34, 34, 34);
+        }
+
+        .table-icon {
+            width: 16px;
+            /* 设置图标宽度 */
+            height: 16px;
+            /* 设置图标高度 */
+            display: inline-block;
+            /* 使 div 作为块级元素 */
+            background-size: contain;
+            /* 保持图片比例 */
+            background-repeat: no-repeat;
+            /* 不重复背景 */
+            vertical-align: middle;
+            /* 垂直对齐 */
+        }
+    </style>
+
+
 </head>
 
 <body>
@@ -23,21 +59,86 @@
             <div class="window" role="tabpanel">
                 <div class="window-body">
 
-                    <div style="background: url('/favicon/android-chrome-192x192.png')no-repeat;height: 100px;width: 100px;background-size:100%;"> </div>
+                    <div
+                        style="background: url('/favicon/android-chrome-192x192.png')no-repeat;height: 100px;width: 100px;background-size:100%;">
+                    </div>
                     <p>Hi! I'm a webmaster and artist from the CN. It was my childhood dream to have my own website, so
                         here
                         we are!</p>
                     <p>The best way to know more about me is to look around this site. To start exploring you can look
                         at
                         the navigation bar to the top. I hope you enjoy your visit!</p>
-                    <p>Name: Shelton</p>
-                    <p>Occupations: Game Designer, Farmer</p>
-                    <p>Age: 27</p>
-                    <p>Game Design ✨✨✨✨✨</p>
-                    <p>Photography ✨✨✨✨</p>
-                    <p>Drinking ✨✨✨✨✨</p>
-                    <p>Favorite song: Anti-Climax - Eason Chan</p>
-                    <p>Favorite girl: Cry</p>
+                    <table class="centered-table" style="width:108pt">
+                        <colgroup>
+                            <col width="72" span="2" style="width:54pt">
+                        </colgroup>
+                        <tbody>
+                            <tr height="22">
+                                <td class="xl65">
+                                    <div class="table-icon" style="background-image: url('/icon/mugshot.png');"></div>
+                                </td>
+                                <td class="">Shelton</td>
+                            </tr>
+                            <tr height="22">
+                                <td class="xl65">
+                                    <div class="table-icon" style="background-image: url('/icon/input-mouse.png');">
+                                    </div>
+                                </td>
+                                <td class="">Game Designer, Photographer</td>
+                            </tr>
+                            <tr height="22">
+                                <td class="xl65">
+                                    <div class="table-icon"
+                                        style="background-image: url('/icon/x-office-calendar.png');"></div>
+                                </td>
+                                <td align="left" class="">Apr. 1997</td>
+                            </tr>
+                            <tr height="22">
+                                <td class="xl65">
+                                    <div class="table-icon"
+                                        style="background-image: url('/icon/application-x-nes-rom-16.png');"></div>
+                                </td>
+                                <td class="">
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                </td>
+                            </tr>
+                            <tr height="22">
+                                <td class="xl65">
+                                    <div class="table-icon" style="background-image: url('/icon/camera-photo.png');">
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                    <div class="table-icon" style="background-image: url('/icon/starred.png');"></div>
+                                </td>
+                            </tr>
+                            <tr height="22">
+                                <td class="xl65">
+                                    <div class="table-icon" style="background-image: url('/icon/internet-mail.png');">
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <a href="mailto:jianzou1@qq.com">send me an email</a>
+                                </td>
+                            </tr>
+                            </tr>
+                            <tr height="22">
+                                <td class="xl65">
+                                    <div class="table-icon" style="background-image: url('/icon/help-faq.png');">
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <a href="/icon/wechat.jpg" target="_blank">wechat QR code</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <div class="computer-fail-icon" onclick="window.location.href='/404.html'"></div>
 
                 </div>
@@ -48,7 +149,8 @@
     <input type="checkbox" id="crtToggle" checked>
     <label for="crtToggle">CRT Simulation</label>
     <div id="tips" class="tips" style="display: none;"></div>
-    <button class="back-to-top" onclick="scrollToTop()"><img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;"></button>
+    <button class="back-to-top" onclick="scrollToTop()"><img src="/icon/go-top.png" alt="Back to Top"
+            style="vertical-align: middle;"></button>
     <div class="crt monitor"></div>
     <div id="loading-container" style="display: none;"></div>
     <div class="dynamic-footer"></div>
