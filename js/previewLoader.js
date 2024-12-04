@@ -2,7 +2,7 @@
 
 // 导出 loadPreviewLinks 函数
 export async function loadPreviewLinks(pjax, tabHandler) {
-    const links = getLinks(); // 获取链接数组
+    const links = await fetchLinks(); // 获取链接数组
 
     const linksContainer = document.getElementById('links-container');
     if (!linksContainer) {
@@ -15,34 +15,44 @@ export async function loadPreviewLinks(pjax, tabHandler) {
     const linkDivs = await Promise.allSettled(links.map(fetchTitleAndCreateLinkDiv));
 
     // 渲染链接 div
-    linkDivs.forEach(result => renderLinkDiv(linksContainer, result));
-    
+    linkDivs.forEach(result => result.status === 'fulfilled' 
+        ? linksContainer.appendChild(result.value) 
+        : console.error('Error rendering link div:', result.reason)
+    );
+
     setupLinksContainer(linksContainer, pjax, tabHandler); // 处理链接容器点击事件
 }
 
-// 获取链接数组
-const getLinks = () => [
-    { id: 1, url: '/post/gd_occams_razor/index.html', icon: '/icon/text-markdown.png' },
-    { id: 5, url: '/post/gd_sample_hero_ape/index.html', icon: '/icon/application-x-genesis-rom.png' },
-    { id: 4, url: '/post/gd_sample_ingame_capture/index.html', icon: '/icon/application-x-nes-rom.png' },
-    { id: 6, url: '/post/gd_sample_ingame_party_point/index.html', icon: '/icon/application-x-gamecube-rom.png' },
-    { id: 3, url: '/post/gd_sample_ingame_recoil/index.html', icon: '/icon/application-x-nes-rom.png' },
-    { id: 7, url: '/post/gd_sample_system_battlepass/index.html', icon: '/icon/application-x-gamecube-rom.png' },
-    { id: 2, url: '/post/gd_system/index.html', icon: '/icon/text-markdown.png' },
-];
+// 从 JSON 文件获取链接数组
+const fetchLinks = async () => {
+    try {
+        const response = await fetch('/cfg/article_cfg.json');
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const links = await response.json();
+        return links.map(({ id, url, icon }) => ({
+            id,
+            url: `/post/${url}/index.html`, // 根据原始 URL 构造链接
+            icon: `/icon/${icon}` // 根据原始图标路径构造图标链接
+        }));
+    } catch (error) {
+        console.error('Error fetching links:', error);
+        return []; // 返回空数组以避免后续的错误
+    }
+};
 
 // 获取标题并创建链接 div
-const fetchTitleAndCreateLinkDiv = async (link) => {
+const fetchTitleAndCreateLinkDiv = async ({ url, icon }) => {
     try {
-        const response = await fetch(link.url);
+        const response = await fetch(url);
         if (!response.ok) throw new Error('Network response was not ok');
 
         const data = await response.text();
         const title = parseTitle(data); // 解析标题
-        return createLinkDiv(title, link);
+        return createLinkDiv(title, { url, icon });
     } catch (error) {
-        console.error(`Error fetching content for: ${link.url}`, error);
-        return createLinkDiv('无法加载标题', link); // 返回错误内容
+        console.error(`Error fetching content for: ${url}`, error);
+        return createLinkDiv('无法加载标题', { url, icon }); // 返回错误内容
     }
 }
 
@@ -53,25 +63,16 @@ const parseTitle = (data) => {
 }
 
 // 创建链接 div
-const createLinkDiv = (title, link) => {
+const createLinkDiv = (title, { url, icon }) => {
     const linkDiv = document.createElement('div');
     linkDiv.className = 'link-preview';
     linkDiv.innerHTML = `
-        <div class="link-container" data-url="${link.url}">
-            <span class="link-icon" style="background-image: url('${link.icon}');"></span>
+        <div class="link-container" data-url="${url}">
+            <span class="link-icon" style="background-image: url('${icon}');"></span>
             <p class="link-title">${title}</p>
         </div>
     `;
     return linkDiv;
-};
-
-// 渲染链接 div
-const renderLinkDiv = (linksContainer, result) => {
-    if (result.status === 'fulfilled') {
-        linksContainer.appendChild(result.value); // 插入 DOM
-    } else {
-        console.error('Error rendering link div:', result.reason); // 处理错误
-    }
 };
 
 // 设置链接容器的点击事件处理

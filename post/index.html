@@ -4,22 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
   <title>这里替换标题</title>
   <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
+  <script src="https://unpkg.com/pjax@0.2.8/pjax.min.js"></script>
   <script type="module" src="/js/main.js" defer></script>
 </head>
-<style>
-
-
-  .window-body {
-    padding: 10px !important;
-  }
-</style>
-
 <body>
   <div class="logo" onclick="window.location.href='index.html'"> </div>
   <main id="main" class="main">
@@ -34,6 +28,8 @@
     </div>
   </main>
   <canvas class="crt-effect"></canvas>
+  <input type="checkbox" id="crtToggle" checked>
+  <label for="crtToggle">CRT Simulation</label>
   <div id="tips" class="tips" style="display: none;"></div>
   <button class="back-to-top" onclick="scrollToTop()"><img src="/icon/go-top.png" alt="Back to Top" style="vertical-align: middle;"></button>
   <div class="crt monitor"></div>

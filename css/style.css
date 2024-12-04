@@ -48,7 +48,7 @@ menu[role=tablist] > li {
   max-width: 768px; /* 最大宽度 */
   overflow: hidden; /* 溢出隐藏 */
   margin: 0 auto; /* 水平居中 */
-  
+  margin-bottom: 5px;
 }
 
 .window img {

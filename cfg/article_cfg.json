@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "url": "gd_occams_razor",
+    "icon": "text-markdown.png"
+  },
+  {
+    "id": 5,
+    "url": "gd_sample_hero_ape",
+    "icon": "application-x-genesis-rom.png"
+  },
+  {
+    "id": 4,
+    "url": "gd_sample_ingame_capture",
+    "icon": "application-x-nes-rom.png"
+  },
+  {
+    "id": 6,
+    "url": "gd_sample_ingame_party_point",
+    "icon": "application-x-gamecube-rom.png"
+  },
+  {
+    "id": 3,
+    "url": "gd_sample_ingame_recoil",
+    "icon": "application-x-nes-rom.png"
+  },
+  {
+    "id": 7,
+    "url": "gd_sample_system_battlepass",
+    "icon": "application-x-gamecube-rom.png"
+  },
+  {
+    "id": 2,
+    "url": "gd_system",
+    "icon": "text-markdown.png"
+  }
+]
