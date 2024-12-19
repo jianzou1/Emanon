@@ -52,14 +52,28 @@ export function gameList() {
         if (selectedOption === '按游戏类型排序') {
             // 按游戏类型分组
             sortedGames = groupGames(games);
+            // 对每个类型中的每个系列进行排序
             Object.keys(sortedGames).forEach(type => {
                 Object.keys(sortedGames[type]).forEach(seriesTag => {
-                    sortedGames[type][seriesTag].sort((a, b) => b.time - a.time);
+                    sortedGames[type][seriesTag].sort((a, b) => b.time - a.time); // 按时长从长到短排序
                 });
+            });
+            // 将每个类型内的系列按时间从长到短排序
+            Object.keys(sortedGames).forEach(type => {
+                const seriesTags = Object.keys(sortedGames[type]);
+                seriesTags.sort((a, b) => {
+                    const maxTimeA = Math.max(...sortedGames[type][a].map(game => game.time));
+                    const maxTimeB = Math.max(...sortedGames[type][b].map(game => game.time));
+                    return maxTimeB - maxTimeA;
+                });
+                sortedGames[type] = seriesTags.reduce((acc, seriesTag) => {
+                    acc[seriesTag] = sortedGames[type][seriesTag];
+                    return acc;
+                }, {});
             });
         } else if (selectedOption === '按游戏时长排序') {
             // 按游戏时长排序
-            sortedGames = [...games].sort((a, b) => b.time - a.time);
+            sortedGames = [...games].sort((a, b) => b.time - a.time); // 按时长从长到短排序
         }
 
         updateHtmlContentDetails(sortedGames); // 更新内容
