@@ -1,102 +1,124 @@
 // main.js
 
-// 导入所需的模块
-import { TabHandler } from '/js/tabHandler.js'; 
-import { updateProgressBar } from '/js/progressBar.js'; 
+// ========== 导入模块 ==========
+import { loadResources } from '/js/cdnLoader.js'; // CDN 加载器
+import { TabHandler } from '/js/tabHandler.js';
+import { updateProgressBar } from '/js/progressBar.js';
 import { loadPreviewLinks } from '/js/previewLoader.js';
 import { footerLoader } from '/js/footerLoader.js';
 import { handleScrollAndScrollToTop } from '/js/scrollToTop.js';
 import { initializeDailyPopup } from '/js/dailyPopup.js';
 import { initializeTips } from '/js/tips.js';
-import { initializeLoadingAnimation, showLoadingAnimation, hideLoadingAnimation } from '/js/loadingAnimation.js';
+import {
+  initializeLoadingAnimation,
+  showLoadingAnimation,
+  hideLoadingAnimation
+} from '/js/loadingAnimation.js';
 import { gameList } from '/js/gameList.js';
-import { initializeGallery } from '/js/gallery.js'; 
-import { initCRT } from '/js/crtEffect.js'; 
+import { initializeGallery } from '/js/gallery.js';
+import { initCRT } from '/js/crtEffect.js';
 
-// 当DOM完全加载后执行
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded and parsed');
+// ========== 主初始化逻辑 ==========
+const initializeApp = async () => {
+  try {
+    // 1. 加载 CDN 资源（CSS 和 PJAX）
+    const { Pjax } = await loadResources();
 
-    // 初始化 PJAX 实例，配置选择器和缓存设置
+    // 2. 初始化 PJAX 实例
     const pjax = new Pjax({
-        selectors: ['head title', '#main'],
-        cacheBust: false
+      selectors: ['head title', '#main'],
+      cacheBust: false
     });
 
-    // 定义标签数据，用于TabHandler
+    // 3. 定义标签导航数据
     const tabData = [
-        { url: '/', text: 'Progress' },
-        { url: '/page/article.html', text: 'Article' },
-        { url: '/page/game.html', text: 'Game List' },
-        { url: '/page/gallery.html', text: 'Gallery' },
-        { url: '/page/about.html', text: 'About Me' }
+      { url: '/', text: 'Progress' },
+      { url: '/page/article.html', text: 'Article' },
+      { url: '/page/game.html', text: 'Game List' },
+      { url: '/page/gallery.html', text: 'Gallery' },
+      { url: '/page/about.html', text: 'About Me' }
     ];
 
-    // 创建 TabHandler 实例
+    // 4. 创建标签导航处理器
     const tabHandler = new TabHandler('[role="tablist"]', tabData, pjax);
-    
-    // 切换加载动画的函数
+
+    // 5. 加载动画控制函数
     const toggleLoadingAnimation = (isLoading) => {
-        if (isLoading) {
-            initializeLoadingAnimation().then(showLoadingAnimation);
-        } else {
-            hideLoadingAnimation();
-        }
+      if (isLoading) {
+        initializeLoadingAnimation().then(showLoadingAnimation);
+      } else {
+        hideLoadingAnimation();
+      }
     };
 
-    // PJAX 发送请求时显示加载动画
+    // 6. PJAX 事件监听
     document.addEventListener('pjax:send', () => toggleLoadingAnimation(true));
-
-    // PJAX 请求完成时处理
+    
     document.addEventListener('pjax:complete', () => {
-        console.log('PJAX 完成，页面已加载');
-        toggleLoadingAnimation(false); // 隐藏加载动画
-        handlePageLoad(); // 处理页面加载
+      console.log('PJAX 完成，页面已更新');
+      toggleLoadingAnimation(false);
+      handlePageLoad();
     });
 
-    // 处理页面加载的函数
-    function handlePageLoad() {
-        try {
-            const currentUrl = window.location.pathname; // 获取当前URL
-            switch (currentUrl) {
-                case '/':
-                    updateProgressBar();
-                    initializeDailyPopup();
-                    break;
-                case '/page/article.html':
-                    loadPreviewLinks(pjax, tabHandler);
-                    break;
-                case '/page/game.html':
-                    gameList(); 
-                    break;
-                case '/page/gallery.html':
-                    initializeGallery(); 
-                    break;
-                default:
-                    break;
-            }
-
-            footerLoader();
-            handleScrollAndScrollToTop();
-            initializeTips();
-            initCRT(); 
-
-            const tablist = document.querySelector('[role="tablist"]'); 
-            if (tablist) {
-                tablist.innerHTML = '';
-                new TabHandler('[role="tablist"]', tabData, pjax); 
-            }
-        } catch (error) {
-            console.error('Error during page load:', error);
+    // 7. 页面加载处理函数
+    const handlePageLoad = () => {
+      try {
+        const currentUrl = window.location.pathname;
+        
+        // 根据 URL 执行不同初始化
+        switch (currentUrl) {
+          case '/':
+            updateProgressBar();
+            initializeDailyPopup();
+            break;
+          case '/page/article.html':
+            loadPreviewLinks(pjax, tabHandler);
+            break;
+          case '/page/game.html':
+            gameList();
+            break;
+          case '/page/gallery.html':
+            initializeGallery();
+            break;
+          default:
+            break;
         }
+
+        // 通用初始化
+        footerLoader();
+        handleScrollAndScrollToTop();
+        initializeTips();
+        initCRT();
+
+        // 更新标签导航状态
+        const tablist = document.querySelector('[role="tablist"]');
+        if (tablist) {
+          tablist.innerHTML = '';
+          new TabHandler('[role="tablist"]', tabData, pjax);
+        }
+      } catch (error) {
+        console.error('页面加载过程中出错:', error);
+      }
+    };
+
+    // 8. Logo 点击返回首页
+    const logo = document.querySelector('.logo');
+    if (logo) {
+      logo.addEventListener('click', (e) => {
+        e.preventDefault();
+        pjax.loadUrl('/');
+        tabHandler.updateSelectedTab('/');
+      });
     }
 
-    const logo = document.querySelector('.logo');
-    logo.addEventListener('click', () => {
-        const newUrl = '/'; 
-        pjax.loadUrl(newUrl);
-        tabHandler.updateSelectedTab(newUrl);
-    });
+    // 9. 初始页面加载
+    handlePageLoad();
 
-    handlePageLoad(); // 初始页面加载时调用
-});
+  } catch (error) {
+    console.error('应用初始化失败:', error);
+    // 可在此添加错误恢复逻辑（例如重试机制）
+  }
+};
+
+// ========== 启动应用 ==========
+initializeApp();
