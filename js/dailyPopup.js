@@ -15,7 +15,7 @@ async function fetchAndProcess(url, successCallback, errorCallback) {
         successCallback(data);
     } catch (error) {
         console.error('Error loading content:', error);
-        errorCallback?.(error); // 确保 errorCallback 存在时才调用
+        errorCallback?.(error);
     }
 }
 
@@ -67,30 +67,52 @@ function initPopup() {
         return;
     }
 
-    document.body.addEventListener('click', event => {
-        if (event.target.id === 'close-popup') closePopup();
-    });
+    // ESC关闭处理函数
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape' || e.keyCode === 27) {
+            closePopup();
+        }
+    };
 
-    function closePopup() {
-        popup.style.display = 'none';
-        overlay.style.display = 'none';
-    }
+    // 绑定键盘事件
+    document.addEventListener('keydown', handleKeyDown);
+
+    // 增强关闭功能
+    const originalClose = closePopup;
+    let isClosed = false;
+
+    closePopup = () => {
+        if (isClosed) return;
+        isClosed = true;
+        
+        // 移除事件监听
+        document.removeEventListener('keydown', handleKeyDown);
+        
+        // 执行原始关闭逻辑
+        originalClose();
+    };
+
+    // 点击关闭按钮
+    closeButton.addEventListener('click', closePopup);
+    
+    // 点击遮罩层关闭
+    overlay.addEventListener('click', closePopup);
+
+    // 防止事件冒泡
+    popup.addEventListener('click', e => e.stopPropagation());
 }
 
-// 确保 closePopup 函数在全局作用域中可用
-window.closePopup = () => {
-    const closeButton = document.getElementById('close-popup');
+// 基础关闭逻辑
+function closePopup() {
     const overlay = document.getElementById('overlay');
     const popup = document.getElementById('welcome-popup');
+    
+    if (overlay) overlay.style.display = 'none';
+    if (popup) popup.style.display = 'none';
+}
 
-    if (!closeButton || !overlay || !popup) {
-        console.error('Popup elements not found');
-        return;
-    }
+// 全局访问
+window.closePopup = closePopup;
 
-    popup.style.display = 'none';
-    overlay.style.display = 'none';
-};
-
-// 直接调用初始化函数以监测 DOMContentLoaded 事件
+// 初始化
 initializeDailyPopup();
