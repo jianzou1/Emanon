@@ -2,7 +2,8 @@
   [
     {
       "typeName": "1:竞技类,2:动作&沙盒类,3:模拟经营类,4:独立游戏&Rougelike,5:RTS,6:集换式卡牌&自走棋,7:手游,8:其他网游",
-      "explain": "🟪：近期游玩\n💜：喜欢的游戏\n🏆：特殊成就，点击查看"
+      "qualityName": "6:S,5:A,4:B,3:C,2:D,1:E",
+      "explain": "💜：喜欢的游戏\n🏆：特殊成就，点击查看"
     }
   ],
   [
@@ -15,62 +16,68 @@
       "isRecently": true,
       "isLoved": true,
       "seriesTag": "CS",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 2,
-      "name": "《守望先锋》",
+      "name": "守望先锋",
       "sign": "",
       "time": 400,
       "type": "1",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": "国服第二赛季3508分。"
+      "spacialAchievements": "国服第二赛季3508分。",
+      "quality": 5
     },
     {
       "id": 3,
-      "name": "《绝地求生》",
+      "name": "绝地求生",
       "sign": "",
       "time": 1757,
       "type": "1",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": "2018年第5赛季亚洲服前500名。\n2018年第6赛季亚洲服、北美服前100名。"
+      "spacialAchievements": "2018年第5赛季亚洲服前500名。\n2018年第6赛季亚洲服、北美服前100名。",
+      "quality": 6
     },
     {
       "id": 4,
-      "name": "《英雄联盟》",
+      "name": "英雄联盟",
       "sign": "＞",
       "time": 8000,
       "type": "1",
       "isRecently": true,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": "S2-S3赛季暗影岛服务器排位分达到1700分。\nS5赛季艾欧尼亚服务器段位达到“璀璨钻石Ⅰ”。"
+      "spacialAchievements": "S2-S3赛季暗影岛服务器排位分达到1700分。\nS5赛季艾欧尼亚服务器段位达到“璀璨钻石Ⅰ”。",
+      "quality": 4
     },
     {
       "id": 5,
-      "name": "《战地风云2042》",
+      "name": "战地风云2042",
       "sign": "≈",
       "time": 50,
       "type": "1",
       "isRecently": true,
       "isLoved": false,
       "seriesTag": "Battlefield",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 6,
-      "name": "《战地风云3》",
+      "name": "战地风云3",
       "sign": "＞",
       "time": 100,
       "type": "1",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "Battlefield",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 7,
@@ -81,7 +88,8 @@
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 8,
@@ -92,7 +100,8 @@
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "CS",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 9,
@@ -103,7 +112,8 @@
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "CS",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 10,
@@ -114,95 +124,104 @@
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 11,
-      "name": "《无限法则》",
+      "name": "无限法则",
       "sign": "",
       "time": 12,
       "type": "1",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 12,
-      "name": "《侠盗猎车手5》",
+      "name": "侠盗猎车手5",
       "sign": "",
       "time": 445,
       "type": "2",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "GTA",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 13,
-      "name": "《侠盗猎车手4》",
+      "name": "侠盗猎车手4",
       "sign": "≈",
       "time": 100,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "GTA",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 14,
-      "name": "《侠盗猎车手：圣安地列斯》",
+      "name": "侠盗猎车手：圣安地列斯",
       "sign": "≈",
       "time": 50,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "GTA",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 15,
-      "name": "《侠盗猎车手：罪恶都市》",
+      "name": "侠盗猎车手：罪恶都市",
       "sign": "≈",
       "time": 200,
       "type": "2",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "GTA",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 16,
-      "name": "《对马岛之魂》",
+      "name": "对马岛之魂",
       "sign": "≈",
       "time": 50,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 17,
-      "name": "《全境封锁1》",
+      "name": "全境封锁1",
       "sign": "",
       "time": 19,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "TheDivision",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 18,
-      "name": "《全境封锁2》",
+      "name": "全境封锁2",
       "sign": "",
       "time": 42,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "TheDivision",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 19,
@@ -213,7 +232,8 @@
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "FarCry",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 20,
@@ -224,359 +244,392 @@
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "FarCry",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 21,
-      "name": "《丧尸围城4》",
+      "name": "丧尸围城4",
       "sign": "",
       "time": 20,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "DeadRising",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 22,
-      "name": "《丧尸围城3》",
+      "name": "丧尸围城3",
       "sign": "",
       "time": 10,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "DeadRising",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 23,
-      "name": "《丧尸围城2》",
+      "name": "丧尸围城2",
       "sign": "",
       "time": 15,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "DeadRising",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 24,
-      "name": "《求生之路2》",
+      "name": "求生之路2",
       "sign": "",
       "time": 53,
       "type": "2",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "L4D",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 25,
-      "name": "《求生之路1》",
+      "name": "求生之路1",
       "sign": "",
       "time": 6,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "L4D",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 26,
-      "name": "《僵尸世界大战》",
+      "name": "僵尸世界大战",
       "sign": "",
       "time": 15,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 27,
-      "name": "《遗迹：灰烬重生》",
+      "name": "遗迹：灰烬重生",
       "sign": "",
       "time": 12,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 28,
-      "name": "《赛博朋克2077》",
+      "name": "赛博朋克2077",
       "sign": "≈",
       "time": 70,
       "type": "2",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 29,
-      "name": "《原子之心》",
+      "name": "原子之心",
       "sign": "",
       "time": 16,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 30,
-      "name": "《黑神话:悟空》",
+      "name": "黑神话:悟空",
       "sign": "≈",
       "time": 30,
       "type": "2",
       "isRecently": true,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 31,
-      "name": "《看门狗1》",
+      "name": "看门狗1",
       "sign": "≈",
       "time": 10,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "WatchDogs",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 32,
-      "name": "《看门狗2》",
+      "name": "看门狗2",
       "sign": "≈",
       "time": 10,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "WatchDogs",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 33,
-      "name": "《虐杀原形1》",
+      "name": "虐杀原形1",
       "sign": "≈",
       "time": 15,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "Prototype",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 34,
-      "name": "《虐杀原形2》",
+      "name": "虐杀原形2",
       "sign": "≈",
       "time": 5,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "Prototype",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 35,
-      "name": "《消逝的光芒1》",
+      "name": "消逝的光芒1",
       "sign": "≈",
       "time": 8,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 36,
-      "name": "《荒野大镖客2》",
+      "name": "荒野大镖客2",
       "sign": "",
       "time": 20,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 37,
-      "name": "《死亡岛1》",
+      "name": "死亡岛1",
       "sign": "",
       "time": 45,
       "type": "2",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "DeadIsland",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 38,
-      "name": "《死亡岛2》",
+      "name": "死亡岛2",
       "sign": "",
       "time": 20,
       "type": "2",
       "isRecently": true,
       "isLoved": false,
       "seriesTag": "DeadIsland",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 39,
-      "name": "《热血无赖》",
+      "name": "热血无赖",
       "sign": "",
       "time": 20,
       "type": "2",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 40,
-      "name": "《使命召唤6:现代战争》",
+      "name": "使命召唤6:现代战争",
       "sign": "",
       "time": 30,
       "type": "2",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "COD",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 41,
-      "name": "《潜水员戴夫》",
+      "name": "潜水员戴夫",
       "sign": "",
       "time": 13,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 42,
-      "name": "《星露谷物语》",
+      "name": "星露谷物语",
       "sign": "",
       "time": 10,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 43,
-      "name": "《牧场物语：矿石镇的伙伴》(GBA)",
+      "name": "牧场物语：矿石镇的伙伴(GBA)",
       "sign": "≈",
       "time": 30,
       "type": "3",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 44,
-      "name": "《戴森球计划》",
+      "name": "戴森球计划",
       "sign": "",
       "time": 27,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 45,
-      "name": "《缺氧》",
+      "name": "缺氧",
       "sign": "",
       "time": 9,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 46,
-      "name": "《模拟城市4：尖峰时刻》",
+      "name": "模拟城市4：尖峰时刻",
       "sign": "≈",
       "time": 200,
       "type": "3",
       "isRecently": true,
       "isLoved": true,
       "seriesTag": "SimCity",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 47,
-      "name": "《模拟城市3000》",
+      "name": "模拟城市3000",
       "sign": "≈",
       "time": 10,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "SimCity",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 48,
-      "name": "《模拟城市5:未来之城》",
+      "name": "模拟城市5:未来之城",
       "sign": "≈",
       "time": 50,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "SimCity",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 49,
-      "name": "《都市天际线1》",
+      "name": "都市天际线1",
       "sign": "",
       "time": 36,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "Skyline",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 50,
-      "name": "《都市天际线2》",
+      "name": "都市天际线2",
       "sign": "",
       "time": 20,
       "type": "3",
       "isRecently": true,
       "isLoved": false,
       "seriesTag": "Skyline",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 51,
-      "name": "《冰汽时代》",
+      "name": "冰汽时代",
       "sign": "",
       "time": 6,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 52,
-      "name": "《双点医院》",
+      "name": "双点医院",
       "sign": "",
       "time": 18,
       "type": "3",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 53,
@@ -587,73 +640,80 @@
       "isRecently": true,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 54,
-      "name": "《哈迪斯1》",
+      "name": "哈迪斯1",
       "sign": "≈",
       "time": 10,
       "type": "4",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "Hades",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 55,
-      "name": "《哈迪斯2》",
+      "name": "哈迪斯2",
       "sign": "",
       "time": 39,
       "type": "4",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "Hades",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 56,
-      "name": "《土豆兄弟》",
+      "name": "土豆兄弟",
       "sign": "",
       "time": 10,
       "type": "4",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 57,
-      "name": "《幸运房东》",
+      "name": "幸运房东",
       "sign": "",
       "time": 16,
       "type": "4",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 58,
-      "name": "《人类一败涂地》",
+      "name": "人类一败涂地",
       "sign": "",
       "time": 7,
       "type": "4",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 59,
-      "name": "《致命公司》",
+      "name": "致命公司",
       "sign": "",
       "time": 12,
       "type": "4",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 60,
@@ -664,18 +724,20 @@
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 61,
-      "name": "《一起开火车》",
+      "name": "一起开火车",
       "sign": "",
       "time": 11,
       "type": "4",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 62,
@@ -686,117 +748,128 @@
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 63,
-      "name": "《文明4》",
+      "name": "文明4",
       "sign": "",
       "time": 50,
       "type": "5",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 64,
-      "name": "《帝国时代2》",
+      "name": "帝国时代2",
       "sign": "＞",
       "time": 100,
       "type": "5",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 65,
-      "name": "《红色警戒2》",
+      "name": "红色警戒2",
       "sign": "＞",
       "time": 100,
       "type": "5",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 66,
-      "name": "《要塞：十字军东征2》",
+      "name": "要塞：十字军东征2",
       "sign": "＞",
       "time": 150,
       "type": "5",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 67,
-      "name": "《星际争霸1》",
+      "name": "星际争霸1",
       "sign": "≈",
       "time": 20,
       "type": "5",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 68,
-      "name": "《魔兽争霸3》",
+      "name": "魔兽争霸3",
       "sign": "＞",
       "time": 100,
       "type": "5",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 69,
-      "name": "《海岛大亨5》",
+      "name": "海岛大亨5",
       "sign": "",
       "time": 30,
       "type": "5",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 70,
-      "name": "《以撒的结合》",
+      "name": "以撒的结合",
       "sign": "",
       "time": 8,
       "type": "5",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 71,
-      "name": "《杀戮尖塔》",
+      "name": "杀戮尖塔",
       "sign": "",
       "time": 50,
       "type": "5",
       "isRecently": true,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 72,
-      "name": "《炉石传说》",
+      "name": "炉石传说",
       "sign": "≈",
       "time": 150,
       "type": "6",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     },
     {
       "id": 73,
@@ -807,172 +880,188 @@
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 74,
-      "name": "《决战平安京》",
+      "name": "决战平安京",
       "sign": "≈",
       "time": 120,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": "最高段位：阴阳大允"
+      "spacialAchievements": "最高段位：阴阳大允",
+      "quality": 4
     },
     {
       "id": 75,
-      "name": "《王者荣耀》",
+      "name": "王者荣耀",
       "sign": "≈",
       "time": 70,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": "最高段位：王者10星"
+      "spacialAchievements": "最高段位：王者10星",
+      "quality": 3
     },
     {
       "id": 76,
-      "name": "《绝区零》",
+      "name": "绝区零",
       "sign": "",
       "time": 40,
       "type": "7",
       "isRecently": false,
       "isLoved": true,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 5
     },
     {
       "id": 77,
-      "name": "《荒野乱斗》",
+      "name": "荒野乱斗",
       "sign": "≈",
       "time": 200,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 6
     },
     {
       "id": 78,
-      "name": "《英雄联盟手游》",
+      "name": "英雄联盟手游",
       "sign": "≈",
       "time": 80,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": "最高段位：白金"
+      "spacialAchievements": "最高段位：白金",
+      "quality": 4
     },
     {
       "id": 79,
-      "name": "《阴阳师》",
+      "name": "阴阳师",
       "sign": "",
       "time": 50,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 80,
-      "name": "《最强蜗牛》",
+      "name": "最强蜗牛",
       "sign": "",
       "time": 80,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 81,
-      "name": "《崩坏3》",
+      "name": "崩坏3",
       "sign": "",
       "time": 30,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 82,
-      "name": "《原神》",
+      "name": "原神",
       "sign": "≈",
       "time": 10,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 83,
-      "name": "《少女前线》",
+      "name": "少女前线",
       "sign": "",
       "time": 100,
       "type": "7",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 3
     },
     {
       "id": 84,
-      "name": "《云顶之弈》",
+      "name": "云顶之弈",
       "sign": "＞",
       "time": 300,
       "type": "6",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": "金铲铲之战：超凡大师\n云顶之弈：璀璨钻石"
+      "spacialAchievements": "金铲铲之战：超凡大师\n云顶之弈：璀璨钻石",
+      "quality": 6
     },
     {
       "id": 85,
-      "name": "《地下城与勇士》",
+      "name": "地下城与勇士",
       "sign": "≈",
       "time": 40,
       "type": "8",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 86,
-      "name": "《彩虹岛》",
+      "name": "彩虹岛",
       "sign": "≈",
       "time": 80,
       "type": "8",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 87,
-      "name": "《龙之谷》",
+      "name": "龙之谷",
       "sign": "≈",
       "time": 20,
       "type": "8",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 4
     },
     {
       "id": 88,
-      "name": "《穿越火线》",
+      "name": "穿越火线",
       "sign": "≈",
       "time": 100,
       "type": "8",
       "isRecently": false,
       "isLoved": false,
       "seriesTag": "",
-      "spacialAchievements": ""
+      "spacialAchievements": "",
+      "quality": 2
     }
   ]
 ]

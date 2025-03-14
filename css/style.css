@@ -12,7 +12,7 @@ body {
   flex-direction: column; /* 主轴方向为垂直 */
   align-items: center; /* 垂直居中对齐 */
   justify-content: center; /* 水平居中对齐 */
-  background-color: #008689;
+  background-color: #008080;
 }
 
 .logo {

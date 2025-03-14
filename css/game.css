@@ -7,16 +7,13 @@
     opacity: 0; /* 初始状态为透明 */
     display: flex; /* 使用 Flexbox 布局 */
     justify-content: space-between; /* 游戏名与时间两端对齐 */
-    margin-bottom: 2px !important; 
+    margin-bottom: 6px !important; 
     margin-top: 2px !important; 
-    padding: 2px !important; /* 去掉内边距 */
+    padding: 4px !important; /* 去掉内边距 */
+    border-radius: 5px; /* 圆角边框 */
+    text-indent: 5px; /* 缩进 20px */
   }
-  
-  .recently {
-    background-color: rgba(128, 0, 128, 0.3); /* 半透明紫色背景 */
-    padding: 0; /* 去掉内边距 */
-    border-radius: 2px; /* 圆角边框 */
-  }
+
   
   .game-list {
     padding: 0 15px; /* 统一左右内边距 */
@@ -27,7 +24,7 @@
     font-weight: bold; /* 使解释信息加粗 */
     margin-top: 20px;
     color: #333; /* 文字颜色 */
-    background-color: rgba(255, 255, 0, 0.2); /* 半透明黄色背景 */
+    background-color: rgba(0, 0, 0, 0.15); 
     padding: 10px; /* 内边距 */
     border-radius: 5px; /* 圆角边框 */
     position: relative; /* 添加相对定位以便于绝对定位的子元素 */
@@ -45,7 +42,7 @@
   .achievement-info {
     font-size: 12px; /* 字体大小 */
     font-family: Microsoft Yahei, SimSun, NSimSun, SimHei; /* 字体系列 */
-    background-color: rgba(255, 255, 0, 0.2); /* 半透明黄色背景 */
+    background-color: rgba(0, 0, 0, 0.15); 
     padding: 10px; /* 内边距 */
     border-radius: 5px; /* 圆角边框 */
   }
@@ -69,3 +66,10 @@
     }
 }
 
+.quality-1 { background: linear-gradient(to right, rgba(168, 173, 192, 0.75), rgba(199, 220, 228, 0.4)); }
+.quality-2 { background: linear-gradient(to right, rgba(44, 96, 226, 0.75), rgba(29, 143, 255, 0.4)); }
+.quality-3 { background: linear-gradient(to right, rgba(139, 67, 232, 0.75), rgba(108, 59, 248, 0.4)); }
+.quality-4 { background: linear-gradient(to right, rgba(215, 158, 22, 0.75), rgba(242, 206, 40, 0.4)); }
+.quality-5 { background: linear-gradient(to right, rgba(233, 92, 176, 0.75), rgba(231, 107, 158, 0.4)); }
+.quality-6 { background: linear-gradient(to right, rgba(166, 203, 254, 0.75), rgba(167, 232, 254, 0.4)); }
+.quality-7 { background: linear-gradient(to right, rgba(26, 247, 90, 0.75), rgba(29, 23, 22, 0.4)); }
