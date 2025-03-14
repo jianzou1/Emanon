@@ -11,7 +11,7 @@
     margin-top: 2px !important; 
     padding: 4px !important; /* 去掉内边距 */
     border-radius: 5px; /* 圆角边框 */
-    text-indent: 5px; /* 缩进 20px */
+    text-indent: 5px;
   }
 
   

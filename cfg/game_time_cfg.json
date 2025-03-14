@@ -2,7 +2,7 @@
   [
     {
       "typeName": "1:竞技类,2:动作&沙盒类,3:模拟经营类,4:独立游戏&Rougelike,5:RTS,6:集换式卡牌&自走棋,7:手游,8:其他网游",
-      "qualityName": "6:S,5:A,4:B,3:C,2:D,1:E",
+      "qualityName": "6:大师之作,5:奇佳,4:卓越,3:优秀,2:尚可,1:平庸",
       "explain": "💜：喜欢的游戏\n🏆：特殊成就，点击查看"
     }
   ],
@@ -17,7 +17,7 @@
       "isLoved": true,
       "seriesTag": "CS",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 4
     },
     {
       "id": 2,
@@ -305,7 +305,7 @@
       "isLoved": false,
       "seriesTag": "L4D",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 4
     },
     {
       "id": 26,
@@ -557,7 +557,7 @@
       "isLoved": true,
       "seriesTag": "SimCity",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 5
     },
     {
       "id": 47,
@@ -581,7 +581,7 @@
       "isLoved": false,
       "seriesTag": "SimCity",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 2
     },
     {
       "id": 49,
@@ -689,7 +689,7 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 5
     },
     {
       "id": 58,
@@ -701,7 +701,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3
     },
     {
       "id": 59,
@@ -725,7 +725,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3
     },
     {
       "id": 61,
@@ -737,7 +737,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3
     },
     {
       "id": 62,
@@ -797,7 +797,7 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 5
     },
     {
       "id": 67,
@@ -809,7 +809,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 4
     },
     {
       "id": 68,
@@ -833,7 +833,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 2
     },
     {
       "id": 70,
@@ -845,7 +845,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 4
     },
     {
       "id": 71,
@@ -857,7 +857,7 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 5
     },
     {
       "id": 72,
@@ -869,7 +869,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 3
     },
     {
       "id": 73,
@@ -881,7 +881,7 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3
     },
     {
       "id": 74,
@@ -893,7 +893,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "最高段位：阴阳大允",
-      "quality": 4
+      "quality": 3
     },
     {
       "id": 75,
@@ -905,7 +905,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "最高段位：王者10星",
-      "quality": 3
+      "quality": 1
     },
     {
       "id": 76,
@@ -917,7 +917,7 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 3
     },
     {
       "id": 77,
@@ -929,7 +929,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 4
     },
     {
       "id": 78,
@@ -941,7 +941,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "最高段位：白金",
-      "quality": 4
+      "quality": 2
     },
     {
       "id": 79,
@@ -953,7 +953,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 2
     },
     {
       "id": 80,
@@ -965,7 +965,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 1
     },
     {
       "id": 81,
@@ -977,7 +977,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 1
     },
     {
       "id": 82,
@@ -989,7 +989,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 2
     },
     {
       "id": 83,
@@ -1001,7 +1001,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 1
     },
     {
       "id": 84,
@@ -1013,7 +1013,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "金铲铲之战：超凡大师\n云顶之弈：璀璨钻石",
-      "quality": 6
+      "quality": 5
     },
     {
       "id": 85,
@@ -1025,7 +1025,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 2
     },
     {
       "id": 86,
@@ -1037,7 +1037,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 1
     },
     {
       "id": 87,
@@ -1049,7 +1049,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 1
     },
     {
       "id": 88,
@@ -1061,7 +1061,7 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 1
     }
   ]
 ]
