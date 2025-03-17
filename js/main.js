@@ -46,7 +46,6 @@ const initializeApp = async () => {
     document.addEventListener('pjax:send', () => toggleLoadingAnimation(true));
 
     document.addEventListener('pjax:complete', () => {
-      console.log('PJAX 完成，页面已更新');
       toggleLoadingAnimation(false);
       handlePageLoad();
     });
