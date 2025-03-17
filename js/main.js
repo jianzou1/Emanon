@@ -120,5 +120,5 @@ const initializeApp = async () => {
   }
 };
 
-// ========== 启动应用 ==========
-initializeApp();
+// ========== 导出 initializeApp 函数 ==========
+export { initializeApp };
