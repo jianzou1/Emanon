@@ -83,12 +83,15 @@
   border-radius: 8px;
   margin: 20px 0;
   transition: all 0.3s ease;
+  align-items: center;
+
 }
 
 /* 滚动容器（移除transition） */
 .scroll-container {
-  position: absolute;
   width: 100%;
+  height: 100%;
+  position: relative;
   transition: none !important; /* 禁用过渡 */
   will-change: transform;
 }
@@ -101,10 +104,8 @@
 
 /* 滚动项样式 */
 .scroll-item {
-  height: 20px; /* 必须与JS中ITEM_HEIGHT一致 */
-  line-height: 40px; /* 垂直居中 */
   font-size: 16px;
-  border-bottom: 1px solid #c4c4c4;
+  border-bottom: 1px solid #585858;
   display: flex; /* 使用Flex布局 */
   align-items: center; /* 垂直居中 */
   justify-content: center; /* 水平居中 */
