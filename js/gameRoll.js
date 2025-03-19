@@ -1,5 +1,5 @@
+// gameRoll.js
 export function initGameRoll() {
-  // 配置参数
   const CONFIG = {
     JSON_PATH: '/cfg/game_time_cfg.json',
     VISIBLE_ITEMS: 3,
@@ -8,7 +8,6 @@ export function initGameRoll() {
     ITEM_HEIGHT: 30
   };
 
-  // 系统状态管理
   const state = {
     isRolling: false,
     gameData: [],
@@ -19,7 +18,6 @@ export function initGameRoll() {
     retryCount: 0
   };
 
-  // DOM元素引用
   const dom = {
     rollBtn: null,
     result: null,
@@ -27,7 +25,6 @@ export function initGameRoll() {
     items: []
   };
 
-  // 样式配置常量
   const ITEM_STYLE = {
     height: `${CONFIG.ITEM_HEIGHT}px`,
     lineHeight: `${CONFIG.ITEM_HEIGHT}px`,
@@ -38,7 +35,6 @@ export function initGameRoll() {
     backfaceVisibility: 'hidden'
   };
 
-  // 初始化入口
   function init() {
     setupDOM()
       .then(() => {
@@ -49,7 +45,6 @@ export function initGameRoll() {
       .catch(handleInitError);
   }
 
-  // DOM初始化（添加超时保护）
   function setupDOM() {
     return new Promise((resolve, reject) => {
       let retries = 0;
@@ -69,7 +64,6 @@ export function initGameRoll() {
     });
   }
 
-  // 创建滚动容器
   function createScrollContainer() {
     dom.container = document.createElement('div');
     dom.container.className = 'scroll-container';
@@ -88,19 +82,17 @@ export function initGameRoll() {
     dom.container.append(...dom.items);
   }
 
-  // 事件绑定
   function bindEvents() {
     dom.rollBtn.addEventListener('click', handleRollClick);
   }
 
-  // 抽奖按钮点击处理
   function handleRollClick() {
     if (!state.isRolling && state.gameData.length) {
+      prepareNewRoll();
       startNewRoll();
     }
   }
 
-  // 数据加载（添加请求超时）
   async function loadGameData() {
     try {
       const controller = new AbortController();
@@ -127,26 +119,21 @@ export function initGameRoll() {
     }
   }
 
-  // 数据验证
   function validateGameData(data) {
     if (!data?.[1]) {
       throw new Error('无效的游戏数据格式');
     }
   }
 
-  // 错误处理
-  function handleDataError(error) {
-    console.error('数据加载失败:', error);
+  function handleDataError() {
     dom.result.innerHTML = '<div class="error">数据加载失败，请刷新页面</div>';
     dom.rollBtn.disabled = true;
   }
 
-  function handleInitError(error) {
-    console.error('初始化失败:', error);
+  function handleInitError() {
     dom.result.innerHTML = '<div class="error">系统初始化失败，请检查网络</div>';
   }
 
-  // 数据生成逻辑
   function generateDefaultData() {
     return Array.from({ length: CONFIG.PARTICIPATION_COUNT }, (_, i) => ({
       name: `游戏${i + 1}`,
@@ -184,7 +171,6 @@ export function initGameRoll() {
     return shuffleArray(loop);
   }
 
-  // 抽奖核心逻辑
   function startNewRoll() {
     if (state.retryCount > 3) {
       handleMaxRetries();
@@ -193,9 +179,6 @@ export function initGameRoll() {
 
     prepareNewRoll();
     state.currentWinner = getWeightedRandom();
-
-    // 打印抽奖结果（保留原有功能）
-    console.log('抽奖对象：', JSON.parse(JSON.stringify(state.currentWinner)));
 
     if (!validateCurrentWinner()) {
       handleInvalidWinner();
@@ -215,8 +198,14 @@ export function initGameRoll() {
   }
 
   function prepareNewRoll() {
-    void dom.result.offsetHeight; // 强制重排
+    void dom.result.offsetHeight;
     state.isRolling = true;
+    
+    const storyElement = document.getElementById('story');
+    if (storyElement) {
+      storyElement.textContent = '\u00A0';
+      storyElement.style.animation = '';
+    }
   }
 
   function validateCurrentWinner() {
@@ -231,17 +220,14 @@ export function initGameRoll() {
   }
 
   function handleMaxRetries() {
-    console.error('最大重试次数已达');
     state.isRolling = false;
   }
 
   function handleInvalidWinner() {
-    console.error('未找到中奖对象');
     state.isRolling = false;
   }
 
   function handleMissingWinner() {
-    console.warn('数据异常，重新生成', state.retryCount);
     startNewRoll();
   }
 
@@ -251,7 +237,6 @@ export function initGameRoll() {
     updateItems();
   }
 
-  // 动画相关
   function calculateTargetDistance() {
     const containerHeight = dom.result.offsetHeight;
     const winnerIndex = state.loopData.findIndex(i => i._uid === state.currentWinner._uid);
@@ -282,7 +267,6 @@ export function initGameRoll() {
     requestAnimationFrame(animate);
   }
 
-  // 显示更新
   function updateItems() {
     const maxPos = state.loopData.length * CONFIG.ITEM_HEIGHT;
     const normalizedPos = (state.currentPos % maxPos + maxPos) % maxPos;
@@ -295,25 +279,18 @@ export function initGameRoll() {
       const itemData = state.loopData[dataIndex];
       const yPos = Math.round((i * CONFIG.ITEM_HEIGHT) - offset - containerOffset);
 
-      updateItemAppearance(item, itemData, yPos);
-      highlightWinner(item, itemData);
+      item.textContent = itemData?.name || `游戏${i + 1}`;
+      item.className = `scroll-item quality-${itemData?.quality || 1}`;
+      item.style.transform = `translateY(${yPos}px)`;
+
+      if (state.currentWinner && itemData?._uid === state.currentWinner._uid) {
+        item.style.fontWeight = 'bold';
+        item.style.boxShadow = '0 2px 8px rgba(255, 215, 0, 0.5)';
+      } else {
+        item.style.fontWeight = '';
+        item.style.boxShadow = '';
+      }
     });
-  }
-
-  function updateItemAppearance(item, itemData, yPos) {
-    item.textContent = itemData?.name || `游戏${i + 1}`;
-    item.className = `scroll-item quality-${itemData?.quality || 1}`;
-    item.style.transform = `translateY(${yPos}px)`;
-  }
-
-  function highlightWinner(item, itemData) {
-    if (state.currentWinner && itemData?._uid === state.currentWinner._uid) {
-      item.style.fontWeight = 'bold';
-      item.style.boxShadow = '0 2px 8px rgba(255, 215, 0, 0.5)';
-    } else {
-      item.style.fontWeight = '';
-      item.style.boxShadow = '';
-    }
   }
 
   function finalizeAnimation() {
@@ -327,11 +304,23 @@ export function initGameRoll() {
 
       state.currentPos = targetY;
       updateItems();
+
+      const storyElement = document.getElementById('story');
+      if (storyElement) {
+        storyElement.style.animation = 'none';
+        void storyElement.offsetWidth;
+        
+        if (state.currentWinner?.story) {
+          storyElement.textContent = state.currentWinner.story;
+        } else {
+          storyElement.textContent = '\u00A0';
+        }
+      }
+      
       state.isRolling = false;
     });
   }
 
-  // 工具函数
   function getWeightedRandom() {
     if (!state.gameData.length) {
       return {
@@ -360,6 +349,5 @@ export function initGameRoll() {
     return array;
   }
 
-  // 启动初始化
   init();
 }

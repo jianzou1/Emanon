@@ -17,7 +17,8 @@
       "isLoved": true,
       "seriesTag": "CS",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "身体好直接开睡"
     },
     {
       "id": 2,
@@ -29,7 +30,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "国服第二赛季3508分。",
-      "quality": 5
+      "quality": 5,
+      "story": "用心做CG，用脚做游戏"
     },
     {
       "id": 3,
@@ -41,7 +43,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "2018年第5赛季亚洲服前500名。\n2018年第6赛季亚洲服、北美服前100名。",
-      "quality": 6
+      "quality": 6,
+      "story": "广告位招租"
     },
     {
       "id": 4,
@@ -53,7 +56,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "S2-S3赛季暗影岛服务器排位分达到1700分。\nS5赛季艾欧尼亚服务器段位达到“璀璨钻石Ⅰ”。",
-      "quality": 4
+      "quality": 4,
+      "story": "SB也能当策划？"
     },
     {
       "id": 5,
@@ -65,7 +69,8 @@
       "isLoved": false,
       "seriesTag": "Battlefield",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "国外玩家社群在首发时把专家系统吐槽为APEX2042"
     },
     {
       "id": 6,
@@ -77,7 +82,8 @@
       "isLoved": true,
       "seriesTag": "Battlefield",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "好玩 步兵最好玩的一集"
     },
     {
       "id": 7,
@@ -89,7 +95,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "你的G7没我的G8长"
     },
     {
       "id": 8,
@@ -101,7 +108,8 @@
       "isLoved": true,
       "seriesTag": "CS",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "放炸弹拆炸弹游戏的祖宗"
     },
     {
       "id": 9,
@@ -113,7 +121,8 @@
       "isLoved": true,
       "seriesTag": "CS",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "韩国人魔改枪战游戏"
     },
     {
       "id": 10,
@@ -125,7 +134,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "疑似早期作弊猎豹"
     },
     {
       "id": 11,
@@ -137,7 +147,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": "把吃鸡做明白了 腾讯没想明白"
     },
     {
       "id": 12,
@@ -149,11 +160,12 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "小科比找妈妈"
     },
     {
       "id": 13,
-      "name": "无主之地1",
+      "name": "无主之地",
       "sign": "",
       "time": 16,
       "type": "2",
@@ -161,7 +173,8 @@
       "isLoved": false,
       "seriesTag": "Borderlands",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": "好玩x1 想出射击挖宝的是天才"
     },
     {
       "id": 14,
@@ -173,7 +186,8 @@
       "isLoved": false,
       "seriesTag": "Borderlands",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "好玩x2 想出射击挖宝的是天才"
     },
     {
       "id": 15,
@@ -185,11 +199,12 @@
       "isLoved": false,
       "seriesTag": "Borderlands",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "好玩x3 想出射击挖宝的是天才"
     },
     {
       "id": 16,
-      "name": "泰坦陨落1",
+      "name": "泰坦陨落",
       "sign": "",
       "time": 5,
       "type": "2",
@@ -197,7 +212,8 @@
       "isLoved": false,
       "seriesTag": "TitanFall",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "小超APEX"
     },
     {
       "id": 17,
@@ -209,7 +225,8 @@
       "isLoved": false,
       "seriesTag": "TitanFall",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "远超APEX"
     },
     {
       "id": 18,
@@ -221,7 +238,8 @@
       "isLoved": true,
       "seriesTag": "GTA",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "神作"
     },
     {
       "id": 19,
@@ -233,7 +251,8 @@
       "isLoved": false,
       "seriesTag": "GTA",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "还行 刚出优化太差"
     },
     {
       "id": 20,
@@ -245,7 +264,8 @@
       "isLoved": false,
       "seriesTag": "GTA",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "神作的爸爸"
     },
     {
       "id": 21,
@@ -257,7 +277,8 @@
       "isLoved": true,
       "seriesTag": "GTA",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "神作的爷爷"
     },
     {
       "id": 22,
@@ -269,7 +290,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "喜欢cosplay日本人就玩这个"
     },
     {
       "id": 23,
@@ -281,7 +303,8 @@
       "isLoved": false,
       "seriesTag": "TheDivision",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "第三人称射击挖宝"
     },
     {
       "id": 24,
@@ -293,7 +316,8 @@
       "isLoved": false,
       "seriesTag": "TheDivision",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": "第三人称射击挖宝 带联网 带充值内购 疑似被腾讯资方视察"
     },
     {
       "id": 25,
@@ -305,7 +329,8 @@
       "isLoved": false,
       "seriesTag": "FarCry",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "剧情烂尾"
     },
     {
       "id": 26,
@@ -317,7 +342,8 @@
       "isLoved": false,
       "seriesTag": "FarCry",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "罐头神"
     },
     {
       "id": 27,
@@ -329,7 +355,8 @@
       "isLoved": false,
       "seriesTag": "DeadRising",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "喜欢割草 爽"
     },
     {
       "id": 28,
@@ -341,7 +368,8 @@
       "isLoved": false,
       "seriesTag": "DeadRising",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": "喜欢割草 爽"
     },
     {
       "id": 29,
@@ -353,7 +381,8 @@
       "isLoved": false,
       "seriesTag": "DeadRising",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": "喜欢割草 爽"
     },
     {
       "id": 30,
@@ -365,7 +394,8 @@
       "isLoved": true,
       "seriesTag": "L4D",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "G胖不会数三"
     },
     {
       "id": 31,
@@ -377,7 +407,8 @@
       "isLoved": false,
       "seriesTag": "L4D",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": ""
     },
     {
       "id": 32,
@@ -389,7 +420,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "打僵尸带技能 养成曲线有点怪"
     },
     {
       "id": 33,
@@ -401,7 +433,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": ""
     },
     {
       "id": 34,
@@ -413,7 +446,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "滴滴，你个王八蛋！"
     },
     {
       "id": 35,
@@ -425,7 +459,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "大名鼎鼎的冰箱"
     },
     {
       "id": 36,
@@ -437,7 +472,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "虎先锋三拳干碎我的大圣梦"
     },
     {
       "id": 37,
@@ -449,7 +485,8 @@
       "isLoved": false,
       "seriesTag": "WatchDogs",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": ""
     },
     {
       "id": 38,
@@ -461,7 +498,8 @@
       "isLoved": false,
       "seriesTag": "WatchDogs",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": ""
     },
     {
       "id": 39,
@@ -473,7 +511,8 @@
       "isLoved": false,
       "seriesTag": "Prototype",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": ""
     },
     {
       "id": 40,
@@ -485,7 +524,8 @@
       "isLoved": false,
       "seriesTag": "Prototype",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "变态"
     },
     {
       "id": 41,
@@ -497,7 +537,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "跑酷打僵尸"
     },
     {
       "id": 42,
@@ -509,7 +550,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "喜欢cosplay西部牛仔就玩这个"
     },
     {
       "id": 43,
@@ -521,7 +563,8 @@
       "isLoved": true,
       "seriesTag": "DeadIsland",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "打僵尸小神作 养成曲线完美"
     },
     {
       "id": 44,
@@ -533,7 +576,8 @@
       "isLoved": false,
       "seriesTag": "DeadIsland",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "不如一代"
     },
     {
       "id": 45,
@@ -545,7 +589,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "香港GTA"
     },
     {
       "id": 46,
@@ -557,7 +602,8 @@
       "isLoved": true,
       "seriesTag": "COD",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "COD最好玩的一集"
     },
     {
       "id": 47,
@@ -569,7 +615,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "好玩 电视剧也好看"
     },
     {
       "id": 48,
@@ -581,7 +628,8 @@
       "isLoved": false,
       "seriesTag": "Horizon",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "记得用手柄"
     },
     {
       "id": 49,
@@ -593,7 +641,8 @@
       "isLoved": false,
       "seriesTag": "Horizon",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "记得用手柄"
     },
     {
       "id": 50,
@@ -605,7 +654,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "一般 手忙脚乱"
     },
     {
       "id": 51,
@@ -617,7 +667,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "韩国人不会做模拟经营"
     },
     {
       "id": 52,
@@ -629,11 +680,12 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": "强化版牧场物语"
     },
     {
       "id": 53,
-      "name": "牧场物语：矿石镇的伙伴(GBA)",
+      "name": "牧场物语：矿石镇的伙伴",
       "sign": "≈",
       "time": 30,
       "type": "3",
@@ -641,7 +693,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": "童年的神"
     },
     {
       "id": 54,
@@ -653,7 +706,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 3,
+      "story": "科幻苦力模拟器"
     },
     {
       "id": 55,
@@ -665,7 +719,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "水电工模拟器"
     },
     {
       "id": 56,
@@ -677,7 +732,8 @@
       "isLoved": true,
       "seriesTag": "SimCity",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "天际线没出之前 模拟城市类型的划时代神作"
     },
     {
       "id": 57,
@@ -689,7 +745,8 @@
       "isLoved": false,
       "seriesTag": "SimCity",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "没四代好"
     },
     {
       "id": 58,
@@ -701,7 +758,8 @@
       "isLoved": false,
       "seriesTag": "SimCity",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "脑子带包想出来模拟城市联网的玩法"
     },
     {
       "id": 59,
@@ -713,7 +771,8 @@
       "isLoved": false,
       "seriesTag": "Skyline",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "当代模拟城市神作"
     },
     {
       "id": 60,
@@ -725,7 +784,8 @@
       "isLoved": false,
       "seriesTag": "Skyline",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "有望继承模拟城市神作头衔"
     },
     {
       "id": 61,
@@ -737,7 +797,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "末世政治模拟器"
     },
     {
       "id": 62,
@@ -749,7 +810,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "从DOS一路换皮到WIN11 钱真好赚"
     },
     {
       "id": 63,
@@ -761,11 +823,12 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 4,
+      "story": "好玩 喜欢割草 就是容易睡着"
     },
     {
       "id": 64,
-      "name": "Blatro（小丑牌）",
+      "name": "Balatro",
       "sign": "",
       "time": 104,
       "type": "4",
@@ -773,11 +836,12 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "德州肉鸽 神中神"
     },
     {
       "id": 65,
-      "name": "哈迪斯1",
+      "name": "Hades",
       "sign": "≈",
       "time": 10,
       "type": "4",
@@ -785,11 +849,12 @@
       "isLoved": false,
       "seriesTag": "Hades",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "好玩"
     },
     {
       "id": 66,
-      "name": "哈迪斯2",
+      "name": "Hades II",
       "sign": "",
       "time": 39,
       "type": "4",
@@ -797,7 +862,8 @@
       "isLoved": true,
       "seriesTag": "Hades",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "超越一代"
     },
     {
       "id": 67,
@@ -809,7 +875,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 2,
+      "story": "被同事骗着买的"
     },
     {
       "id": 68,
@@ -821,7 +888,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "机制神"
     },
     {
       "id": 69,
@@ -833,7 +901,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": ""
     },
     {
       "id": 70,
@@ -845,7 +914,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": ""
     },
     {
       "id": 71,
@@ -857,7 +927,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "笑死"
     },
     {
       "id": 72,
@@ -869,7 +940,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": ""
     },
     {
       "id": 73,
@@ -881,7 +953,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "唐氏绝地求生"
     },
     {
       "id": 74,
@@ -893,7 +966,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "TPS割草大王"
     },
     {
       "id": 75,
@@ -905,7 +979,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "天亮了"
     },
     {
       "id": 76,
@@ -917,7 +992,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "历史题材RTS神"
     },
     {
       "id": 77,
@@ -929,7 +1005,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 6
+      "quality": 6,
+      "story": "我叫磁力棒"
     },
     {
       "id": 78,
@@ -941,7 +1018,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "中世纪RTS神"
     },
     {
       "id": 79,
@@ -953,7 +1031,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "还行 我不喜欢"
     },
     {
       "id": 80,
@@ -965,7 +1044,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 5,
+      "story": "活到今天全靠玩家自制"
     },
     {
       "id": 81,
@@ -977,7 +1057,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": ""
     },
     {
       "id": 82,
@@ -989,7 +1070,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "哭能解决问题"
     },
     {
       "id": 83,
@@ -1001,7 +1083,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 5
+      "quality": 4,
+      "story": "唉，死亡与机器人"
     },
     {
       "id": 84,
@@ -1013,7 +1096,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "注：这项改动极为大胆"
     },
     {
       "id": 85,
@@ -1025,7 +1109,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "鱼雷炸飞机"
     },
     {
       "id": 86,
@@ -1037,7 +1122,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "最高段位：阴阳大允",
-      "quality": 3
+      "quality": 3,
+      "story": "比干农活好玩"
     },
     {
       "id": 87,
@@ -1049,7 +1135,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "最高段位：王者10星",
-      "quality": 1
+      "quality": 1,
+      "story": "喜欢干农活"
     },
     {
       "id": 88,
@@ -1061,7 +1148,8 @@
       "isLoved": true,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 3
+      "quality": 3,
+      "story": "崩3电脑版"
     },
     {
       "id": 89,
@@ -1073,7 +1161,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 4
+      "quality": 4,
+      "story": "还挺骄傲？有什么用？一个2分钟一把的4399小游戏，拿出去给人说自己成天苦练一个4399凉批小游戏，谁不在心里暗骂你一句s比？"
     },
     {
       "id": 90,
@@ -1085,7 +1174,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "最高段位：白金",
-      "quality": 2
+      "quality": 2,
+      "story": "拳头做的？"
     },
     {
       "id": 91,
@@ -1097,7 +1187,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "这也能成"
     },
     {
       "id": 92,
@@ -1109,7 +1200,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 1
+      "quality": 1,
+      "story": "无厘头"
     },
     {
       "id": 93,
@@ -1121,7 +1213,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 1
+      "quality": 1,
+      "story": "不会出男性人物？"
     },
     {
       "id": 94,
@@ -1133,7 +1226,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": "启动"
     },
     {
       "id": 95,
@@ -1145,7 +1239,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 1
+      "quality": 1,
+      "story": ""
     },
     {
       "id": 96,
@@ -1157,7 +1252,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": ""
     },
     {
       "id": 97,
@@ -1169,7 +1265,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "金铲铲之战：超凡大师\n云顶之弈：璀璨钻石",
-      "quality": 5
+      "quality": 5,
+      "story": "用心做游戏，用脚做平衡"
     },
     {
       "id": 98,
@@ -1181,7 +1278,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 2
+      "quality": 2,
+      "story": ""
     },
     {
       "id": 99,
@@ -1193,7 +1291,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 1
+      "quality": 1,
+      "story": ""
     },
     {
       "id": 100,
@@ -1205,7 +1304,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 1
+      "quality": 1,
+      "story": ""
     },
     {
       "id": 101,
@@ -1217,7 +1317,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 1
+      "quality": 1,
+      "story": ""
     },
     {
       "id": 102,
@@ -1229,7 +1330,8 @@
       "isLoved": false,
       "seriesTag": "",
       "spacialAchievements": "",
-      "quality": 1
+      "quality": 1,
+      "story": "据说匹配和排位在同一个池子"
     }
   ]
 ]
