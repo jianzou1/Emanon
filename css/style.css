@@ -18,19 +18,13 @@ body {
 .logo {
   margin: 5% auto 1%; /* 上下外边距 */
   cursor: pointer; /* 鼠标悬停时显示手型 */
-  background: url('/ui/logo.png') no-repeat center / cover; /* 背景图片，居中且覆盖 */
-  width: 200px; /* 宽度 */
-  height: 158px; /* 高度 */
-  transform: scale(0.9); /* 缩放比例 */
-  animation: imageChange 2.5s infinite steps(1); /* 图片轮播动画 */
-}
-
-@keyframes imageChange {
-  50% { background-image: url('/ui/logo2.png'); } /* 动画到50%时更换背景图片 */
-}
-
-.logo:hover {
-  animation-duration: 0.3s; /* 悬停时动画加速 */
+  background: url('/ui/logo.jpg') no-repeat center / cover; /* 背景图片，居中且覆盖 */
+  width: 768px; /* 宽度 */
+  height: 278px; /* 高度 */
+  box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.5);
+  border: rgb(177, 176, 176) 1px solid;
+  border-bottom: white 2px solid;
+  border-right: white 2px solid;
 }
 
 menu[role=tablist] > li {
