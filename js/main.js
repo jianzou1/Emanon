@@ -15,9 +15,11 @@ import { gameList } from '/js/gameList.js';
 import { initGameRoll } from '/js/gameRoll.js';
 import { initializeGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
+import { initializeRandomLogo } from '/js/logoRandomizer.js';
 
 const initializeApp = async () => {
   try {
+    initializeRandomLogo(); // 新增：仅在整页加载时执行，不触发pjax
     const { Pjax } = await loadResources();
 
     const pjax = new Pjax({

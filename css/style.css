@@ -8,7 +8,6 @@
 
 body {
   height: 100%;
-  weight: 100%;
   margin: 0; /* 去除默认边距 */
   display: flex; /* 使用 Flexbox 布局 */
   flex-direction: column; /* 主轴方向为垂直 */
@@ -20,7 +19,6 @@ body {
 .logo {
   margin: 5% auto 1%; /* 上下外边距 */
   cursor: pointer; /* 鼠标悬停时显示手型 */
-  background: url('/ui/logo.jpg') no-repeat center / cover; /* 背景图片，居中且覆盖 */
   background-size: contain;
   width: 768px; /* 宽度 */
   height: 278px; /* 高度 */
