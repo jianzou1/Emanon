@@ -34,9 +34,10 @@
     }
 
     #welcome-popup p {
-      line-height: 0;
+      line-height: 1;
       font-size: 12px;
       text-align: left;
+      margin-bottom: -1%;
     }
 
     /* 关闭按钮居中 */
@@ -52,6 +53,11 @@
       margin: auto;
       margin-bottom: 5%;
       animation: imageChangePopupIcon 2s infinite steps(1);
+    }
+    .version-date {
+      background: linear-gradient(to bottom, #0b8525, #076607);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     @keyframes imageChangePopupIcon {
@@ -80,19 +86,27 @@
     </header>
     <section class="window-body">
       <div class="popUpIcon"></div>
-      <p style="text-align: center; line-height: 1;"><strong style="color: purple">✨ Welcom to DrunkFrog! Please read
+      <p style="text-align: center; line-height: 1;"><strong style="color: purple">✨ Welcome to Emanon! Please read
           what's new. ✨</strong></p>
-      <p><strong style="color: yellow">24-11-19 Dev Version 3.0.0</strong></p>
-      <p>0c8ad6e - added gallery</p>  
-      <p><strong style="color: green">24-11-14 Dev Version 2.0.0</strong></p>
-      <p>cd1bf25 - added game list</p>  
-      <p><strong style="color: green">24-09-17 Dev Version 1.0.0</strong></p>
-      <p>efb00e3 - added pjax</p>
-      <p><strong style="color: green">24-09-08 Dev Version 0.2.1</strong></p>
-      <p>3981cc3 - added progress</p>
-      <p><strong style="color: green">24-09-05 Dev Version 0.1.0</strong></p>
-      <p>6aa6fbb - added changelog window</p>
-      <p>e21464d - init drunkfrog website</p>
+  <p><strong class="version-date">25-03-24 v10.0.0 </strong><br>794202f - added ascii logo</p>
+  <hr>
+  <p><strong class="version-date">25-03-18 v9.0.0 </strong><br>21058ab - added rolling machine</p>
+  <hr>
+  <p><strong class="version-date">25-03-17 v8.0.0</strong><br>ec6c8f2 - added webpack</p>
+  <hr>
+  <p><strong class="version-date">25-03-06 v7.0.0</strong><br>c959d68 - modular cdn loading</p>
+  <hr>
+  <p><strong class="version-date">24-11-24 v6.0.0</strong><br>c959d68 - added crt effect</p>
+  <hr>
+  <p><strong class="version-date">24-11-19 v5.0.0</strong><br>0c8ad6e - added gallery</p>
+  <hr>
+  <p><strong class="version-date">24-11-14 v4.0.0</strong><br>cd1bf25 - added game list</p>
+  <hr>
+  <p><strong class="version-date">24-09-17 v3.0.0</strong><br>efb00e3 - added pjax</p>
+  <hr>
+  <p><strong class="version-date">24-09-08 v2.0.0</strong><br>3981cc3 - added progress</p>
+  <hr>
+  <p><strong class="version-date">24-09-05 v1.0.0</strong><br>e21464d - init website</p>
     </section>
     <button id="close-popup">Confirm</button>
   </div>
