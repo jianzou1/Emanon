@@ -4,6 +4,7 @@
 @import "game.css";
 @import "gallery.css";
 @import "about.css";
+@import "logo.css";
 @import url(https://cdn.jsdmirror.com/npm/98.css@0.1.20/dist/98.min.css); /* 导入外部样式表 98.css */
 
 body {
@@ -17,33 +18,6 @@ body {
 }
 
 /* 保持其他部分不变 */
-
-.logo {
-  margin: 5% auto 1%; /* 上下外边距 */
-  cursor: pointer; /* 鼠标悬停时显示手型 */
-  width: 768px; /* 设置固定宽度，可按需调整 */
-  height: 278px; /* 设置固定高度，可按需调整 */
-  box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.5);
-  border: rgb(177, 176, 176) 1px solid;
-  border-bottom: white 2px solid;
-  border-right: white 2px solid;
-  overflow: hidden; /* 隐藏溢出内容 */
-  position: relative; /* 为子元素的绝对定位做准备 */
-}
-
-.logo .text-container {
-  font-family: "Courier New", Courier, monospace; /* 使用等宽字体，确保 ASCII 字符显示整齐 */
-  font-size: 14px; /* 设置字体大小 */
-  white-space: pre; /* 保留换行符和空格 */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: center center;
-  transform: translate(-50%, -50%);
-  margin: 0; /* 消除外边距 */
-  padding: 0; /* 消除内边距 */
-  line-height: 1; /* 设置行高为 1，减少额外空间 */
-}
 
 menu[role=tablist] > li {
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
