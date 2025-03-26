@@ -1,5 +1,5 @@
 {
-  "name": "Emanon",
+  "name": "Drunk Frog",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -14,7 +14,6 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "98.css": "^0.1.20",
     "lodash": "^4.17.21"
   }
 }
