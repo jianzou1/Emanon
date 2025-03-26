@@ -5,7 +5,7 @@
 @import "gallery.css";
 @import "about.css";
 @import "logo.css";
-@import url(https://cdn.jsdmirror.com/npm/98.css@0.1.20/dist/98.min.css); /* 导入外部样式表 98.css */
+@import '/node_modules/98.css/dist/98.css';
 
 body {
   height: 100%;
