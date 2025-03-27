@@ -59,6 +59,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    #lang-switcher {margin-top: 15px;}
 
     @keyframes imageChangePopupIcon {
       33% {
@@ -79,15 +80,17 @@
   <!-- 弹窗 -->
   <div id="welcome-popup" class="window">
     <header class="title-bar">
-      <div class="title-bar-text">Changelog</div>
+      <div class="title-bar-text" data-lang-id="dailty_popup_title">welcome</div>
       <div class="title-bar-controls">
         <button aria-label="Close" onclick="closePopup()"></button>
       </div>
     </header>
     <section class="window-body">
-      <div class="popUpIcon"></div>
-      <p style="text-align: center; line-height: 1;"><strong style="color: purple">✨ Welcome to Emanon! Please read
-          what's new. ✨</strong></p>
+      <p style="text-align: center; line-height: 1;" data-lang-id="dailty_popup_text"><strong style="color: purple"></strong></p>
+          <select id="lang-switcher">
+            <option value="en">English</option>
+            <option value="cn">简体中文</option>
+          </select>
   <p><strong class="version-date">25-03-24 v10.0.0 </strong><br>794202f - added ascii logo</p>
   <hr>
   <p><strong class="version-date">25-03-18 v9.0.0 </strong><br>21058ab - added rolling machine</p>
@@ -108,7 +111,7 @@
   <hr>
   <p><strong class="version-date">24-09-05 v1.0.0</strong><br>e21464d - init website</p>
     </section>
-    <button id="close-popup">Confirm</button>
+    <button id="close-popup"data-lang-id="btn_ok">Confirm</button>
   </div>
   <script src="/js/dailyPopup.js"></script>
 </body>

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "dailty_popup_title",
+    "cn": "欢迎登录",
+    "en": "welcome to log in"
+  },
+  {
+    "id": "dailty_popup_text",
+    "cn": "请选择你的语言：",
+    "en": "Please choose your language:"
+  },
+  {
+    "id": "btn_ok",
+    "cn": "确定",
+    "en": "Confirm"
+  },
+  {
+    "id": "tab_progress",
+    "cn": "进度条",
+    "en": "Progress"
+  },
+  {
+    "id": "tab_article",
+    "cn": "文章",
+    "en": "Article"
+  },
+  {
+    "id": "tab_game",
+    "cn": "游戏",
+    "en": "Game"
+  },
+  {
+    "id": "tab_gallery",
+    "cn": "画廊",
+    "en": "Gallery"
+  },
+  {
+    "id": "tab_about",
+    "cn": "关于",
+    "en": "About"
+  },
+  {
+    "id": "update_time",
+    "cn": "上次更新：{0}",
+    "en": "Last Updated:{0}"
+  }
+]

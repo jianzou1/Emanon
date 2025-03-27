@@ -1,3 +1,4 @@
+// main.js
 import { loadResources } from '/js/cdnLoader.js';
 import { TabHandler } from '/js/tabHandler.js';
 import { updateProgressBar } from '/js/progressBar.js';
@@ -16,46 +17,59 @@ import { initGameRoll } from '/js/gameRoll.js';
 import { initializeGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
+import LangManager from '/js/langManager.js';
 
 const initializeApp = async () => {
   try {
-    initializeRandomLogo(); // 新增：仅在整页加载时执行，不触发pjax
+    // 初始化多语言管理器
+    await LangManager.init();
+    
+    // 初始化随机Logo（仅整页加载）
+    initializeRandomLogo();
+
+    // 加载PJAX依赖
     const { Pjax } = await loadResources();
 
+    // 配置PJAX实例
     const pjax = new Pjax({
       selectors: ['head title', '#main'],
       cacheBust: false,
     });
 
+    // 选项卡配置数据
     const tabData = [
-      { url: '/', text: 'Progress' },
-      { url: '/page/article.html', text: 'Article' },
-      { url: '/page/game.html', text: 'Game List' },
-      { url: '/page/gallery.html', text: 'Gallery' },
-      { url: '/page/about.html', text: 'About Me' }
+      { url: '/', text: 'tab_progress' },
+      { url: '/page/article.html', text: 'tab_article' },
+      { url: '/page/game.html', text: 'tab_game' },
+      { url: '/page/gallery.html', text: 'tab_gallery' },
+      { url: '/page/about.html', text: 'tab_about' }
     ];
 
-    const tabHandler = new TabHandler('[role="tablist"]', tabData, pjax);
+    // 初始化标签处理器
+    const tabHandler = new TabHandler(
+      '[role="tablist"]',
+      tabData, 
+      pjax
+    );
 
+    // 加载状态管理
     const toggleLoadingAnimation = (isLoading) => {
-      if (isLoading) {
-        initializeLoadingAnimation().then(showLoadingAnimation);
-      } else {
-        hideLoadingAnimation();
-      }
+      isLoading ? initializeLoadingAnimation().then(showLoadingAnimation) : hideLoadingAnimation();
     };
 
+    // PJAX事件监听
     document.addEventListener('pjax:send', () => toggleLoadingAnimation(true));
-
     document.addEventListener('pjax:complete', () => {
       toggleLoadingAnimation(false);
       handlePageLoad();
     });
 
+    // 页面加载处理器
     const handlePageLoad = () => {
       try {
         const currentUrl = window.location.pathname;
 
+        // 页面类型判断
         switch (currentUrl) {
           case '/':
             updateProgressBar();
@@ -66,7 +80,7 @@ const initializeApp = async () => {
             break;
           case '/page/game.html':
             gameList();
-            initGameRoll(); // 确保在 /page/game.html 下调用
+            initGameRoll();
             break;
           case '/page/gallery.html':
             initializeGallery();
@@ -75,11 +89,13 @@ const initializeApp = async () => {
             break;
         }
 
+        // 通用功能初始化
         footerLoader();
         handleScrollAndScrollToTop();
         initializeTips();
         initCRT();
 
+        // 重新绑定选项卡（PJAX加载后）
         const tablist = document.querySelector('[role="tablist"]');
         if (tablist) {
           tablist.innerHTML = '';
@@ -90,6 +106,7 @@ const initializeApp = async () => {
       }
     };
 
+    // Logo点击处理
     const logo = document.querySelector('.logo');
     if (logo) {
       logo.addEventListener('click', (e) => {
@@ -99,10 +116,13 @@ const initializeApp = async () => {
       });
     }
 
+    // 初始页面加载
     handlePageLoad();
   } catch (error) {
     console.error('应用初始化失败:', error);
   }
 };
+
+// 启动应用
 
 export { initializeApp };

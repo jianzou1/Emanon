@@ -5,7 +5,7 @@ export function initializeDailyPopup() {
 }
 
 // 配置项：弹窗展示时间间隔，单位为秒
-const popupInterval = 86400; // 默认值为 24 小时（86400 秒）
+const popupInterval = 1; // 默认值为 24 小时（86400 秒）
 
 async function fetchAndProcess(url, successCallback, errorCallback) {
     try {
