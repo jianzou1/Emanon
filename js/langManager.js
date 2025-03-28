@@ -1,24 +1,23 @@
 /**
- * Multilingual Manager (v2.8)
- * Features:
- * - Only translates <title> when data-lang-id is present
- * - Full document monitoring
- * - Parameterized translations
- * - Optimized DOM observation
+ * Multilingual Manager (v2.9)
+ * Enhanced Features:
+ * - Dynamic parameter management without requiring data-lang-params
+ * - Hybrid parameter handling (DOM attributes + dynamic params)
+ * - Automatic update triggering
+ * - Improved error resilience
  */
 class LangManager {
-  // Static configuration defaults
   static DEFAULT_CONFIG = {
     debug: false,
-    version: '2.8',
+    version: '2.9',
     fallbackLang: 'en',
-    storageKey: 'lang_data_v5',
+    storageKey: 'lang_data_v6',
     langFile: '/cfg/lang_cfg.json',
     observerOptions: {
       subtree: true,
       childList: true,
       attributes: true,
-      attributeFilter: ['data-lang-id', 'data-lang-params']
+      attributeFilter: ['data-lang-id']
     },
     logger: console
   };
@@ -31,6 +30,7 @@ class LangManager {
     this.domObserver = null;
     this.updateInProgress = false;
     this.pendingUpdates = new Set();
+    this.dynamicParams = new Map();
   }
 
   // Logging utilities
@@ -93,13 +93,11 @@ class LangManager {
     if (this.updateInProgress) return;
     this.updateInProgress = true;
 
-    // Process pending updates
     this.pendingUpdates.forEach(element => {
       this.#translateElement(element);
     });
     this.pendingUpdates.clear();
 
-    // Translate all marked elements including title
     const elements = document.querySelectorAll('[data-lang-id]');
     this.#log(`Translating ${elements.length} elements`);
 
@@ -116,16 +114,25 @@ class LangManager {
 
     const translations = this.langData[id] || {};
     const text = translations[this.currentLang] || translations[this.config.fallbackLang] || id;
-    const params = JSON.parse(element.dataset.langParams || '[]');
+    
+    // Merge dynamic and DOM parameters
+    const dynamicParams = this.dynamicParams.get(id) || [];
+    const elementParams = JSON.parse(element.dataset.langParams || '[]');
+    const allParams = [...dynamicParams, ...elementParams];
 
     const updateMethod = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' 
       ? 'value' 
       : 'textContent';
     
-    element[updateMethod] = params.reduce(
-      (str, param, i) => str.replace(new RegExp(`\\{${i}\\}`, 'g'), param),
-      text
-    );
+    try {
+      element[updateMethod] = allParams.reduce(
+        (str, param, i) => str.replace(new RegExp(`\\{${i}\\}`, 'g'), param),
+        text
+      );
+    } catch (err) {
+      this.#warn(`Failed to translate ${id}:`, err);
+      element[updateMethod] = text;
+    }
   }
 
   #safeBindSwitcher() {
@@ -148,8 +155,6 @@ class LangManager {
       localStorage.setItem('user_lang', lang);
       this.#applyTranslations();
     });
-
-    this.#log('Language switcher bound');
   }
 
   #startSmartObserver() {
@@ -157,7 +162,6 @@ class LangManager {
 
     this.domObserver = new MutationObserver((mutations) => {
       if (this.updateInProgress) {
-        // Collect elements that need updating
         mutations.forEach(mutation => {
           if (mutation.type === 'childList') {
             mutation.addedNodes.forEach(node => {
@@ -185,8 +189,7 @@ class LangManager {
               n.querySelector('[data-lang-id]'))
            )) ||
           (mutation.type === 'attributes' && 
-           (mutation.attributeName === 'data-lang-id' ||
-            mutation.attributeName === 'data-lang-params'))
+           mutation.attributeName === 'data-lang-id')
         );
       });
 
@@ -224,21 +227,9 @@ class LangManager {
     const translations = this.langData[id] || {};
     const text = translations[this.currentLang] || translations[this.config.fallbackLang] || id;
     return params.reduce(
-      (str, param, i) => str.replace(new RegExp(`\\{${i}\\}`, 'g'), param),
+      (str, param, i) => str.replace(`{${i}}`, param),
       text
     );
-  }
-
-  setTitle(id, ...params) {
-    let titleElement = document.querySelector('title');
-    if (!titleElement) {
-      titleElement = document.createElement('title');
-      document.head.appendChild(titleElement);
-    }
-    
-    titleElement.setAttribute('data-lang-id', id);
-    titleElement.dataset.langParams = JSON.stringify(params);
-    this.#applyTranslations();
   }
 
   setLanguage(lang) {
@@ -250,6 +241,26 @@ class LangManager {
 
   getCurrentLang() {
     return this.currentLang;
+  }
+
+  setParams(id, params = []) {
+    if (!Array.isArray(params)) {
+      this.#warn('Parameters should be an array');
+      params = [params];
+    }
+    
+    this.dynamicParams.set(id, params);
+    const elements = document.querySelectorAll(`[data-lang-id="${id}"]`);
+    elements.forEach(el => this.pendingUpdates.add(el));
+    
+    if (!this.updateInProgress) {
+      this.#applyTranslations();
+    }
+  }
+
+  clearParams(id) {
+    this.dynamicParams.delete(id);
+    this.setParams(id, []);
   }
 
   async reload() {

@@ -3,49 +3,54 @@ export function footerLoader() {
     const footerContainer = document.querySelector('.dynamic-footer');
 
     if (!footerContainer) {
-        console.error('Element with class "dynamic-footer" not found.');
+        console.error('未找到类名为"dynamic-footer"的元素');
         return;
     }
 
-    // 设置页面底部内容
+    // 检查路径是否包含'post'
+    const isPostPage = window.location.href.includes('post');
+
+    // 页脚模板（根据条件决定是否包含last-updated元素）
     const footerContent = `
       <div class="status-bar">
-        <p class="status-bar-field"> Created by Shelton </p>
-        <p class="status-bar-field"> Artistic by Cry </p>
-        <p class="status-bar-field" id="last-updated"></p>
+        <p class="status-bar-field" data-lang-id="footer_name"></p>
+        <p class="status-bar-field" data-lang-id="footer_art"></p>
+        ${!isPostPage ? '<p class="status-bar-field" id="last-updated" data-lang-id="footer_update_time"></p>' : ''}
       </div>
     `;
     
     footerContainer.innerHTML = footerContent;
-    const lastUpdatedElement = footerContainer.querySelector('#last-updated');
 
-    // 检查当前页面链接并更新内容
-    if (lastUpdatedElement) {
-        if (window.location.href.includes('post')) {
-            lastUpdatedElement.textContent = `${new Date().getFullYear()}`; // 直接设置带有前缀的当前年份
+    // 如果不是post页面，则处理更新时间
+    if (!isPostPage) {
+        const lastUpdatedElement = footerContainer.querySelector('#last-updated');
+
+        const handleParameters = async () => {
+            const id = 'update_time';
+            
+            try {
+                const lastUpdated = await getLastUpdatedDateFromGitHub();
+                LangManager.setParams(id, [lastUpdated]);
+            } catch (error) {
+                console.error('设置更新时间失败:', error);
+                LangManager.setParams(id, ['---']);
+            }
+        };
+
+        // 初始化语言管理器
+        if (!LangManager.isInitialized) {
+            LangManager.init().then(handleParameters);
         } else {
-            updateLastUpdatedDate(lastUpdatedElement);
+            handleParameters();
         }
-    } else {
-        console.error('Element with id "last-updated" not found.');
     }
 }
 
-// 更新最后修改日期的函数
-async function updateLastUpdatedDate(element) {
-    try {
-        const lastUpdatedDate = await getLastUpdatedDateFromGitHub();
-        element.textContent = `Last Updated: ${lastUpdatedDate}`; // 含前缀的更新时间
-    } catch (error) {
-        console.error('Failed to fetch last updated date:', error);
-    }
-}
-
-// 从 GitHub API 获取更新日期的函数
+// 从GitHub获取最后更新时间的函数
 async function getLastUpdatedDateFromGitHub() {
     const url = 'https://api.github.com/repos/jianzou1/drunkfrog';
     const cacheKey = 'lastUpdatedDate';
-    const cacheExpiration = 3600000; // 1小时的毫秒数
+    const cacheExpiration = 3600000; // 1小时缓存
 
     // 检查缓存
     const cachedData = localStorage.getItem(cacheKey);
@@ -56,13 +61,14 @@ async function getLastUpdatedDateFromGitHub() {
         }
     }
 
+    // 获取最新数据
     const response = await fetch(url);
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP错误! 状态码: ${response.status}`);
     }
-
+    
     const data = await response.json();
-    const lastUpdatedDate = new Date(data.updated_at).toLocaleString([], {
+    const lastUpdated = new Date(data.updated_at).toLocaleString([], {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
@@ -70,11 +76,11 @@ async function getLastUpdatedDateFromGitHub() {
         minute: '2-digit'
     });
 
-    // 缓存结果
+    // 更新缓存
     localStorage.setItem(cacheKey, JSON.stringify({
         timestamp: Date.now(),
-        date: lastUpdatedDate
+        date: lastUpdated
     }));
 
-    return lastUpdatedDate;
+    return lastUpdated;
 }

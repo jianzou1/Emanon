@@ -45,8 +45,18 @@
     "en": "About"
   },
   {
-    "id": "update_time",
+    "id": "footer_update_time",
     "cn": "上次更新：{0}",
     "en": "Last Updated:{0}"
+  },
+  {
+    "id": "footer_name",
+    "cn": "由Shelton进行站点创建",
+    "en": "Created by Shelton"
+  },
+  {
+    "id": "footer_art",
+    "cn": "由Cry进行艺术化",
+    "en": "Artistic by Cry"
   }
 ]
