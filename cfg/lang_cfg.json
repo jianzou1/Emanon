@@ -71,12 +71,17 @@
   },
   {
     "id": "footer_name",
-    "cn": "由Shelton进行站点创建",
+    "cn": "由 Shelton 进行站点创建",
     "en": "Created by Shelton"
   },
   {
     "id": "footer_art",
-    "cn": "由Cry进行艺术化",
+    "cn": "由 Cry 进行艺术化",
     "en": "Artistic by Cry"
+  },
+  {
+    "id": "CRT",
+    "cn": "CRT效果模拟",
+    "en": "CRT Simulation"
   }
 ]

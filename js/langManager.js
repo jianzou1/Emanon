@@ -1,18 +1,17 @@
 /**
- * Multilingual Manager (v3.0)
- * Enhanced Features:
- * - Multiple parameter placeholder support ({0}, {1} and %1$s, %2$s formats)
- * - Dynamic parameter management
- * - Hybrid parameter handling (DOM attributes + dynamic params)
- * - Automatic update triggering
- * - Improved error resilience
+ * Enhanced Multilingual Manager (v3.1)
+ * New Features:
+ * - Unified parameter handling
+ * - DOM auto-binding
+ * - Cached translations
+ * - Centralized error handling
  */
 class LangManager {
   static DEFAULT_CONFIG = {
     debug: false,
-    version: '3.0',
+    version: '3.1',
     fallbackLang: 'en',
-    storageKey: 'lang_data_v7',
+    storageKey: 'lang_data_v8',
     langFile: '/cfg/lang_cfg.json',
     observerOptions: {
       subtree: true,
@@ -21,7 +20,7 @@ class LangManager {
       attributeFilter: ['data-lang-id']
     },
     logger: console,
-    placeholderFormats: ['braced', 'numbered'] // 'braced' for {0}, 'numbered' for %1$s
+    placeholderFormats: ['braced', 'numbered']
   };
 
   constructor(config = {}) {
@@ -33,9 +32,10 @@ class LangManager {
     this.updateInProgress = false;
     this.pendingUpdates = new Set();
     this.dynamicParams = new Map();
+    this.paramCache = new Map();
   }
 
-  // Logging utilities
+  // ========== PRIVATE METHODS ==========
   #log(...args) {
     if (this.config.debug) {
       this.config.logger.log('%c[Lang]', 'color: #4CAF50;', ...args);
@@ -50,7 +50,15 @@ class LangManager {
     this.config.logger.error('%c[Lang]', 'color: #F44336;', ...args);
   }
 
-  // Core functionality
+  #handleTranslationError(element, key, error) {
+    this.#error(`Translation failed for ${key}:`, error);
+    if (element) {
+      element.classList.add('lang-error');
+      element.setAttribute('title', `Translation error: ${key}`);
+    }
+    return key;
+  }
+
   async #loadLanguageData() {
     try {
       const cached = localStorage.getItem(this.config.storageKey);
@@ -91,20 +99,13 @@ class LangManager {
     }
   }
 
-  /**
-   * Enhanced parameter replacement
-   * @private
-   */
   #replacePlaceholders(text, params = []) {
     if (!params.length) return text;
 
     return params.reduce((str, param, index) => {
-      // Replace {0}, {1} style placeholders
       if (this.config.placeholderFormats.includes('braced')) {
         str = str.replace(new RegExp(`\\{${index}\\}`, 'g'), param);
       }
-      
-      // Replace %1$s, %2$s style placeholders (note: index+1 for this format)
       if (this.config.placeholderFormats.includes('numbered')) {
         str = str.replace(new RegExp(`%${index + 1}\\$s`, 'g'), param);
       }
@@ -122,8 +123,6 @@ class LangManager {
     this.pendingUpdates.clear();
 
     const elements = document.querySelectorAll('[data-lang-id]');
-    this.#log(`Translating ${elements.length} elements`);
-
     elements.forEach(element => {
       this.#translateElement(element);
     });
@@ -152,8 +151,8 @@ class LangManager {
       text = this.#replacePlaceholders(text, allParams);
       element[updateMethod] = text;
     } catch (err) {
-      this.#warn(`Failed to translate ${id}:`, err);
-      element[updateMethod] = text;
+      this.#handleTranslationError(element, id, err);
+      element[updateMethod] = id;
     }
   }
 
@@ -175,6 +174,7 @@ class LangManager {
       this.#log(`Switching language to: ${lang}`);
       this.currentLang = lang;
       localStorage.setItem('user_lang', lang);
+      this.paramCache.clear();
       this.#applyTranslations();
     });
   }
@@ -216,17 +216,55 @@ class LangManager {
       });
 
       if (needsUpdate) {
-        this.#log('Detected relevant DOM changes');
         this.#applyTranslations();
         this.#safeBindSwitcher();
       }
     });
 
     this.domObserver.observe(document.documentElement, this.config.observerOptions);
-    this.#log('Started document-wide observer');
   }
 
-  // Public API =============================================
+  // ========== PUBLIC API ==========
+  applyParameters(element, translationKey, ...params) {
+    try {
+      // 确保元素有data-lang-id属性
+      if (!element.dataset.langId) {
+        element.dataset.langId = translationKey;
+      }
+      
+      // 更新参数缓存
+      this.dynamicParams.set(translationKey, params);
+      
+      const translation = this.translate(translationKey, ...params);
+      const updateMethod = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' 
+        ? 'value' 
+        : 'textContent';
+      element[updateMethod] = translation;
+      return true;
+    } catch (error) {
+      this.#handleTranslationError(element, translationKey, error);
+      return false;
+    }
+  }
+
+  bindDynamicElement(selector, translationKey, paramGenerator) {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(element => {
+      element.dataset.langId = translationKey;
+      this.dynamicParams.set(translationKey, paramGenerator(element));
+      this.pendingUpdates.add(element);
+    });
+    this.#applyTranslations();
+  }
+
+  cachedTranslate(key, ...params) {
+    const cacheKey = `${key}_${params.join('_')}`;
+    if (!this.paramCache.has(cacheKey)) {
+      this.paramCache.set(cacheKey, this.translate(key, ...params));
+    }
+    return this.paramCache.get(cacheKey);
+  }
+
   async init(defaultLang = this.config.fallbackLang) {
     if (this.isInitialized) return;
 
@@ -245,12 +283,6 @@ class LangManager {
     this.#log('Initialization complete');
   }
 
-  /**
-   * Main translation method with enhanced parameter support
-   * @param {string} id - Translation ID
-   * @param {...any} params - Parameters for placeholders
-   * @returns {string} Translated text
-   */
   translate(id, ...params) {
     const translations = this.langData[id] || {};
     const text = translations[this.currentLang] || 
@@ -264,6 +296,14 @@ class LangManager {
     if (lang === this.currentLang) return;
     this.currentLang = lang;
     localStorage.setItem('user_lang', lang);
+    this.paramCache.clear();
+    
+    // 新增：重新应用所有动态参数
+    this.dynamicParams.forEach((params, id) => {
+      const elements = document.querySelectorAll(`[data-lang-id="${id}"]`);
+      elements.forEach(el => this.pendingUpdates.add(el));
+    });
+    
     this.#applyTranslations();
   }
 
@@ -272,11 +312,7 @@ class LangManager {
   }
 
   setParams(id, params = []) {
-    if (!Array.isArray(params)) {
-      this.#warn('Parameters should be an array');
-      params = [params];
-    }
-    
+    if (!Array.isArray(params)) params = [params];
     this.dynamicParams.set(id, params);
     const elements = document.querySelectorAll(`[data-lang-id="${id}"]`);
     elements.forEach(el => this.pendingUpdates.add(el));
@@ -293,24 +329,23 @@ class LangManager {
 
   async reload() {
     await this.#loadLanguageData();
+    this.paramCache.clear();
     this.#applyTranslations();
   }
 
   configure(newConfig) {
     Object.assign(this.config, newConfig);
-    this.#log('Configuration updated');
   }
 
   enableDebug(enable = true) {
     this.config.debug = enable;
-    this.#log(`Debug mode ${enable ? 'enabled' : 'disabled'}`);
   }
 }
 
 // Singleton instance
 const langManager = new LangManager();
 
-// Global exposure with safeguards
+// Global exposure
 if (typeof window !== 'undefined' && !window.LangManager) {
   window.LangManager = langManager;
 }

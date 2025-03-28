@@ -60,6 +60,7 @@ menu[role=tablist] > li {
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
   font-size: 12px; /* 字体大小 */
   padding: 2px; /* 内边距 */
+  white-space: pre-wrap;
 }
 
 p, .window li, h1, h2, h3, h4, h5 {

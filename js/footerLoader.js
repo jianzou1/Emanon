@@ -3,7 +3,7 @@ export function footerLoader() {
     const footerContainer = document.querySelector('.dynamic-footer');
 
     if (!footerContainer) {
-        console.error('未找到类名为"dynamic-footer"的元素');
+        console.error(LangManager.translate('errors.element_not_found', 'dynamic-footer'));
         return;
     }
 
@@ -26,14 +26,21 @@ export function footerLoader() {
         const lastUpdatedElement = footerContainer.querySelector('#last-updated');
 
         const handleParameters = async () => {
-            const id = 'update_time';
-            
             try {
                 const lastUpdated = await getLastUpdatedDateFromGitHub();
-                LangManager.setParams(id, [lastUpdated]);
+                // 使用新的参数传递方式
+                LangManager.applyParameters(
+                    lastUpdatedElement,
+                    'footer_update_time',
+                    lastUpdated
+                );
             } catch (error) {
-                console.error('设置更新时间失败:', error);
-                LangManager.setParams(id, ['---']);
+                console.error(LangManager.translate('errors.update_time_fetch'));
+                LangManager.applyParameters(
+                    lastUpdatedElement,
+                    'footer_update_time',
+                    '---'
+                );
             }
         };
 
@@ -64,7 +71,7 @@ async function getLastUpdatedDateFromGitHub() {
     // 获取最新数据
     const response = await fetch(url);
     if (!response.ok) {
-        throw new Error(`HTTP错误! 状态码: ${response.status}`);
+        throw new Error(LangManager.translate('errors.api_fetch', response.status));
     }
     
     const data = await response.json();
