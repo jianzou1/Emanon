@@ -5,6 +5,26 @@
     "en": "Memories of Emanon"
   },
   {
+    "id": "index_year_progress",
+    "cn": "年进度",
+    "en": "Year progress"
+  },
+  {
+    "id": "index_month_progress",
+    "cn": "月进度",
+    "en": "Month progress"
+  },
+  {
+    "id": "index_day_progress",
+    "cn": "天进度",
+    "en": "Day progress"
+  },
+  {
+    "id": "index_refresh",
+    "cn": "刷新时间剩余 {0}m {1}s",
+    "en": "Refresh in {0}m {1}s"
+  },
+  {
     "id": "dailty_popup_title",
     "cn": "欢迎登录",
     "en": "welcome to log in"

@@ -1,7 +1,8 @@
 /**
- * Multilingual Manager (v2.9)
+ * Multilingual Manager (v3.0)
  * Enhanced Features:
- * - Dynamic parameter management without requiring data-lang-params
+ * - Multiple parameter placeholder support ({0}, {1} and %1$s, %2$s formats)
+ * - Dynamic parameter management
  * - Hybrid parameter handling (DOM attributes + dynamic params)
  * - Automatic update triggering
  * - Improved error resilience
@@ -9,9 +10,9 @@
 class LangManager {
   static DEFAULT_CONFIG = {
     debug: false,
-    version: '2.9',
+    version: '3.0',
     fallbackLang: 'en',
-    storageKey: 'lang_data_v6',
+    storageKey: 'lang_data_v7',
     langFile: '/cfg/lang_cfg.json',
     observerOptions: {
       subtree: true,
@@ -19,7 +20,8 @@ class LangManager {
       attributes: true,
       attributeFilter: ['data-lang-id']
     },
-    logger: console
+    logger: console,
+    placeholderFormats: ['braced', 'numbered'] // 'braced' for {0}, 'numbered' for %1$s
   };
 
   constructor(config = {}) {
@@ -89,6 +91,27 @@ class LangManager {
     }
   }
 
+  /**
+   * Enhanced parameter replacement
+   * @private
+   */
+  #replacePlaceholders(text, params = []) {
+    if (!params.length) return text;
+
+    return params.reduce((str, param, index) => {
+      // Replace {0}, {1} style placeholders
+      if (this.config.placeholderFormats.includes('braced')) {
+        str = str.replace(new RegExp(`\\{${index}\\}`, 'g'), param);
+      }
+      
+      // Replace %1$s, %2$s style placeholders (note: index+1 for this format)
+      if (this.config.placeholderFormats.includes('numbered')) {
+        str = str.replace(new RegExp(`%${index + 1}\\$s`, 'g'), param);
+      }
+      return str;
+    }, text);
+  }
+
   #applyTranslations() {
     if (this.updateInProgress) return;
     this.updateInProgress = true;
@@ -113,9 +136,10 @@ class LangManager {
     if (!id) return;
 
     const translations = this.langData[id] || {};
-    const text = translations[this.currentLang] || translations[this.config.fallbackLang] || id;
-    
-    // Merge dynamic and DOM parameters
+    let text = translations[this.currentLang] || 
+               translations[this.config.fallbackLang] || 
+               id;
+
     const dynamicParams = this.dynamicParams.get(id) || [];
     const elementParams = JSON.parse(element.dataset.langParams || '[]');
     const allParams = [...dynamicParams, ...elementParams];
@@ -123,12 +147,10 @@ class LangManager {
     const updateMethod = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' 
       ? 'value' 
       : 'textContent';
-    
+
     try {
-      element[updateMethod] = allParams.reduce(
-        (str, param, i) => str.replace(new RegExp(`\\{${i}\\}`, 'g'), param),
-        text
-      );
+      text = this.#replacePlaceholders(text, allParams);
+      element[updateMethod] = text;
     } catch (err) {
       this.#warn(`Failed to translate ${id}:`, err);
       element[updateMethod] = text;
@@ -223,13 +245,19 @@ class LangManager {
     this.#log('Initialization complete');
   }
 
+  /**
+   * Main translation method with enhanced parameter support
+   * @param {string} id - Translation ID
+   * @param {...any} params - Parameters for placeholders
+   * @returns {string} Translated text
+   */
   translate(id, ...params) {
     const translations = this.langData[id] || {};
-    const text = translations[this.currentLang] || translations[this.config.fallbackLang] || id;
-    return params.reduce(
-      (str, param, i) => str.replace(`{${i}}`, param),
-      text
-    );
+    const text = translations[this.currentLang] || 
+                 translations[this.config.fallbackLang] || 
+                 id;
+    
+    return this.#replacePlaceholders(text, params);
   }
 
   setLanguage(lang) {
