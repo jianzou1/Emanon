@@ -1,5 +1,4 @@
 // crtEffect.js
-
 const CONFIG = {
     CANVAS_CLASS: 'crt-effect',
     CHECKBOX_ID: 'crtToggle',
@@ -20,17 +19,17 @@ const CONFIG = {
 };
 
 export function initCRT() {
-    // ==== 初始化核心元素 ====
+    // ==== 核心元素初始化 ====
     const canvas = document.querySelector(`.${CONFIG.CANVAS_CLASS}`);
     if (!canvas) {
-        console.error('[CRT] Canvas element not found');
+        console.error('[CRT] 需要.crt-effect画布元素');
         return;
     }
 
     const ctx = canvas.getContext('2d');
     let isEffectEnabled = true;
     let animationId = null;
-    let checkbox = document.getElementById(CONFIG.CHECKBOX_ID);
+    let checkbox = null;
 
     // ==== 动画核心逻辑 ====
     let offset = 0;
@@ -48,7 +47,7 @@ export function initCRT() {
         ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 高性能扫描线绘制
+        // 扫描线绘制
         for (let y = 0; y < canvas.height; y += CONFIG.SCAN_LINE.INTERVAL) {
             const baseOffset = offset % CONFIG.SCAN_LINE.INTERVAL;
             
@@ -79,13 +78,13 @@ export function initCRT() {
         }
     };
 
-    // ==== 状态管理模块 ====
+    // ==== 状态存储 ====
     const loadSettings = () => {
         try {
             const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
             return saved !== null ? JSON.parse(saved) : true;
         } catch (error) {
-            console.warn('[CRT] Failed to load settings:', error);
+            console.warn('[CRT] 配置读取失败，使用默认值');
             return true;
         }
     };
@@ -94,11 +93,11 @@ export function initCRT() {
         try {
             localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(enabled));
         } catch (error) {
-            console.error('[CRT] Failed to save settings:', error);
+            console.error('[CRT] 配置保存失败:', error);
         }
     };
 
-    // ==== 控件绑定模块 ====
+    // ==== 复选框控制 ====
     const handleCheckboxChange = (e) => {
         const newState = e.target.checked;
         if (newState === isEffectEnabled) return;
@@ -109,29 +108,37 @@ export function initCRT() {
         newState ? render() : stopEffect();
     };
 
-    const bindCheckbox = () => {
-        if (!checkbox) {
-            console.warn('[CRT] Checkbox not found');
-            return;
+    const bindController = (element) => {
+        // 清理旧绑定
+        if (checkbox) {
+            checkbox.removeEventListener('change', handleCheckboxChange);
         }
-        
-        checkbox.removeEventListener('change', handleCheckboxChange);
-        checkbox.addEventListener('change', handleCheckboxChange);
-        checkbox.checked = isEffectEnabled;
+
+        // 新元素绑定
+        if (element && element.nodeType === Node.ELEMENT_NODE) {
+            checkbox = element;
+            checkbox.addEventListener('change', handleCheckboxChange);
+            checkbox.checked = isEffectEnabled;
+            return true;
+        }
+        return false;
     };
 
     // ==== 初始化流程 ====
     const initialize = () => {
-        // 加载初始状态
+        // 加载设置
         isEffectEnabled = loadSettings();
         
-        // 绑定复选框控件
-        bindCheckbox();
+        // 尝试自动绑定
+        const autoBindElement = document.getElementById(CONFIG.CHECKBOX_ID);
+        if (autoBindElement) {
+            bindController(autoBindElement);
+        }
         
-        // 初始渲染控制
-        isEffectEnabled ? render() : stopEffect();
+        // 启动效果
+        if (isEffectEnabled) render();
         
-        // 响应式处理
+        // 窗口响应
         window.addEventListener('resize', () => {
             if (isEffectEnabled) render();
         }, { passive: true });
@@ -150,10 +157,8 @@ export function initCRT() {
             if (isEffectEnabled) return;
             isEffectEnabled = true;
             saveSettings(true);
-            if (checkbox) {
-                checkbox.checked = true;
-                requestAnimationFrame(render);
-            }
+            if (checkbox) checkbox.checked = true;
+            render();
         },
         disable: () => {
             if (!isEffectEnabled) return;
@@ -162,14 +167,9 @@ export function initCRT() {
             if (checkbox) checkbox.checked = false;
             stopEffect();
         },
-        destroy: () => {
-            stopEffect();
-            if (checkbox) {
-                checkbox.removeEventListener('change', handleCheckboxChange);
-            }
-            window.removeEventListener('resize', render);
-            window.removeEventListener('DOMContentLoaded', initialize);
-            console.log('[CRT] System destroyed');
-        }
+        attachController: (element) => {
+            return bindController(element || document.getElementById(CONFIG.CHECKBOX_ID));
+        },
+        hasController: () => !!checkbox
     };
 }
