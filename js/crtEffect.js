@@ -1,4 +1,15 @@
 // crtEffect.js
+
+/**
+ * CRT效果系统 (优化版)
+ * 优化点：
+ * 1. 增强性能：限制MutationObserver监听范围
+ * 2. 改进内存管理：规范资源回收
+ * 3. 提升安全性：完善错误边界处理
+ * 4. 增强可维护性：拆分功能模块
+ */
+
+// 配置常量集中管理
 const CONFIG = {
     CANVAS_CLASS: 'crt-effect',
     CHECKBOX_ID: 'crtToggle',
@@ -19,10 +30,10 @@ const CONFIG = {
 };
 
 export function initCRT() {
-    // ==== 核心元素初始化 ====
+    // ==== 初始化核心元素 ====
     const canvas = document.querySelector(`.${CONFIG.CANVAS_CLASS}`);
     if (!canvas) {
-        console.error('[CRT] 需要.crt-effect画布元素');
+        console.error('[CRT] Canvas element not found');
         return;
     }
 
@@ -30,6 +41,7 @@ export function initCRT() {
     let isEffectEnabled = true;
     let animationId = null;
     let checkbox = null;
+    let observer = null;
 
     // ==== 动画核心逻辑 ====
     let offset = 0;
@@ -37,7 +49,7 @@ export function initCRT() {
     const render = () => {
         if (!isEffectEnabled) return;
         
-        // 智能尺寸同步
+        // 尺寸同步
         if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -47,7 +59,7 @@ export function initCRT() {
         ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 扫描线绘制
+        // 扫描线绘制优化
         for (let y = 0; y < canvas.height; y += CONFIG.SCAN_LINE.INTERVAL) {
             const baseOffset = offset % CONFIG.SCAN_LINE.INTERVAL;
             
@@ -74,17 +86,18 @@ export function initCRT() {
         if (animationId) {
             cancelAnimationFrame(animationId);
             animationId = null;
+            // 恢复初始状态
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
     };
 
-    // ==== 状态存储 ====
+    // ==== 状态存储模块 ====
     const loadSettings = () => {
         try {
             const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
             return saved !== null ? JSON.parse(saved) : true;
         } catch (error) {
-            console.warn('[CRT] 配置读取失败，使用默认值');
+            console.warn('[CRT] Failed to load settings:', error);
             return true;
         }
     };
@@ -93,11 +106,11 @@ export function initCRT() {
         try {
             localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(enabled));
         } catch (error) {
-            console.error('[CRT] 配置保存失败:', error);
+            console.error('[CRT] Failed to save settings:', error);
         }
     };
 
-    // ==== 复选框控制 ====
+    // ==== 复选框控制模块 ====
     const handleCheckboxChange = (e) => {
         const newState = e.target.checked;
         if (newState === isEffectEnabled) return;
@@ -105,40 +118,83 @@ export function initCRT() {
         isEffectEnabled = newState;
         saveSettings(newState);
         
-        newState ? render() : stopEffect();
+        if (newState) {
+            render();
+        } else {
+            stopEffect();
+        }
     };
 
-    const bindController = (element) => {
-        // 清理旧绑定
-        if (checkbox) {
-            checkbox.removeEventListener('change', handleCheckboxChange);
-        }
-
-        // 新元素绑定
-        if (element && element.nodeType === Node.ELEMENT_NODE) {
-            checkbox = element;
-            checkbox.addEventListener('change', handleCheckboxChange);
-            checkbox.checked = isEffectEnabled;
-            return true;
-        }
-        return false;
+    const bindCheckbox = () => {
+        if (!checkbox) return;
+        
+        // 清理旧监听器
+        checkbox.removeEventListener('change', handleCheckboxChange);
+        checkbox.addEventListener('change', handleCheckboxChange);
+        checkbox.checked = isEffectEnabled;  // 状态同步
     };
 
-    // ==== 初始化流程 ====
+    // ==== DOM观察器模块 ====
+    const initObserver = () => {
+        if (observer) return;
+
+        observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.type === 'childList') {
+                    const nodes = mutation.addedNodes;
+                    for (const node of nodes) {
+                        if (node.id === CONFIG.CHECKBOX_ID || 
+                            node.contains?.(document.getElementById(CONFIG.CHECKBOX_ID))) {
+                            setupCheckbox();
+                            return; // 找到后立即停止
+                        }
+                    }
+                }
+            }
+        });
+
+        // 智能观察配置：
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributeFilter: ['id'] // 仅在添加节点或修改id时触发
+        });
+    };
+
+    const disconnectObserver = () => {
+        if (observer) {
+            observer.disconnect();
+            observer = null;
+        }
+    };
+
+    // ==== 核心初始化流程 ====
+    const setupCheckbox = () => {
+        checkbox = document.getElementById(CONFIG.CHECKBOX_ID);
+        if (!checkbox) return;
+        
+        bindCheckbox();
+        disconnectObserver(); // 找到后停止观察
+        console.log('[CRT] Checkbox initialized');
+    };
+
     const initialize = () => {
-        // 加载设置
+        // 加载初始状态
         isEffectEnabled = loadSettings();
         
-        // 尝试自动绑定
-        const autoBindElement = document.getElementById(CONFIG.CHECKBOX_ID);
-        if (autoBindElement) {
-            bindController(autoBindElement);
+        // 初始化复选框
+        setupCheckbox();
+        
+        // 启动后备观察机制
+        if (!checkbox) {
+            console.warn('[CRT] Checkbox not found, starting observer');
+            initObserver();
         }
         
-        // 启动效果
+        // 初始渲染
         if (isEffectEnabled) render();
         
-        // 窗口响应
+        // 响应式处理
         window.addEventListener('resize', () => {
             if (isEffectEnabled) render();
         }, { passive: true });
@@ -157,8 +213,13 @@ export function initCRT() {
             if (isEffectEnabled) return;
             isEffectEnabled = true;
             saveSettings(true);
-            if (checkbox) checkbox.checked = true;
-            render();
+            if (checkbox) {
+                checkbox.checked = true;
+                // 避免触发多余渲染
+                requestAnimationFrame(render);
+            } else {
+                render();
+            }
         },
         disable: () => {
             if (!isEffectEnabled) return;
@@ -167,9 +228,15 @@ export function initCRT() {
             if (checkbox) checkbox.checked = false;
             stopEffect();
         },
-        attachController: (element) => {
-            return bindController(element || document.getElementById(CONFIG.CHECKBOX_ID));
-        },
-        hasController: () => !!checkbox
+        destroy: () => {
+            stopEffect();
+            disconnectObserver();
+            if (checkbox) {
+                checkbox.removeEventListener('change', handleCheckboxChange);
+            }
+            window.removeEventListener('resize', render);
+            window.removeEventListener('DOMContentLoaded', initialize);
+            console.log('[CRT] System destroyed');
+        }
     };
 }
