@@ -9,9 +9,10 @@ export function initCRT() {
     }
 
     const ctx = canvas.getContext('2d');
-    const speed = 0.06; // 进一步减小更新速度
+    const speed = 0.06;
     let offset = 0; 
-    let isEffectEnabled = true; // 开关变量，初始为启用状态
+    let isEffectEnabled = false; // 初始设为 false，等待复选框状态确定
+    let animationId = null;
 
     // 清除画布并填充背景
     function clearCanvas() {
@@ -41,48 +42,64 @@ export function initCRT() {
 
     // 初始化函数
     function drawCRT() {
-        if (!isEffectEnabled) return; // 如果效果关闭，则直接返回
+        if (!isEffectEnabled) {
+            cancelAnimationFrame(animationId);
+            return;
+        }
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        clearCanvas(); // 清除并填充背景
-        drawScanLines(); // 绘制动态扫描线
+        clearCanvas();
+        drawScanLines();
         
-        // 更新偏移量
         offset += speed;
-        requestAnimationFrame(drawCRT); 
-    }
-
-    // 启动绘制函数
-    function startCRT() {
-        drawCRT();
+        animationId = requestAnimationFrame(drawCRT); 
     }
 
     // 切换效果的函数
     function toggleEffect() {
-        isEffectEnabled = !isEffectEnabled; // 切换状态
+        isEffectEnabled = !isEffectEnabled;
         if (isEffectEnabled) {
-            startCRT(); // 启动效果
+            drawCRT();
         } else {
-            clearCanvas(); // 如果效果关闭，清除画布
+            clearCanvas();
+            cancelAnimationFrame(animationId);
         }
     }
 
-    // 监听复选框状态变更
-    const checkbox = document.getElementById('crtToggle');
-    checkbox.addEventListener('change', () => {
-        isEffectEnabled = checkbox.checked; // 更新状态
-        isEffectEnabled ? startCRT() : clearCanvas(); // 根据状态启动或禁用效果
-    });
+    // 初始化函数
+    function initialize() {
+        const checkbox = document.getElementById('crtToggle');
+        if (!checkbox) {
+            console.error('CRT toggle checkbox not found');
+            return;
+        }
 
-    // 检查复选框状态并启动效果
-    function checkCheckboxState() {
+        // 设置初始状态
         isEffectEnabled = checkbox.checked;
-        isEffectEnabled ? startCRT() : clearCanvas(); // 根据状态启动或禁用效果
+        
+        // 添加事件监听器
+        checkbox.addEventListener('change', toggleEffect);
+        
+        // 根据初始状态启动或禁用效果
+        if (isEffectEnabled) {
+            drawCRT();
+        }
+
+        // 处理窗口大小变化
+        window.addEventListener('resize', () => {
+            if (isEffectEnabled) {
+                drawCRT();
+            }
+        });
     }
 
-    // 添加事件监听器以处理窗口加载和调整大小的事件
-    window.addEventListener('load', checkCheckboxState);
-    window.addEventListener('resize', checkCheckboxState);
+    // 使用 DOMContentLoaded 而不是 load 事件
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialize);
+    } else {
+        // DOM 已经加载完成
+        initialize();
+    }
 }
