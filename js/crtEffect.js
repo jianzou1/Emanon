@@ -1,105 +1,175 @@
 // crtEffect.js
 
-// 导出 initCRT 函数以供其他模块使用
+const CONFIG = {
+    CANVAS_CLASS: 'crt-effect',
+    CHECKBOX_ID: 'crtToggle',
+    STORAGE_KEY: 'crtEffectEnabled',
+    SCAN_LINE: {
+        INTERVAL: 4,
+        SPEED: 0.06,
+        COLORS: [
+            'rgba(255, 0, 0, 0.08)',
+            'rgba(0, 255, 0, 0.08)',
+            'rgba(0, 0, 255, 0.08)'
+        ],
+        OSCILLATION: {
+            FREQ: 50,
+            AMP: 0.2
+        }
+    }
+};
+
 export function initCRT() {
-    const canvas = document.querySelector('.crt-effect');
+    // ==== 初始化核心元素 ====
+    const canvas = document.querySelector(`.${CONFIG.CANVAS_CLASS}`);
     if (!canvas) {
-        console.error('CRT canvas not found');
+        console.error('[CRT] Canvas element not found');
         return;
     }
 
     const ctx = canvas.getContext('2d');
-    const speed = 0.06;
-    let offset = 0; 
-    let isEffectEnabled = false; // 初始设为 false，等待复选框状态确定
+    let isEffectEnabled = true;
     let animationId = null;
+    let checkbox = document.getElementById(CONFIG.CHECKBOX_ID);
 
-    // 清除画布并填充背景
-    function clearCanvas() {
+    // ==== 动画核心逻辑 ====
+    let offset = 0;
+    
+    const render = () => {
+        if (!isEffectEnabled) return;
+        
+        // 智能尺寸同步
+        if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
 
-    // 绘制单个扫描线
-    function drawSingleScanLine(y, offset) {
-        const baseOffset = (offset % 4);
-        const colorOffsets = ['rgba(255, 0, 0, 0.08)', 'rgba(0, 255, 0, 0.08)', 'rgba(0, 0, 255, 0.08)'];
-
-        colorOffsets.forEach((color, index) => {
-            const colorOffset = baseOffset + Math.sin(y / 50) * 0.2;
-            ctx.fillStyle = color;
-            ctx.fillRect(0, (y + colorOffset) % canvas.height, canvas.width, 1);
-        });
-    }
-
-    // 执行扫描线的绘制
-    function drawScanLines() {
-        for (let i = 0; i < canvas.height; i += 4) {
-            drawSingleScanLine(i, offset);
+        // 高性能扫描线绘制
+        for (let y = 0; y < canvas.height; y += CONFIG.SCAN_LINE.INTERVAL) {
+            const baseOffset = offset % CONFIG.SCAN_LINE.INTERVAL;
+            
+            CONFIG.SCAN_LINE.COLORS.forEach((color, idx) => {
+                const lineOffset = baseOffset + 
+                    Math.sin(y / CONFIG.SCAN_LINE.OSCILLATION.FREQ) * CONFIG.SCAN_LINE.OSCILLATION.AMP +
+                    idx * 0.3;
+                
+                ctx.fillStyle = color;
+                ctx.fillRect(
+                    0, 
+                    (y + lineOffset) % canvas.height,
+                    canvas.width,
+                    1
+                );
+            });
         }
-    }
 
-    // 初始化函数
-    function drawCRT() {
-        if (!isEffectEnabled) {
+        offset += CONFIG.SCAN_LINE.SPEED;
+        animationId = requestAnimationFrame(render);
+    };
+
+    const stopEffect = () => {
+        if (animationId) {
             cancelAnimationFrame(animationId);
-            return;
+            animationId = null;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+    };
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    // ==== 状态管理模块 ====
+    const loadSettings = () => {
+        try {
+            const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
+            return saved !== null ? JSON.parse(saved) : true;
+        } catch (error) {
+            console.warn('[CRT] Failed to load settings:', error);
+            return true;
+        }
+    };
 
-        clearCanvas();
-        drawScanLines();
+    const saveSettings = (enabled) => {
+        try {
+            localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(enabled));
+        } catch (error) {
+            console.error('[CRT] Failed to save settings:', error);
+        }
+    };
+
+    // ==== 控件绑定模块 ====
+    const handleCheckboxChange = (e) => {
+        const newState = e.target.checked;
+        if (newState === isEffectEnabled) return;
         
-        offset += speed;
-        animationId = requestAnimationFrame(drawCRT); 
-    }
+        isEffectEnabled = newState;
+        saveSettings(newState);
+        
+        newState ? render() : stopEffect();
+    };
 
-    // 切换效果的函数
-    function toggleEffect() {
-        isEffectEnabled = !isEffectEnabled;
-        if (isEffectEnabled) {
-            drawCRT();
-        } else {
-            clearCanvas();
-            cancelAnimationFrame(animationId);
-        }
-    }
-
-    // 初始化函数
-    function initialize() {
-        const checkbox = document.getElementById('crtToggle');
+    const bindCheckbox = () => {
         if (!checkbox) {
-            console.error('CRT toggle checkbox not found');
+            console.warn('[CRT] Checkbox not found');
             return;
         }
-
-        // 设置初始状态
-        isEffectEnabled = checkbox.checked;
         
-        // 添加事件监听器
-        checkbox.addEventListener('change', toggleEffect);
-        
-        // 根据初始状态启动或禁用效果
-        if (isEffectEnabled) {
-            drawCRT();
-        }
+        checkbox.removeEventListener('change', handleCheckboxChange);
+        checkbox.addEventListener('change', handleCheckboxChange);
+        checkbox.checked = isEffectEnabled;
+    };
 
-        // 处理窗口大小变化
+    // ==== 初始化流程 ====
+    const initialize = () => {
+        // 加载初始状态
+        isEffectEnabled = loadSettings();
+        
+        // 绑定复选框控件
+        bindCheckbox();
+        
+        // 初始渲染控制
+        isEffectEnabled ? render() : stopEffect();
+        
+        // 响应式处理
         window.addEventListener('resize', () => {
-            if (isEffectEnabled) {
-                drawCRT();
-            }
-        });
-    }
+            if (isEffectEnabled) render();
+        }, { passive: true });
+    };
 
-    // 使用 DOMContentLoaded 而不是 load 事件
+    // ==== 安全启动 ====
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initialize);
+        document.addEventListener('DOMContentLoaded', initialize, { once: true });
     } else {
-        // DOM 已经加载完成
         initialize();
     }
+
+    // ==== 公共API ====
+    return {
+        enable: () => {
+            if (isEffectEnabled) return;
+            isEffectEnabled = true;
+            saveSettings(true);
+            if (checkbox) {
+                checkbox.checked = true;
+                requestAnimationFrame(render);
+            }
+        },
+        disable: () => {
+            if (!isEffectEnabled) return;
+            isEffectEnabled = false;
+            saveSettings(false);
+            if (checkbox) checkbox.checked = false;
+            stopEffect();
+        },
+        destroy: () => {
+            stopEffect();
+            if (checkbox) {
+                checkbox.removeEventListener('change', handleCheckboxChange);
+            }
+            window.removeEventListener('resize', render);
+            window.removeEventListener('DOMContentLoaded', initialize);
+            console.log('[CRT] System destroyed');
+        }
+    };
 }
