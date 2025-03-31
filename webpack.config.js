@@ -2,15 +2,15 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
     entry: './js/index.js',
     output: {
         filename: 'main.js',
-        // 输出到根目录
         path: path.resolve(__dirname),
-        publicPath: '/'
+        publicPath: '/',
+        // 添加资源加载优先级
+        assetModuleFilename: 'assets/[hash][ext][query]'
     },
     module: {
         rules: [
@@ -37,13 +37,26 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'styles.css',
-        }),
-        new webpack.HotModuleReplacementPlugin()
+            // 添加chunk配置确保独立文件
+            chunkFilename: '[id].css'
+        })
     ],
     optimization: {
         minimizer: [
-            new TerserPlugin(),
-            new CssMinimizerPlugin(),
+            new TerserPlugin({
+                parallel: true,
+                terserOptions: {
+                    compress: { drop_console: true }
+                }
+            }),
+            new CssMinimizerPlugin({
+                minimizerOptions: {
+                    preset: [
+                        'default',
+                        { discardComments: { removeAll: true } }
+                    ]
+                }
+            })
         ],
     },
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -58,4 +71,5 @@ module.exports = {
         poll: true,
         ignored: /node_modules/
     }
-};    
+    // 保持其他配置不变
+};

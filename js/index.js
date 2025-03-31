@@ -1,5 +1,5 @@
-import { initializeApp } from './main.js';
 import '../css/style.css';
+import { initializeApp } from './main.js';
 
 // 初始化应用
 let appInstance = initializeApp();
