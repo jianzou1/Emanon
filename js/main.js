@@ -12,12 +12,12 @@ import { initGameRoll } from '/js/gameRoll.js';
 import { initializeGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
-import LangManager from '/js/langManager.js';
+import langManager from '/js/langManager.js';
 
 const initializeApp = async () => {
   try {
     // 初始化多语言管理器
-    await LangManager.init();
+    await langManager.init();
     
     // 初始化随机Logo（仅整页加载）
     initializeRandomLogo();

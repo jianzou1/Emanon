@@ -1,15 +1,13 @@
 // gameList.js
+import langManager from '/js/langManager.js';
+
 export function gameList() {
     const CONFIG_URL = '/cfg/game_time_cfg.json';
     const GAME_LIST_HTML_CLASS = '.game-list';
-    const EXPLAIN_TEXT_CLASS = '.explain-text';
-    const TOTAL_TIME_CLASS = '.total-time';
-    const TOTAL_DAYS_CLASS = '.total-days';
-    const TOTAL_YEARS_CLASS = '.total-years';
 
     let games = [];
     let typeNames = {};
-    let qualityNames = []; // 存储评级顺序配置
+    let qualityNames = [];
 
     fetchGameData();
 
@@ -17,10 +15,10 @@ export function gameList() {
         try {
             const data = await fetchData(CONFIG_URL);
             typeNames = parseTypeNames(data[0][0].typeName);
-            qualityNames = parseQualityNames(data[0][0].qualityName); // 解析顺序配置
+            qualityNames = parseQualityNames(data[0][0].qualityName);
             games = data[1] || [];
-            const explainContent = formatExplain(data[0][0], games);
-            updateHtmlContent(explainContent);
+            const stats = calculateStats(games);
+            updateHtmlContent(stats);
             sortGames('按游戏评级排序');
         } catch (error) {
             console.error("读取游戏数据失败:", error.message);
@@ -38,11 +36,28 @@ export function gameList() {
         }
     }
 
-    function updateHtmlContent({ text, totalTime, totalDays, totalYears }) {
-        document.querySelector(EXPLAIN_TEXT_CLASS).innerHTML = text;
-        document.querySelector(TOTAL_TIME_CLASS).textContent = `${totalTime}小时`;
-        document.querySelector(TOTAL_DAYS_CLASS).textContent = `，相当于${totalDays}天`;
-        document.querySelector(TOTAL_YEARS_CLASS).textContent = `，相当于${totalYears}年。`;
+    function calculateStats(games) {
+        const totalTime = games.reduce((sum, game) => sum + game.time, 0);
+        const totalDays = Math.floor(totalTime / 24);
+        const totalYears = (totalTime / 24 / 365).toFixed(2);
+        return { totalTime, totalDays, totalYears };
+    }
+
+    function updateHtmlContent({ totalTime, totalDays, totalYears }) {
+        const updateParam = (id, value) => {
+            try {
+                const el = document.querySelector(`[data-lang-id="${id}"]`);
+                if (el) {
+                    el.dataset.langParams = JSON.stringify([value]);
+                    langManager.setParams(id, [value]);
+                }
+            } catch (e) {}
+        };
+
+        updateParam('total_time', totalTime);
+        updateParam('equivalent_days', totalDays);
+        updateParam('equivalent_years', totalYears);
+
         updateHtmlContentDetails(groupAndSortGamesByType());
     }
 
@@ -66,31 +81,27 @@ export function gameList() {
         updateHtmlContentDetails(sortedGames, selectedOption);
     }
 
-    // 核心改动：按配置顺序分组
     function sortGamesByQuality() {
-        // 1. 按quality分组
         const grouped = games.reduce((acc, game) => {
-            const qualityKey = String(game.quality || "0"); // 强制转为字符串
+            const qualityKey = String(game.quality || "0");
             if (!acc[qualityKey]) acc[qualityKey] = [];
             acc[qualityKey].push(game);
             return acc;
         }, {});
 
-        // 2. 按qualityNames顺序生成结果
         const orderedGroups = [];
         qualityNames.forEach(({ key }) => {
             if (grouped[key]) {
                 orderedGroups.push({
                     key,
-                    games: grouped[key].sort((a, b) => b.time - a.time) // 组内按时长排序
+                    games: grouped[key].sort((a, b) => b.time - a.time)
                 });
                 delete grouped[key];
             }
         });
 
-        // 3. 处理未在配置中定义的评级（按原始key排序）
         Object.entries(grouped)
-            .sort((a, b) => b[0].localeCompare(a[0])) // 按key降序
+            .sort((a, b) => b[0].localeCompare(a[0]))
             .forEach(([key, games]) => {
                 orderedGroups.push({ key, games });
             });
@@ -114,7 +125,6 @@ export function gameList() {
         }).join('');
     }
 
-    // 其他保持原有逻辑的函数
     function groupAndSortGamesByType() {
         const groupedGames = groupGames(games);
         Object.keys(groupedGames).forEach(type => {
@@ -145,7 +155,7 @@ export function gameList() {
         } else if (selectedOption === '按游戏类型排序') {
             html = generateHtmlContent(sortedGames, typeNames);
         } else {
-            html = Array.isArray(sortedGames) 
+            html = Array.isArray(sortedGames)
                 ? sortedGames.map(createGameListItem).join('')
                 : '';
         }
@@ -164,21 +174,6 @@ export function gameList() {
         );
     }
 
-    function formatExplain(data, games) {
-        const explainText = data.explain.replace(/\n/g, '<br>') || '';
-        const totalTime = games.reduce((sum, game) => sum + game.time, 0);
-        const totalDays = Math.floor(totalTime / 24);
-        const totalYears = (totalTime / 24 / 365).toFixed(2);
-        const jsonLink = `<br><a href="${CONFIG_URL}" target="_blank">查看配置文件</a>`;
-
-        return {
-            text: explainText + jsonLink,
-            totalTime,
-            totalDays,
-            totalYears
-        };
-    }
-
     function groupGames(games) {
         return games.reduce((acc, game) => {
             const type = game.type;
@@ -192,7 +187,7 @@ export function gameList() {
 
     function generateHtmlContent(groupedGames, typeNames = {}) {
         return Object.entries(groupedGames).map(([type, series], index, types) => {
-            const seriesContent = Object.entries(series).map(([seriesTag, gamesInSeries]) => 
+            const seriesContent = Object.entries(series).map(([seriesTag, gamesInSeries]) =>
                 gamesInSeries.map(createGameListItem).join('')
             ).join('');
             return `<h3>${typeNames[type] || ''}</h3>${seriesContent}${index < types.length - 1 ? '<hr>' : ''}`;

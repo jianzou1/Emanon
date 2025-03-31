@@ -23,28 +23,27 @@
             <div class="window" role="tabpanel">
                 <div class="window-body">
                     <div class="explain-content">
-                        <div class="explain-text"></div>
+                        <span data-lang-id="game_describe"></span>
                         <br>
-                        游戏并非人生，但是我已经玩了：
-                        <span class="total-time"></span>
-                        <span class="total-days"></span>
-                        <span class="total-years"></span>
+                        <span data-lang-id="total_time"></span>
+                        <span data-lang-id="equivalent_days"></span>
+                        <span data-lang-id="equivalent_years"></span>
                         <br>
-                        <button id="gameRollBtn">今天玩什么</button>
+                        <button id="gameRollBtn" data-lang-id="game_roll_btn">随机游戏</button>
                         <div id="gameResult"></div>
                         <div id="story"></div>
                         <div class="select-container">
                             <div class="field-row">
                                 <input id="radio4" type="radio" name="sort-option" value="按游戏评级排序" checked>
-                                <label for="radio4">按主观游戏评级排序</label>
+                                <label for="radio4" data-lang-id="game_sort_quality">按主观游戏评级排序</label>
                             </div>
                             <div class="field-row">
                                 <input id="radio5" type="radio" name="sort-option" value="按游戏类型排序">
-                                <label for="radio5">按游戏类型排序</label>
+                                <label for="radio5" data-lang-id="game_sort_type">按游戏类型排序</label>
                             </div>
                             <div class="field-row">
                                 <input id="radio6" type="radio" name="sort-option" value="按游戏时长排序">
-                                <label for="radio6">按游戏时长排序</label>
+                                <label for="radio6" data-lang-id="game_sort_time">按游戏时长排序</label>
                             </div>
                         </div>
                     </div>

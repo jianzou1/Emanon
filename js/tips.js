@@ -1,30 +1,87 @@
 // tips.js
-export function initializeTips() {
-    const tips = document.getElementById('tips');
-    const elementsWithTips = document.querySelectorAll('[data-tips]'); // 选择所有有 data-tips 属性的元素
+import langManager from '/js/langManager.js';
 
-    // 配置 X 和 Y 的偏移量
-    const offsetX = 80; // X轴偏移量，可以根据需要调整
-    const offsetY = 0; // Y轴偏移量，可以根据需要调整
+let currentElement = null;
+let tipsElement = null;
 
-    elementsWithTips.forEach(element => {
-        element.addEventListener('mouseenter', (event) => {
-            const tipsText = element.getAttribute('data-tips'); // 获取提示文本
-            tips.innerText = tipsText; // 设置提示文本
-            tips.style.display = 'block'; // 显示提示
+export async function initializeTips() {
+    // 等待多语言系统初始化完成
+    await langManager.init();
 
-            // 计算并设置提示的位置
-            const rect = element.getBoundingClientRect();
+    tipsElement = document.getElementById('tips');
+    const offsetX = 80;
+    const offsetY = 0;
 
-            // 计算新的位置，分别应用 X 和 Y 偏移量
-            tips.style.left = `${rect.left + window.scrollX + offsetX}px`; // X位置，加上 X 偏移量
-            tips.style.top = `${rect.bottom + window.scrollY + offsetY}px`; // Y位置，加上 Y 偏移量
-            tips.style.opacity = 1; // 设置透明度
+    // 初始化提示绑定
+    const bindTips = (elements) => {
+        elements.forEach(element => {
+            element.addEventListener('mouseenter', handleMouseEnter);
+            element.addEventListener('mouseleave', handleMouseLeave);
         });
+    };
 
-        element.addEventListener('mouseleave', () => {
-            tips.style.display = 'none'; // 隐藏提示
-            tips.style.opacity = 0; // 设置透明度
+    // 处理鼠标进入事件
+    const handleMouseEnter = (event) => {
+        currentElement = event.target;
+        updateTipContent();
+        updateTipPosition();
+        tipsElement.style.display = 'block';
+        tipsElement.style.opacity = 1;
+    };
+
+    // 处理鼠标离开事件
+    const handleMouseLeave = () => {
+        currentElement = null;
+        tipsElement.style.display = 'none';
+        tipsElement.style.opacity = 0;
+    };
+
+    // 更新提示内容
+    const updateTipContent = () => {
+        if (!currentElement) return;
+        const tipsKey = currentElement.getAttribute('data-tips');
+        tipsElement.textContent = langManager.translate(tipsKey);
+    };
+
+    // 更新提示位置
+    const updateTipPosition = () => {
+        if (!currentElement) return;
+        const rect = currentElement.getBoundingClientRect();
+        tipsElement.style.left = `${rect.left + window.scrollX + offsetX}px`;
+        tipsElement.style.top = `${rect.bottom + window.scrollY + offsetY}px`;
+    };
+
+    // 监听语言变化事件
+    document.addEventListener('languageChanged', () => {
+        if (currentElement && tipsElement.style.display === 'block') {
+            updateTipContent();
+            updateTipPosition();
+        }
+    });
+
+    // 初始绑定所有元素
+    const elements = document.querySelectorAll('[data-tips]');
+    bindTips(elements);
+
+    // 观察DOM变化动态绑定新元素
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        if (node.hasAttribute('data-tips')) {
+                            bindTips([node]);
+                        }
+                        const elements = node.querySelectorAll('[data-tips]');
+                        bindTips(elements);
+                    }
+                });
+            }
         });
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
     });
 }

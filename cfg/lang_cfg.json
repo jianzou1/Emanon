@@ -2,86 +2,193 @@
   {
     "id": "index_title",
     "cn": "回忆的爱玛侬",
-    "en": "Memories of Emanon"
+    "en": "Memories of Emanon",
+    "jp": ""
   },
   {
     "id": "index_year_progress",
     "cn": "年进度",
-    "en": "Year progress"
+    "en": "Year progress",
+    "jp": ""
   },
   {
     "id": "index_month_progress",
     "cn": "月进度",
-    "en": "Month progress"
+    "en": "Month progress",
+    "jp": ""
   },
   {
     "id": "index_day_progress",
     "cn": "天进度",
-    "en": "Day progress"
+    "en": "Day progress",
+    "jp": ""
+  },
+  {
+    "id": "index_year_tips",
+    "cn": "这个进度条显示了今年已经过去了多少",
+    "en": "This progress bar indicates how much of the year has passed",
+    "jp": ""
+  },
+  {
+    "id": "index_month_tips",
+    "cn": "这个进度条显示了本月已经过去了多少",
+    "en": "This progress bar indicates how much of the month has passed.",
+    "jp": ""
+  },
+  {
+    "id": "index_day_tips",
+    "cn": "这个进度条显示了今天已经过去了多少",
+    "en": "This progress bar indicates how much of the day has passed.",
+    "jp": ""
   },
   {
     "id": "index_refresh",
     "cn": "刷新时间剩余 {0}m {1}s",
-    "en": "Refresh in {0}m {1}s"
+    "en": "Refresh in {0}m {1}s",
+    "jp": ""
+  },
+  {
+    "id": "index_refresh_tips",
+    "cn": "倒计时结束后，所有的进度条都将被刷新",
+    "en": "After the countdown ends, all progress bars will be refreshed.",
+    "jp": ""
   },
   {
     "id": "dailty_popup_title",
     "cn": "欢迎登录",
-    "en": "welcome to log in"
+    "en": "welcome to log in",
+    "jp": ""
   },
   {
     "id": "dailty_popup_text",
     "cn": "请选择你的语言：",
-    "en": "Please choose your language:"
+    "en": "Please choose your language:",
+    "jp": ""
   },
   {
     "id": "btn_ok",
     "cn": "确定",
-    "en": "Confirm"
+    "en": "Confirm",
+    "jp": ""
   },
   {
     "id": "tab_progress",
     "cn": "进度条",
-    "en": "Progress"
+    "en": "Progress",
+    "jp": ""
   },
   {
     "id": "tab_article",
     "cn": "文章",
-    "en": "Article"
+    "en": "Article",
+    "jp": ""
   },
   {
     "id": "tab_game",
     "cn": "游戏",
-    "en": "Game"
+    "en": "Game",
+    "jp": ""
   },
   {
     "id": "tab_gallery",
     "cn": "画廊",
-    "en": "Gallery"
+    "en": "Gallery",
+    "jp": ""
   },
   {
     "id": "tab_about",
     "cn": "关于",
-    "en": "About"
+    "en": "About",
+    "jp": ""
   },
   {
     "id": "footer_update_time",
     "cn": "上次更新：{0}",
-    "en": "Last Updated:{0}"
+    "en": "Last Updated:{0}",
+    "jp": ""
   },
   {
     "id": "footer_name",
     "cn": "由 Shelton 进行站点创建",
-    "en": "Created by Shelton"
+    "en": "Created by Shelton",
+    "jp": ""
   },
   {
     "id": "footer_art",
     "cn": "由 Cry 进行艺术化",
-    "en": "Artistic by Cry"
+    "en": "Artistic by Cry",
+    "jp": ""
   },
   {
     "id": "CRT",
     "cn": "CRT效果模拟",
-    "en": "CRT Simulation"
+    "en": "CRT Simulation",
+    "jp": ""
+  },
+  {
+    "id": "total_time",
+    "cn": "{0}小时，",
+    "en": "{0} hours,",
+    "jp": ""
+  },
+  {
+    "id": "equivalent_days",
+    "cn": "相当于{0}天，",
+    "en": "equivalent to {0} days,",
+    "jp": ""
+  },
+  {
+    "id": "equivalent_years",
+    "cn": "相当于{0}年。",
+    "en": "approximately {0} years.",
+    "jp": ""
+  },
+  {
+    "id": "game_describe",
+    "cn": "游戏并非人生，但是我已经玩了：",
+    "en": "Games are not life, but I've been playing for:",
+    "jp": ""
+  },
+  {
+    "id": "game_roll_btn",
+    "cn": "随机游戏",
+    "en": "Random games",
+    "jp": ""
+  },
+  {
+    "id": "game_sort_quality",
+    "cn": "按主观游戏评级排序",
+    "en": "Sort by subjective game ratings",
+    "jp": ""
+  },
+  {
+    "id": "game_sort_type",
+    "cn": "按游戏类型排序",
+    "en": "Sort by game genre",
+    "jp": ""
+  },
+  {
+    "id": "game_sort_time",
+    "cn": "按游戏时长排序",
+    "en": "Sort by game duration",
+    "jp": ""
+  },
+  {
+    "id": "previous_page",
+    "cn": "上一页",
+    "en": "Previous",
+    "jp": ""
+  },
+  {
+    "id": "next_page",
+    "cn": "下一页",
+    "en": "Next",
+    "jp": ""
+  },
+  {
+    "id": "original_image",
+    "cn": "原图",
+    "en": "originnal image",
+    "jp": ""
   }
 ]

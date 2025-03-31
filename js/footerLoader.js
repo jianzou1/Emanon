@@ -1,9 +1,10 @@
 // footerLoader.js
+import langManager from '/js/langManager.js'; 
 export function footerLoader() {
     const footerContainer = document.querySelector('.dynamic-footer');
 
     if (!footerContainer) {
-        console.error(LangManager.translate('errors.element_not_found', 'dynamic-footer'));
+        console.error(langManager.translate('errors.element_not_found', 'dynamic-footer'));
         return;
     }
 
@@ -29,14 +30,14 @@ export function footerLoader() {
             try {
                 const lastUpdated = await getLastUpdatedDateFromGitHub();
                 // 使用新的参数传递方式
-                LangManager.applyParameters(
+                langManager.applyParameters(
                     lastUpdatedElement,
                     'footer_update_time',
                     lastUpdated
                 );
             } catch (error) {
-                console.error(LangManager.translate('errors.update_time_fetch'));
-                LangManager.applyParameters(
+                console.error(langManager.translate('errors.update_time_fetch'));
+                langManager.applyParameters(
                     lastUpdatedElement,
                     'footer_update_time',
                     '---'
@@ -45,8 +46,8 @@ export function footerLoader() {
         };
 
         // 初始化语言管理器
-        if (!LangManager.isInitialized) {
-            LangManager.init().then(handleParameters);
+        if (!langManager.isInitialized) {
+            langManager.init().then(handleParameters);
         } else {
             handleParameters();
         }
@@ -71,7 +72,7 @@ async function getLastUpdatedDateFromGitHub() {
     // 获取最新数据
     const response = await fetch(url);
     if (!response.ok) {
-        throw new Error(LangManager.translate('errors.api_fetch', response.status));
+        throw new Error(langManager.translate('errors.api_fetch', response.status));
     }
     
     const data = await response.json();

@@ -26,9 +26,9 @@
                     <select id="titleSelect" aria-label="选择标题"></select>
                     <div class="gallery-images" id="gallery-images"></div>
                     <div class="navigation-bar" aria-label="图库导航">
-                        <button id="prevPage" aria-label="上一页">上一页</button>
-                        <span id="pageIndicator">第 1 页</span>
-                        <button id="nextPage" aria-label="下一页">下一页</button>
+                        <button id="prevPage" aria-label="上一页" data-lang-id="previous_page"></button>
+                        <span id="pageIndicator"></span>
+                        <button id="nextPage" aria-label="下一页" data-lang-id="next_page"></button>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
         <div id="imageModal" class="modal" style="display:none;" role="dialog">
             <div class="window" style="width: 800px;">
                 <div class="title-bar">
-                    <div class="title-bar-text">原图</div>
+                    <div class="title-bar-text" data-lang-id="original_image"></div>
                     <div class="title-bar-controls">
                         <button aria-label="Close" id="modalClose">&times;</button>
                     </div>

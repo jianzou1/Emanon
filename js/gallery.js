@@ -70,7 +70,7 @@ export async function initializeGallery() {
         const imagesToDisplay = imagesForTitle.filter(image => image.page === currentPage);
         imagesToDisplay.forEach(createImageElement);
         
-        pageIndicator.textContent = `第 ${currentPage} / ${maxPage} 页`;
+        pageIndicator.textContent = `${currentPage} / ${maxPage} `;
         topTitleDisplay.textContent = `${selectedTitle}`;
         lazyLoadImages();
         updateNavigationButtons();
