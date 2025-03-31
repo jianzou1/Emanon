@@ -7,11 +7,6 @@ import { footerLoader } from '/js/footerLoader.js';
 import { handleScrollAndScrollToTop } from '/js/scrollToTop.js';
 import { initializeDailyPopup } from '/js/dailyPopup.js';
 import { initializeTips } from '/js/tips.js';
-import {
-  initializeLoadingAnimation,
-  showLoadingAnimation,
-  hideLoadingAnimation
-} from '/js/loadingAnimation.js';
 import { gameList } from '/js/gameList.js';
 import { initGameRoll } from '/js/gameRoll.js';
 import { initializeGallery } from '/js/gallery.js';
@@ -52,15 +47,8 @@ const initializeApp = async () => {
       pjax
     );
 
-    // 加载状态管理
-    const toggleLoadingAnimation = (isLoading) => {
-      isLoading ? initializeLoadingAnimation().then(showLoadingAnimation) : hideLoadingAnimation();
-    };
-
     // PJAX事件监听
-    document.addEventListener('pjax:send', () => toggleLoadingAnimation(true));
     document.addEventListener('pjax:complete', () => {
-      toggleLoadingAnimation(false);
       handlePageLoad();
     });
 

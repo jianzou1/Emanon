@@ -2,36 +2,43 @@
   {
     "id": 1,
     "url": "gd_occams_razor",
-    "icon": "text-markdown.png"
+    "icon": "text-markdown.png",
+    "name": "如无必要，勿增实体"
   },
   {
     "id": 2,
     "url": "gd_system",
-    "icon": "text-markdown.png"
+    "icon": "text-markdown.png",
+    "name": "复杂游戏系统设计与“涌现”理论"
   },
   {
     "id": 3,
     "url": "gd_sample_hero_ape",
-    "icon": "application-x-genesis-rom.png"
+    "icon": "application-x-genesis-rom.png",
+    "name": "角色设计：无聊猿"
   },
   {
     "id": 4,
     "url": "gd_sample_ingame_capture",
-    "icon": "application-x-nes-rom.png"
+    "icon": "application-x-nes-rom.png",
+    "name": "占领模式战场规则"
   },
   {
     "id": 5,
     "url": "gd_sample_ingame_recoil",
-    "icon": "application-x-nes-rom.png"
+    "icon": "application-x-nes-rom.png",
+    "name": "枪械后坐力规则"
   },
   {
     "id": 6,
     "url": "gd_sample_ingame_party_point",
-    "icon": "application-x-gamecube-rom.png"
+    "icon": "application-x-gamecube-rom.png",
+    "name": "局内派对点奖励规则"
   },
   {
     "id": 7,
     "url": "gd_sample_system_battlepass",
-    "icon": "application-x-gamecube-rom.png"
+    "icon": "application-x-gamecube-rom.png",
+    "name": "战令通行证功能"
   }
 ]
