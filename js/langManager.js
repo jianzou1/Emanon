@@ -5,6 +5,8 @@
  * - DOM auto-binding
  * - Cached translations
  * - Centralized error handling
+ * - Secure HTML escaping
+ * - Newline to <br> conversion
  */
 class LangManager {
   static DEFAULT_CONFIG = {
@@ -48,6 +50,17 @@ class LangManager {
 
   #error(...args) {
     this.config.logger.error('%c[Lang]', 'color: #F44336;', ...args);
+  }
+
+  #escapeHtml(text) {
+    const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+    return text.toString().replace(/[&<>"']/g, (m) => map[m]);
   }
 
   #handleTranslationError(element, key, error) {
@@ -103,11 +116,12 @@ class LangManager {
     if (!params.length) return text;
 
     return params.reduce((str, param, index) => {
+      const escapedParam = this.#escapeHtml(param);
       if (this.config.placeholderFormats.includes('braced')) {
-        str = str.replace(new RegExp(`\\{${index}\\}`, 'g'), param);
+        str = str.replace(new RegExp(`\\{${index}\\}`, 'g'), escapedParam);
       }
       if (this.config.placeholderFormats.includes('numbered')) {
-        str = str.replace(new RegExp(`%${index + 1}\\$s`, 'g'), param);
+        str = str.replace(new RegExp(`%${index + 1}\\$s`, 'g'), escapedParam);
       }
       return str;
     }, text);
@@ -143,16 +157,26 @@ class LangManager {
     const elementParams = JSON.parse(element.dataset.langParams || '[]');
     const allParams = [...dynamicParams, ...elementParams];
 
-    const updateMethod = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' 
-      ? 'value' 
-      : 'textContent';
+    const isInput = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA';
 
     try {
       text = this.#replacePlaceholders(text, allParams);
-      element[updateMethod] = text;
+
+      if (!isInput) {
+        // Convert newlines to <br> and set as HTML
+        text = text.replace(/\n/g, '<br>');
+        element.innerHTML = text;
+      } else {
+        // For input elements, keep \n as is and set value
+        element.value = text;
+      }
     } catch (err) {
       this.#handleTranslationError(element, id, err);
-      element[updateMethod] = id;
+      if (!isInput) {
+        element.innerHTML = id;
+      } else {
+        element.value = id;
+      }
     }
   }
 
@@ -227,19 +251,20 @@ class LangManager {
   // ========== PUBLIC API ==========
   applyParameters(element, translationKey, ...params) {
     try {
-      // 确保元素有data-lang-id属性
       if (!element.dataset.langId) {
         element.dataset.langId = translationKey;
       }
       
-      // 更新参数缓存
       this.dynamicParams.set(translationKey, params);
       
       const translation = this.translate(translationKey, ...params);
-      const updateMethod = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' 
-        ? 'value' 
-        : 'textContent';
-      element[updateMethod] = translation;
+      const isInput = element.tagName === 'INPUT' || element.tagName === 'TEXTAREA';
+      
+      if (!isInput) {
+        element.innerHTML = translation.replace(/\n/g, '<br>');
+      } else {
+        element.value = translation;
+      }
       return true;
     } catch (error) {
       this.#handleTranslationError(element, translationKey, error);
@@ -298,7 +323,6 @@ class LangManager {
     localStorage.setItem('user_lang', lang);
     this.paramCache.clear();
     
-    // 新增：重新应用所有动态参数
     this.dynamicParams.forEach((params, id) => {
       const elements = document.querySelectorAll(`[data-lang-id="${id}"]`);
       elements.forEach(el => this.pendingUpdates.add(el));
