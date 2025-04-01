@@ -2,7 +2,7 @@
 
 // 配置项
 const POPUP_CONFIG = {
-    interval: 86400, // 24小时（秒）
+    interval: 1, // 24小时（秒）
     htmlPath: '/ui/dailyPopup.html',
     popupId: 'welcome-popup',
     overlayId: 'overlay',
