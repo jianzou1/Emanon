@@ -1,19 +1,19 @@
 /**
- * Enhanced Multilingual Manager (v3.1)
- * New Features:
- * - Unified parameter handling
- * - DOM auto-binding
- * - Cached translations
- * - Centralized error handling
- * - Secure HTML escaping
- * - Newline to <br> conversion
+ * 增强型多语言管理器 (v3.1)
+ * 核心功能：
+ * - 统一参数处理
+ * - DOM自动绑定
+ * - 用户语言缓存
+ * - 集中错误处理
+ * - HTML安全转义
+ * - 换行符自动转换
  */
 class LangManager {
   static DEFAULT_CONFIG = {
     debug: false,
     version: '3.1',
     fallbackLang: 'en',
-    storageKey: 'lang_data_v8',
+    storageKey: 'user_lang', // 仅存储用户语言设置
     langFile: '/cfg/lang_cfg.json',
     observerOptions: {
       subtree: true,
@@ -37,7 +37,7 @@ class LangManager {
     this.paramCache = new Map();
   }
 
-  // ========== PRIVATE METHODS ==========
+  // ========== 私有方法 ==========
   #log(...args) {
     if (this.config.debug) {
       this.config.logger.log('%c[Lang]', 'color: #4CAF50;', ...args);
@@ -64,33 +64,23 @@ class LangManager {
   }
 
   #handleTranslationError(element, key, error) {
-    this.#error(`Translation failed for ${key}:`, error);
+    this.#error(`翻译失败 ${key}:`, error);
     if (element) {
       element.classList.add('lang-error');
-      element.setAttribute('title', `Translation error: ${key}`);
+      element.setAttribute('title', `翻译错误: ${key}`);
     }
     return key;
   }
 
   async #loadLanguageData() {
     try {
-      const cached = localStorage.getItem(this.config.storageKey);
-      if (cached) {
-        const { version, data } = JSON.parse(cached);
-        if (version === this.config.version) {
-          this.langData = data;
-          this.#log('Using cached language data');
-          return true;
-        }
-      }
-
-      const response = await fetch(`${this.config.langFile}?v=${this.config.version}`);
+      const response = await fetch(`${this.config.langFile}?v=${Date.now()}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const rawData = await response.json();
       this.langData = rawData.reduce((acc, item) => {
         if (!item.id) {
-          this.#warn('Skipping invalid entry:', item);
+          this.#warn('跳过无效条目:', item);
           return acc;
         }
         acc[item.id] = Object.entries(item).reduce((o, [k, v]) => {
@@ -100,13 +90,10 @@ class LangManager {
         return acc;
       }, {});
 
-      localStorage.setItem(
-        this.config.storageKey,
-        JSON.stringify({ version: this.config.version, data: this.langData })
-      );
+      this.#log('语言数据加载成功');
       return true;
     } catch (err) {
-      this.#error('Language data load failed:', err);
+      this.#error('语言数据加载失败:', err);
       this.langData = {};
       return false;
     }
@@ -163,11 +150,9 @@ class LangManager {
       text = this.#replacePlaceholders(text, allParams);
 
       if (!isInput) {
-        // Convert newlines to <br> and set as HTML
         text = text.replace(/\n/g, '<br>');
         element.innerHTML = text;
       } else {
-        // For input elements, keep \n as is and set value
         element.value = text;
       }
     } catch (err) {
@@ -195,9 +180,9 @@ class LangManager {
       const lang = e.target.value;
       if (lang === this.currentLang) return;
 
-      this.#log(`Switching language to: ${lang}`);
+      this.#log(`切换语言至: ${lang}`);
       this.currentLang = lang;
-      localStorage.setItem('user_lang', lang);
+      localStorage.setItem(this.config.storageKey, lang);
       this.paramCache.clear();
       this.#applyTranslations();
     });
@@ -248,7 +233,7 @@ class LangManager {
     this.domObserver.observe(document.documentElement, this.config.observerOptions);
   }
 
-  // ========== PUBLIC API ==========
+  // ========== 公共API ==========
   applyParameters(element, translationKey, ...params) {
     try {
       if (!element.dataset.langId) {
@@ -297,7 +282,7 @@ class LangManager {
       document.readyState === 'complete' ? resolve() : window.addEventListener('load', resolve);
     });
 
-    this.currentLang = localStorage.getItem('user_lang') || defaultLang;
+    this.currentLang = localStorage.getItem(this.config.storageKey) || defaultLang;
     await this.#loadLanguageData();
     
     this.#applyTranslations();
@@ -305,7 +290,7 @@ class LangManager {
     this.#startSmartObserver();
     
     this.isInitialized = true;
-    this.#log('Initialization complete');
+    this.#log('初始化完成');
   }
 
   translate(id, ...params) {
@@ -320,7 +305,7 @@ class LangManager {
   setLanguage(lang) {
     if (lang === this.currentLang) return;
     this.currentLang = lang;
-    localStorage.setItem('user_lang', lang);
+    localStorage.setItem(this.config.storageKey, lang);
     this.paramCache.clear();
     
     this.dynamicParams.forEach((params, id) => {
@@ -366,10 +351,10 @@ class LangManager {
   }
 }
 
-// Singleton instance
+// 单例实例
 const langManager = new LangManager();
 
-// Global exposure
+// 全局暴露
 if (typeof window !== 'undefined' && !window.LangManager) {
   window.LangManager = langManager;
 }

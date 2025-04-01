@@ -5,77 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="style.css" rel="stylesheet" type="text/css">
-  <style>
-    /* 半透明黑色背景 */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 299;
-    }
-
-    /* 弹窗样式 */
-    #welcome-popup {
-      height: auto;
-      display: inline-block;
-      padding: 3px;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 300;
-      width: 450px;
-      max-height: 80vh;
-      /* 设置最大高度 */
-      overflow-y: auto;
-      /* 内容溢出时出现滚动条 */
-      user-select: none;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    #welcome-popup p {
-      line-height: 1;
-      font-size: 12px;
-      text-align: left;
-      margin-bottom: -1%;
-    }
-
-    /* 关闭按钮居中 */
-    #close-popup {
-      display: block;
-      margin: 10px auto 3px;
-    }
-
-    .popUpIcon {
-      background-image: url(../icon/network-transmit-receive.png);
-      width: 64px;
-      height: 64px;
-      margin: auto;
-      margin-bottom: 5%;
-      animation: imageChangePopupIcon 2s infinite steps(1);
-    }
-
-    .version-date {
-      background: linear-gradient(to bottom, #0b8525, #076607);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    #lang-switcher {
-      margin-top: 15px;
-      margin-bottom: 15px;
-    }
-
-    @keyframes imageChangePopupIcon {
-      33% {
-        background-image: url(../icon/network-receive.png);
-      }
-
-      66% {
-        background-image: url(../icon/network-transmit.png);
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -91,8 +20,7 @@
       </div>
     </header>
     <section class="window-body">
-      <p style="text-align: center; line-height: 1;" data-lang-id="dailty_popup_text"><strong
-          style="color: purple"></strong></p>
+      <p style="text-align: left; line-height: 1;" data-lang-id="dailty_popup_text"></p>
       <select id="lang-switcher">
         <option value="en">English</option>
         <option value="cn">简体中文</option>
@@ -100,25 +28,8 @@
       </select><br>
       <input type="checkbox" id="crtToggle" checked>
       <label for="crtToggle" data-lang-id="CRT">CRT Simulation</label>
-      <p><strong class="version-date">25-03-24 v10.0.0 </strong><br>794202f - added ascii logo</p>
+      <p><strong class="version-date" data-lang-id="update_info"></strong></p>
       <hr>
-      <p><strong class="version-date">25-03-18 v9.0.0 </strong><br>21058ab - added rolling machine</p>
-      <hr>
-      <p><strong class="version-date">25-03-17 v8.0.0</strong><br>ec6c8f2 - added webpack</p>
-      <hr>
-      <p><strong class="version-date">25-03-06 v7.0.0</strong><br>c959d68 - modular cdn loading</p>
-      <hr>
-      <p><strong class="version-date">24-11-24 v6.0.0</strong><br>c959d68 - added crt effect</p>
-      <hr>
-      <p><strong class="version-date">24-11-19 v5.0.0</strong><br>0c8ad6e - added gallery</p>
-      <hr>
-      <p><strong class="version-date">24-11-14 v4.0.0</strong><br>cd1bf25 - added game list</p>
-      <hr>
-      <p><strong class="version-date">24-09-17 v3.0.0</strong><br>efb00e3 - added pjax</p>
-      <hr>
-      <p><strong class="version-date">24-09-08 v2.0.0</strong><br>3981cc3 - added progress</p>
-      <hr>
-      <p><strong class="version-date">24-09-05 v1.0.0</strong><br>e21464d - init website</p>
     </section>
     <button id="close-popup" data-lang-id="btn_ok">Confirm</button>
   </div>

@@ -202,5 +202,11 @@
     "cn": "感谢以下这些项目：",
     "en": "Thanks to the following projects:",
     "jp": "以下のプロジェクトに感謝します："
+  },
+  {
+    "id": "update_info",
+    "cn": "最近更新\n版本号：13.0.0\n发布日期：2025-04-01\n核心更新：\n多语言系统增强\n• 新增日语语言支持（801bda8）\n• 扩展基础语言框架（7ec452e）",
+    "en": "Recent Update\nVersion Number: 13.0.0\nRelease Date: April 1, 2025\nCore Updates:\nEnhancement of the Multilingual System\n• Added Japanese language support (801bda8)\n• Extended the basic language framework (7ec452e)",
+    "jp": "最近のアップデート\nバージョン番号：13.0.0\nリリース日：2025 年 4 月 1 日\n核心アップデート：\n多言語システムの強化\n・日本語の言語サポートを新たに追加しました（801bda8）\n・基本的な言語フレームワークを拡張しました（7ec452e）"
   }
 ]
