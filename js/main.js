@@ -94,16 +94,6 @@ const initializeApp = async () => {
       }
     };
 
-    // Logo点击处理
-    const logo = document.querySelector('.logo');
-    if (logo) {
-      logo.addEventListener('click', (e) => {
-        e.preventDefault();
-        pjax.loadUrl('/');
-        tabHandler.updateSelectedTab('/');
-      });
-    }
-
     // 初始页面加载
     handlePageLoad();
   } catch (error) {
