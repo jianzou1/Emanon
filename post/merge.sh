@@ -1,56 +1,72 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "开始处理文件夹..."
+SOURCE_FILE="index.html"
+TARGET_DIRECTORY="."
 
-# 使用find命令来遍历当前目录下的所有文件夹并排除当前目录
-find . -maxdepth 1 -type d ! -name '.' | while IFS= read -r dir; do
-  echo "正在处理文件夹: $dir"
-  
-  # 检查layout和index文件是否存在
-  layout_file="$dir/layout.html"
-  index_file="$dir/index.html"
+# ---------- 第一部分：文件复制 ----------
+if [ ! -f "$SOURCE_FILE" ]; then
+    echo "错误：源文件 $SOURCE_FILE 不存在。"
+    read -p "按回车键退出..."
+    exit 1
+fi
 
-  if [ -f "$layout_file" ] && [ -f "$index_file" ]; then
-    echo "找到layout和index文件"
+if [ ! -d "$TARGET_DIRECTORY" ]; then
+    echo "错误：目标目录 $TARGET_DIRECTORY 不存在。"
+    read -p "按回车键退出..."
+    exit 1
+fi
 
-    # 提取layout文件中的<title>内容
-    title_content=$(sed -n 's/.*<title>\(.*\)<\/title>.*/\1/p' "$layout_file")
-    echo "提取到的标题内容: $title_content"
-
-    # 使用awk提取layout文件中的<body>内容并替换index文件中的内容
-    awk -v layout_file="$layout_file" -v index_file="$index_file" -v title_content="$title_content" '
-      FILENAME == layout_file {
-        if (/<body>/) { in_body = 1; next }
-        if (/<\/body>/) { in_body = 0; next }
-        if (in_body) body = body $0 ORS
-      }
-      FILENAME == index_file {
-        # 替换<title>标签中的标题内容
-        if ($0 ~ /<title>这里替换标题<\/title>/) {
-          print "<title>" title_content "</title>"
-        }
-        # 替换<div class="title-bar-text" id="dynamic-title">中的标题内容
-        else if ($0 ~ /<div class="title-bar-text" id="dynamic-title">这里替换标题2<\/div>/) {
-          print "<div class=\"title-bar-text\" id=\"dynamic-title\">" title_content "</div>"
-        }
-        # 替换<div class="window-body">中的body内容
-        else if ($0 ~ /<div class="window-body">这里替换内容<\/div>/) {
-          print "<div class=\"window-body\">" body "</div>"
-        }
-        else {
-          print $0
-        }
-      }
-    ' "$layout_file" "$index_file" > "${index_file}.tmp" && mv "${index_file}.tmp" "$index_file"
-
-    echo "已替换index文件中的标题和body内容"
-  else
-    echo "警告: $dir 中未找到layout或index文件"
-  fi
-
-  echo "----------------------------"
+echo "开始复制文件到子文件夹..."
+for dir in "$TARGET_DIRECTORY"/*/; do
+    [ -d "$dir" ] && cp -v "$SOURCE_FILE" "$dir"
 done
 
-echo "所有文件夹处理完毕"
-echo "按任意键退出..."
-read -n 1 -s -r -p ""
+# ---------- 第二部分：内容替换处理 ----------
+echo -e "\n开始处理子文件夹内容替换..."
+for dir in "$TARGET_DIRECTORY"/*/; do
+    dir=${dir%/}
+    echo "正在处理文件夹: $dir"
+    
+    layout_file="$dir/layout.html"
+    index_file="$dir/index.html"
+    
+    if [ -f "$layout_file" ] && [ -f "$index_file" ]; then
+        # 改进的标题提取（支持多行和特殊字符）
+        title_content=$(grep -oP '(?<=<title>).*?(?=</title>)' "$layout_file" | tr -d '\n')
+        echo "提取到的标题: '$title_content'"
+
+        # 使用AWK进行精确替换
+        awk -v title="$title_content" '
+        BEGIN { replaced_title = 0; replaced_dynamic = 0 }
+        {
+            # 替换主标题
+            if (/<title>这里替换标题<\/title>/ && !replaced_title) {
+                print "<title>" title "</title>"
+                replaced_title = 1
+                next
+            }
+            # 替换动态标题 
+            if (/<div class="title-bar-text" id="dynamic-title">这里替换标题2<\/div>/ && !replaced_dynamic) {
+                print "<div class=\"title-bar-text\" id=\"dynamic-title\">" title "</div>"
+                replaced_dynamic = 1
+                next
+            }
+            # 替换正文内容
+            if (/<div class="window-body">这里替换内容<\/div>/ && body_content) {
+                print "<div class=\"window-body\">" body_content "</div>"
+                next
+            }
+            print
+        }
+        ' body_content="$(sed -n '/<body>/,/<\/body>/p' "$layout_file" | sed '1d;$d')" \
+          "$index_file" > "$index_file.tmp" && mv "$index_file.tmp" "$index_file"
+        
+        echo "内容替换完成"
+    else
+        echo "警告: 缺少必要文件"
+    fi
+    echo "------------------------"
+done
+
+echo -e "\n所有操作已完成"
+read -p "按回车键退出..."
