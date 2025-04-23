@@ -4,9 +4,9 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config webpack.config.js",
-    "pack":"webpack --mode production"
+    "pack":"webpack --mode production",
+    "post": "node post/_src/post.js"
   },
   "keywords": [],
   "author": "Shelton Chu",
