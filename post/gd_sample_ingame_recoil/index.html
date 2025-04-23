@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
-<title>枪械后坐力规则</title>
+  <title>枪械后坐力规则</title>  <!-- 标题占位符 -->
   <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
   <link rel="shortcut icon" href="/favicon/favicon.ico" />
@@ -19,117 +19,138 @@
   <main id="main" class="main">
     <div class="window">
       <div class="title-bar">
-<div class="title-bar-text" id="dynamic-title">枪械后坐力规则</div>
+        <div class="title-bar-text" id="dynamic-title">枪械后坐力规则</div>  <!-- 动态标题占位符 -->
         <div class="title-bar-controls">
           <button aria-label="Close" onclick="window.history.back()"></button>
         </div>
       </div>
-<div class="window-body"><h2 id='一设计目的'>一、设计目的</h2>
+      <div class="window-body"><h2>一、设计目的</h2>
 <p>新增枪械的后坐力机制，强化射击手感，增加枪械策略性与射击趣味性</p>
-<h2 id='二流程图'>二、流程图</h2>
-<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1hitnyb374dj30pd0h7jte.jpg" referrerpolicy="no-referrer" alt="后坐力计算机制流程图_221128_v2.0-16696246979671.png"></p>
-<h2 id='三概述'>三、概述</h2>
+<h2>二、流程图</h2>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1hitnyb374dj30pd0h7jte.jpg" alt="后坐力计算机制流程图_221128_v2.0-16696246979671.png"></p>
+<h2>三、概述</h2>
 <ul>
 <li>枪械现在在射击时，会附带后坐力，后坐力表现区别于现有的震屏功能。本文中将对后坐力的触发方式、触发表现进行规范与细化。</li>
-
 </ul>
-<h2 id='四配置表'>四、配置表</h2>
-<h4 id='41-新增字段'>4.1 新增字段</h4>
+<h2>四、配置表</h2>
+<h4>4.1 新增字段</h4>
 <p>在枪械预制中新增以下配置</p>
-<figure class='table-figure'><table>
+<table>
 <thead>
-<tr><th>字段</th><th>类型</th><th style='text-align:left;' >内容</th></tr></thead>
-<tbody><tr><td>recoilGapTime</td><td>int</td><td style='text-align:left;' >停火间隔；配置毫秒</td></tr><tr><td>recoilMoveBackTime</td><td>int</td><td style='text-align:left;' >回位时间；配置毫秒</td></tr><tr><td>isForceMoveBack</td><td>bool</td><td style='text-align:left;' >TRUE= 强制回准 <br />FALSE= 如果玩家通过滑屏激活了aimingCamera，则不进行回准</td></tr></tbody>
-</table></figure>
-<h2 id='四功能规则'>四、功能规则</h2>
-<h4 id='41-后坐力计算'>4.1 后坐力计算</h4>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th align="left">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>recoilGapTime</td>
+<td>int</td>
+<td align="left">停火间隔；配置毫秒</td>
+</tr>
+<tr>
+<td>recoilMoveBackTime</td>
+<td>int</td>
+<td align="left">回位时间；配置毫秒</td>
+</tr>
+<tr>
+<td>isForceMoveBack</td>
+<td>bool</td>
+<td align="left">TRUE= 强制回准 <br />FALSE= 如果玩家通过滑屏激活了aimingCamera，则不进行回准</td>
+</tr>
+</tbody></table>
+<h2>四、功能规则</h2>
+<h4>4.1 后坐力计算</h4>
 <ul>
 <li><p>后坐力信息读取：枪械预制中新增后坐力脚本。</p>
 <ul>
 <li><p>读取脚本中配置后坐力信息，后坐力信息中枚举了在“连续射击”状态内，每1次射击的镜头偏移量。每1次连续射击的重新触发，都需要从后坐力信息的第1个条目进行重新读取。</p>
-<figure class='table-figure'><table>
+<table>
 <thead>
-<tr><th>KEY（开火次数）</th><th>X</th><th>Y</th><th>备注</th></tr></thead>
-<tbody><tr><td>3</td><td>0.2</td><td>0</td><td>表示从第0枪~第3枪，每次射击镜头绕X轴移动0.2个单位。</td></tr><tr><td>10</td><td>0.15</td><td>0.2</td><td>表示从第4枪~第10枪，每次射击镜头绕X轴移动0.5个单位，绕Y轴移动0.2个单位。</td></tr><tr><td>18</td><td>0</td><td>-0.2</td><td>表示从第11枪~第18枪，每次射击镜头绕Y轴移动-0.2个单位，18枪之后若无配置，则按照第18枪的配置信息执行偏移，直至子弹耗尽。</td></tr></tbody>
-</table></figure>
+<tr>
+<th>KEY（开火次数）</th>
+<th>X</th>
+<th>Y</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3</td>
+<td>0.2</td>
+<td>0</td>
+<td>表示从第0枪~第3枪，每次射击镜头绕X轴移动0.2个单位。</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0.15</td>
+<td>0.2</td>
+<td>表示从第4枪~第10枪，每次射击镜头绕X轴移动0.5个单位，绕Y轴移动0.2个单位。</td>
+</tr>
+<tr>
+<td>18</td>
+<td>0</td>
+<td>-0.2</td>
+<td>表示从第11枪~第18枪，每次射击镜头绕Y轴移动-0.2个单位，18枪之后若无配置，则按照第18枪的配置信息执行偏移，直至子弹耗尽。</td>
+</tr>
+</tbody></table>
 </li>
-
 </ul>
 </li>
 <li><p>连续射击的失效</p>
 <ul>
 <li>当两次射击间隔<code>≥recoilGapTime</code>配置的时间，武器被视为停火，下次射击重新计算后坐力。</li>
-
 </ul>
 </li>
-
 </ul>
-<h4 id='42-后坐力表现'>4.2 后坐力表现</h4>
+<h4>4.2 后坐力表现</h4>
 <ul>
 <li><p>新增后坐力运动表现：枪械预制中新增后坐力曲线脚本，用于控制每次射击镜头偏移的运动曲线，调用Unity的Curve组件实现。</p>
-<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1hitmsa6pa5j30ks0l10v7.jpg" referrerpolicy="no-referrer" alt="image.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1hitmsa6pa5j30ks0l10v7.jpg" alt="image.png"></p>
 <ul>
-<li><p>X轴表示后坐力表现时长，一般配置为枪械的射击间隔；Y轴为偏移量表现速度。</p>
-</li>
-<li><p>图示，若图内枪械为“霰弹枪”的后坐力镜头表现，根据该曲线，则表现为：</p>
-<ul>
+<li>X轴表示后坐力表现时长，一般配置为枪械的射击间隔；Y轴为偏移量表现速度。</li>
+<li>图示，若图内枪械为“霰弹枪”的后坐力镜头表现，根据该曲线，则表现为：<ul>
 <li>射击后，枪械在0.05s内会迅速播放偏移量的95%，剩余5%部分在0.05s内表现完成。霰弹枪短时间快速抬高，滞空，进入回准表现。</li>
-
 </ul>
 </li>
-
 </ul>
 </li>
 <li><p>镜头偏移坐标：</p>
 <ul>
-<li><p>绕X轴的偏移：根据prefab配置镜头像素偏移，该偏移量可累计。</p>
-<ul>
+<li>绕X轴的偏移：根据prefab配置镜头像素偏移，该偏移量可累计。<ul>
 <li>0=不偏移；负整数=向下偏移；正整数=向上偏移。</li>
-
 </ul>
 </li>
-<li><p>绕Y轴的偏移：根据prefab配置进行准星像素偏移，该偏移量可累计。</p>
-<ul>
+<li>绕Y轴的偏移：根据prefab配置进行准星像素偏移，该偏移量可累计。<ul>
 <li>0=不偏移；负整数=向左偏移；正整数=向右偏移。</li>
-
 </ul>
 </li>
-<li><p>偏移时长：根据后坐力脚本配置时长，控制准星完成该次偏移所需要的时间，该时间可累计。</p>
-<ul>
+<li>偏移时长：根据后坐力脚本配置时长，控制准星完成该次偏移所需要的时间，该时间可累计。<ul>
 <li>配置毫秒。</li>
-
 </ul>
 </li>
-
 </ul>
 </li>
-
 </ul>
-<h4 id='43-准星回位'>4.3 准星回位</h4>
+<h4>4.3 准星回位</h4>
 <ul>
-<li><p>准星回位触发条件：两次射击间隔<code>≥recoilGapTime</code>配置的时间，开始进行准星回位流程。</p>
-</li>
-<li><p>准星回位方式：计算玩家在射击或连续射击期间获得的所有Y轴与X轴偏移量，根据该偏移量，移动准星进行回位。</p>
-<ul>
+<li>准星回位触发条件：两次射击间隔<code>≥recoilGapTime</code>配置的时间，开始进行准星回位流程。</li>
+<li>准星回位方式：计算玩家在射击或连续射击期间获得的所有Y轴与X轴偏移量，根据该偏移量，移动准星进行回位。<ul>
 <li>回位的持续时间：根据<code>recoilMoveBackTime</code>的配置时长，控制准星从当前位置移动到回位位置所需的时间。</li>
 <li>新增回位运动表现：在每一把枪械预制中新增参数（同4.2 后坐力表现），用于控制每次回位准星偏移的运动曲线。</li>
-
 </ul>
 </li>
-<li><p>新增bool类型字段：<code>isForceMoveBack</code></p>
-<ul>
+<li>新增bool类型字段：<code>isForceMoveBack</code><ul>
 <li>TRUE= 强制回准。</li>
 <li>FALSE= 如果玩家通过滑屏激活了aimingCamera，则不进行回准。</li>
-
 </ul>
 </li>
-
 </ul>
-<h4 id='44-震屏功能'>4.4 震屏功能</h4>
+<h4>4.4 震屏功能</h4>
 <ul>
 <li>现在在射击时，调用现有的CameraShake功能，每一次射击，震屏表现的持续时间与后坐力表现时长相等。</li>
 <li>枪械预制中可加载震屏文件。</li>
-</ul></div>
+</ul>
+</div>  <!-- 内容占位符 -->
     </div>
   </main>
   <canvas class="crt-effect"></canvas>

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
-<title>角色设计：无聊猿</title>
+  <title>角色设计：无聊猿</title>  <!-- 标题占位符 -->
   <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
   <link rel="shortcut icon" href="/favicon/favicon.ico" />
@@ -19,75 +19,63 @@
   <main id="main" class="main">
     <div class="window">
       <div class="title-bar">
-<div class="title-bar-text" id="dynamic-title">角色设计：无聊猿</div>
+        <div class="title-bar-text" id="dynamic-title">角色设计：无聊猿</div>  <!-- 动态标题占位符 -->
         <div class="title-bar-controls">
           <button aria-label="Close" onclick="window.history.back()"></button>
         </div>
       </div>
-<div class="window-body"><h2 id='一设计目的'>一、设计目的</h2>
-<h3 id='11-设计模型'>1.1 设计模型：</h3>
-<h4 id='111-普通技能僵尸'>1.1.1 普通技能：僵尸</h4>
-<h5 id='step-1-施放技能-僵尸'>step 1: 施放技能 &quot;僵尸&quot;</h5>
+      <div class="window-body"><h2>一、设计目的</h2>
+<h3>1.1 设计模型：</h3>
+<h4>1.1.1 普通技能：僵尸</h4>
+<h5>step 1: 施放技能 &quot;僵尸&quot;</h5>
 <ul>
 <li>玩家在关键时刻施放 &quot;僵尸&quot; 技能，享受做出决策的愉悦感，因为他们需要在危险情境下迅速反应，使自己进入无敌状态。</li>
-
 </ul>
-<h5 id='step-2-技能状态持续'>step 2: 技能状态持续</h5>
+<h5>step 2: 技能状态持续</h5>
 <ul>
 <li>在技能状态持续期间，玩家体验到心流，因为他们需要不断地评估战斗情境，决定是否保持 &quot;僵尸&quot; 状态或恢复正常状态。</li>
 <li>玩家在技能状态持续期间建立心智模型，了解何时最有效地利用无敌状态以获得优势。</li>
-
 </ul>
-<h5 id='step-3-技能取消或技能结束'>step 3: 技能取消或技能结束</h5>
+<h5>step 3: 技能取消或技能结束</h5>
 <ul>
 <li>玩家体验到满足感，因为他们根据游戏情境和对手行为的变化，做出决定是继续保持 &quot;僵尸&quot; 状态还是取消技能。</li>
 <li>玩家通过技能的取消或结束建立心智模型，进一步了解技能的使用时机和有效性。</li>
-
 </ul>
-<h4 id='112-大招技能-无聊领域'>1.1.2 大招技能 &quot;无聊领域&quot;</h4>
-<h5 id='step-1-施放技能-无聊领域'>step 1: 施放技能 &quot;无聊领域&quot;</h5>
+<h4>1.1.2 大招技能 &quot;无聊领域&quot;</h4>
+<h5>step 1: 施放技能 &quot;无聊领域&quot;</h5>
 <ul>
 <li>玩家在施放 &quot;无聊领域&quot; 时体验到心流，因为这是一个关键的决策步骤，涉及一对一对决的选择，玩家充满期待。</li>
 <li>玩家通过学习何时施放 &quot;无聊领域&quot; 建立心智模型，玩家需要考虑选择哪一位敌方英雄进行对决。</li>
-
 </ul>
-<h5 id='step-2-技能状态持续-2'>step 2: 技能状态持续</h5>
+<h5>step 2: 技能状态持续</h5>
 <ul>
 <li>在 &quot;无聊领域&quot; 技能状态持续期间，玩家体验到心流，因为他们需要全神贯注地与对手一对一对决。</li>
 <li>玩家在技能状态持续期间建立心智模型，了解如何最合适的在无聊领域中应对敌人的行为，以保持优势。</li>
-
 </ul>
-<h5 id='step-3-技能状态结束'>step 3: 技能状态结束</h5>
+<h5>step 3: 技能状态结束</h5>
 <ul>
 <li>玩家在技能状态结束时可能会体验到满足感或挫败感，这取决于他们是否成功战胜了对手。</li>
 <li>玩家通过技能状态的结束建立心智模型，通过决斗的方式击杀敌人，可获得满足感与成就感。</li>
-
 </ul>
-<h3 id='12-设计风险'>1.2 设计风险：</h3>
+<h3>1.2 设计风险：</h3>
 <ul>
-<li><p>Q：使用无敌方式切入战局，导致无聊猿大招命中指定角色的技能行为是指向性的，是否影响平衡性？</p>
-<ul>
+<li>Q：使用无敌方式切入战局，导致无聊猿大招命中指定角色的技能行为是指向性的，是否影响平衡性？<ul>
 <li>A：如果在施放大招前就使用了无敌技能，那么在进入无聊领域时，无聊猿的大招将进入CD状态。作为无聊猿的玩家同样需要承受在无聊领域中接近对方的风险。</li>
-
 </ul>
 </li>
-<li><p>Q：因为大招的决策几乎是一次性的，如何处理无聊猿在对错误的目标施放大招后的负反馈（例如将过于强势的英雄带到无聊领域中，导致自己被击杀）？</p>
-<ul>
+<li>Q：因为大招的决策几乎是一次性的，如何处理无聊猿在对错误的目标施放大招后的负反馈（例如将过于强势的英雄带到无聊领域中，导致自己被击杀）？<ul>
 <li>A：在无聊领域的关卡设计中，双方出生在同一面片碰撞上，面片中心有镂空障碍，接近彼此需要绕过该镂空障碍。玩家可通过关卡机制带来的躲避、迂回等处理方式，以此来稀释错误决策带来的负反馈。</li>
-
 </ul>
 </li>
-
 </ul>
-<h2 id='二功能需求'>二、功能需求</h2>
-<h4 id='21-无聊猿普通技能僵尸'>2.1 无聊猿普通技能：僵尸</h4>
+<h2>二、功能需求</h2>
+<h4>2.1 无聊猿普通技能：僵尸</h4>
 <ul>
 <li><p>技能定位：变身、无敌</p>
 </li>
 <li><p>技能描述：</p>
 <ul>
 <li>无聊猿瞬间转化为僵尸，一段时间内处于完全无敌状态，增加移动速度，无法开火或使用其他技能。</li>
-
 </ul>
 </li>
 <li><p>技能细节：</p>
@@ -96,7 +84,6 @@
 <li>技能状态持续时间：待定</li>
 <li>技能冷却时间：待定</li>
 <li>冷却计算方式：点击施放即开始计算</li>
-
 </ul>
 </li>
 <li><p>技能操作：</p>
@@ -104,7 +91,6 @@
 <li>技能施放：按下技能键后立即施放</li>
 <li>技能停止：技能状态持续时间结束，或再次点击技能按钮结束技能，此时无聊猿变回常态</li>
 <li>技能取消：通用技能取消机制</li>
-
 </ul>
 </li>
 <li><p>其他技能效果</p>
@@ -112,19 +98,16 @@
 <li>期间内完全无敌，消除所有减益效果</li>
 <li>使用技能后，弹药立即装填</li>
 <li>使用期间可以接受治疗</li>
-
 </ul>
 </li>
-
 </ul>
-<h4 id='22-无聊猿大招技能无聊领域'>2.2 无聊猿大招技能：无聊领域</h4>
+<h4>2.2 无聊猿大招技能：无聊领域</h4>
 <ul>
 <li><p>技能定位：控制、伤害、空间</p>
 </li>
 <li><p>技能描述：</p>
 <ul>
 <li>无聊猿引导0.5秒，与距离最近的敌方英雄同时传送至一个半径50的无聊领域，获得10%的额外伤害加成。在此领域内，无聊猿与目标将进行一对一的对决。</li>
-
 </ul>
 </li>
 <li><p>技能细节：</p>
@@ -132,7 +115,6 @@
 <li>施放类型：点击施放</li>
 <li>技能状态持续时间：待定</li>
 <li>技能冷却时间：充能，能量满可立即施放；技能状态持续时间内可持续充能，但处于无聊领域内时技能不可施放</li>
-
 </ul>
 </li>
 <li><p>技能操作：</p>
@@ -140,7 +122,6 @@
 <li>技能施放：按下技能键后立即施放</li>
 <li>索敌规则：与自身距离最近的敌方英雄</li>
 <li>技能取消：通用技能取消机制</li>
-
 </ul>
 </li>
 <li><p>空间传送规则：</p>
@@ -148,35 +129,104 @@
 <li>技能状态持续时间结束，我方与被传送的英雄依旧存活，双方英雄传送回原点</li>
 <li>技能状态持续时间内，其中一方被击杀，另一方英雄传送回原点</li>
 <li>若有多个无聊猿同时施放该技能，均传送到同一空间。</li>
-
 </ul>
 </li>
-
 </ul>
-<h2 id='三美术需求'>三、美术需求</h2>
-<h4 id='31-无聊猿普通技能次元裂缝'>3.1 无聊猿普通技能：次元裂缝</h4>
+<h2>三、美术需求</h2>
+<h4>3.1 无聊猿普通技能：次元裂缝</h4>
 <ul>
 <li>技能表现（变身参考）</li>
-
 </ul>
-<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1hjdbznpttnj30fe07jach.jpg" referrerpolicy="no-referrer" alt="图片1.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1hjdbznpttnj30fe07jach.jpg" alt="图片1.png"></p>
 <ul>
 <li>技能表现（模型参考，左常态，右僵尸态）</li>
-
 </ul>
-<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1hjdbz7kflhj30gs0ccdm4.jpg" referrerpolicy="no-referrer" alt="image-20230804094818533.png"></p>
-<p>&nbsp;</p>
-<figure class='table-figure'><table>
+<p><img src="https://image.baidu.com/search/down?url=https://fc.sinaimg.cn/large/00724HnBly1hjdbz7kflhj30gs0ccdm4.jpg" alt="image-20230804094818533.png"></p>
+<table>
 <thead>
-<tr><th style='text-align:left;' >项目</th><th>内容</th><th style='text-align:left;' >数量</th></tr></thead>
-<tbody><tr><td style='text-align:left;' >原画</td><td>根据不同皮肤的僵尸</td><td style='text-align:left;' >根据皮肤定义</td></tr><tr><td style='text-align:left;' >模型</td><td>僵尸模型，施放该技能时，角色表现的模型</td><td style='text-align:left;' >根据皮肤定义</td></tr><tr><td style='text-align:left;' >特效</td><td>切换为僵尸形态，僵尸形态切换为常态特效</td><td style='text-align:left;' >2</td></tr><tr><td style='text-align:left;' >动作</td><td>变身动作，恢复常态动作</td><td style='text-align:left;' >2</td></tr><tr><td style='text-align:left;' >动作</td><td>僵尸移动动作、僵尸跳跃动作</td><td style='text-align:left;' >1</td></tr><tr><td style='text-align:left;' >UI</td><td>技能按钮图标</td><td style='text-align:left;' >1</td></tr><tr><td style='text-align:left;' >UI</td><td>施放该技能时，僵尸全局半透明蒙版（参考观战界面全局蒙版，用于表达无敌与僵尸化概念）</td><td style='text-align:left;' >1</td></tr></tbody>
-</table></figure>
-<h4 id='32-无聊猿普通技能无聊领域'>3.2 无聊猿普通技能：无聊领域</h4>
-<figure class='table-figure'><table>
+<tr>
+<th align="left">项目</th>
+<th>内容</th>
+<th align="left">数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">原画</td>
+<td>根据不同皮肤的僵尸</td>
+<td align="left">根据皮肤定义</td>
+</tr>
+<tr>
+<td align="left">模型</td>
+<td>僵尸模型，施放该技能时，角色表现的模型</td>
+<td align="left">根据皮肤定义</td>
+</tr>
+<tr>
+<td align="left">特效</td>
+<td>切换为僵尸形态，僵尸形态切换为常态特效</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">动作</td>
+<td>变身动作，恢复常态动作</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">动作</td>
+<td>僵尸移动动作、僵尸跳跃动作</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">UI</td>
+<td>技能按钮图标</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">UI</td>
+<td>施放该技能时，僵尸全局半透明蒙版（参考观战界面全局蒙版，用于表达无敌与僵尸化概念）</td>
+<td align="left">1</td>
+</tr>
+</tbody></table>
+<h4>3.2 无聊猿普通技能：无聊领域</h4>
+<table>
 <thead>
-<tr><th style='text-align:left;' >项目</th><th>内容</th><th style='text-align:left;' >数量</th></tr></thead>
-<tbody><tr><td style='text-align:left;' >原画</td><td>无聊领域场景概念设计</td><td style='text-align:left;' >1</td></tr><tr><td style='text-align:left;' >模型</td><td>无聊领域场景建模</td><td style='text-align:left;' >1</td></tr><tr><td style='text-align:left;' >特效</td><td>角色拥有增伤加成，附着在模型上的增伤特效</td><td style='text-align:left;' >1</td></tr><tr><td style='text-align:left;' >特效</td><td>角色传送进入无聊领域，与传送离开无聊领域的传送特效</td><td style='text-align:left;' >2</td></tr><tr><td style='text-align:left;' >动作</td><td>施放技能动作</td><td style='text-align:left;' >1</td></tr><tr><td style='text-align:left;' >UI</td><td>技能按钮图标</td><td style='text-align:left;' >1</td></tr></tbody>
-</table></figure></div>
+<tr>
+<th align="left">项目</th>
+<th>内容</th>
+<th align="left">数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">原画</td>
+<td>无聊领域场景概念设计</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">模型</td>
+<td>无聊领域场景建模</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">特效</td>
+<td>角色拥有增伤加成，附着在模型上的增伤特效</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">特效</td>
+<td>角色传送进入无聊领域，与传送离开无聊领域的传送特效</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">动作</td>
+<td>施放技能动作</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">UI</td>
+<td>技能按钮图标</td>
+<td align="left">1</td>
+</tr>
+</tbody></table>
+</div>  <!-- 内容占位符 -->
     </div>
   </main>
   <canvas class="crt-effect"></canvas>

@@ -32,7 +32,7 @@ const fetchLinks = async () => {
         const links = await response.json();
         return links.map(({ id, url, icon, name }) => ({
             id,
-            url: `/post/${url}/index.html`,  // 构造完整URL
+            url: `/post/${url}`,  // 构造完整URL
             icon: `/icon/${icon}`,           // 构造图标路径
             name: name || '未命名'           // 使用配置表标题，缺省时用"未命名"
         }));
