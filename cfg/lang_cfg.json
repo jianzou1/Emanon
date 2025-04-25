@@ -6,6 +6,30 @@
     "jp": "Memories of Emanon"
   },
   {
+    "id": "article_title",
+    "cn": "文章",
+    "en": "Article",
+    "jp": "記事"
+  },
+  {
+    "id": "game_title",
+    "cn": "游戏",
+    "en": "Game",
+    "jp": "ゲーム"
+  },
+  {
+    "id": "gallery_title",
+    "cn": "画廊",
+    "en": "Gallery",
+    "jp": "ギャラリー"
+  },
+  {
+    "id": "about_title",
+    "cn": "关于",
+    "en": "About",
+    "jp": "について"
+  },
+  {
     "id": "index_year_progress",
     "cn": "年进度",
     "en": "Year progress",

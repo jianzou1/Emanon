@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <%- include('../templates/header.ejs') %>
+ <body>
+    <div class="logo"></div>
+    <main id="main" class="main">
+        <div class="window-body">
+            <menu role="tablist"></menu>
+            <div class="window" role="tabpanel">
+                <div class="window-body">
+                    <span class="progress-text" data-tips="index_year_tips" data-lang-id="index_year_progress"></span>
+                    <div class="progress-container">
+                        <div id="progress-bar" class="progress-bar"></div>
+                        <span id="progress-percentage">0%</span>
+                    </div>
+
+                    <span class="progress-text" data-tips="index_month_tips"data-lang-id="index_month_progress"></span>
+                    <div class="progress-container">
+                        <div id="month-progress-bar" class="progress-bar"></div>
+                        <span id="month-percentage">0%</span>
+                    </div>
+
+                    <span class="progress-text" data-tips="index_day_tips"data-lang-id="index_day_progress"></span>
+                    <div class="progress-container">
+                        <div id="day-progress-bar" class="progress-bar"></div>
+                        <span id="day-percentage">0%</span>
+                    </div>
+
+                    <div class="refresh-container" id="refresh-container">
+                        <div class="refreshIcon"></div>
+                        <span id="refresh-timer" data-tips="index_refresh_tips"data-lang-id="index_refresh"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<%- include('../templates/function.ejs') %>
+</html>
