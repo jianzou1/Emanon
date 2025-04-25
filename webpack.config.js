@@ -9,7 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
-  // 获取所有页面文件名（不包含扩展名）
+  // 获取所有页面文件名
   const pagesDir = path.resolve(__dirname, 'ejs/pages');
   const pageFiles = fs.readdirSync(pagesDir).filter(file => file.endsWith('.ejs'));
   const pageNames = pageFiles.map(file => path.basename(file, '.ejs'));
@@ -23,22 +23,24 @@ module.exports = (env, argv) => {
 
   // 为每个页面生成 HtmlWebpackPlugin 实例
   const htmlPlugins = pageNames.map(page => {
-    const templatePath = path.resolve(pagesDir, `${page}.ejs`);
-    const ejsTemplate = fs.readFileSync(templatePath, 'utf-8');
-    const compiledHTML = ejs.render(ejsTemplate, {
-      title: getTitle(page),
-      titleId: `${page}_title`
-    }, {
-      filename: templatePath,
-      root: path.resolve(__dirname, 'ejs') // 让 include 正确解析
-    });
-
-    // 根据页面名称设置输出路径
     const outputDir = page === 'index' ? '' : 'page';
+    const templatePath = path.resolve(pagesDir, `${page}.ejs`);
 
     return new HtmlWebpackPlugin({
-      filename: path.join(outputDir, `${page}.html`), // 输出文件名和文件夹
-      templateContent: compiledHTML,
+      filename: path.join(outputDir, `${page}.html`),
+      template: templatePath,
+      templateParameters: (compilation, assets, options) => {
+        const templateContent = fs.readFileSync(templatePath, 'utf-8');
+        return {
+          htmlWebpackPlugin: {
+            tags: assets.tags,
+            files: assets.files,
+            options: options
+          },
+          title: getTitle(page),
+          titleId: `${page}_title`
+        };
+      },
       minify: isProduction ? {
         collapseWhitespace: true,
         removeComments: true
@@ -52,7 +54,8 @@ module.exports = (env, argv) => {
       filename: 'main.js',
       path: path.resolve(__dirname, ''),
       publicPath: '/',
-      assetModuleFilename: 'assets/[hash][ext][query]'
+      // 禁用默认的资源处理
+      assetModuleFilename: '[file]' 
     },
     module: {
       rules: [
@@ -60,19 +63,51 @@ module.exports = (env, argv) => {
           test: /\.css$/,
           use: [
             isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-            'css-loader'
+            {
+              loader: 'css-loader',
+              options: {
+                // 禁用url解析
+                url: false 
+              }
+            }
           ]
         },
         {
-          test: /\.(png|jpe?g|gif|svg)$/i,
-          type: 'asset/resource',
-          generator: {
-            filename: 'image/[name][ext]'
-          }
+          // 匹配需要忽略的资源类型
+          test: /\.(html|webmanifest)$/i,
+          // 禁用资源处理
+          type: 'javascript/auto',
+          use: []
         },
         {
-          test: /\.html$/,
-          use: ['html-loader']
+          test: /\.(png|jpe?g|gif|svg|webp|avif|webmanifest)$/i,
+          // 阻止Webpack处理这些资源
+          type: 'javascript/auto',
+          use: []
+        },
+        {
+          test: /\.ejs$/,
+          use: {
+            loader: 'html-loader',
+            options: {
+              preprocessor: (content, loaderContext) => {
+                try {
+                  return ejs.render(content, {
+                    title: getTitle(path.basename(loaderContext.resourcePath, '.ejs')),
+                    titleId: `${path.basename(loaderContext.resourcePath, '.ejs')}_title`
+                  }, {
+                    filename: loaderContext.resourcePath,
+                    root: path.resolve(__dirname, 'ejs')
+                  });
+                } catch (error) {
+                  loaderContext.emitError(error);
+                  return content;
+                }
+              },
+              // 禁用资源处理
+              sources: false 
+            }
+          }
         }
       ]
     },
@@ -83,6 +118,23 @@ module.exports = (env, argv) => {
       }),
       ...htmlPlugins
     ],
+    devServer: {
+      static: {
+        directory: path.join(__dirname, ''),
+        // 保留静态资源目录结构
+        staticOptions: {
+          watch: true
+        }
+      },
+      hot: true,
+      open: true,
+      // 监听静态资源变化
+      watchFiles: [
+        path.resolve(__dirname, 'ejs/**/*.ejs'),
+        path.resolve(__dirname, 'static/**/*')
+      ]
+    },
+    mode: isProduction ? 'production' : 'development',
     optimization: {
       minimizer: [
         new TerserPlugin({
@@ -96,17 +148,11 @@ module.exports = (env, argv) => {
         new CssMinimizerPlugin()
       ]
     },
-    mode: isProduction ? 'production' : 'development',
-    devServer: {
-      static: {
-        directory: path.join(__dirname, '')
-      },
-      hot: true,
-      open: true
-    },
-    watchOptions: {
-      poll: true,
-      ignored: /node_modules/
+    // 完全禁用资源处理
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
     }
   };
 };
