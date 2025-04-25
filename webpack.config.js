@@ -14,12 +14,6 @@ module.exports = (env, argv) => {
   const pageFiles = fs.readdirSync(pagesDir).filter(file => file.endsWith('.ejs'));
   const pageNames = pageFiles.map(file => path.basename(file, '.ejs'));
 
-  // 标题配置函数
-  const getTitle = (page) => {
-    switch (page) {
-      default: return '‎';
-    }
-  };
 
   // 为每个页面生成 HtmlWebpackPlugin 实例
   const htmlPlugins = pageNames.map(page => {
@@ -37,7 +31,6 @@ module.exports = (env, argv) => {
             files: assets.files,
             options: options
           },
-          title: getTitle(page),
           titleId: `${page}_title`
         };
       },
@@ -93,7 +86,6 @@ module.exports = (env, argv) => {
               preprocessor: (content, loaderContext) => {
                 try {
                   return ejs.render(content, {
-                    title: getTitle(path.basename(loaderContext.resourcePath, '.ejs')),
                     titleId: `${path.basename(loaderContext.resourcePath, '.ejs')}_title`
                   }, {
                     filename: loaderContext.resourcePath,
