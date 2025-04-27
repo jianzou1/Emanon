@@ -13,6 +13,7 @@ import { initializeGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
 import langManager from '/js/langManager.js';
+import { preloadResources } from '/js/preload.js'
 
 const initializeApp = async () => {
   try {
@@ -21,6 +22,7 @@ const initializeApp = async () => {
     
     // 初始化随机Logo（仅整页加载）
     initializeRandomLogo();
+    preloadResources();
 
     // 加载PJAX依赖
     const { Pjax } = await loadResources();
