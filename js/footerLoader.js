@@ -15,7 +15,6 @@ export function footerLoader() {
     const footerContent = `
       <div class="status-bar">
         <p class="status-bar-field" data-lang-id="footer_name"></p>
-        <p class="status-bar-field" data-lang-id="footer_art"></p>
         ${!isPostPage ? '<p class="status-bar-field" id="last-updated" data-lang-id="footer_update_time"></p>' : ''}
       </div>
     `;
