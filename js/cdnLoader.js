@@ -2,7 +2,7 @@
 
 // 定义 CDN 配置
 export const CDN_CONFIG = {
-    pjax: 'https://npm.elemecdn.com/pjax@0.2.8/pjax.min.js'
+    pjax: 'https://npm.onmicrosoft.cn/pjax@0.2.8/pjax.min.js'
   };
   
   
