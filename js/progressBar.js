@@ -48,23 +48,30 @@ export function updateProgressBar() {
 
     progressBar.innerHTML = '';
 
+    // 计算grid添加的总时间（固定间隔40ms）
+    const gridInterval = 40;
+    const totalGridTime = gridCount * gridInterval;
+
     function addGrid(i) {
       if (i < gridCount) {
         const grid = document.createElement('div');
         grid.className = 'grid';
         progressBar.appendChild(grid);
-        setTimeout(() => addGrid(i + 1), Math.random() * 80);
+        setTimeout(() => addGrid(i + 1), gridInterval);
       } else {
         isUpdating = false;
       }
     }
     addGrid(0);
 
-    let currentPercentage = 0;
+    // 百分比动画，与grid添加同步
+    let startTime = performance.now();
     function animatePercentage() {
-      if (currentPercentage < targetPercentage) {
-        currentPercentage += 1;
-        percentageElement.textContent = `${Math.max(Math.floor(currentPercentage), 1)}%`;
+      const elapsed = performance.now() - startTime;
+      const progress = Math.min(elapsed / totalGridTime, 1);
+      const currentPercentage = progress * targetPercentage;
+      percentageElement.textContent = `${Math.max(Math.floor(currentPercentage), 1)}%`;
+      if (progress < 1) {
         requestAnimationFrame(animatePercentage);
       } else {
         percentageElement.textContent = `${Math.max(Math.floor(targetPercentage), 1)}%`;

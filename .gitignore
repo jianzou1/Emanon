@@ -1,3 +1,4 @@
 /node_modules/
 /dist/main.js.LICENSE.txt
 /ui/Text-Image.exe
+.DS_Store
