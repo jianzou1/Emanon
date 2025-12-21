@@ -29,11 +29,7 @@ const initializeApp = async () => {
     const pjax = new Pjax({
       selectors: ['head title', '#main'],
       cacheBust: false,
-      cache: true,
     });
-
-    // 初始化PJAX缓存
-    pjax.cache = {};
 
     // 选项卡配置数据
     const tabData = [

@@ -61,8 +61,8 @@ export class TabHandler {
         try {
             await this.pjax.loadUrl(clickedTabUrl);
             const loadTime = performance.now() - startTime;
-            if (loadTime < 10) {
-                console.log('页面加载完成 (来自PJAX缓存):', clickedTabUrl, `耗时: ${loadTime.toFixed(2)}ms`);
+            if (loadTime < 100) {
+                console.log('页面加载完成 (来自预加载缓存):', clickedTabUrl, `耗时: ${loadTime.toFixed(2)}ms`);
             } else {
                 console.log('页面加载完成 (来自网络):', clickedTabUrl, `耗时: ${loadTime.toFixed(2)}ms`);
             }
@@ -88,31 +88,21 @@ export class TabHandler {
         });
     }
 
-    // 预加载所有选项卡内容（使用PJAX缓存）
+    // 预加载所有选项卡内容（使用浏览器缓存）
     preloadTabs() {
         if (TabHandler.preloaded) return; // 已预加载，跳过
         TabHandler.preloaded = true;
 
-        // 确保PJAX缓存存在
-        if (!this.pjax.cache) {
-            this.pjax.cache = {};
-        }
-
         this.tabData.forEach(tab => {
             if (tab.url !== window.location.pathname) {
-                // 使用fetch预加载，并存储到PJAX缓存
+                // 使用fetch预加载，让浏览器缓存HTML
                 fetch(tab.url, { method: 'GET' })
                     .then(response => {
                         if (response.ok) {
-                            return response.text();
+                            console.log('预加载成功:', tab.url);
                         } else {
-                            throw new Error(`HTTP ${response.status}`);
+                            console.warn('预加载失败:', tab.url, '状态:', response.status);
                         }
-                    })
-                    .then(html => {
-                        // 存储到PJAX缓存
-                        this.pjax.cache[tab.url] = html;
-                        console.log('预加载成功并缓存:', tab.url);
                     })
                     .catch(error => {
                         console.warn('预加载失败:', tab.url, error);
