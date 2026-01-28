@@ -1,22 +1,58 @@
 // cdn-loader.js
 
-// 定义 CDN 配置
+// 定义 CDN 配置 - 支持多个备用源
 export const CDN_CONFIG = {
-    pjax: 'https://github.elemecdn.com/pjax@0.2.8/pjax.min.js'
-  };
+  pjax: [
+    'https://github.elemecdn.com/pjax@0.2.8/pjax.min.js',
+    'https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js',
+    'https://unpkg.com/pjax@0.2.8/pjax.min.js'
+  ]
+};
+
+// 通用加载函数 - 支持多个备用源
+const loadScript = (urls) => new Promise((resolve, reject) => {
+  // 如果 urls 是字符串，转换为数组
+  const urlList = Array.isArray(urls) ? urls : [urls];
   
+  let currentIndex = 0;
   
-  // 动态加载 PJAX（返回 Promise）
-  const loadPjax = () => new Promise((resolve, reject) => {
+  const tryLoad = () => {
+    if (currentIndex >= urlList.length) {
+      reject(new Error(`Failed to load script from all sources: ${urlList.join(', ')}`));
+      return;
+    }
+    
+    const url = urlList[currentIndex];
     const script = document.createElement('script');
-    script.src = CDN_CONFIG.pjax;
-    script.onload = () => resolve(window.Pjax); // 暴露 PJAX 类
-    script.onerror = reject;
+    script.src = url;
+    
+    script.onload = () => {
+      console.log(`✓ Successfully loaded from: ${url}`);
+      resolve();
+    };
+    
+    script.onerror = () => {
+      console.warn(`✗ Failed to load from: ${url}, trying next...`);
+      currentIndex++;
+      tryLoad();
+    };
+    
     document.head.appendChild(script);
-  });
-  
-  // 统一加载所有资源
-  export const loadResources = async () => {
-    const Pjax = await loadPjax();
-    return { Pjax }; // 返回 PJAX 供主模块使用
   };
+  
+  tryLoad();
+});
+
+// 动态加载 PJAX
+const loadPjax = () => loadScript(CDN_CONFIG.pjax).then(() => window.Pjax);
+
+// 统一加载所有资源
+export const loadResources = async () => {
+  try {
+    const Pjax = await loadPjax();
+    return { Pjax };
+  } catch (error) {
+    console.error('Failed to load resources:', error);
+    throw error;
+  }
+};
