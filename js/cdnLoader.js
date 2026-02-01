@@ -10,38 +10,70 @@ export const CDN_CONFIG = {
 };
 
 // 通用加载函数 - 支持多个备用源
-const loadScript = (urls) => new Promise((resolve, reject) => {
-  // 如果 urls 是字符串，转换为数组
+const loadScript = (urls) => {
   const urlList = Array.isArray(urls) ? urls : [urls];
-  
-  let currentIndex = 0;
-  
-  const tryLoad = () => {
-    if (currentIndex >= urlList.length) {
-      reject(new Error(`Failed to load script from all sources: ${urlList.join(', ')}`));
-      return;
-    }
-    
-    const url = urlList[currentIndex];
-    const script = document.createElement('script');
-    script.src = url;
-    
-    script.onload = () => {
-      console.log(`✓ Successfully loaded from: ${url}`);
-      resolve();
-    };
-    
-    script.onerror = () => {
-      console.warn(`✗ Failed to load from: ${url}, trying next...`);
-      currentIndex++;
-      tryLoad();
-    };
-    
-    document.head.appendChild(script);
-  };
-  
-  tryLoad();
-});
+  const start = performance.now();
+
+  // 并行 fetch 多个源，优先使用第一个成功返回的内容（避免多个脚本同时执行）
+  const fetchPromises = urlList.map(url =>
+    fetch(url, { mode: 'cors' }).then(resp => {
+      if (!resp.ok) throw new Error(`HTTP ${resp.status} for ${url}`);
+      return resp.text().then(code => ({ url, code }));
+    })
+  );
+
+  // 首选 Promise.any（第一个 fulfilled），浏览器环境现代均支持
+  return Promise.any(fetchPromises)
+    .then(({ url, code }) => {
+      // 注入脚本内容为 blob，避免其他源的脚本也被执行
+      const blob = new Blob([code], { type: 'text/javascript' });
+      const blobUrl = URL.createObjectURL(blob);
+
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = blobUrl;
+        script.onload = () => {
+          console.log(`✓ Successfully loaded from: ${url} (${Math.round(performance.now() - start)}ms)`);
+          // 清理 blobUrl
+          URL.revokeObjectURL(blobUrl);
+          resolve();
+        };
+        script.onerror = (e) => {
+          URL.revokeObjectURL(blobUrl);
+          reject(new Error(`Script injection failed for ${url}`));
+        };
+        document.head.appendChild(script);
+      });
+    })
+    .catch((err) => {
+      // Promise.any 在所有 promise 都 reject 时会到这里（AggregateError）
+      console.warn('Parallel fetch failed or all sources unreachable, falling back to sequential script append', err);
+
+      // 回退到顺序加载（通过创建 script 标签）以兼容无法 fetch 的跨域源
+      return new Promise((resolve, reject) => {
+        let idx = 0;
+        const tryLoadSequential = () => {
+          if (idx >= urlList.length) {
+            reject(new Error(`Failed to load script from all sources: ${urlList.join(', ')}`));
+            return;
+          }
+          const url = urlList[idx++];
+          const script = document.createElement('script');
+          script.src = url;
+          script.onload = () => {
+            console.log(`✓ Successfully loaded (sequential) from: ${url} (${Math.round(performance.now() - start)}ms)`);
+            resolve();
+          };
+          script.onerror = () => {
+            console.warn(`✗ Failed to load (sequential) from: ${url}, trying next...`);
+            tryLoadSequential();
+          };
+          document.head.appendChild(script);
+        };
+        tryLoadSequential();
+      });
+    });
+};
 
 // 动态加载 PJAX
 const loadPjax = () => loadScript(CDN_CONFIG.pjax).then(() => window.Pjax);
