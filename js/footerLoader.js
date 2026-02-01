@@ -57,25 +57,8 @@ export function footerLoader() {
 async function getLastUpdatedDateFromGitHub() {
     const url = 'https://api.github.com/repos/jianzou1/drunkfrog';
     const cacheKey = 'lastUpdatedDate';
-    const cacheExpiration = 3600000; // 1小时缓存
-
-    // 检查缓存
-    const cachedData = localStorage.getItem(cacheKey);
-    if (cachedData) {
-        const { timestamp, date } = JSON.parse(cachedData);
-        if (Date.now() - timestamp < cacheExpiration) {
-            return date;
-        }
-    }
-
-    // 获取最新数据
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(langManager.translate('errors.api_fetch', response.status));
-    }
-    
-    const data = await response.json();
-    const lastUpdated = new Date(data.updated_at).toLocaleString([], {
+    const cacheExpiration = 86400000; // 24小时缓存（增加从1小时）
+    const fallbackDate = new Date().toLocaleString([], {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
@@ -83,11 +66,75 @@ async function getLastUpdatedDateFromGitHub() {
         minute: '2-digit'
     });
 
-    // 更新缓存
-    localStorage.setItem(cacheKey, JSON.stringify({
-        timestamp: Date.now(),
-        date: lastUpdated
-    }));
+    // 检查缓存
+    let cachedData = null;
+    try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+            cachedData = JSON.parse(cached);
+        }
+    } catch (e) {
+        console.warn('[Footer] 缓存读取失败:', e);
+    }
 
-    return lastUpdated;
+    // 如果缓存有效，直接返回
+    if (cachedData) {
+        const { timestamp, date } = cachedData;
+        if (Date.now() - timestamp < cacheExpiration) {
+            console.log('[Footer] 使用缓存的更新时间:', date);
+            return date;
+        }
+    }
+
+    // 获取最新数据
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒超时
+
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            // 403 或 429 是速率限制，返回过期缓存而不是报错
+            if ((response.status === 403 || response.status === 429) && cachedData) {
+                console.warn(`[Footer] API 返回 ${response.status}，使用过期缓存`);
+                return cachedData.date;
+            }
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        const lastUpdated = new Date(data.updated_at).toLocaleString([], {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // 更新缓存
+        try {
+            localStorage.setItem(cacheKey, JSON.stringify({
+                timestamp: Date.now(),
+                date: lastUpdated
+            }));
+            console.log('[Footer] 缓存已更新:', lastUpdated);
+        } catch (e) {
+            console.warn('[Footer] 缓存写入失败:', e);
+        }
+
+        return lastUpdated;
+    } catch (error) {
+        console.error('[Footer] GitHub API 调用失败:', error.message);
+        
+        // 如果有任何缓存（即使过期），优先返回它
+        if (cachedData) {
+            console.log('[Footer] API 失败，返回最后一次缓存:', cachedData.date);
+            return cachedData.date;
+        }
+
+        // 所有都失败，返回当前日期作为最后降级
+        console.log('[Footer] 返回当前日期作为降级方案');
+        return fallbackDate;
+    }
 }
