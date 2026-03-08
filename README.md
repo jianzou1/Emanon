@@ -1,119 +1,237 @@
+# Emanon
+
+一个基于 Windows 98 复古风格的纯前端个人网站，无需后端服务，静态托管即可部署。
+
 ## 核心特性
 
 - **纯前端架构**：无需数据库与后端服务，静态文件托管即可部署
-- **Markdown优先**：内置marked解析器，支持标准语法扩展
-- **无刷新导航**：集成pjax实现平滑页面切换
-- **复古UI**：基于98.css还原Windows 98系统视觉
-- **多语言系统**：动态语言切换与文本本地化管理
-- **配置驱动**：Excel表格驱动的内容管理，自动化生成JSON配置
+- **Markdown 优先**：内置 marked 解析器，支持标准语法扩展
+- **无刷新导航**：集成 pjax 实现平滑页面切换
+- **复古 UI**：基于 98.css 还原 Windows 98 系统视觉
+- **多语言系统**：动态语言切换与文本本地化管理（v3.1），用户偏好持久化缓存
+- **配置驱动**：Excel 表格驱动的内容管理，自动化生成 JSON 配置
+- **CRT 特效**：可开关的 CRT 扫描线特效，偏好持久化至 localStorage
+- **CDN 容灾**：pjax 等 CDN 资源支持多源并行加载，自动故障转移
 
 ## 技术架构
 
-|     模块     | 技术方案 | 版本  |
-| :----------: | :------: | :---: |
-|   构建工具   | webpack  |  5.x  |
-|   路由控制   |   pjax   | 0.2.8 |
-| Markdown解析 |  marked  | 15.0+ |
-|    UI框架    |  98.css  | 1.2.0 |
-|    包管理    |   npm    | 7.0+  |
+|     模块     |    技术方案    |  版本  |
+| :----------: | :------------: | :----: |
+|   构建工具   |    webpack     |  5.x   |
+|   模板引擎   |      ejs       | 3.1.x  |
+|   路由控制   |      pjax      | 0.2.8  |
+| Markdown解析 |     marked     | 15.0+  |
+|    UI框架    |     98.css     | 1.2.0  |
+|    包管理    |      npm       |  7.0+  |
+
+## 项目结构
+
+```
+Emanon/
+├── js/                        # 源码模块
+│   ├── index.js               # Webpack 入口，初始化应用与 HMR
+│   ├── main.js                # 应用核心，协调所有功能模块
+│   ├── cdnLoader.js           # CDN 多源并行加载，自动故障转移
+│   ├── langManager.js         # 多语言管理器 (v3.1)
+│   ├── tabHandler.js          # 顶部导航选项卡
+│   ├── progressBar.js         # 首页年/月/日进度条
+│   ├── previewLoader.js       # 文章列表预览加载
+│   ├── gallery.js             # 画廊图片列表
+│   ├── gameList.js            # 游戏/记录列表
+│   ├── gameRoll.js            # 游戏随机推荐
+│   ├── dailyPopup.js          # 每日弹窗（含语言切换）
+│   ├── tips.js                # 鼠标悬停提示
+│   ├── crtEffect.js           # CRT 扫描线特效
+│   ├── logoRandomizer.js      # 顶部 Logo 随机切换
+│   ├── password.js            # 访问密码验证
+│   ├── footerLoader.js        # 页脚加载
+│   └── scrollToTop.js         # 滚动监听与返回顶部
+├── css/                       # 各页面样式
+│   ├── style.css              # 全局样式
+│   ├── article.css
+│   ├── gallery.css
+│   ├── game.css
+│   ├── daily.css
+│   ├── about.css
+│   ├── logo.css
+│   ├── password.css
+│   └── progress.css
+├── ejs/
+│   ├── pages/                 # 页面模板
+│   │   ├── index.ejs
+│   │   ├── article.ejs
+│   │   ├── gallery.ejs
+│   │   ├── game.ejs
+│   │   ├── about.ejs
+│   │   └── password.ejs
+│   └── templates/             # 公共模板片段
+│       ├── header.ejs
+│       └── function.ejs
+├── cfg/
+│   ├── article_cfg.json       # 文章列表配置
+│   ├── gallery_cfg.json       # 画廊配置
+│   ├── game_time_cfg.json     # 游戏/记录配置
+│   ├── lang_cfg.json          # 多语言文本配置
+│   ├── excel/                 # Excel 源文件
+│   └── trans_table_tool_v1.2.zip  # 配置表转换工具
+├── post/
+│   ├── _src/                  # Markdown 文章源文件
+│   │   └── post.js            # 文章构建脚本
+│   └── <文章名>/              # 构建产物，每篇文章一个文件夹
+├── page/                      # 构建产物 HTML 页面
+├── ui/                        # UI 素材（ASCII 图、弹窗 HTML）
+├── icon/                      # 图标资源
+├── favicon/                   # 网站图标
+├── main.js                    # 打包产物（勿手动修改）
+├── styles.css                 # 打包产物（勿手动修改）
+├── index.html                 # 网站入口
+├── webpack.config.js          # Webpack 配置
+└── package.json
+```
+
+## 安装与运行
+
+**环境要求**：Node.js 16+、npm 7+
+
+```bash
+# 安装依赖
+npm install
+
+# 本地开发（含 HMR 热更新）
+npm start
+
+# 构建文章 + 生产打包（完整流程）
+npm run build
+
+# 仅构建 Markdown 文章
+npm run post
+
+# 仅生产打包
+npm run pack
+```
 
 ## 开始使用
 
-### 一、入口文件
+### 一、导航栏配置
 
-#### 1.1 main.js
+在 `js/main.js` 中修改 `tabData` 数组，可增减导航选项卡：
 
-- 通过`js/main.js`加载各个功能。
-
-#### 1.2 导航栏配置
-
-- 在`js/main.js`中修改`tabData`数组：
-
-  ```
-  const tabData = [
-    { url: '/', text: 'tab_progress' },
-    { url: '/page/article.html', text: 'tab_article' },
-    // 其他菜单项...
-  ];
-  ```
+```js
+const tabData = [
+  { url: '/', text: 'tab_progress' },
+  { url: '/page/article.html', text: 'tab_article' },
+  { url: '/page/game.html', text: 'tab_game' },
+  { url: '/page/gallery.html', text: 'tab_gallery' },
+  // 其他菜单项...
+];
+```
 
 ### 二、配置表转换
 
-- 本项目的设计方式与游戏设计的思路相似，想要实现文章、画廊、游戏列表甚至是多语言系统的内容修改，需要对Excel文件进行编辑，并将Excel文件转换为`.json`的程序可识别文件。
+本项目使用 Excel 作为内容管理入口，编辑完成后需转换为 JSON 文件供程序读取。
 
-- **准备转换工具**
-  - 解压缩配置文件包：`cfg/trans_table_tool_v1.2.zip`
-- **配置项目路径**
-  - 使用文本编辑器打开`git_diff_gen_json.sh`
-  - 修改参数：`git_dir="/your/project/path"  # 替换为项目实际根目录路径`
-- **执行转换**
-  - 脚本将自动检查Excel文件差异变更，生成对应的JSON文件。
+1. **准备转换工具**：解压 `cfg/trans_table_tool_v1.2.zip`
+2. **配置项目路径**：用文本编辑器打开 `git_diff_gen_json.sh`，修改参数：
+   ```bash
+   git_dir="/your/project/path"  # 替换为项目实际根目录路径
+   ```
+3. **执行转换**：脚本将自动检查 Excel 文件差异变更，生成对应的 JSON 文件至 `cfg/`。
 
 ### 三、文章功能
 
 #### 3.1 文章内容构建
 
-- Markdown的文章列表存放在`post/_src`文件夹内，新增文章后，使用命令行运行`npm post`即可进行文章内容的构建。
-  - 构建后会在`post`下新增一个与Markdown文件名一致的文章文件夹，为了增强可读性，Markdown文件名最好不要命名为中文。
-  - 文章页面的`<title>`标签被定义为Markdown文件中的首行，注意填写。
+Markdown 源文件存放于 `post/_src/`，新增文章后运行以下命令构建：
+
+```bash
+npm run post
+```
+
+- 构建后会在 `post/` 下生成与 Markdown 文件名同名的文章文件夹
+- 建议文件名使用英文，避免路径编码问题
+- Markdown **首行**内容将作为文章页面的 `<title>` 标题
 
 #### 3.2 文章入口编辑
 
-- 想要文章可见，请编辑`article_cfg`的以下字段：
+编辑 `cfg/article_cfg.json`（或对应 Excel）中的以下字段，使文章在列表页可见：
 
-  | 字段 |      描述      |       示例值       |
-  | :--: | :------------: | :----------------: |
-  |  id  | 排序ID（升序） |        1001        |
-  | url  |   文章目录名   | 2023-tech-guide.md |
-  | icon |   图标文件名   |    article.svg     |
-  | name |    显示标题    |      技术指南      |
+| 字段 |      描述      |     示例值      |
+| :--: | :------------: | :-------------: |
+|  id  | 排序ID（升序） |      1001       |
+| url  |   文章目录名   | 2023-tech-guide |
+| icon |   图标文件名   |   article.svg   |
+| name |    显示标题    |    技术指南     |
 
 ### 四、画廊功能
 
-- 新增图片列表，请编辑`gallery_cfg`的以下字段：
+编辑 `cfg/gallery_cfg.json` 中的以下字段，管理画廊图片：
 
-  | 字段  | 备注                                       |
-  | ----- | ------------------------------------------ |
-  | id    | 用作排序，升序排列                         |
-  | mark  | 相同的值会被归类到一起，视为单独的图片列表 |
-  | url   | 图床链接                                   |
-  | page  | 相同mark中，图片展示在第几页               |
-  | title | 图片列表的标题名                           |
+| 字段  | 备注                                     |
+| ----- | ---------------------------------------- |
+| id    | 用作排序，升序排列                       |
+| mark  | 相同的值归为同一图片列表                 |
+| url   | 图床链接                                 |
+| page  | 相同 mark 中，图片展示所在页码           |
+| title | 图片列表的标题名                         |
 
 ### 五、游戏列表功能
 
-- 该功能也可以用作“观影记录”或是”读书笔记“等，请编辑`game_time_cfg`的以下字段：
+该功能同样可用作「观影记录」「读书笔记」等，编辑 `cfg/game_time_cfg.json` 中的以下字段：
 
-  | 字段                | 备注                                                     |
-  | ------------------- | -------------------------------------------------------- |
-  | id                  | 用作排序，升序排列                                       |
-  | name                | 名称                                                     |
-  | sign                | 显示在时长前的标志                                       |
-  | time                | 游戏时长                                                 |
-  | type                | 游戏类型；可以在`typeName`中编辑类型名称                 |
-  | isLoved             | 是否喜爱                                                 |
-  | seriesTag           | 系列标签，同系列的会优先展示在一起                       |
-  | spacialAchievements | 特殊成就，配置此值，列表会有下拉样式，展示该值字段的内容 |
-  | quality             | 评级                                                     |
-  | story               | 随机功能的描述内容                                       |
+| 字段                | 备注                                               |
+| ------------------- | -------------------------------------------------- |
+| id                  | 用作排序，升序排列                                 |
+| name                | 名称                                               |
+| sign                | 显示在时长前的标志                                 |
+| time                | 游戏时长                                           |
+| type                | 游戏类型（可在 `typeName` 中编辑类型名称）         |
+| isLoved             | 是否喜爱                                           |
+| seriesTag           | 系列标签，同系列项优先聚合展示                     |
+| spacialAchievements | 特殊成就，配置后列表显示可展开的下拉样式           |
+| quality             | 评级                                               |
+| story               | 随机推荐功能的描述内容                             |
 
 ### 六、多语言系统
 
+多语言管理器（`js/langManager.js`）版本 v3.1，支持 DOM 自动绑定、用户偏好缓存与 HTML 安全转义。
+
 #### 6.1 新增语言
 
-- 在`dailyPopup.html`的 `<select id="lang-switcher">`标签下新增指定`value`的语言，在`lang_cfg`也要有对应的多语字段。
+在 `ui/dailyPopup.html` 的 `<select id="lang-switcher">` 中新增对应的 `<option value="...">` 条目，同时在 `cfg/lang_cfg.json` 中补充对应的多语字段。
 
 #### 6.2 新增翻译条目
 
-- 对任意页面的标签，新增`data-lang-id`属性，与`lang_cfg`配置表的主键一一对应，多语言功能在遍历到该属性后，会根据当前语言自动替换文本。
+为任意 HTML 标签添加 `data-lang-id` 属性，与 `lang_cfg` 配置表的主键对应，语言切换时自动替换文本：
 
-### 七、打包
+```html
+<span data-lang-id="your_key">默认文本</span>
+```
 
-#### 一、打包指令
+输入框的 placeholder 支持 `data-lang-placeholder` 属性：
 
-- 运行`npm pack`进行生产环境打包，该指令会将`js`与`css`文件夹下的所有内容，根据入口文件在根目录生成`main.js`与`style.css`。
+```html
+<input data-lang-placeholder="your_placeholder_key" />
+```
 
-#### 二、热模块替换（HMR）
+### 七、构建与部署
 
-- 为了避免因`js`或`css`产生改动后需要预览，而产生的频繁打包需求，引入了检测本地差异并实时热更到浏览器的功能。运行`npm start`指令，即可开启浏览器预览热更服务。
+#### 7.1 命令说明
 
+| 命令              | 说明                                            |
+| ----------------- | ----------------------------------------------- |
+| `npm start`       | 启动本地开发服务器，支持 HMR 热模块替换         |
+| `npm run post`    | 仅构建 Markdown 文章为 HTML                     |
+| `npm run pack`    | 仅执行 Webpack 生产打包                         |
+| `npm run build`   | 构建文章 + 生产打包（完整流程，推荐使用）       |
+
+#### 7.2 打包产物
+
+生产打包（`npm run pack`）后，在根目录生成：
+
+- `main.js`：合并压缩后的 JavaScript
+- `styles.css`：合并压缩后的样式表
+- `page/*.html`：各页面 HTML（由 EJS 模板生成）
+
+#### 7.3 部署
+
+将整个项目目录（含静态资源）上传至任意支持静态文件的托管服务即可，无需服务端环境。

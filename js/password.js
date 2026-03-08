@@ -33,6 +33,7 @@ export function initializePassword() {
 
     submitButton.addEventListener('click', handleSubmit);
     passwordInput.addEventListener('keydown', passwordInputListener);
+    passwordInput.focus();
 }
 
 async function getHashPrefix(password) {
