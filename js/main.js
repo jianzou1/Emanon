@@ -49,6 +49,7 @@ const initializeApp = async () => {
     // PJAX事件监听
     document.addEventListener('pjax:complete', () => {
       handlePageLoad();
+      langManager.applyTranslations();
     });
 
     // 页面加载处理器

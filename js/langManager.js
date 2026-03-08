@@ -74,7 +74,7 @@ class LangManager {
 
   async #loadLanguageData() {
     try {
-      const response = await fetch(`${this.config.langFile}?v=${Date.now()}`);
+      const response = await fetch(`${this.config.langFile}?v=${this.config.version}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const rawData = await response.json();
@@ -117,10 +117,6 @@ class LangManager {
   #applyTranslations() {
     if (this.updateInProgress) return;
     this.updateInProgress = true;
-
-    this.pendingUpdates.forEach(element => {
-      this.#translateElement(element);
-    });
     this.pendingUpdates.clear();
 
     const elements = document.querySelectorAll('[data-lang-id], [data-lang-placeholder]');
@@ -129,6 +125,11 @@ class LangManager {
     });
 
     this.updateInProgress = false;
+
+    // 翻译期间 observer 新入队的元素，在下一个微任务中处理
+    if (this.pendingUpdates.size > 0) {
+      Promise.resolve().then(() => this.#applyTranslations());
+    }
   }
 
   #translateElement(element) {
@@ -288,6 +289,12 @@ class LangManager {
       this.paramCache.set(cacheKey, this.translate(key, ...params));
     }
     return this.paramCache.get(cacheKey);
+  }
+
+  // 供外部（如 PJAX complete）主动触发一次完整翻译+切换器绑定
+  applyTranslations() {
+    this.#applyTranslations();
+    this.#safeBindSwitcher();
   }
 
   async init(defaultLang = this.config.fallbackLang) {
