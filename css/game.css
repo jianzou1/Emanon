@@ -57,6 +57,20 @@ li[onclick] {
   animation: flipIn 0.2s forwards;
 }
 
+@keyframes winnerSpring {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.28); }
+  50%  { transform: scale(0.90); }
+  72%  { transform: scale(1.10); }
+  88%  { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+.scroll-item.winner-spring > span {
+  display: inline-block;
+  animation: winnerSpring 0.25s ease-out forwards;
+}
+
 @keyframes flipIn {
   0% {
     transform: translate(200%, -500%) scale(4);

@@ -19,7 +19,7 @@ class LangManager {
       subtree: true,
       childList: true,
       attributes: true,
-      attributeFilter: ['data-lang-id']
+      attributeFilter: ['data-lang-id', 'data-lang-placeholder']
     },
     logger: console,
     placeholderFormats: ['braced', 'numbered']
@@ -123,7 +123,7 @@ class LangManager {
     });
     this.pendingUpdates.clear();
 
-    const elements = document.querySelectorAll('[data-lang-id]');
+    const elements = document.querySelectorAll('[data-lang-id], [data-lang-placeholder]');
     elements.forEach(element => {
       this.#translateElement(element);
     });
@@ -132,6 +132,21 @@ class LangManager {
   }
 
   #translateElement(element) {
+    // 处理 placeholder 翻译
+    if (element.dataset.langPlaceholder) {
+      const placeholderId = element.dataset.langPlaceholder;
+      const translations = this.langData[placeholderId] || {};
+      const text = translations[this.currentLang] ||
+                   translations[this.config.fallbackLang] ||
+                   placeholderId;
+      try {
+        element.placeholder = text;
+      } catch (err) {
+        this.#handleTranslationError(element, placeholderId, err);
+      }
+      if (!element.dataset.langId) return;
+    }
+
     const id = element.dataset.langId;
     if (!id) return;
 
@@ -197,10 +212,10 @@ class LangManager {
           if (mutation.type === 'childList') {
             mutation.addedNodes.forEach(node => {
               if (node.nodeType === Node.ELEMENT_NODE) {
-                if (node.hasAttribute('data-lang-id')) {
+                if (node.hasAttribute('data-lang-id') || node.hasAttribute('data-lang-placeholder')) {
                   this.pendingUpdates.add(node);
                 }
-                const langElements = node.querySelectorAll('[data-lang-id]');
+                const langElements = node.querySelectorAll('[data-lang-id], [data-lang-placeholder]');
                 langElements.forEach(el => this.pendingUpdates.add(el));
               }
             });
