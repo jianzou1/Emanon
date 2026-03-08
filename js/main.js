@@ -12,8 +12,8 @@ import { initGameRoll } from '/js/gameRoll.js';
 import { initializeGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
+import { initializePassword } from '/js/password.js';
 import langManager from '/js/langManager.js';
-
 const initializeApp = async () => {
   try {
     // 初始化多语言管理器
@@ -72,6 +72,9 @@ const initializeApp = async () => {
             break;
           case '/page/gallery.html':
             initializeGallery();
+            break;
+          case '/page/password.html':
+            initializePassword();
             break;
           default:
             break;

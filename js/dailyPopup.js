@@ -38,6 +38,11 @@ const POPUP_CONFIG = {
   
   // 显示每日弹窗
   async function showDailyPopup() {
+    // 只在一级域名（根路径）生效
+    if (window.location.pathname !== '/') {
+      return;
+    }
+
     const now = Date.now();
     const lastShown = localStorage.getItem('dailyPopupLastShown');
     const lastShownTime = lastShown ? new Date(lastShown).getTime() : 0;
