@@ -37,7 +37,6 @@ const initializeApp = async () => {
       { url: '/page/article.html', text: 'tab_article' },
       { url: '/page/game.html', text: 'tab_game' },
       { url: '/page/gallery.html', text: 'tab_gallery' },
-      { url: '/page/about.html', text: 'tab_about' }
     ];
 
     // 初始化标签处理器
