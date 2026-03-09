@@ -240,15 +240,15 @@
     "jp": "パスワード"
   },
   {
-    "id": "password_submit",
-    "cn": "提交",
-    "en": "Submit",
-    "jp": "送信"
-  },
-  {
     "id": "password_input_placeholder",
     "cn": "请输入密码",
     "en": "Enter password",
     "jp": "パスワードを入力"
+  },
+  {
+    "id": "timer.refresh_complete",
+    "cn": "正在刷新",
+    "en": "Refreshing",
+    "jp": "更新中"
   }
 ]

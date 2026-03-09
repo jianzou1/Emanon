@@ -1,6 +1,38 @@
 let isUpdating = false;
 let timerId = null;
 let visibilityHandler = null;
+let nextRefreshAt = 0;
+const GRID_WIDTH = 28;
+const GRID_GAP = 2;
+const GRID_INTERVAL = 40;
+
+const PROGRESS_ITEMS = (now) => [
+  {
+    start: new Date(now.getFullYear(), 0, 1),
+    end: new Date(now.getFullYear() + 1, 0, 1),
+    percentageId: 'progress-percentage',
+    progressBarId: 'progress-bar'
+  },
+  {
+    start: new Date(now.getFullYear(), now.getMonth(), 1),
+    end: new Date(now.getFullYear(), now.getMonth() + 1, 1),
+    percentageId: 'month-percentage',
+    progressBarId: 'month-progress-bar'
+  },
+  {
+    start: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+    end: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1),
+    percentageId: 'day-percentage',
+    progressBarId: 'day-progress-bar'
+  }
+];
+
+// 自定义刷新间隔配置（单位：秒）
+// 默认 3600 秒 = 1 小时，可改为任意值，如：
+// - 60: 每分钟刷新
+// - 300: 每5分钟刷新
+// - 1800: 每30分钟刷新
+const REFRESH_INTERVAL = 1800;
 
 // Simplified i18n wrapper (仅保留真正需要多语言的部分)
 export const i18n = {
@@ -9,12 +41,13 @@ export const i18n = {
     LangManager.applyParameters(element, key, ...params)
 };
 
-export function updateProgressBar() {
-  if (isUpdating) return;
+export function updateProgressBar(skipTimerRestart = false) {
+  if (isUpdating) {
+    return;
+  }
   isUpdating = true;
 
   const now = new Date();
-  const gridWidth = 28;
   const container = document.querySelector('.progress-container');
   const containerWidth = container?.clientWidth;
 
@@ -24,7 +57,20 @@ export function updateProgressBar() {
     return;
   }
 
-  const totalGrids = Math.floor(containerWidth / (gridWidth + 2));
+  const totalGrids = Math.floor(containerWidth / (GRID_WIDTH + GRID_GAP));
+  const progressItems = PROGRESS_ITEMS(now);
+  let completedCount = 0;
+  const totalProgressBars = progressItems.length;
+
+  const markProgressCompleted = () => {
+    completedCount++;
+    if (completedCount === totalProgressBars) {
+      isUpdating = false;
+      if (!skipTimerRestart) {
+        startCountdownTimer();
+      }
+    }
+  };
 
   function updateProgress(start, end, percentageId, progressBarId) {
     const totalDuration = (end - start) / (1000 * 60);
@@ -34,7 +80,7 @@ export function updateProgressBar() {
     const percentageElement = document.getElementById(percentageId);
     if (!percentageElement) {
       console.error(i18n.getTranslation('errors.element_not_found', percentageId));
-      isUpdating = false;
+      markProgressCompleted();
       return;
     }
 
@@ -42,80 +88,73 @@ export function updateProgressBar() {
     const progressBar = document.getElementById(progressBarId);
     if (!progressBar) {
       console.error(i18n.getTranslation('errors.element_not_found', progressBarId));
-      isUpdating = false;
+      markProgressCompleted();
       return;
     }
 
+    // 先清空并重置为0%，强制从头播放动画
     progressBar.innerHTML = '';
+    percentageElement.textContent = '0%';
 
-    // 计算grid添加的总时间（固定间隔40ms）
-    const gridInterval = 40;
-    const totalGridTime = gridCount * gridInterval;
+    // 使用 requestAnimationFrame 确保浏览器先渲染清空状态
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const totalGridTime = gridCount * GRID_INTERVAL;
 
-    function addGrid(i) {
-      if (i < gridCount) {
-        const grid = document.createElement('div');
-        grid.className = 'grid';
-        progressBar.appendChild(grid);
-        setTimeout(() => addGrid(i + 1), gridInterval);
-      } else {
-        isUpdating = false;
-      }
-    }
-    addGrid(0);
+        function addGrid(i) {
+          if (i < gridCount) {
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+            progressBar.appendChild(grid);
+            setTimeout(() => addGrid(i + 1), GRID_INTERVAL);
+          } else {
+            markProgressCompleted();
+          }
+        }
+        addGrid(0);
 
-    // 百分比动画，与grid添加同步
-    let startTime = performance.now();
-    function animatePercentage() {
-      const elapsed = performance.now() - startTime;
-      const progress = Math.min(elapsed / totalGridTime, 1);
-      const currentPercentage = progress * targetPercentage;
-      percentageElement.textContent = `${Math.max(Math.floor(currentPercentage), 1)}%`;
-      if (progress < 1) {
-        requestAnimationFrame(animatePercentage);
-      } else {
-        percentageElement.textContent = `${Math.max(Math.floor(targetPercentage), 1)}%`;
-      }
-    }
-    animatePercentage();
+        // 百分比动画，从0%开始到目标百分比
+        let startTime = performance.now();
+        function animatePercentage() {
+          const elapsed = performance.now() - startTime;
+          const progress = Math.min(elapsed / totalGridTime, 1);
+          const currentPercentage = progress * targetPercentage;
+          percentageElement.textContent = `${Math.max(Math.floor(currentPercentage), 1)}%`;
+          if (progress < 1) {
+            requestAnimationFrame(animatePercentage);
+          } else {
+            percentageElement.textContent = `${Math.max(Math.floor(targetPercentage), 1)}%`;
+          }
+        }
+        animatePercentage();
+      });
+    });
   }
 
-  // Update all progress bars
-  updateProgress(
-    new Date(now.getFullYear(), 0, 1),
-    new Date(now.getFullYear() + 1, 0, 1),
-    'progress-percentage',
-    'progress-bar'
-  );
-  updateProgress(
-    new Date(now.getFullYear(), now.getMonth(), 1),
-    new Date(now.getFullYear(), now.getMonth() + 1, 1),
-    'month-percentage',
-    'month-progress-bar'
-  );
-  updateProgress(
-    new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-    new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1),
-    'day-percentage',
-    'day-progress-bar'
-  );
-
-  startCountdownTimer();
+  progressItems.forEach(({ start, end, percentageId, progressBarId }) => {
+    updateProgress(start, end, percentageId, progressBarId);
+  });
 }
 
 function startCountdownTimer() {
-  const cleanup = () => {
-    if (timerId) clearTimeout(timerId);
-    if (visibilityHandler) {
-      document.removeEventListener('visibilitychange', visibilityHandler);
-    }
-  };
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+  }
+  if (visibilityHandler) {
+    document.removeEventListener('visibilitychange', visibilityHandler);
+    visibilityHandler = null;
+  }
+
+  const nowMs = Date.now();
+  const nowSec = Math.floor(nowMs / 1000);
+  nextRefreshAt = (Math.floor(nowSec / REFRESH_INTERVAL) + 1) * REFRESH_INTERVAL * 1000;
 
   const updateTimer = () => {
     const refreshTimerElement = document.getElementById('refresh-timer');
     const refreshContainer = document.getElementById('refresh-container');
-    const now = new Date();
-    const secondsLeft = 3600 - (now.getMinutes() * 60 + now.getSeconds());
+    const currentMs = Date.now();
+    const secondsLeft = Math.max(0, Math.ceil((nextRefreshAt - currentMs) / 1000));
 
     if (refreshTimerElement) {
       const minutesLeft = Math.floor(secondsLeft / 60);
@@ -134,20 +173,23 @@ function startCountdownTimer() {
     }
 
     if (secondsLeft > 0) {
-      timerId = setTimeout(updateTimer, 1000);
+      const delayToNextSecond = 1000 - (currentMs % 1000) + 5;
+      timerId = setTimeout(updateTimer, delayToNextSecond);
     } else {
-      try {
-        updateProgressBar();
-        const refreshTimerElement = document.getElementById('refresh-timer');
-        if (refreshTimerElement) {
-          LangManager.applyParameters(
-            refreshTimerElement,
-            'timer.refresh_complete',
-            new Date().toLocaleTimeString()
-          );
-        }
-      } catch (error) {
-        console.error(i18n.getTranslation('errors.progress_update'), error);
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+
+      isUpdating = false;
+      updateProgressBar(false);
+
+      if (refreshTimerElement) {
+        LangManager.applyParameters(
+          refreshTimerElement,
+          'timer.refresh_complete',
+          new Date().toLocaleTimeString()
+        );
       }
     }
   };
@@ -170,7 +212,6 @@ function startCountdownTimer() {
   };
   document.addEventListener('visibilitychange', visibilityHandler);
 
-  cleanup();
   if (LangManager.isInitialized) {
     ensureDOMReady(updateTimer);
   } else {
@@ -184,7 +225,8 @@ export function initProgressSystem() {
       setTimeout(init, 50);
       return;
     }
-    updateProgressBar();
+    // 首次加载时启动倒计时
+    updateProgressBar(false);
   };
 
   if (document.readyState === 'loading') {
