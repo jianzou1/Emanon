@@ -14,6 +14,78 @@ import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
 import { initializePassword } from '/js/password.js';
 import langManager from '/js/langManager.js';
+
+const TABLIST_SELECTOR = '[role="tablist"]';
+const TAB_DATA = [
+  { url: '/', text: 'tab_progress' },
+  { url: '/page/article.html', text: 'tab_article' },
+  { url: '/page/game.html', text: 'tab_game' },
+  { url: '/page/gallery.html', text: 'tab_gallery' },
+];
+
+const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
+  const navigateByPjax = (url, event) => {
+    const targetUrl = new URL(url, window.location.origin);
+
+    if (targetUrl.origin !== window.location.origin) {
+      return;
+    }
+
+    if (targetUrl.pathname === window.location.pathname && targetUrl.search === window.location.search) {
+      return;
+    }
+
+    event.preventDefault();
+    pjax.loadUrl(`${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`);
+    getTabHandler()?.updateSelectedTab(targetUrl.pathname);
+  };
+
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event.button !== 0) {
+      return;
+    }
+
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    const pjaxTrigger = event.target.closest('[data-pjax-url]');
+    if (pjaxTrigger && !pjaxTrigger.closest(TABLIST_SELECTOR)) {
+      if (pjaxTrigger.hasAttribute('data-no-pjax')) {
+        return;
+      }
+
+      const pjaxUrl = pjaxTrigger.getAttribute('data-pjax-url');
+      if (!pjaxUrl) {
+        return;
+      }
+
+      navigateByPjax(pjaxUrl, event);
+      return;
+    }
+
+    const link = event.target.closest('a[href]');
+    if (!link) {
+      return;
+    }
+
+    if (link.closest(TABLIST_SELECTOR)) {
+      return;
+    }
+
+    if (link.hasAttribute('download') || link.getAttribute('target') === '_blank' || link.hasAttribute('data-no-pjax')) {
+      return;
+    }
+
+    const rawHref = link.getAttribute('href');
+    if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:')) {
+      return;
+    }
+
+    navigateByPjax(link.href, event);
+  });
+};
+
 const initializeApp = async () => {
   try {
     // 初始化多语言管理器
@@ -31,20 +103,21 @@ const initializeApp = async () => {
       cacheBust: false,
     });
 
-    // 选项卡配置数据
-    const tabData = [
-      { url: '/', text: 'tab_progress' },
-      { url: '/page/article.html', text: 'tab_article' },
-      { url: '/page/game.html', text: 'tab_game' },
-      { url: '/page/gallery.html', text: 'tab_gallery' },
-    ];
+    let currentTabHandler = null;
+    const getTabHandler = () => currentTabHandler;
 
-    // 初始化标签处理器
-    const tabHandler = new TabHandler(
-      '[role="tablist"]',
-      tabData, 
-      pjax
-    );
+    const refreshTabHandler = () => {
+      const tablist = document.querySelector(TABLIST_SELECTOR);
+      if (!tablist) {
+        currentTabHandler = null;
+        return;
+      }
+
+      tablist.innerHTML = '';
+      currentTabHandler = new TabHandler(TABLIST_SELECTOR, TAB_DATA, pjax);
+    };
+
+    bindGlobalPjaxNavigation(pjax, getTabHandler);
 
     // PJAX事件监听
     document.addEventListener('pjax:complete', () => {
@@ -57,6 +130,8 @@ const initializeApp = async () => {
       try {
         const currentUrl = window.location.pathname;
 
+        refreshTabHandler();
+
         // 页面类型判断
         switch (currentUrl) {
           case '/':
@@ -64,7 +139,7 @@ const initializeApp = async () => {
             initializeDailyPopup();
             break;
           case '/page/article.html':
-            loadPreviewLinks(pjax, tabHandler);
+            loadPreviewLinks(pjax, currentTabHandler);
             break;
           case '/page/game.html':
             gameList();
@@ -74,7 +149,7 @@ const initializeApp = async () => {
             initializeGallery();
             break;
           case '/page/password.html':
-            initializePassword();
+            initializePassword(pjax);
             break;
           default:
             break;
@@ -85,13 +160,6 @@ const initializeApp = async () => {
         handleScrollAndScrollToTop();
         initializeTips();
         initCRT();
-
-        // 重新绑定选项卡（PJAX加载后）
-        const tablist = document.querySelector('[role="tablist"]');
-        if (tablist) {
-          tablist.innerHTML = '';
-          new TabHandler('[role="tablist"]', tabData, pjax);
-        }
       } catch (error) {
         console.error('页面加载过程中出错:', error);
       }

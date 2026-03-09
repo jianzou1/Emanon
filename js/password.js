@@ -1,7 +1,7 @@
 // password.js
 let passwordInputListener = null; // 保存输入框的监听函数
 
-export function initializePassword() {
+export function initializePassword(pjax = null) {
     const submitButton = document.getElementById('password-submit');
     const passwordInput = document.getElementById('password-input');
     if (!submitButton || !passwordInput) return;
@@ -14,10 +14,20 @@ export function initializePassword() {
         }
         try {
             const hashPrefix = await getHashPrefix(password);
-            const url = `${window.location.origin}/post/${hashPrefix}/`;
+            const postPath = `/post/${hashPrefix}/`;
+            const url = `${window.location.origin}${postPath}`;
             const resp = await fetch(url, { method: 'HEAD' });
             if (resp.ok) {
-                window.location.href = url;
+                if (pjax && typeof pjax.loadUrl === 'function') {
+                    try {
+                        await pjax.loadUrl(postPath);
+                    } catch (pjaxError) {
+                        console.warn('PJAX跳转失败，回退整页跳转:', pjaxError);
+                        window.location.href = url;
+                    }
+                } else {
+                    window.location.href = url;
+                }
             } else {
                 showPasswordError('密码错误，请重试。', passwordInput);
             }
