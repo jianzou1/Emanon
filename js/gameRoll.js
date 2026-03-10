@@ -1,7 +1,8 @@
 // gameRoll.js
 export function initGameRoll() {
   const CONFIG = {
-    JSON_PATH: '/cfg/game_time_cfg.json',
+    GAME_JSON_PATH: '/cfg/game_time_cfg.json',
+    SYSTEM_JSON_PATH: '/cfg/system_cfg.json',
     VISIBLE_ITEMS: 3,
     PARTICIPATION_COUNT: 100,
     ANIMATION_DURATION: 1500,
@@ -16,7 +17,11 @@ export function initGameRoll() {
     loopData: [],
     currentPos: 0,
     uniqueId: Date.now(),
-    containerOffset: 0  // 缓存，避免滚动时反复触发布局
+    containerOffset: 0,  // 缓存，避免滚动时反复触发布局
+    systemConfig: {
+      typeName: {},
+      qualityName: {}
+    }
   };
 
   const dom = {
@@ -41,6 +46,7 @@ export function initGameRoll() {
       .then(() => {
         dom.story = document.getElementById('story');
         createScrollContainer();
+        loadSystemConfig();
         loadGameData();
         bindEvents();
       })
@@ -97,6 +103,44 @@ export function initGameRoll() {
     dom.rollBtn.addEventListener('click', handleRollClick);
   }
 
+  // 加载系统配置（typeName 和 qualityName）
+  async function loadSystemConfig() {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch(CONFIG.SYSTEM_JSON_PATH, { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      const data = await response.json();
+      
+      // 解析系统配置
+      data.forEach(item => {
+        if (item.id === 'typeName' && item.value) {
+          state.systemConfig.typeName = parseConfigString(item.value);
+        } else if (item.id === 'qualityName' && item.value) {
+          state.systemConfig.qualityName = parseConfigString(item.value);
+        }
+      });
+    } catch (err) {
+      console.warn('系统配置加载失败，使用默认值:', err);
+    }
+  }
+
+  // 解析格式为 "1:value1,2:value2" 的字符串为对象
+  function parseConfigString(str) {
+    const result = {};
+    if (!str) return result;
+    const pairs = str.split(',');
+    pairs.forEach(pair => {
+      const [key, val] = pair.split(':');
+      if (key && val) {
+        result[key.trim()] = val.trim();
+      }
+    });
+    return result;
+  }
+
   function handleRollClick() {
     if (!state.isRolling && state.gameData.length) {
       // 全部游戏已抽完时自动重置记录
@@ -113,13 +157,14 @@ export function initGameRoll() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-      const response = await fetch(CONFIG.JSON_PATH, { signal: controller.signal });
+      const response = await fetch(CONFIG.GAME_JSON_PATH, { signal: controller.signal });
       clearTimeout(timeoutId);
 
       const data = await response.json();
-      if (!data?.[1]) throw new Error('无效的游戏数据格式');
+      const gameData = normalizeGameData(data);
+      if (!gameData.length) throw new Error('无效的游戏数据格式');
 
-      state.gameData = shuffleArray(data[1]).map(item => ({
+      state.gameData = shuffleArray(gameData).map(item => ({
         ...item,
         _uid: ++state.uniqueId
       }));
@@ -131,6 +176,16 @@ export function initGameRoll() {
       dom.result.innerHTML = '<div class="error">数据加载失败，请刷新页面</div>';
       dom.rollBtn.disabled = true;
     }
+  }
+
+  function normalizeGameData(data) {
+    if (Array.isArray(data)) {
+      if (data[0] && typeof data[0] === 'object' && 'name' in data[0]) {
+        return data;
+      }
+      if (Array.isArray(data[1])) return data[1];
+    }
+    return [];
   }
 
   // 填充滚动列表数据，数量不足时重复打乱填充，确保始终达到 PARTICIPATION_COUNT

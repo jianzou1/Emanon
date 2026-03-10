@@ -217,9 +217,9 @@
   },
   {
     "id": "about",
-    "cn": "嗨！我是Shelton Chu，一位来自中国的游戏策划与艺术家。\n想要更深入地了解我，最好的方式就是浏览这个网站。\n若要开始探索，你可以看看顶部的导航栏，希望你在此浏览愉快！\n",
-    "en": "Hi! I'm Shelton Chu, a game designer and artist from China.\nThe best way to get to know me better is to browse through this website.\nTo start your exploration, you can take a look at the navigation bar at the top. I hope you have a pleasant browsing experience here!\n",
-    "jp": " こんにちは！私はシェルトン・チューです。中国出身のゲームデザイナーとアーティストです。\n私をもっと深く知るには、このウェブサイトを見て回るのが一番いい方法です。\n探検を始めるには、トップのナビゲーションバーを見てみてください。ここで楽しいブラウジング体験をしていただければ幸いです！\n"
+    "cn": "嗨！我是Shelton Chu，一位来自中国的游戏策划与艺术家。\r\n想要更深入地了解我，最好的方式就是浏览这个网站。\r\n若要开始探索，你可以看看顶部的导航栏，希望你在此浏览愉快！\r\n",
+    "en": "Hi! I'm Shelton Chu, a game designer and artist from China.\r\nThe best way to get to know me better is to browse through this website.\r\nTo start your exploration, you can take a look at the navigation bar at the top. I hope you have a pleasant browsing experience here!\r\n",
+    "jp": " こんにちは！私はシェルトン・チューです。中国出身のゲームデザイナーとアーティストです。\r\n私をもっと深く知るには、このウェブサイトを見て回るのが一番いい方法です。\r\n探検を始めるには、トップのナビゲーションバーを見てみてください。ここで楽しいブラウジング体験をしていただければ幸いです！\r\n"
   },
   {
     "id": "thanks_project",
@@ -229,9 +229,9 @@
   },
   {
     "id": "update_info",
-    "cn": "最近更新\n版本号：13.0.0\n发布日期：2025-04-01\n核心更新：\n多语言系统增强\n• 新增日语语言支持（801bda8）\n• 扩展基础语言框架（7ec452e）",
-    "en": "Recent Update\nVersion Number: 13.0.0\nRelease Date: April 1, 2025\nCore Updates:\nEnhancement of the Multilingual System\n• Added Japanese language support (801bda8)\n• Extended the basic language framework (7ec452e)",
-    "jp": "最近のアップデート\nバージョン番号：13.0.0\nリリース日：2025 年 4 月 1 日\n核心アップデート：\n多言語システムの強化\n・日本語の言語サポートを新たに追加しました（801bda8）\n・基本的な言語フレームワークを拡張しました（7ec452e）"
+    "cn": "最近更新\r\n版本号：13.0.0\r\n发布日期：2025-04-01\r\n核心更新：\r\n多语言系统增强\r\n• 新增日语语言支持（801bda8）\r\n• 扩展基础语言框架（7ec452e）",
+    "en": "Recent Update\r\nVersion Number: 13.0.0\r\nRelease Date: April 1, 2025\r\nCore Updates:\r\nEnhancement of the Multilingual System\r\n• Added Japanese language support (801bda8)\r\n• Extended the basic language framework (7ec452e)",
+    "jp": "最近のアップデート\r\nバージョン番号：13.0.0\r\nリリース日：2025 年 4 月 1 日\r\n核心アップデート：\r\n多言語システムの強化\r\n・日本語の言語サポートを新たに追加しました（801bda8）\r\n・基本的な言語フレームワークを拡張しました（7ec452e）"
   },
   {
     "id": "password_title",

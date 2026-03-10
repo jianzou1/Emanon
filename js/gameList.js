@@ -2,7 +2,8 @@
 import langManager from '/js/langManager.js';
 
 export function gameList() {
-    const CONFIG_URL = '/cfg/game_time_cfg.json';
+    const GAME_CONFIG_URL = '/cfg/game_time_cfg.json';
+    const SYSTEM_CONFIG_URL = '/cfg/system_cfg.json';
     const GAME_LIST_HTML_CLASS = '.game-list';
 
     let games = [];
@@ -13,16 +14,39 @@ export function gameList() {
 
     async function fetchGameData() {
         try {
-            const data = await fetchData(CONFIG_URL);
-            typeNames = parseTypeNames(data[0][0].typeName);
-            qualityNames = parseQualityNames(data[0][0].qualityName);
-            games = data[1] || [];
+            const [gameData, systemData] = await Promise.all([
+                fetchData(GAME_CONFIG_URL),
+                fetchData(SYSTEM_CONFIG_URL)
+            ]);
+
+            const systemTypeName = getSystemValue(systemData, 'typeName');
+            const systemQualityName = getSystemValue(systemData, 'qualityName');
+
+            typeNames = parseTypeNames(systemTypeName);
+            qualityNames = parseQualityNames(systemQualityName);
+            games = normalizeGameData(gameData);
+
             const stats = calculateStats(games);
             updateHtmlContent(stats);
             sortGames('按游戏评级排序');
         } catch (error) {
             console.error("读取游戏数据失败:", error.message);
         }
+    }
+
+    function getSystemValue(systemData, id) {
+        if (!Array.isArray(systemData)) return '';
+        return systemData.find(item => item.id === id)?.value || '';
+    }
+
+    function normalizeGameData(gameData) {
+        if (Array.isArray(gameData)) {
+            if (gameData[0] && typeof gameData[0] === 'object' && 'name' in gameData[0]) {
+                return gameData;
+            }
+            if (Array.isArray(gameData[1])) return gameData[1];
+        }
+        return [];
     }
 
     async function fetchData(url) {
@@ -110,6 +134,7 @@ export function gameList() {
     }
 
     function parseQualityNames(qualityNameStr) {
+        if (!qualityNameStr) return [];
         return qualityNameStr.split(',')
             .map(item => {
                 const [key, value] = item.trim().split(':');
@@ -166,6 +191,7 @@ export function gameList() {
     }
 
     function parseTypeNames(typeNameStr) {
+        if (!typeNameStr) return {};
         return Object.fromEntries(
             typeNameStr.split(',').map(curr => {
                 const [key, value] = curr.split(':');
