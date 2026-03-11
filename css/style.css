@@ -6,6 +6,7 @@
 @import "logo.css";
 @import "daily.css";
 @import "password.css";
+@import "message.css";
 :root.css-loading body {
   visibility: hidden;
   opacity: 0;

@@ -1,0 +1,6 @@
+[build]
+  command   = "npm run pack"
+  publish   = "."
+
+[build.environment]
+  NODE_VERSION = "20"

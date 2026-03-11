@@ -250,5 +250,125 @@
     "cn": "正在刷新",
     "en": "Refreshing",
     "jp": "更新中"
+  },
+  {
+    "id": "message_title",
+    "cn": "留言板",
+    "en": "Guestbook",
+    "jp": "ゲストブック"
+  },
+  {
+    "id": "tab_message",
+    "cn": "留言板",
+    "en": "Guestbook",
+    "jp": "掲示板"
+  },
+  {
+    "id": "msg_form_title",
+    "cn": "写下你的留言",
+    "en": "Leave a Message",
+    "jp": "メッセージを残す"
+  },
+  {
+    "id": "msg_nickname_label",
+    "cn": "昵称",
+    "en": "Nickname",
+    "jp": "ニックネーム"
+  },
+  {
+    "id": "msg_nickname_placeholder",
+    "cn": "你的昵称（最多30字）",
+    "en": "Your nickname (max 30 chars)",
+    "jp": "ニックネーム（最大30文字）"
+  },
+  {
+    "id": "msg_content_label",
+    "cn": "留言内容",
+    "en": "Message",
+    "jp": "メッセージ内容"
+  },
+  {
+    "id": "msg_content_placeholder",
+    "cn": "写点什么吧…（最多500字）",
+    "en": "Say something... (max 500 chars)",
+    "jp": "何か書いてください…（最大500文字）"
+  },
+  {
+    "id": "msg_submit_btn",
+    "cn": "提交留言",
+    "en": "Submit",
+    "jp": "送信する"
+  },
+  {
+    "id": "msg_list_title",
+    "cn": "留言列表",
+    "en": "Messages",
+    "jp": "メッセージ一覧"
+  },
+  {
+    "id": "msg_loading",
+    "cn": "正在加载留言…",
+    "en": "Loading messages...",
+    "jp": "メッセージを読み込み中…"
+  },
+  {
+    "id": "msg_empty",
+    "cn": "暂无留言，快来留下第一条吧！",
+    "en": "No messages yet. Be the first to leave one!",
+    "jp": "まだメッセージはありません。最初のメッセージを残しましょう！"
+  },
+  {
+    "id": "msg_error",
+    "cn": "加载留言失败，请稍后再试。",
+    "en": "Failed to load messages. Please try again later.",
+    "jp": "メッセージの読み込みに失敗しました。後でもう一度お試しください。"
+  },
+  {
+    "id": "msg_load_more",
+    "cn": "加载更多",
+    "en": "Load more",
+    "jp": "さらに読み込む"
+  },
+  {
+    "id": "msg_warn_nickname",
+    "cn": "请输入昵称",
+    "en": "Please enter a nickname",
+    "jp": "ニックネームを入力してください"
+  },
+  {
+    "id": "msg_warn_content",
+    "cn": "请输入留言内容",
+    "en": "Please enter your message",
+    "jp": "メッセージを入力してください"
+  },
+  {
+    "id": "msg_submit_tip",
+    "cn": "已跳转到 GitHub，提交后稍等片刻即可显示",
+    "en": "Redirected to GitHub. Your message will appear shortly after submission.",
+    "jp": "GitHubにリダイレクトしました。送信後しばらくすると表示されます。"
+  },
+  {
+    "id": "msg_success_title",
+    "cn": "留言已提交！",
+    "en": "Message Submitted!",
+    "jp": "メッセージを送信しました！"
+  },
+  {
+    "id": "msg_success_body",
+    "cn": "感谢你的留言，站长会第一时间看到的 :)",
+    "en": "Thank you for your message! The admin will see it shortly :)",
+    "jp": "メッセージをありがとう！管理者がすぐに確認します :)"
+  },
+  {
+    "id": "msg_submit_again",
+    "cn": "再留一条",
+    "en": "Leave another",
+    "jp": "もう一件"
+  },
+  {
+    "id": "msg_submit_error",
+    "cn": "提交失败，请稍后再试",
+    "en": "Submission failed. Please try again later.",
+    "jp": "送信に失敗しました。後でもう一度お試しください。"
   }
 ]

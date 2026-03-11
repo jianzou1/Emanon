@@ -13,6 +13,7 @@ import { initializeGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
 import { initializePassword } from '/js/password.js';
+import { initializeMessageBoard } from '/js/messageBoard.js';
 import langManager from '/js/langManager.js';
 
 const TABLIST_SELECTOR = '[role="tablist"]';
@@ -21,6 +22,7 @@ const TAB_DATA = [
   { url: '/page/article.html', text: 'tab_article' },
   { url: '/page/game.html', text: 'tab_game' },
   { url: '/page/gallery.html', text: 'tab_gallery' },
+  { url: '/page/message.html', text: 'tab_message' },
 ];
 
 const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
@@ -150,6 +152,9 @@ const initializeApp = async () => {
             break;
           case '/page/password.html':
             initializePassword(pjax);
+            break;
+          case '/page/message.html':
+            initializeMessageBoard();
             break;
           default:
             break;

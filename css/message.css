@@ -1,0 +1,97 @@
+/* message.css - 留言板样式 */
+
+.message-page {
+  padding: 10px 14px;
+}
+
+.message-form-body {
+  padding: 10px 12px;
+}
+
+.message-form-body .field-row-stacked label {
+  font-size: 12px;
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  margin-bottom: 3px;
+  display: block;
+}
+
+.message-form-body input[type="text"],
+.message-form-body textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: Microsoft Yahei, SimSun, NSimSun, SimHei;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.message-form-body textarea {
+  min-height: 72px;
+}
+
+.message-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.msg-char-counter {
+  font-size: 11px;
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  color: #555;
+}
+
+/* 提交成功面板 */
+.msg-success-panel {
+  text-align: center;
+  padding: 30px 20px;
+  border: 1px solid #7f9db9;
+  background-color: #f0f0f0;
+}
+
+.msg-success-icon {
+  font-size: 32px;
+  color: #008000;
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  margin-bottom: 10px;
+}
+
+.msg-success-title {
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000080;
+  margin-bottom: 6px;
+}
+
+.msg-success-body {
+  font-family: Microsoft Yahei, SimSun, NSimSun, SimHei;
+  font-size: 13px;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+/* 提交跳转提示 Toast */
+.msg-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #000080;
+  color: #fff;
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  font-size: 12px;
+  padding: 6px 16px;
+  border: 2px solid #7f9db9;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.2s, transform 0.2s;
+  white-space: nowrap;
+}
+
+.msg-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
