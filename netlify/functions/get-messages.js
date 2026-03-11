@@ -1,6 +1,12 @@
 // netlify/functions/get-messages.js
 // 代理 Netlify Forms API，避免在前端暴露 Token
 
+const jsonHeaders = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Cache-Control': 'public, max-age=60',
+};
+
 exports.handler = async (event) => {
   const token = process.env.NETLIFY_API_TOKEN;
   const siteId = process.env.NETLIFY_SITE_ID;
@@ -9,6 +15,7 @@ exports.handler = async (event) => {
   if (!token || !siteId) {
     return {
       statusCode: 500,
+      headers: jsonHeaders,
       body: JSON.stringify({ error: 'Server misconfiguration: missing env vars' }),
     };
   }
@@ -26,7 +33,7 @@ exports.handler = async (event) => {
     if (!form) {
       return {
         statusCode: 200,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        headers: jsonHeaders,
         body: JSON.stringify([]),
       };
     }
@@ -45,24 +52,21 @@ exports.handler = async (event) => {
     // 3. 只向前端返回展示所需的字段，不泄露邮件等隐私数据
     const safe = submissions.map(s => ({
       id: s.id,
-      nickname: s.data?.nickname || 'Anonymous',
+      nickname: s.data?.nickname || 'unknown',
       message: s.data?.message || '',
       created_at: s.created_at,
     }));
 
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=60',
-      },
+      headers: jsonHeaders,
       body: JSON.stringify(safe),
     };
   } catch (err) {
     console.error('get-messages error:', err);
     return {
       statusCode: 500,
+      headers: jsonHeaders,
       body: JSON.stringify({ error: err.message }),
     };
   }

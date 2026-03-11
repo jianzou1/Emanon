@@ -27,7 +27,6 @@ function bindFormEvents() {
   const nicknameInput = document.getElementById('msg-nickname');
   const contentInput = document.getElementById('msg-content');
   const charCount = document.getElementById('msg-char-count');
-  const againBtn = document.getElementById('msg-again-btn');
   const refreshBtn = document.getElementById('msg-refresh-btn');
   const loadMoreBtn = document.getElementById('msg-load-more');
 
@@ -42,32 +41,19 @@ function bindFormEvents() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const nickname = nicknameInput.value.trim();
+    const nickname = (nicknameInput.value.trim() || 'unknown').slice(0, 8);
     const content = contentInput.value.trim();
 
-    if (!nickname) {
-      nicknameInput.focus();
-      showToast(langManager.translate('msg_warn_nickname') || '请输入昵称');
-      return;
-    }
     if (!content) {
       contentInput.focus();
       showToast(langManager.translate('msg_warn_content') || '请输入留言内容');
       return;
     }
 
+    nicknameInput.value = nickname;
+
     await submitToNetlify(form);
   });
-
-  // "再留一条" 按钮 → 重置并显示表单，刷新列表
-  if (againBtn) {
-    againBtn.addEventListener('click', () => {
-      form.reset();
-      if (charCount) charCount.textContent = '0';
-      setSuccessVisible(false);
-      loadMessages(true);
-    });
-  }
 
   // 刷新列表
   if (refreshBtn) {
@@ -84,6 +70,7 @@ function bindFormEvents() {
 
 async function submitToNetlify(form) {
   const submitBtn = document.getElementById('msg-submit-btn');
+  const charCount = document.getElementById('msg-char-count');
   setSubmitting(true, submitBtn);
 
   try {
@@ -96,7 +83,10 @@ async function submitToNetlify(form) {
     });
 
     if (res.ok) {
-      setSuccessVisible(true);
+      form.reset();
+      if (charCount) charCount.textContent = '0';
+      showToast(langManager.translate('msg_success_title') || '留言已提交！');
+      loadMessages(true);
     } else {
       showToast(langManager.translate('msg_submit_error') || '提交失败，请稍后再试');
     }
@@ -158,17 +148,15 @@ function renderMessage(item, idx) {
   const list = document.getElementById('message-list');
   if (!list) return;
 
-  const nickname = escHtml(item.nickname || 'Anonymous');
+  const nickname = escHtml(item.nickname || 'unknown');
   const body = escHtml(item.message || '');
   const time = formatTime(item.created_at);
-  const initial = (item.nickname || 'A').charAt(0).toUpperCase();
 
   const card = document.createElement('div');
   card.className = 'message-card';
   card.style.animationDelay = `${idx * 40}ms`;
   card.innerHTML = `
     <div class="message-card-header">
-      <div class="message-avatar-placeholder">${escHtml(initial)}</div>
       <div class="message-meta">
         <span class="message-nickname">${nickname}</span>
         <span class="message-time">${escHtml(time)}</span>
@@ -181,13 +169,6 @@ function renderMessage(item, idx) {
 }
 
 // ── DOM 工具函数 ──────────────────────────────────────────
-
-function setSuccessVisible(visible) {
-  const formBox = document.getElementById('msg-form-box');
-  const successPanel = document.getElementById('msg-success');
-  if (formBox) formBox.style.display = visible ? 'none' : '';
-  if (successPanel) successPanel.style.display = visible ? 'block' : 'none';
-}
 
 function setSubmitting(loading, btn) {
   if (!btn) return;
