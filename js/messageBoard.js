@@ -3,13 +3,21 @@
 
 import langManager from '/js/langManager.js';
 
-const FORM_NAME = 'guestbook';
+const MESSAGES_API = '/.netlify/functions/get-messages';
+
+let currentPage = 1;
+let isLoading = false;
+let hasMore = true;
 
 /**
  * 初始化留言板
  */
 export function initializeMessageBoard() {
+  currentPage = 1;
+  isLoading = false;
+  hasMore = true;
   bindFormEvents();
+  loadMessages(true);
 }
 
 // ── 表单事件绑定 ────────────────────────────────────────────
@@ -20,6 +28,8 @@ function bindFormEvents() {
   const contentInput = document.getElementById('msg-content');
   const charCount = document.getElementById('msg-char-count');
   const againBtn = document.getElementById('msg-again-btn');
+  const refreshBtn = document.getElementById('msg-refresh-btn');
+  const loadMoreBtn = document.getElementById('msg-load-more');
 
   if (!form || !nicknameInput || !contentInput) return;
 
@@ -49,13 +59,24 @@ function bindFormEvents() {
     await submitToNetlify(form);
   });
 
-  // "再留一条" 按钮 → 重置并显示表单
+  // "再留一条" 按钮 → 重置并显示表单，刷新列表
   if (againBtn) {
     againBtn.addEventListener('click', () => {
       form.reset();
       if (charCount) charCount.textContent = '0';
       setSuccessVisible(false);
+      loadMessages(true);
     });
+  }
+
+  // 刷新列表
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => loadMessages(true));
+  }
+
+  // 加载更多
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', () => loadMessages(false));
   }
 }
 
@@ -87,6 +108,78 @@ async function submitToNetlify(form) {
   }
 }
 
+// ── 留言列表加载 ─────────────────────────────────────────────
+
+async function loadMessages(reset = false) {
+  if (isLoading) return;
+
+  if (reset) {
+    currentPage = 1;
+    hasMore = true;
+    clearMessageList();
+  }
+
+  if (!hasMore) return;
+
+  isLoading = true;
+  showLoading(true);
+  hideEmpty();
+  hideError();
+
+  try {
+    const res = await fetch(`${MESSAGES_API}?page=${currentPage}`);
+    if (!res.ok) throw new Error(`API ${res.status}`);
+
+    const items = await res.json();
+
+    if (!Array.isArray(items) || items.length === 0) {
+      if (currentPage === 1) showEmpty();
+      hasMore = false;
+      updatePagination();
+      return;
+    }
+
+    items.forEach((item, idx) => renderMessage(item, idx));
+    hasMore = items.length === 20;
+    currentPage++;
+    updatePagination();
+  } catch (err) {
+    console.error('加载留言失败:', err);
+    if (currentPage === 1) showError();
+  } finally {
+    isLoading = false;
+    showLoading(false);
+  }
+}
+
+// ── 渲染单条留言 ────────────────────────────────────────────
+
+function renderMessage(item, idx) {
+  const list = document.getElementById('message-list');
+  if (!list) return;
+
+  const nickname = escHtml(item.nickname || 'Anonymous');
+  const body = escHtml(item.message || '');
+  const time = formatTime(item.created_at);
+  const initial = (item.nickname || 'A').charAt(0).toUpperCase();
+
+  const card = document.createElement('div');
+  card.className = 'message-card';
+  card.style.animationDelay = `${idx * 40}ms`;
+  card.innerHTML = `
+    <div class="message-card-header">
+      <div class="message-avatar-placeholder">${escHtml(initial)}</div>
+      <div class="message-meta">
+        <span class="message-nickname">${nickname}</span>
+        <span class="message-time">${escHtml(time)}</span>
+      </div>
+    </div>
+    <div class="message-card-body">${body}</div>
+  `;
+
+  list.appendChild(card);
+}
+
 // ── DOM 工具函数 ──────────────────────────────────────────
 
 function setSuccessVisible(visible) {
@@ -99,6 +192,41 @@ function setSuccessVisible(visible) {
 function setSubmitting(loading, btn) {
   if (!btn) return;
   btn.disabled = loading;
+}
+
+function clearMessageList() {
+  const list = document.getElementById('message-list');
+  if (list) list.innerHTML = '';
+}
+
+function showLoading(visible) {
+  const el = document.getElementById('msg-loading');
+  if (el) el.style.display = visible ? 'block' : 'none';
+}
+
+function showEmpty() {
+  const el = document.getElementById('msg-empty');
+  if (el) el.style.display = 'block';
+}
+
+function hideEmpty() {
+  const el = document.getElementById('msg-empty');
+  if (el) el.style.display = 'none';
+}
+
+function showError() {
+  const el = document.getElementById('msg-error');
+  if (el) el.style.display = 'block';
+}
+
+function hideError() {
+  const el = document.getElementById('msg-error');
+  if (el) el.style.display = 'none';
+}
+
+function updatePagination() {
+  const pag = document.getElementById('msg-pagination');
+  if (pag) pag.style.display = hasMore ? 'block' : 'none';
 }
 
 function showToast(text) {
@@ -114,3 +242,24 @@ function showToast(text) {
   clearTimeout(toast._timer);
   toast._timer = setTimeout(() => toast.classList.remove('show'), 2500);
 }
+
+function formatTime(isoString) {
+  if (!isoString) return '';
+  try {
+    const d = new Date(isoString);
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  } catch {
+    return isoString;
+  }
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+

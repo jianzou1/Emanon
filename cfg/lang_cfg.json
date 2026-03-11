@@ -306,6 +306,12 @@
     "jp": "メッセージ一覧"
   },
   {
+    "id": "msg_refresh_btn",
+    "cn": "刷新",
+    "en": "Refresh",
+    "jp": "更新"
+  },
+  {
     "id": "msg_loading",
     "cn": "正在加载留言…",
     "en": "Loading messages...",

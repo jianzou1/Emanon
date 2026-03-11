@@ -9,6 +9,28 @@
             <div class="window" role="tabpanel">
                 <div class="window-body message-page">
 
+                    <!-- 留言列表 -->
+                    <div class="message-list-header">
+                        <span data-lang-id="msg_list_title"></span>
+                        <button id="msg-refresh-btn" class="msg-refresh-btn" type="button" data-lang-id="msg_refresh_btn"></button>
+                    </div>
+
+                    <div id="msg-loading" class="msg-loading" style="display:none;">
+                        <span data-lang-id="msg_loading"></span>
+                    </div>
+                    <div id="msg-empty" class="msg-empty" style="display:none;">
+                        <span data-lang-id="msg_empty"></span>
+                    </div>
+                    <div id="msg-error" class="msg-error" style="display:none;">
+                        <span data-lang-id="msg_error"></span>
+                    </div>
+
+                    <div id="message-list" class="message-list"></div>
+
+                    <div id="msg-pagination" class="msg-pagination" style="display:none;">
+                        <button id="msg-load-more" data-lang-id="msg_load_more"></button>
+                    </div>
+
                     <!-- 留言提交表单 -->
                     <div id="msg-form-box" class="message-form-box">
                         <div class="message-form-body">
