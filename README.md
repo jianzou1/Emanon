@@ -130,12 +130,29 @@ const tabData = [
 
 本项目使用 Excel 作为内容管理入口，编辑完成后需转换为 JSON 文件供程序读取。
 
-1. **准备转换工具**：解压 `cfg/trans_table_tool_v1.2.zip`
-2. **配置项目路径**：用文本编辑器打开 `git_diff_gen_json.sh`，修改参数：
-   ```bash
-   git_dir="/your/project/path"  # 替换为项目实际根目录路径
-   ```
-3. **执行转换**：脚本将自动检查 Excel 文件差异变更，生成对应的 JSON 文件至 `cfg/`。
+**转换方式**：使用 `cfg/excelToJson.js` 脚本自动将 Excel 文件转换为 JSON：
+
+```bash
+# Excel 文件存放在 cfg/excel/ 文件夹内
+# 运行脚本自动转换所有 Excel 文件到 cfg/ 目录
+node cfg/excelToJson.js
+
+# 或使用 npm 快捷命令
+npm run cfg
+```
+
+**Excel 格式约定**：
+- 第 1 行：备注（忽略）
+- 第 2 行：数据类型（int / string / float / bool / int[]）
+- 第 3 行：字段名
+- 第 4 行起：数据行
+
+**支持的数据类型**：
+- `int` → 整数
+- `string` → 字符串
+- `float` → 浮点数
+- `bool` → 布尔值（true/false/是/否 等）
+- `int[]` → 整数数组（支持 `[1,2,3]` / `1,2,3` / `1 2 3` 格式）
 
 ### 三、文章功能
 

@@ -95,9 +95,36 @@ Configs loaded via dynamic imports and used to populate lists:
 - `cfg/article_cfg.json` → Article preview list (previewLoader.js)
 - `cfg/gallery_cfg.json` → Gallery grid (gallery.js)
 - `cfg/game_time_cfg.json` → Game/record list (gameList.js)
+- `cfg/system_cfg.json` → System configurations (typeName, qualityName, additional suffix, etc.)
 - `cfg/lang_cfg.json` → All UI text translations
 
 **Pattern**: Each config is a JSON array of objects. Loader modules (e.g., `previewLoader.js`) iterate the config and dynamically generate DOM.
+
+### Excel-to-JSON Conversion Pipeline
+
+**File**: `cfg/excelToJson.js`
+
+**Purpose**: Automate Excel → JSON conversion with type casting support.
+
+**Workflow**:
+1. Place Excel files in `cfg/excel/` folder
+2. Run `node cfg/excelToJson.js` or `npm run cfg`
+3. JSON output automatically generated to `cfg/` directory
+
+**Excel Format Rules**:
+- Row 1: Comments (ignored)
+- Row 2: Data types (`int`, `string`, `float`, `bool`, `int[]`)
+- Row 3: Field names (keys)
+- Row 4+: Data rows
+
+**Type Casting Examples**:
+- `int`: `123`, `0`, `-45`
+- `float`: `3.14`, `-2.5`
+- `string`: any text
+- `bool`: `true/false`, `yes/no`, `是/否`, `1/0`
+- `int[]`: `[1,2,3]` or `1,2,3` or `1 2 3`
+
+**Temporary Files**: Excel lock files (e.g., `~$config.xlsx`) are automatically ignored.
 
 ### CDN Resource Loading (`js/cdnLoader.js`)
 
@@ -209,8 +236,12 @@ document.addEventListener('pjax:complete', () => {
 **Key Architecture Files**:
 - `js/main.js` → Application coordinator
 - `webpack.config.js` → Build pipeline
+- `cfg/excelToJson.js` → Excel-to-JSON converter
 - `cfg/lang_cfg.json` → All UI text (update when adding strings)
-- `cfg/article_cfg.json`, `cfg/gallery_cfg.json`, `cfg/game_time_cfg.json` → Content lists
+- `cfg/article_cfg.json` → Article preview list
+- `cfg/gallery_cfg.json` → Gallery images meta
+- `cfg/game_time_cfg.json` → Game/record data (games, time, quality, etc.)
+- `cfg/system_cfg.json` → System-wide configurations (typeName, qualityName, additional suffix)
 - `post/_src/post.js` → Article generation
 
 **Template Skeleton**:
