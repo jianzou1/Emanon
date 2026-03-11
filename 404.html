@@ -10,9 +10,41 @@
   <link rel="shortcut icon" href="/favicon/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <style>
-    @import url(https://unpkg.com/98.css); /* 导入外部样式表 98.css */
+  <script>
+    (function load404ExternalCss() {
+      const urls = [
+        'https://cdn.jsdmirror.com/npm/98.css@0.1.20/dist/98.min.css',
+        'https://cdn.jsdelivr.net/npm/98.css@0.1.20/dist/98.min.css',
+        'https://unpkg.com/98.css@0.1.20/dist/98.min.css'
+      ];
 
+      const tryLoad = (index) => {
+        if (index >= urls.length) {
+          console.warn('Failed to load 98.css from all CDN sources on 404 page.');
+          return;
+        }
+
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = urls[index];
+        link.id = 'external-98css-404';
+
+        link.onload = () => {
+          console.log(`404 stylesheet loaded from: ${urls[index]}`);
+        };
+
+        link.onerror = () => {
+          link.remove();
+          tryLoad(index + 1);
+        };
+
+        document.head.appendChild(link);
+      };
+
+      tryLoad(0);
+    })();
+  </script>
+  <style>
     body {
       position: fixed;
       display: flex;

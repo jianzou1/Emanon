@@ -5,7 +5,14 @@ export const CDN_CONFIG = {
   pjax: [
     'https://github.elemecdn.com/pjax@0.2.8/pjax.min.js',
     'https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js',
-    'https://unpkg.com/pjax@0.2.8/pjax.min.js'
+    'https://unpkg.com/pjax@0.2.8/pjax.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/pjax/0.2.8/pjax.js',
+    'https://cdn.staticfile.net/pjax/0.2.8/pjax.js'
+  ],
+  css98: [
+    'https://cdn.jsdelivr.net/npm/98.css@0.1.21/dist/98.min.css',
+    'https://unpkg.com/98.css@0.1.20/dist/98.min.css',
+    'https://cdn.jsdelivr.net/npm/98.css@0.1.21/build.min.js'
   ]
 };
 
@@ -33,19 +40,18 @@ const loadScript = (urls) => {
         const script = document.createElement('script');
         script.src = blobUrl;
         script.onload = () => {
-          console.log(`✓ Successfully loaded from: ${url} (${Math.round(performance.now() - start)}ms)`);
-          // 清理 blobUrl
+          console.log(`Successfully loaded from: ${url} (${Math.round(performance.now() - start)}ms)`);
           URL.revokeObjectURL(blobUrl);
           resolve();
         };
-        script.onerror = (e) => {
+        script.onerror = () => {
           URL.revokeObjectURL(blobUrl);
           reject(new Error(`Script injection failed for ${url}`));
         };
         document.head.appendChild(script);
       });
     })
-    .catch((err) => {
+    .catch(err => {
       // Promise.any 在所有 promise 都 reject 时会到这里（AggregateError）
       console.warn('Parallel fetch failed or all sources unreachable, falling back to sequential script append', err);
 
@@ -57,15 +63,16 @@ const loadScript = (urls) => {
             reject(new Error(`Failed to load script from all sources: ${urlList.join(', ')}`));
             return;
           }
+
           const url = urlList[idx++];
           const script = document.createElement('script');
           script.src = url;
           script.onload = () => {
-            console.log(`✓ Successfully loaded (sequential) from: ${url} (${Math.round(performance.now() - start)}ms)`);
+            console.log(`Successfully loaded (sequential) from: ${url} (${Math.round(performance.now() - start)}ms)`);
             resolve();
           };
           script.onerror = () => {
-            console.warn(`✗ Failed to load (sequential) from: ${url}, trying next...`);
+            console.warn(`Failed to load (sequential) from: ${url}, trying next...`);
             tryLoadSequential();
           };
           document.head.appendChild(script);
@@ -75,12 +82,64 @@ const loadScript = (urls) => {
     });
 };
 
-// 动态加载 PJAX
+const loadStylesheet = async (urls, id) => {
+  const orderedUrls = Array.isArray(urls) ? [...urls] : [urls];
+  const start = performance.now();
+
+  if (id && document.getElementById(id)) {
+    return;
+  }
+
+  return new Promise((resolve, reject) => {
+    let idx = 0;
+
+    const tryLoad = () => {
+      if (idx >= orderedUrls.length) {
+        reject(new Error(`Failed to load stylesheet from all sources: ${orderedUrls.join(', ')}`));
+        return;
+      }
+
+      const url = orderedUrls[idx++];
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = url;
+      if (id) {
+        link.id = id;
+      }
+
+      link.onload = () => {
+        console.log(`Successfully loaded stylesheet from: ${url} (${Math.round(performance.now() - start)}ms)`);
+        resolve();
+      };
+      link.onerror = () => {
+        console.warn(`Failed to load stylesheet from: ${url}, trying next...`);
+        link.remove();
+        tryLoad();
+      };
+
+      document.head.appendChild(link);
+    };
+
+    tryLoad();
+  });
+};
+
+export const loadExternal98Css = async (id = 'external-98css') => {
+  return loadStylesheet(CDN_CONFIG.css98, id);
+};
+
+// 动态加载资源
 const loadPjax = () => loadScript(CDN_CONFIG.pjax).then(() => window.Pjax);
+const loadExternalStyle = () => loadExternal98Css('external-98css');
 
 // 统一加载所有资源
 export const loadResources = async () => {
   try {
+    // 98.css 失败不阻塞主流程，保证页面逻辑仍可执行
+    await loadExternalStyle().catch(error => {
+      console.warn('Failed to load external style resources:', error);
+    });
+
     const Pjax = await loadPjax();
     return { Pjax };
   } catch (error) {
