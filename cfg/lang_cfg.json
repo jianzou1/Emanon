@@ -3,18 +3,18 @@
     "id": "index_title",
     "cn": "回忆的爱玛侬",
     "en": "Memories of Emanon",
-    "jp": "Memories of Emanon"
+    "jp": "エマノンの記憶"
   },
   {
     "id": "article_title",
     "cn": "文章",
-    "en": "Article",
+    "en": "Articles",
     "jp": "記事"
   },
   {
     "id": "game_title",
     "cn": "游戏",
-    "en": "Game",
+    "en": "Games",
     "jp": "ゲーム"
   },
   {
@@ -27,90 +27,90 @@
     "id": "about_title",
     "cn": "关于",
     "en": "About",
-    "jp": "について"
+    "jp": "このサイトについて"
   },
   {
     "id": "index_year_progress",
     "cn": "年进度",
-    "en": "Year progress",
-    "jp": "年の進行状況"
+    "en": "Year Progress",
+    "jp": "年の進捗"
   },
   {
     "id": "index_month_progress",
     "cn": "月进度",
-    "en": "Month progress",
-    "jp": "月の進行状況"
+    "en": "Month Progress",
+    "jp": "月の進捗"
   },
   {
     "id": "index_day_progress",
     "cn": "天进度",
-    "en": "Day progress",
-    "jp": "日の進行状況"
+    "en": "Day Progress",
+    "jp": "今日の進捗"
   },
   {
     "id": "index_year_tips",
     "cn": "这个进度条显示了今年已经过去了多少",
-    "en": "This progress bar indicates how much of the year has passed",
-    "jp": "この進捗バーは今年がどれだけ経過したかを示しています"
+    "en": "This progress bar shows how much of the current year has passed.",
+    "jp": "このプログレスバーは、今年がどれくらい経過したかを示します。"
   },
   {
     "id": "index_month_tips",
     "cn": "这个进度条显示了本月已经过去了多少",
-    "en": "This progress bar indicates how much of the month has passed.",
-    "jp": "この進捗バーは今月がどれだけ経過したかを示しています"
+    "en": "This progress bar shows how much of the current month has passed.",
+    "jp": "このプログレスバーは、今月がどれくらい経過したかを示します。"
   },
   {
     "id": "index_day_tips",
     "cn": "这个进度条显示了今天已经过去了多少",
-    "en": "This progress bar indicates how much of the day has passed.",
-    "jp": "この進捗バーは今日がどれだけ経過したかを示しています"
+    "en": "This progress bar shows how much of today has passed.",
+    "jp": "このプログレスバーは、今日がどれくらい経過したかを示します。"
   },
   {
     "id": "index_refresh",
     "cn": "刷新时间剩余 {0}m {1}s",
-    "en": "Refresh in {0}m {1}s",
-    "jp": "更新まであと {0} 分 {1} 秒"
+    "en": "Refreshing in {0}m {1}s",
+    "jp": "{0}分 {1}秒後に更新"
   },
   {
     "id": "index_refresh_tips",
     "cn": "倒计时结束后，所有的进度条都将被刷新",
-    "en": "After the countdown ends, all progress bars will be refreshed.",
-    "jp": "カウントダウンが終了したら、すべての進捗バーが更新されます"
+    "en": "When the countdown ends, all progress bars will be refreshed.",
+    "jp": "カウントダウンが終了すると、すべての進捗バーが更新されます。"
   },
   {
     "id": "dailty_popup_title",
     "cn": "欢迎登录",
-    "en": "welcome to log in",
-    "jp": "ログインを歓迎します"
+    "en": "Welcome",
+    "jp": "ようこそ"
   },
   {
     "id": "dailty_popup_text",
     "cn": "请选择你的语言：",
-    "en": "Please choose your language:",
-    "jp": "あなたの言語を選択してください："
+    "en": "Please select your language:",
+    "jp": "言語を選択してください："
   },
   {
     "id": "btn_ok",
     "cn": "确定",
-    "en": "Confirm",
-    "jp": "確認する"
+    "en": "OK",
+    "jp": "確定"
   },
   {
     "id": "tab_progress",
     "cn": "进度条",
     "en": "Progress",
-    "jp": "進捗バー"
+    "jp": "進捗"
   },
   {
     "id": "tab_article",
     "cn": "文章",
-    "en": "Article",
+    "en": "Articles",
     "jp": "記事"
   },
   {
     "id": "tab_game",
     "cn": "游戏",
-    "en": "Game",
+    "en": "Games",
     "jp": "ゲーム"
   },
   {
@@ -123,103 +123,103 @@
     "id": "tab_about",
     "cn": "关于",
     "en": "About",
-    "jp": "について"
+    "jp": "このサイトについて"
   },
   {
     "id": "footer_update_time",
     "cn": "上次更新：{0}",
-    "en": "Last Updated:{0}",
-    "jp": "前回更新：{0}"
+    "en": "Last updated: {0}",
+    "jp": "最終更新：{0}"
   },
   {
     "id": "footer_name",
     "cn": "由 Shelton 进行站点创建与艺术化",
-    "en": "Created&Artistic by Shelton",
-    "jp": "Created&Artistic by Shelton"
+    "en": "Site created and curated by Shelton",
+    "jp": "サイト制作・運営：Shelton"
   },
   {
     "id": "footer_art",
     "cn": "由 Cry 进行艺术化",
-    "en": "Artistic by Cry",
-    "jp": "Artistic by Cry"
+    "en": "Artwork by Cry",
+    "jp": "アート制作：Cry"
   },
   {
     "id": "CRT",
     "cn": "CRT效果模拟",
-    "en": "CRT Simulation",
-    "jp": "CRT 効果シミュレーション"
+    "en": "CRT Effect Simulation",
+    "jp": "CRTエフェクトシミュレーション"
   },
   {
     "id": "total_time",
     "cn": "{0}小时，",
     "en": "{0} hours,",
-    "jp": "{0} 時間、"
+    "jp": "{0}時間、"
   },
   {
     "id": "equivalent_days",
     "cn": "相当于{0}天，",
     "en": "equivalent to {0} days,",
-    "jp": "{0} 日に相当し、"
+    "jp": "約{0}日、"
   },
   {
     "id": "equivalent_years",
     "cn": "相当于{0}年。",
-    "en": "approximately {0} years.",
-    "jp": "{0} 年に相当します。"
+    "en": "equivalent to {0} years.",
+    "jp": "約{0}年。"
   },
   {
     "id": "game_describe",
     "cn": "游戏并非人生，但是我已经玩了：",
-    "en": "Games are not life, but I've been playing for:",
-    "jp": "ゲームは人生ではありませんが、私はすでにプレイしています："
+    "en": "Games are not life, but I have already played for:",
+    "jp": "ゲームは人生ではない。でも私はすでに："
   },
   {
     "id": "game_roll_btn",
     "cn": "随机游戏",
-    "en": "Random games",
+    "en": "Random Game",
     "jp": "ランダムゲーム"
   },
   {
     "id": "game_sort_quality",
     "cn": "按主观游戏评级排序",
-    "en": "Sort by subjective game ratings",
-    "jp": "主観的なゲーム評価で並べ替える"
+    "en": "Sort by Personal Rating",
+    "jp": "個人的評価順"
   },
   {
     "id": "game_sort_type",
     "cn": "按游戏类型排序",
-    "en": "Sort by game genre",
-    "jp": "ゲームジャンルで並べ替える"
+    "en": "Sort by Genre",
+    "jp": "ジャンル順"
   },
   {
     "id": "game_sort_time",
     "cn": "按游戏时长排序",
-    "en": "Sort by game duration",
-    "jp": "ゲームのプレイ時間で並べ替える"
+    "en": "Sort by Playtime",
+    "jp": "プレイ時間順"
   },
   {
     "id": "previous_page",
     "cn": "上一页",
-    "en": "Previous",
+    "en": "Previous Page",
     "jp": "前のページ"
   },
   {
     "id": "next_page",
     "cn": "下一页",
-    "en": "Next",
+    "en": "Next Page",
     "jp": "次のページ"
   },
   {
     "id": "original_image",
     "cn": "原图",
-    "en": "originnal image",
-    "jp": "オリジナル画像"
+    "en": "Original Image",
+    "jp": "元画像"
   },
   {
     "id": "about",
     "cn": "嗨！我是Shelton Chu，一位来自中国的游戏策划与艺术家。\r\n想要更深入地了解我，最好的方式就是浏览这个网站。\r\n若要开始探索，你可以看看顶部的导航栏，希望你在此浏览愉快！\r\n",
-    "en": "Hi! I'm Shelton Chu, a game designer and artist from China.\r\nThe best way to get to know me better is to browse through this website.\r\nTo start your exploration, you can take a look at the navigation bar at the top. I hope you have a pleasant browsing experience here!\r\n",
-    "jp": " こんにちは！私はシェルトン・チューです。中国出身のゲームデザイナーとアーティストです。\r\n私をもっと深く知るには、このウェブサイトを見て回るのが一番いい方法です。\r\n探検を始めるには、トップのナビゲーションバーを見てみてください。ここで楽しいブラウジング体験をしていただければ幸いです！\r\n"
+    "en": "Hi! I'm Shelton Chu, a game designer and artist from China. \r\nThe best way to get to know me is by exploring this website. \r\nTo start your journey, check out the navigation bar above. Hope you enjoy your time here!",
+    "jp": "こんにちは！私はShelton Chu、中国出身のゲームプランナー兼アーティストです。\r\n私をより深く知る一番の方法は、このサイトをゆっくりと閲覧することです。\r\nまずは上のナビゲーションバーから探索してみてください。このサイトでの時間を楽しんでいただければ嬉しいです！"
   },
   {
     "id": "thanks_project",
@@ -229,21 +229,21 @@
   },
   {
     "id": "update_info",
-    "cn": "最近更新\r\n版本号：13.0.0\r\n发布日期：2025-04-01\r\n核心更新：\r\n多语言系统增强\r\n• 新增日语语言支持（801bda8）\r\n• 扩展基础语言框架（7ec452e）",
-    "en": "Recent Update\r\nVersion Number: 13.0.0\r\nRelease Date: April 1, 2025\r\nCore Updates:\r\nEnhancement of the Multilingual System\r\n• Added Japanese language support (801bda8)\r\n• Extended the basic language framework (7ec452e)",
-    "jp": "最近のアップデート\r\nバージョン番号：13.0.0\r\nリリース日：2025 年 4 月 1 日\r\n核心アップデート：\r\n多言語システムの強化\r\n・日本語の言語サポートを新たに追加しました（801bda8）\r\n・基本的な言語フレームワークを拡張しました（7ec452e）"
+    "cn": "最近更新\r\n版本号：14.0.0\r\n发布日期：2026年3月12日\r\n新增留言板功能",
+    "en": "Recent Updates\r\nVersion: 14.0.0\r\nRelease Date: March 12, 2026\r\nAdded: Message Board Feature",
+    "jp": "最近の更新\r\nバージョン：14.0.0\r\nリリース日：2026年3月12日\r\nメッセージボード機能を追加"
   },
   {
     "id": "password_title",
     "cn": "密码验证",
-    "en": "Password",
-    "jp": "パスワード"
+    "en": "Password Verification",
+    "jp": "パスワード認証"
   },
   {
     "id": "password_input_placeholder",
     "cn": "请输入密码",
     "en": "Enter password",
-    "jp": "パスワードを入力"
+    "jp": "パスワードを入力してください"
   },
   {
     "id": "timer.refresh_complete",
@@ -254,20 +254,20 @@
   {
     "id": "message_title",
     "cn": "留言板",
-    "en": "Guestbook",
-    "jp": "ゲストブック"
+    "en": "Message Board",
+    "jp": "メッセージボード"
   },
   {
     "id": "tab_message",
     "cn": "留言板",
-    "en": "Guestbook",
-    "jp": "掲示板"
+    "en": "Message Board",
+    "jp": "メッセージボード"
   },
   {
     "id": "msg_form_title",
     "cn": "写下你的留言",
     "en": "Leave a Message",
-    "jp": "メッセージを残す"
+    "jp": "メッセージを書く"
   },
   {
     "id": "msg_nickname_label",
@@ -277,32 +277,32 @@
   },
   {
     "id": "msg_nickname_placeholder",
-    "cn": "你的昵称（最多30字）",
-    "en": "Your nickname (max 30 chars)",
-    "jp": "ニックネーム（最大30文字）"
+    "cn": "你的昵称",
+    "en": "Your nickname",
+    "jp": "ニックネームを入力"
   },
   {
     "id": "msg_content_label",
     "cn": "留言内容",
     "en": "Message",
-    "jp": "メッセージ内容"
+    "jp": "メッセージ"
   },
   {
     "id": "msg_content_placeholder",
-    "cn": "写点什么吧…（最多500字）",
-    "en": "Say something... (max 500 chars)",
-    "jp": "何か書いてください…（最大500文字）"
+    "cn": "写点什么吧…",
+    "en": "Write something…",
+    "jp": "何か書いてみましょう…"
   },
   {
     "id": "msg_submit_btn",
-    "cn": "提交留言",
-    "en": "Submit",
-    "jp": "送信する"
+    "cn": "发送",
+    "en": "Send",
+    "jp": "送信"
   },
   {
     "id": "msg_list_title",
     "cn": "留言列表",
-    "en": "Messages",
+    "en": "Message List",
     "jp": "メッセージ一覧"
   },
   {
@@ -314,14 +314,14 @@
   {
     "id": "msg_loading",
     "cn": "正在加载留言…",
-    "en": "Loading messages...",
+    "en": "Loading messages…",
     "jp": "メッセージを読み込み中…"
   },
   {
     "id": "msg_empty",
-    "cn": "暂无留言，快来留下第一条吧！",
-    "en": "No messages yet. Be the first to leave one!",
-    "jp": "まだメッセージはありません。最初のメッセージを残しましょう！"
+    "cn": "暂无留言，和我说点什么！",
+    "en": "No messages yet. Say something!",
+    "jp": "まだメッセージがありません。ぜひ書いてください！"
   },
   {
     "id": "msg_error",
@@ -332,7 +332,7 @@
   {
     "id": "msg_load_more",
     "cn": "加载更多",
-    "en": "Load more",
+    "en": "Load More",
     "jp": "さらに読み込む"
   },
   {
@@ -344,37 +344,19 @@
   {
     "id": "msg_warn_content",
     "cn": "请输入留言内容",
-    "en": "Please enter your message",
-    "jp": "メッセージを入力してください"
-  },
-  {
-    "id": "msg_submit_tip",
-    "cn": "已跳转到 GitHub，提交后稍等片刻即可显示",
-    "en": "Redirected to GitHub. Your message will appear shortly after submission.",
-    "jp": "GitHubにリダイレクトしました。送信後しばらくすると表示されます。"
+    "en": "Please enter a message",
+    "jp": "メッセージ内容を入力してください"
   },
   {
     "id": "msg_success_title",
-    "cn": "留言已提交！",
-    "en": "Message Submitted!",
-    "jp": "メッセージを送信しました！"
-  },
-  {
-    "id": "msg_success_body",
-    "cn": "感谢你的留言，站长会第一时间看到的 :)",
-    "en": "Thank you for your message! The admin will see it shortly :)",
-    "jp": "メッセージをありがとう！管理者がすぐに確認します :)"
-  },
-  {
-    "id": "msg_submit_again",
-    "cn": "再留一条",
-    "en": "Leave another",
-    "jp": "もう一件"
+    "cn": "留言已发送！",
+    "en": "Message sent!",
+    "jp": "送信完了！"
   },
   {
     "id": "msg_submit_error",
-    "cn": "提交失败，请稍后再试",
-    "en": "Submission failed. Please try again later.",
+    "cn": "发送失败，请稍后再试",
+    "en": "Failed to send message. Please try again later.",
     "jp": "送信に失敗しました。後でもう一度お試しください。"
   }
 ]
