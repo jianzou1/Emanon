@@ -49,7 +49,7 @@
       position: fixed;
       display: flex;
       flex-direction: column; /* 使用 flex-direction 简化写法 */
-      background-color: #008689;
+      background-color: #EBECE8;
       color: white;
       font-family: "Pixelated MS Sans Serif", Arial, sans-serif; /* 增加安全字体 */
       font-weight: bold;
@@ -66,13 +66,14 @@
 
     span {
       text-align: center;
-      background-color: white;
-      color: #008689;
+      background-color: rgb(31, 4, 237);
+      color: rgb(250, 250, 250);
     }
 
     p {
       line-height: 1.5;
       margin: 5px 0; /* 增加段落间距 */
+      color: rgb(12, 12, 12);
     }
 
     #home {
@@ -101,16 +102,13 @@
 
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Enter') {
-        try {
-          if (document.referrer) {
-            // 如果有上一页，返回上一页
-            window.history.back();
-          } else {
-            // 如果没有上一页，关闭窗口
-            window.close();
-          }
-        } catch (error) {
-          console.error("Error handling keydown event:", error);
+        const isInternalReferrer = document.referrer && document.referrer.startsWith(window.location.origin);
+
+        // 优先返回站内上一页；否则直接回主站，避免 window.close() 的浏览器限制报错。
+        if (isInternalReferrer && window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.href = '/';
         }
       }
     });
