@@ -358,5 +358,29 @@
     "cn": "发送失败，请稍后再试",
     "en": "Failed to send message. Please try again later.",
     "jp": "送信に失敗しました。後でもう一度お試しください。"
+  },
+  {
+    "id": "msg_reply_btn",
+    "cn": "评论",
+    "en": "Reply",
+    "jp": "返信"
+  },
+  {
+    "id": "msg_reply_submit_btn",
+    "cn": "发送评论",
+    "en": "Send Reply",
+    "jp": "返信を送信"
+  },
+  {
+    "id": "msg_reply_content_placeholder",
+    "cn": "写下你的评论…",
+    "en": "Write your reply...",
+    "jp": "返信を書いてください…"
+  },
+  {
+    "id": "msg_reply_success",
+    "cn": "评论已发送！",
+    "en": "Reply sent!",
+    "jp": "返信を送信しました！"
   }
 ]

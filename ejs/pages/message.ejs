@@ -38,6 +38,7 @@
                             <form id="msg-form" name="guestbook" method="POST"
                                   data-netlify="true" data-netlify-honeypot="bot-field">
                                 <input type="hidden" name="form-name" value="guestbook">
+                                <input type="hidden" id="msg-message-id" name="messageId" value="">
                                 <!-- 蜜罐字段（防垃圾提交，对用户不可见） -->
                                 <p style="display:none">
                                     <label>Do not fill this: <input name="bot-field"></label>

@@ -88,6 +88,8 @@
 .message-card-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   margin-bottom: 6px;
 }
 
@@ -122,6 +124,90 @@
   color: #222;
   word-break: break-word;
   white-space: pre-wrap;
+}
+
+.msg-reply-btn {
+  min-width: 56px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.msg-reply-btn.active {
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff;
+}
+
+.message-reply-list {
+  margin-top: 8px;
+  border-top: 1px dashed #d0d0d0;
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.message-reply-item {
+  margin-left: 10px;
+  padding-left: 8px;
+  border-left: 2px solid #c0c0c0;
+}
+
+.message-reply-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.message-reply-nickname {
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  font-size: 12px;
+  color: #000080;
+}
+
+.message-reply-time {
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  font-size: 11px;
+  color: #808080;
+}
+
+.message-reply-body {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #222;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.message-reply-composer {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #cfcfcf;
+}
+
+.msg-reply-form input[type="text"],
+.msg-reply-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: Microsoft Yahei, SimSun, NSimSun, SimHei;
+  font-size: 13px;
+}
+
+.msg-reply-form textarea {
+  resize: vertical;
+  min-height: 62px;
+}
+
+.message-reply-footer {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.msg-reply-submit {
+  min-width: 64px;
 }
 
 .msg-loading,

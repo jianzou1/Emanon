@@ -50,12 +50,22 @@ exports.handler = async (event) => {
     const submissions = await subRes.json();
 
     // 3. 只向前端返回展示所需的字段，不泄露邮件等隐私数据
-    const safe = submissions.map(s => ({
-      id: s.id,
-      nickname: s.data?.nickname || 'unknown',
-      message: s.data?.message || '',
-      created_at: s.created_at,
-    }));
+    const safe = submissions.map(s => {
+      const rawMessageId = String(s.data?.messageId || '').trim();
+      const replyTo = rawMessageId.startsWith('re:') ? rawMessageId.slice(3) : '';
+      const fallbackId = String(new Date(s.created_at).getTime() || Date.now());
+      const messageId = replyTo ? fallbackId : (rawMessageId || fallbackId);
+
+      return {
+        id: s.id,
+        messageId,
+        replyTo,
+        isReply: Boolean(replyTo),
+        nickname: s.data?.nickname || 'unknown',
+        message: s.data?.message || '',
+        created_at: s.created_at,
+      };
+    });
 
     return {
       statusCode: 200,
