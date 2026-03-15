@@ -67,7 +67,7 @@ exports.handler = async (event) => {
     const reverseTs = String(9999999999999 - now).padStart(13, '0');
     const key = `${KEY_PREFIX}${reverseTs}:${id}`;
 
-    const store = getStore(STORE_NAME);
+    const store = getBlobStore();
     await store.set(key, JSON.stringify(entry));
 
     return {
@@ -80,10 +80,36 @@ exports.handler = async (event) => {
     return {
       statusCode: 500,
       headers: jsonHeaders,
-      body: JSON.stringify({ error: err.message || 'Internal Server Error' }),
+      body: JSON.stringify({
+        error: err.message || 'Internal Server Error',
+        code: err.code || 'BLOBS_WRITE_FAILED',
+      }),
     };
   }
 };
+
+function getBlobStore() {
+  try {
+    return getStore(STORE_NAME);
+  } catch (autoErr) {
+    const siteID = process.env.NETLIFY_SITE_ID || process.env.SITE_ID || '';
+    const token =
+      process.env.NETLIFY_API_TOKEN ||
+      process.env.NETLIFY_BLOBS_TOKEN ||
+      process.env.NETLIFY_AUTH_TOKEN ||
+      '';
+
+    if (!siteID || !token) {
+      const error = new Error(
+        'Blobs context unavailable. Set NETLIFY_SITE_ID and NETLIFY_API_TOKEN (or NETLIFY_BLOBS_TOKEN) in site env vars.'
+      );
+      error.code = 'BLOBS_CONTEXT_MISSING';
+      throw error;
+    }
+
+    return getStore(STORE_NAME, { siteID, token });
+  }
+}
 
 function parseBody(event) {
   const contentType = (event.headers?.['content-type'] || event.headers?.['Content-Type'] || '').toLowerCase();
