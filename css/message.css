@@ -80,27 +80,22 @@
 
 .message-card-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
   gap: 8px;
   margin-bottom: 6px;
 }
 
 .message-meta {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-areas:
-    "name location"
-    "time time";
+  display: flex;
+  flex-wrap: wrap;
   column-gap: 8px;
-  row-gap: 1px;
+  row-gap: 4px;
   align-items: baseline;
   flex: 1;
   min-width: 0;
 }
 
 .message-nickname {
-  grid-area: name;
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
   font-size: 13px;
   font-weight: bold;
@@ -111,20 +106,17 @@
 }
 
 .message-location {
-  grid-area: location;
   font-size: 11px;
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
   color: #5b5b5b;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .message-time {
-  grid-area: time;
   font-size: 11px;
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
-  color: #808080;
+  color: #5b5b5b;
+  white-space: nowrap;
 }
 
 .message-card-body {
@@ -137,12 +129,23 @@
 }
 
 .msg-reply-btn {
-  min-width: 56px;
+  display: inline;
   font-size: 11px;
-  line-height: 1;
-  padding: 2px 8px;
+  line-height: 1.2;
   cursor: pointer;
-  flex-shrink: 0;
+  color: #5b5b5b;
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.msg-reply-btn:focus {
+  outline: 1px dotted #5b5b5b;
+  outline-offset: 1px;
+}
+
+.msg-reply-btn:hover {
+  color: #5b5b5b;
 }
 
 .message-reply-list {

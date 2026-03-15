@@ -336,8 +336,8 @@ function renderMessageCard(item, idx, replies) {
         <span class="message-nickname">${nickname}</span>
         <span class="message-location">${location}</span>
         <span class="message-time">${escHtml(time)}</span>
+        <span class="msg-reply-btn" role="button" tabindex="0">${commentBtnText}</span>
       </div>
-      <button class="msg-reply-btn" type="button">${commentBtnText}</button>
     </div>
     <div class="message-card-body">${body}</div>
     ${repliesHtml ? `<div class="message-reply-list">${repliesHtml}</div>` : ''}
@@ -347,6 +347,12 @@ function renderMessageCard(item, idx, replies) {
   if (replyBtn) {
     replyBtn.addEventListener('click', () => {
       toggleReplyComposer(item.messageId, card, replyBtn);
+    });
+    replyBtn.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleReplyComposer(item.messageId, card, replyBtn);
+      }
     });
   }
 
