@@ -145,10 +145,6 @@
   flex-shrink: 0;
 }
 
-.msg-reply-btn.active {
-  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff;
-}
-
 .message-reply-list {
   margin-top: 8px;
   border-top: 1px dashed #d0d0d0;

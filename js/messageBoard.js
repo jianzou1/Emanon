@@ -6,6 +6,7 @@ import langManager from '/js/langManager.js';
 const MESSAGES_API = '/.netlify/functions/get-messages';
 const POST_MESSAGE_API = '/.netlify/functions/post-message';
 const PAGE_SIZE = 20;
+const NICKNAME_STORAGE_KEY = 'msg_last_nickname';
 const USE_MOCK_MESSAGES = (() => {
   try {
     const params = new URLSearchParams(window.location.search);
@@ -70,6 +71,12 @@ function bindFormEvents() {
 
   if (!form || !nicknameInput || !contentInput || !messageIdInput) return;
 
+  // 自动填入上次使用的昵称
+  const savedNickname = localStorage.getItem(NICKNAME_STORAGE_KEY);
+  if (savedNickname && !nicknameInput.value) {
+    nicknameInput.value = savedNickname;
+  }
+
   // 字数实时统计
   contentInput.addEventListener('input', () => {
     if (charCount) charCount.textContent = contentInput.value.length;
@@ -98,7 +105,9 @@ function bindFormEvents() {
       return;
     }
 
+    localStorage.setItem(NICKNAME_STORAGE_KEY, nickname);
     form.reset();
+    nicknameInput.value = nickname;
     messageIdInput.value = '';
     if (charCount) charCount.textContent = '0';
     showToast(langManager.translate('msg_success_title') || '留言已提交！');
@@ -378,20 +387,20 @@ function toggleReplyComposer(messageId, card, btn) {
   activeReplyMessageId = messageId;
   activeReplyFormEl = composer;
   activeReplyBtn = btn;
-  btn.classList.add('active');
 
   const nicknameInput = composer.querySelector('.msg-reply-nickname-input');
-  if (nicknameInput) nicknameInput.focus();
+  const contentInput = composer.querySelector('.msg-reply-content-input');
+  if (nicknameInput && nicknameInput.value) {
+    if (contentInput) contentInput.focus();
+  } else if (nicknameInput) {
+    nicknameInput.focus();
+  }
 }
 
 function closeReplyComposer() {
   if (activeReplyFormEl && activeReplyFormEl.parentNode) {
     activeReplyFormEl.parentNode.removeChild(activeReplyFormEl);
   }
-  if (activeReplyBtn) {
-    activeReplyBtn.classList.remove('active');
-  }
-
   activeReplyMessageId = null;
   activeReplyFormEl = null;
   activeReplyBtn = null;
@@ -425,6 +434,12 @@ function buildReplyComposer(messageId) {
   const contentInput = wrapper.querySelector('.msg-reply-content-input');
   const submitBtn = wrapper.querySelector('.msg-reply-submit');
 
+  // 自动填入上次使用的昵称
+  const savedNick = localStorage.getItem(NICKNAME_STORAGE_KEY);
+  if (savedNick && nicknameInput) {
+    nicknameInput.value = savedNick;
+  }
+
   if (form && nicknameInput && contentInput) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
@@ -445,6 +460,7 @@ function buildReplyComposer(messageId) {
         return;
       }
 
+      localStorage.setItem(NICKNAME_STORAGE_KEY, nickname);
       showToast(translateWithFallback('msg_reply_success', '评论已发送！'));
       closeReplyComposer();
       await loadMessages(true);
