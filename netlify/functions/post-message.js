@@ -169,7 +169,7 @@ async function extractLocation(headers = {}, ip = '') {
     getHeader(headers, 'x-nf-country')
   );
 
-  const fromHeaders = joinLocation(headerCity, headerRegion, headerCountry);
+  const fromHeaders = joinLocation(headerCity, headerRegion, normalizeCountryName(headerCountry));
   if (fromHeaders) return fromHeaders;
 
   if (!ip) return '';
@@ -185,6 +185,16 @@ function joinLocation(city, region, country) {
 }
 
 async function lookupLocationByIP(ip) {
+  const fromIpWho = await lookupByIpWho(ip);
+  if (fromIpWho) return fromIpWho;
+
+  const fromIpApiCo = await lookupByIpApiCo(ip);
+  if (fromIpApiCo) return fromIpApiCo;
+
+  return '';
+}
+
+async function lookupByIpWho(ip) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 1500);
 
@@ -198,7 +208,31 @@ async function lookupLocationByIP(ip) {
 
     const city = firstNonEmpty(data.city);
     const region = firstNonEmpty(data.region);
-    const country = firstNonEmpty(data.country);
+    const country = normalizeCountryName(firstNonEmpty(data.country, data.country_code));
+
+    return joinLocation(city, region, country);
+  } catch {
+    return '';
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function lookupByIpApiCo(ip) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 1500);
+
+  try {
+    const url = `https://ipapi.co/${encodeURIComponent(ip)}/json/`;
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) return '';
+
+    const data = await res.json();
+    if (!data || data.error) return '';
+
+    const city = firstNonEmpty(data.city);
+    const region = firstNonEmpty(data.region);
+    const country = normalizeCountryName(firstNonEmpty(data.country_name, data.country_code));
 
     return joinLocation(city, region, country);
   } catch {
@@ -237,4 +271,21 @@ function firstNonEmpty(...values) {
     if (text) return text;
   }
   return '';
+}
+
+function normalizeCountryName(raw) {
+  const value = String(raw || '').trim();
+  if (!value) return '';
+
+  const upper = value.toUpperCase();
+  if (/^[A-Z]{2}$/.test(upper)) {
+    try {
+      const zhName = new Intl.DisplayNames(['zh-CN'], { type: 'region' }).of(upper);
+      if (zhName) return zhName;
+    } catch {
+      // ignore and use raw value
+    }
+  }
+
+  return value;
 }
