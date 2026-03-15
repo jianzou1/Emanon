@@ -66,7 +66,6 @@ function bindFormEvents() {
   const contentInput = document.getElementById('msg-content');
   const messageIdInput = document.getElementById('msg-message-id');
   const charCount = document.getElementById('msg-char-count');
-  const refreshBtn = document.getElementById('msg-refresh-btn');
   const loadMoreBtn = document.getElementById('msg-load-more');
 
   if (!form || !nicknameInput || !contentInput || !messageIdInput) return;
@@ -105,11 +104,6 @@ function bindFormEvents() {
     showToast(langManager.translate('msg_success_title') || '留言已提交！');
     await loadMessages(true);
   });
-
-  // 刷新列表
-  if (refreshBtn) {
-    refreshBtn.addEventListener('click', () => loadMessages(true));
-  }
 
   // 加载更多
   if (loadMoreBtn) {
