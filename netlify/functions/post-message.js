@@ -49,7 +49,7 @@ exports.handler = async (event) => {
 
     const now = Date.now();
     const clientIP = extractClientIP(event.headers);
-    const location = extractLocation(event.headers);
+    const location = await extractLocation(event.headers, clientIP);
     const isReply = rawMessageId.startsWith('re:');
     const replyTo = isReply ? rawMessageId.slice(3).trim() : '';
     const messageId = isReply ? String(now) : (rawMessageId || String(now));
@@ -145,22 +145,67 @@ function extractClientIP(headers = {}) {
   return first.trim();
 }
 
-function extractLocation(headers = {}) {
+async function extractLocation(headers = {}, ip = '') {
   const geo = parseGeoHeader(getHeader(headers, 'x-nf-geo'));
-  if (!geo) return '';
+  if (geo) {
+    const city = firstNonEmpty(geo.city, geo.city_name);
+    const region = firstNonEmpty(geo.region, geo.subdivision, geo.state);
+    const country = firstNonEmpty(
+      geo.country,
+      geo.country_name,
+      typeof geo.country === 'object' ? geo.country?.name : ''
+    );
 
-  const city = firstNonEmpty(geo.city, geo.city_name);
-  const region = firstNonEmpty(geo.region, geo.subdivision, geo.state);
-  const country = firstNonEmpty(
-    geo.country,
-    geo.country_name,
-    typeof geo.country === 'object' ? geo.country?.name : ''
+    const fromGeo = joinLocation(city, region, country);
+    if (fromGeo) return fromGeo;
+  }
+
+  const headerCity = firstNonEmpty(getHeader(headers, 'x-city'), getHeader(headers, 'x-nf-city'));
+  const headerRegion = firstNonEmpty(getHeader(headers, 'x-region'), getHeader(headers, 'x-nf-region'));
+  const headerCountry = firstNonEmpty(
+    getHeader(headers, 'x-country-name'),
+    getHeader(headers, 'x-nf-country-name'),
+    getHeader(headers, 'x-country'),
+    getHeader(headers, 'x-nf-country')
   );
 
+  const fromHeaders = joinLocation(headerCity, headerRegion, headerCountry);
+  if (fromHeaders) return fromHeaders;
+
+  if (!ip) return '';
+
+  const fromIP = await lookupLocationByIP(ip);
+  return fromIP || '';
+}
+
+function joinLocation(city, region, country) {
   const parts = [city, region, country].filter(Boolean);
   if (parts.length === 0) return '';
-
   return Array.from(new Set(parts)).join(' · ');
+}
+
+async function lookupLocationByIP(ip) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 1500);
+
+  try {
+    const url = `https://ipwho.is/${encodeURIComponent(ip)}`;
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) return '';
+
+    const data = await res.json();
+    if (!data || data.success === false) return '';
+
+    const city = firstNonEmpty(data.city);
+    const region = firstNonEmpty(data.region);
+    const country = firstNonEmpty(data.country);
+
+    return joinLocation(city, region, country);
+  } catch {
+    return '';
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function parseGeoHeader(raw) {
