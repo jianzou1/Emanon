@@ -1,83 +1,97 @@
 // netlify/functions/get-messages.js
-// 代理 Netlify Forms API，避免在前端暴露 Token
+// 从 Netlify Blobs 读取留言与评论
+
+const { getStore } = require('@netlify/blobs');
 
 const jsonHeaders = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
-  'Cache-Control': 'public, max-age=60',
+  'Cache-Control': 'no-store',
 };
 
-exports.handler = async (event) => {
-  const token = process.env.NETLIFY_API_TOKEN;
-  const siteId = process.env.NETLIFY_SITE_ID;
-  const formName = 'guestbook';
+const STORE_NAME = 'guestbook';
+const KEY_PREFIX = 'msg:';
+const PER_PAGE = 20;
 
-  if (!token || !siteId) {
+exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
     return {
-      statusCode: 500,
+      statusCode: 204,
+      headers: {
+        ...jsonHeaders,
+        'Access-Control-Allow-Methods': 'GET,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+      body: '',
+    };
+  }
+
+  if (event.httpMethod !== 'GET') {
+    return {
+      statusCode: 405,
       headers: jsonHeaders,
-      body: JSON.stringify({ error: 'Server misconfiguration: missing env vars' }),
+      body: JSON.stringify({ error: 'Method Not Allowed' }),
     };
   }
 
   try {
-    // 1. 先获取表单 ID
-    const formsRes = await fetch(
-      `https://api.netlify.com/api/v1/sites/${siteId}/forms`,
-      { headers: { Authorization: `Bearer ${token}` } }
+    const store = getStore(STORE_NAME);
+    const page = Math.max(parseInt(event.queryStringParameters?.page || '1', 10) || 1, 1);
+
+    const listed = await store.list({ prefix: KEY_PREFIX });
+    const blobs = Array.isArray(listed?.blobs) ? listed.blobs : [];
+
+    const loaded = await Promise.all(
+      blobs.map(async blob => {
+        try {
+          const raw = await store.get(blob.key);
+          if (!raw) return null;
+          return normalizeEntry(JSON.parse(raw));
+        } catch (err) {
+          console.warn('skip invalid blob:', blob?.key, err?.message || err);
+          return null;
+        }
+      })
     );
-    if (!formsRes.ok) throw new Error(`Forms API ${formsRes.status}`);
 
-    const forms = await formsRes.json();
-    const form = forms.find(f => f.name === formName);
-    if (!form) {
-      return {
-        statusCode: 200,
-        headers: jsonHeaders,
-        body: JSON.stringify([]),
-      };
-    }
+    const sorted = loaded
+      .filter(Boolean)
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-    // 2. 拉取该表单的提交记录（最多100条，按时间降序）
-    const page = parseInt(event.queryStringParameters?.page || '1', 10);
-    const perPage = 20;
-    const subRes = await fetch(
-      `https://api.netlify.com/api/v1/forms/${form.id}/submissions?per_page=${perPage}&page=${page}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    if (!subRes.ok) throw new Error(`Submissions API ${subRes.status}`);
-
-    const submissions = await subRes.json();
-
-    // 3. 只向前端返回展示所需的字段，不泄露邮件等隐私数据
-    const safe = submissions.map(s => {
-      const rawMessageId = String(s.data?.messageId || '').trim();
-      const replyTo = rawMessageId.startsWith('re:') ? rawMessageId.slice(3) : '';
-      const fallbackId = String(new Date(s.created_at).getTime() || Date.now());
-      const messageId = replyTo ? fallbackId : (rawMessageId || fallbackId);
-
-      return {
-        id: s.id,
-        messageId,
-        replyTo,
-        isReply: Boolean(replyTo),
-        nickname: s.data?.nickname || 'unknown',
-        message: s.data?.message || '',
-        created_at: s.created_at,
-      };
-    });
+    const start = (page - 1) * PER_PAGE;
+    const end = start + PER_PAGE;
+    const result = sorted.slice(start, end);
 
     return {
       statusCode: 200,
       headers: jsonHeaders,
-      body: JSON.stringify(safe),
+      body: JSON.stringify(result),
     };
   } catch (err) {
     console.error('get-messages error:', err);
     return {
       statusCode: 500,
       headers: jsonHeaders,
-      body: JSON.stringify({ error: err.message }),
+      body: JSON.stringify({ error: err.message || 'Internal Server Error' }),
     };
   }
 };
+
+function normalizeEntry(input) {
+  const createdAt = input?.created_at || new Date().toISOString();
+  const rawMessageId = String(input?.messageId || '').trim();
+  const rawReplyTo = String(input?.replyTo || '').trim();
+  const replyTo = rawReplyTo || (rawMessageId.startsWith('re:') ? rawMessageId.slice(3) : '');
+  const fallbackId = String(new Date(createdAt).getTime() || Date.now());
+  const messageId = replyTo ? fallbackId : (rawMessageId || fallbackId);
+
+  return {
+    id: String(input?.id || `${fallbackId}-${Math.random().toString(16).slice(2, 8)}`),
+    messageId,
+    replyTo,
+    isReply: Boolean(replyTo),
+    nickname: String(input?.nickname || 'unknown').slice(0, 8),
+    message: String(input?.message || ''),
+    created_at: createdAt,
+  };
+}

@@ -34,15 +34,8 @@
                     <!-- 留言提交表单 -->
                     <div id="msg-form-box" class="message-form-box">
                         <div class="message-form-body">
-                            <!-- Netlify Forms 检测标记 -->
-                            <form id="msg-form" name="guestbook" method="POST"
-                                  data-netlify="true" data-netlify-honeypot="bot-field">
-                                <input type="hidden" name="form-name" value="guestbook">
+                            <form id="msg-form" name="guestbook" method="POST">
                                 <input type="hidden" id="msg-message-id" name="messageId" value="">
-                                <!-- 蜜罐字段（防垃圾提交，对用户不可见） -->
-                                <p style="display:none">
-                                    <label>Do not fill this: <input name="bot-field"></label>
-                                </p>
                                 <div class="field-row-stacked">
                                     <label for="msg-nickname" data-lang-id="msg_nickname_label"></label>
                                     <input id="msg-nickname" name="nickname" type="text"

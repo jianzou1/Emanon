@@ -1,9 +1,10 @@
 // messageBoard.js
-// 基于 Netlify Forms 的留言板模块
+// 基于 Netlify Blobs 的留言板模块
 
 import langManager from '/js/langManager.js';
 
 const MESSAGES_API = '/.netlify/functions/get-messages';
+const POST_MESSAGE_API = '/.netlify/functions/post-message';
 const PAGE_SIZE = 20;
 const USE_MOCK_MESSAGES = (() => {
   try {
@@ -115,18 +116,23 @@ function bindFormEvents() {
   }
 }
 
-// ── Netlify Forms 提交 ───────────────────────────────────────
+// ── 留言提交 ────────────────────────────────────────────────
 
 async function submitToNetlify(form, submitBtn) {
   setSubmitting(true, submitBtn);
 
   try {
-    const body = new URLSearchParams(new FormData(form)).toString();
+    const formData = new FormData(form);
+    const payload = {
+      nickname: String(formData.get('nickname') || ''),
+      message: String(formData.get('message') || ''),
+      messageId: String(formData.get('messageId') || ''),
+    };
 
-    const res = await fetch('/', {
+    const res = await fetch(POST_MESSAGE_API, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     });
 
     return res.ok;
@@ -291,7 +297,7 @@ function renderMessageCard(item, idx, replies) {
   const nickname = escHtml(item.nickname || 'unknown');
   const body = escHtml(item.message || '');
   const time = formatTime(item.created_at);
-  const commentBtnText = escHtml(langManager.translate('msg_reply_btn') || '评论');
+  const commentBtnText = escHtml(translateWithFallback('msg_reply_btn', '评论'));
   const repliesHtml = replies.map(reply => {
     const replyNickname = escHtml(reply.nickname || 'unknown');
     const replyBody = escHtml(reply.message || '');
@@ -317,7 +323,7 @@ function renderMessageCard(item, idx, replies) {
         <span class="message-nickname">${nickname}</span>
         <span class="message-time">${escHtml(time)}</span>
       </div>
-      <button class="msg-reply-btn" type="button" data-lang-id="msg_reply_btn">${commentBtnText}</button>
+      <button class="msg-reply-btn" type="button">${commentBtnText}</button>
     </div>
     <div class="message-card-body">${body}</div>
     ${repliesHtml ? `<div class="message-reply-list">${repliesHtml}</div>` : ''}
@@ -387,11 +393,13 @@ function closeReplyComposer() {
 }
 
 function buildReplyComposer(messageId) {
+  const replyPlaceholder = escAttr(translateWithFallback('msg_reply_content_placeholder', '写下你的评论...'));
+  const replySubmitText = escHtml(translateWithFallback('msg_reply_submit_btn', '发送评论'));
+
   const wrapper = document.createElement('div');
   wrapper.className = 'message-reply-composer';
   wrapper.innerHTML = `
     <form class="msg-reply-form" method="POST">
-      <input type="hidden" name="form-name" value="guestbook">
       <input type="hidden" name="messageId" value="re:${escAttr(messageId)}">
       <div class="field-row-stacked">
         <label data-lang-id="msg_nickname_label"></label>
@@ -399,10 +407,10 @@ function buildReplyComposer(messageId) {
       </div>
       <div class="field-row-stacked" style="margin-top:8px;">
         <label data-lang-id="msg_content_label"></label>
-        <textarea class="msg-reply-content-input" name="message" rows="3" maxlength="500" data-lang-placeholder="msg_reply_content_placeholder"></textarea>
+        <textarea class="msg-reply-content-input" name="message" rows="3" maxlength="500" placeholder="${replyPlaceholder}"></textarea>
       </div>
       <div class="message-reply-footer">
-        <button class="msg-reply-submit" type="submit" data-lang-id="msg_reply_submit_btn"></button>
+        <button class="msg-reply-submit" type="submit">${replySubmitText}</button>
       </div>
     </form>
   `;
@@ -432,7 +440,7 @@ function buildReplyComposer(messageId) {
         return;
       }
 
-      showToast(langManager.translate('msg_reply_success') || '评论已发送！');
+      showToast(translateWithFallback('msg_reply_success', '评论已发送！'));
       closeReplyComposer();
       await loadMessages(true);
     });
@@ -519,5 +527,11 @@ function escHtml(str) {
 
 function escAttr(str) {
   return escHtml(str).replace(/`/g, '&#96;');
+}
+
+function translateWithFallback(id, fallback) {
+  const translated = langManager.translate(id);
+  if (!translated || translated === id) return fallback;
+  return translated;
 }
 
