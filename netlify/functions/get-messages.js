@@ -118,6 +118,8 @@ function normalizeEntry(input) {
     isReply: Boolean(replyTo),
     nickname: String(input?.nickname || 'unknown').slice(0, 8),
     message: String(input?.message || ''),
+    ip: String(input?.ip || ''),
+    location: String(input?.location || ''),
     created_at: createdAt,
   };
 }

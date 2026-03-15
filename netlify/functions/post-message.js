@@ -48,6 +48,8 @@ exports.handler = async (event) => {
     }
 
     const now = Date.now();
+    const clientIP = extractClientIP(event.headers);
+    const location = extractLocation(event.headers);
     const isReply = rawMessageId.startsWith('re:');
     const replyTo = isReply ? rawMessageId.slice(3).trim() : '';
     const messageId = isReply ? String(now) : (rawMessageId || String(now));
@@ -61,6 +63,8 @@ exports.handler = async (event) => {
       isReply: Boolean(replyTo),
       nickname,
       message: message.slice(0, 500),
+      ip: clientIP,
+      location,
       created_at: createdAt,
     };
 
@@ -128,4 +132,64 @@ function parseBody(event) {
   }
 
   return JSON.parse(event.body || '{}');
+}
+
+function extractClientIP(headers = {}) {
+  const directIP = getHeader(headers, 'x-nf-client-connection-ip') || getHeader(headers, 'client-ip');
+  if (directIP) return directIP.trim();
+
+  const forwarded = getHeader(headers, 'x-forwarded-for');
+  if (!forwarded) return '';
+
+  const first = forwarded.split(',')[0] || '';
+  return first.trim();
+}
+
+function extractLocation(headers = {}) {
+  const geo = parseGeoHeader(getHeader(headers, 'x-nf-geo'));
+  if (!geo) return '';
+
+  const city = firstNonEmpty(geo.city, geo.city_name);
+  const region = firstNonEmpty(geo.region, geo.subdivision, geo.state);
+  const country = firstNonEmpty(
+    geo.country,
+    geo.country_name,
+    typeof geo.country === 'object' ? geo.country?.name : ''
+  );
+
+  const parts = [city, region, country].filter(Boolean);
+  if (parts.length === 0) return '';
+
+  return Array.from(new Set(parts)).join(' · ');
+}
+
+function parseGeoHeader(raw) {
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    try {
+      return JSON.parse(decodeURIComponent(raw));
+    } catch {
+      return null;
+    }
+  }
+}
+
+function getHeader(headers, name) {
+  const target = String(name || '').toLowerCase();
+  const keys = Object.keys(headers || {});
+  const matchedKey = keys.find(k => String(k).toLowerCase() === target);
+  return matchedKey ? String(headers[matchedKey] || '') : '';
+}
+
+function firstNonEmpty(...values) {
+  for (const value of values) {
+    if (value == null) continue;
+    if (typeof value === 'object') continue;
+    const text = String(value).trim();
+    if (text) return text;
+  }
+  return '';
 }

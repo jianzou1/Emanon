@@ -43,6 +43,7 @@ const MOCK_REPLIES = [
   '这个细节确实很棒。',
   '握手，审美在线。',
 ];
+const MOCK_LOCATIONS = ['上海 · 中国', '东京 · 日本', '首尔 · 韩国', '台北 · 中国', '新加坡', '香港 · 中国'];
 
 /**
  * 初始化留言板
@@ -216,6 +217,8 @@ function getMockPageData(page) {
       isReply: false,
       nickname: MOCK_NICKNAMES[i % MOCK_NICKNAMES.length],
       message: MOCK_MESSAGES[i % MOCK_MESSAGES.length],
+      ip: `203.0.113.${(i % 200) + 1}`,
+      location: MOCK_LOCATIONS[i % MOCK_LOCATIONS.length],
       created_at: new Date(messageTs).toISOString(),
     });
 
@@ -228,6 +231,8 @@ function getMockPageData(page) {
         isReply: true,
         nickname: MOCK_NICKNAMES[(i + 2) % MOCK_NICKNAMES.length],
         message: MOCK_REPLIES[i % MOCK_REPLIES.length],
+        ip: `203.0.113.${((i + 7) % 200) + 1}`,
+        location: MOCK_LOCATIONS[(i + 1) % MOCK_LOCATIONS.length],
         created_at: new Date(replyTs).toISOString(),
       });
     }
@@ -241,6 +246,8 @@ function getMockPageData(page) {
         isReply: true,
         nickname: MOCK_NICKNAMES[(i + 4) % MOCK_NICKNAMES.length],
         message: MOCK_REPLIES[(i + 1) % MOCK_REPLIES.length],
+        ip: `203.0.113.${((i + 11) % 200) + 1}`,
+        location: MOCK_LOCATIONS[(i + 2) % MOCK_LOCATIONS.length],
         created_at: new Date(replyTs).toISOString(),
       });
     }
@@ -295,17 +302,20 @@ function renderMessageCard(item, idx, replies) {
   if (!list) return;
 
   const nickname = escHtml(item.nickname || 'unknown');
+  const location = escHtml(formatLocation(item));
   const body = escHtml(item.message || '');
   const time = formatTime(item.created_at);
   const commentBtnText = escHtml(translateWithFallback('msg_reply_btn', '评论'));
   const repliesHtml = replies.map(reply => {
     const replyNickname = escHtml(reply.nickname || 'unknown');
+    const replyLocation = escHtml(formatLocation(reply));
     const replyBody = escHtml(reply.message || '');
     const replyTime = escHtml(formatTime(reply.created_at));
     return `
       <div class="message-reply-item">
         <div class="message-reply-meta">
           <span class="message-reply-nickname">${replyNickname}</span>
+          <span class="message-reply-location">${replyLocation}</span>
           <span class="message-reply-time">${replyTime}</span>
         </div>
         <div class="message-reply-body">${replyBody}</div>
@@ -321,6 +331,7 @@ function renderMessageCard(item, idx, replies) {
     <div class="message-card-header">
       <div class="message-meta">
         <span class="message-nickname">${nickname}</span>
+        <span class="message-location">${location}</span>
         <span class="message-time">${escHtml(time)}</span>
       </div>
       <button class="msg-reply-btn" type="button">${commentBtnText}</button>
@@ -533,5 +544,11 @@ function translateWithFallback(id, fallback) {
   const translated = langManager.translate(id);
   if (!translated || translated === id) return fallback;
   return translated;
+}
+
+function formatLocation(entry) {
+  const location = String(entry?.location || '').trim();
+  if (location) return location;
+  return translateWithFallback('msg_location_unknown', '未知地区');
 }
 

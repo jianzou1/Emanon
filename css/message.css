@@ -94,14 +94,20 @@
 }
 
 .message-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "name location"
+    "time time";
+  column-gap: 8px;
+  row-gap: 1px;
+  align-items: baseline;
   flex: 1;
   min-width: 0;
 }
 
 .message-nickname {
+  grid-area: name;
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
   font-size: 13px;
   font-weight: bold;
@@ -111,7 +117,18 @@
   text-overflow: ellipsis;
 }
 
+.message-location {
+  grid-area: location;
+  font-size: 11px;
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  color: #5b5b5b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .message-time {
+  grid-area: time;
   font-size: 11px;
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
   color: #808080;
@@ -164,6 +181,12 @@
   font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
   font-size: 12px;
   color: #000080;
+}
+
+.message-reply-location {
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  font-size: 11px;
+  color: #5b5b5b;
 }
 
 .message-reply-time {
