@@ -115,6 +115,7 @@ function normalizeEntry(input) {
     id: String(input?.id || `${fallbackId}-${Math.random().toString(16).slice(2, 8)}`),
     messageId,
     replyTo,
+    replyToNickname: String(input?.replyToNickname || '').trim().slice(0, 8),
     isReply: Boolean(replyTo),
     nickname: String(input?.nickname || 'unknown').slice(0, 8),
     message: String(input?.message || ''),

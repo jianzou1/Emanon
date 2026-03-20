@@ -38,6 +38,7 @@ exports.handler = async (event) => {
     const nickname = String(payload.nickname || 'unknown').trim().slice(0, 8) || 'unknown';
     const message = String(payload.message || '').trim();
     const rawMessageId = String(payload.messageId || '').trim();
+    const rawReplyToNickname = String(payload.replyToNickname || '').trim().slice(0, 8);
 
     if (!message) {
       return {
@@ -60,6 +61,7 @@ exports.handler = async (event) => {
       id,
       messageId,
       replyTo,
+      replyToNickname: isReply ? rawReplyToNickname : '',
       isReply: Boolean(replyTo),
       nickname,
       message: message.slice(0, 500),
@@ -128,6 +130,7 @@ function parseBody(event) {
       nickname: params.get('nickname') || '',
       message: params.get('message') || '',
       messageId: params.get('messageId') || '',
+      replyToNickname: params.get('replyToNickname') || '',
     };
   }
 

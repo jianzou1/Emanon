@@ -23,6 +23,8 @@ let allEntries = [];
 let activeReplyMessageId = null;
 let activeReplyFormEl = null;
 let activeReplyBtn = null;
+// 评论互回：当前回复目标的昵称（点击评论的"回复"按钮时设置）
+let activeReplyToNickname = '';
 
 const MOCK_BASE_TIME = new Date('2026-03-16T14:00:00+08:00').getTime();
 const MOCK_NICKNAMES = ['Shelton', 'Cry', 'Mika', 'Sora', 'Aki', 'Neko', 'Pixel', 'Rin'];
@@ -54,6 +56,7 @@ export function initializeMessageBoard() {
   isLoading = false;
   hasMore = true;
   allEntries = [];
+  activeReplyToNickname = '';
   closeReplyComposer();
   bindFormEvents();
   loadMessages(true);
@@ -148,6 +151,33 @@ async function submitToNetlify(form, submitBtn) {
   }
 }
 
+async function submitReplyToNetlify(form, submitBtn) {
+  setSubmitting(true, submitBtn);
+
+  try {
+    const formData = new FormData(form);
+    const payload = {
+      nickname: String(formData.get('nickname') || ''),
+      message: String(formData.get('message') || ''),
+      messageId: String(formData.get('messageId') || ''),
+      replyToNickname: String(formData.get('replyToNickname') || ''),
+    };
+
+    const res = await fetch(POST_MESSAGE_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    return res.ok;
+  } catch (err) {
+    console.error('评论提交失败:', err);
+    return false;
+  } finally {
+    setSubmitting(false, submitBtn);
+  }
+}
+
 // ── 留言列表加载 ─────────────────────────────────────────────
 
 async function loadMessages(reset = false) {
@@ -212,13 +242,15 @@ function getMockPageData(page) {
   for (let i = start; i < end; i++) {
     const messageTs = MOCK_BASE_TIME - i * 36 * 60 * 1000;
     const messageId = String(messageTs);
+    const msgNickname = MOCK_NICKNAMES[i % MOCK_NICKNAMES.length];
 
     items.push({
       id: `mock-msg-${i}`,
       messageId,
       replyTo: '',
+      replyToNickname: '',
       isReply: false,
-      nickname: MOCK_NICKNAMES[i % MOCK_NICKNAMES.length],
+      nickname: msgNickname,
       message: MOCK_MESSAGES[i % MOCK_MESSAGES.length],
       ip: `203.0.113.${(i % 200) + 1}`,
       location: MOCK_LOCATIONS[i % MOCK_LOCATIONS.length],
@@ -227,32 +259,70 @@ function getMockPageData(page) {
 
     if (i % 3 === 0) {
       const replyTs = messageTs + 8 * 60 * 1000;
+      const replyNick = MOCK_NICKNAMES[(i + 2) % MOCK_NICKNAMES.length];
       items.push({
         id: `mock-reply-a-${i}`,
         messageId: String(replyTs),
         replyTo: messageId,
+        replyToNickname: '',
         isReply: true,
-        nickname: MOCK_NICKNAMES[(i + 2) % MOCK_NICKNAMES.length],
+        nickname: replyNick,
         message: MOCK_REPLIES[i % MOCK_REPLIES.length],
         ip: `203.0.113.${((i + 7) % 200) + 1}`,
         location: MOCK_LOCATIONS[(i + 1) % MOCK_LOCATIONS.length],
         created_at: new Date(replyTs).toISOString(),
       });
+
+      // 评论互回：第三个人回复第一条评论的作者
+      if (i % 6 === 0) {
+        const reReplyTs = replyTs + 5 * 60 * 1000;
+        items.push({
+          id: `mock-reply-c-${i}`,
+          messageId: String(reReplyTs),
+          replyTo: messageId,
+          replyToNickname: replyNick,
+          isReply: true,
+          nickname: MOCK_NICKNAMES[(i + 5) % MOCK_NICKNAMES.length],
+          message: '确实，说得太对了！',
+          ip: `203.0.113.${((i + 13) % 200) + 1}`,
+          location: MOCK_LOCATIONS[(i + 3) % MOCK_LOCATIONS.length],
+          created_at: new Date(reReplyTs).toISOString(),
+        });
+      }
     }
 
     if (i % 5 === 0) {
       const replyTs = messageTs + 12 * 60 * 1000;
+      const replyNick = MOCK_NICKNAMES[(i + 4) % MOCK_NICKNAMES.length];
       items.push({
         id: `mock-reply-b-${i}`,
         messageId: String(replyTs),
         replyTo: messageId,
+        replyToNickname: '',
         isReply: true,
-        nickname: MOCK_NICKNAMES[(i + 4) % MOCK_NICKNAMES.length],
+        nickname: replyNick,
         message: MOCK_REPLIES[(i + 1) % MOCK_REPLIES.length],
         ip: `203.0.113.${((i + 11) % 200) + 1}`,
         location: MOCK_LOCATIONS[(i + 2) % MOCK_LOCATIONS.length],
         created_at: new Date(replyTs).toISOString(),
       });
+
+      // 评论互回：原作者回复评论者
+      if (i % 10 === 0) {
+        const reReplyTs = replyTs + 3 * 60 * 1000;
+        items.push({
+          id: `mock-reply-d-${i}`,
+          messageId: String(reReplyTs),
+          replyTo: messageId,
+          replyToNickname: replyNick,
+          isReply: true,
+          nickname: msgNickname,
+          message: '谢谢支持～',
+          ip: `203.0.113.${((i + 17) % 200) + 1}`,
+          location: MOCK_LOCATIONS[i % MOCK_LOCATIONS.length],
+          created_at: new Date(reReplyTs).toISOString(),
+        });
+      }
     }
   }
 
@@ -309,19 +379,25 @@ function renderMessageCard(item, idx, replies) {
   const body = escHtml(item.message || '');
   const time = formatTime(item.created_at);
   const commentBtnText = escHtml(translateWithFallback('msg_reply_btn', '评论'));
+  const replyBtnText = escHtml(translateWithFallback('msg_reply_reply_btn', '回复'));
   const repliesHtml = replies.map(reply => {
     const replyNickname = escHtml(reply.nickname || 'unknown');
     const replyLocation = escHtml(formatLocation(reply));
     const replyBody = escHtml(reply.message || '');
     const replyTime = escHtml(formatTime(reply.created_at));
+    const replyToNick = (reply.replyToNickname || '').trim();
+    const atTag = replyToNick
+      ? `<span class="message-reply-at">@${escHtml(replyToNick)}</span> `
+      : '';
     return `
-      <div class="message-reply-item">
+      <div class="message-reply-item" data-reply-nickname="${escAttr(reply.nickname || 'unknown')}">
         <div class="message-reply-meta">
           <span class="message-reply-nickname">${replyNickname}</span>
           <span class="message-reply-location">${replyLocation}</span>
           <span class="message-reply-time">${replyTime}</span>
+          <span class="msg-reply-reply-btn" role="button" tabindex="0">${replyBtnText}</span>
         </div>
-        <div class="message-reply-body">${replyBody}</div>
+        <div class="message-reply-body">${atTag}${replyBody}</div>
       </div>
     `;
   }).join('');
@@ -343,18 +419,35 @@ function renderMessageCard(item, idx, replies) {
     ${repliesHtml ? `<div class="message-reply-list">${repliesHtml}</div>` : ''}
   `;
 
+  // 主留言的评论按钮
   const replyBtn = card.querySelector('.msg-reply-btn');
   if (replyBtn) {
     replyBtn.addEventListener('click', () => {
-      toggleReplyComposer(item.messageId, card, replyBtn);
+      toggleReplyComposer(item.messageId, card, replyBtn, '');
     });
     replyBtn.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        toggleReplyComposer(item.messageId, card, replyBtn);
+        toggleReplyComposer(item.messageId, card, replyBtn, '');
       }
     });
   }
+
+  // 评论的回复按钮（回复其他评论）
+  const replyReplyBtns = card.querySelectorAll('.msg-reply-reply-btn');
+  replyReplyBtns.forEach(btn => {
+    const replyItem = btn.closest('.message-reply-item');
+    const targetNickname = replyItem ? replyItem.dataset.replyNickname : '';
+    btn.addEventListener('click', () => {
+      toggleReplyComposer(item.messageId, card, btn, targetNickname);
+    });
+    btn.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleReplyComposer(item.messageId, card, btn, targetNickname);
+      }
+    });
+  });
 
   list.appendChild(card);
 }
@@ -370,6 +463,7 @@ function normalizeEntry(entry) {
     ...entry,
     messageId,
     replyTo,
+    replyToNickname: String(entry.replyToNickname || '').trim(),
   };
 }
 
@@ -378,15 +472,17 @@ function parseTime(isoString) {
   return Number.isNaN(ts) ? 0 : ts;
 }
 
-function toggleReplyComposer(messageId, card, btn) {
-  if (activeReplyMessageId === messageId) {
+function toggleReplyComposer(messageId, card, btn, replyToNickname = '') {
+  // 如果点击同一个按钮则关闭
+  if (activeReplyMessageId === messageId && activeReplyBtn === btn) {
     closeReplyComposer();
     return;
   }
 
   closeReplyComposer();
 
-  const composer = buildReplyComposer(messageId);
+  activeReplyToNickname = replyToNickname;
+  const composer = buildReplyComposer(messageId, replyToNickname);
   card.appendChild(composer);
   langManager.applyTranslations();
 
@@ -410,17 +506,30 @@ function closeReplyComposer() {
   activeReplyMessageId = null;
   activeReplyFormEl = null;
   activeReplyBtn = null;
+  activeReplyToNickname = '';
 }
 
-function buildReplyComposer(messageId) {
+function buildReplyComposer(messageId, replyToNickname = '') {
   const replyPlaceholder = escAttr(translateWithFallback('msg_reply_content_placeholder', '写下你的评论...'));
   const replySubmitText = escHtml(translateWithFallback('msg_reply_submit_btn', '发送评论'));
+  const cancelText = escHtml(translateWithFallback('msg_reply_cancel_btn', '取消'));
+
+  // 回复目标提示
+  const replyHintHtml = replyToNickname
+    ? `<div class="message-reply-hint">
+        <span data-lang-id="msg_replying_to">${escHtml(translateWithFallback('msg_replying_to', '回复'))}</span>
+        <span class="message-reply-hint-nick">@${escHtml(replyToNickname)}</span>
+        <span class="message-reply-hint-close" role="button" tabindex="0" title="取消指定回复">✕</span>
+      </div>`
+    : '';
 
   const wrapper = document.createElement('div');
   wrapper.className = 'message-reply-composer';
   wrapper.innerHTML = `
     <form class="msg-reply-form" method="POST">
       <input type="hidden" name="messageId" value="re:${escAttr(messageId)}">
+      <input type="hidden" name="replyToNickname" class="msg-reply-to-nickname-input" value="${escAttr(replyToNickname)}">
+      ${replyHintHtml}
       <div class="field-row-stacked">
         <label data-lang-id="msg_nickname_label"></label>
         <input class="msg-reply-nickname-input" name="nickname" type="text" maxlength="8" data-lang-placeholder="msg_nickname_placeholder">
@@ -430,6 +539,7 @@ function buildReplyComposer(messageId) {
         <textarea class="msg-reply-content-input" name="message" rows="3" maxlength="500" placeholder="${replyPlaceholder}"></textarea>
       </div>
       <div class="message-reply-footer">
+        <button class="msg-reply-cancel" type="button">${cancelText}</button>
         <button class="msg-reply-submit" type="submit">${replySubmitText}</button>
       </div>
     </form>
@@ -439,6 +549,23 @@ function buildReplyComposer(messageId) {
   const nicknameInput = wrapper.querySelector('.msg-reply-nickname-input');
   const contentInput = wrapper.querySelector('.msg-reply-content-input');
   const submitBtn = wrapper.querySelector('.msg-reply-submit');
+  const cancelBtn = wrapper.querySelector('.msg-reply-cancel');
+  const replyToNicknameInput = wrapper.querySelector('.msg-reply-to-nickname-input');
+
+  // 清除 @回复 目标
+  const hintClose = wrapper.querySelector('.message-reply-hint-close');
+  if (hintClose) {
+    hintClose.addEventListener('click', () => {
+      if (replyToNicknameInput) replyToNicknameInput.value = '';
+      const hintEl = wrapper.querySelector('.message-reply-hint');
+      if (hintEl) hintEl.remove();
+    });
+  }
+
+  // 取消按钮
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => closeReplyComposer());
+  }
 
   // 自动填入上次使用的昵称
   const savedNick = localStorage.getItem(NICKNAME_STORAGE_KEY);
@@ -460,7 +587,7 @@ function buildReplyComposer(messageId) {
       }
 
       nicknameInput.value = nickname;
-      const ok = await submitToNetlify(form, submitBtn);
+      const ok = await submitReplyToNetlify(form, submitBtn);
       if (!ok) {
         showToast(langManager.translate('msg_submit_error') || '提交失败，请稍后再试');
         return;

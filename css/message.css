@@ -196,6 +196,73 @@
   white-space: pre-wrap;
 }
 
+/* 评论中的 @引用标签 */
+.message-reply-at {
+  color: #000080;
+  font-weight: bold;
+  font-size: 12px;
+  margin-right: 2px;
+}
+
+/* 评论项内的回复按钮 */
+.msg-reply-reply-btn {
+  display: inline;
+  font-size: 11px;
+  line-height: 1.2;
+  cursor: pointer;
+  color: #5b5b5b;
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  text-decoration: underline;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.msg-reply-reply-btn:focus {
+  outline: 1px dotted #5b5b5b;
+  outline-offset: 1px;
+}
+
+.msg-reply-reply-btn:hover {
+  color: #000080;
+}
+
+/* 回复编辑器中的回复目标提示 */
+.message-reply-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  background: #f0f0f0;
+  border: 1px solid #d0d0d0;
+  font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+  font-size: 11px;
+  color: #333;
+}
+
+.message-reply-hint-nick {
+  color: #000080;
+  font-weight: bold;
+}
+
+.message-reply-hint-close {
+  margin-left: auto;
+  cursor: pointer;
+  color: #808080;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.message-reply-hint-close:hover {
+  color: #cc0000;
+}
+
+.message-reply-hint-close:focus {
+  outline: 1px dotted #5b5b5b;
+  outline-offset: 1px;
+}
+
 .message-reply-composer {
   margin-top: 8px;
   padding-top: 8px;
@@ -219,10 +286,15 @@
   margin-top: 8px;
   display: flex;
   justify-content: flex-end;
+  gap: 6px;
 }
 
 .msg-reply-submit {
   min-width: 64px;
+}
+
+.msg-reply-cancel {
+  min-width: 48px;
 }
 
 .msg-loading,

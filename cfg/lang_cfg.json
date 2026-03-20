@@ -382,5 +382,23 @@
     "cn": "评论已发送！",
     "en": "Reply sent!",
     "jp": "返信を送信しました！"
+  },
+  {
+    "id": "msg_reply_reply_btn",
+    "cn": "回复",
+    "en": "Reply",
+    "jp": "返信"
+  },
+  {
+    "id": "msg_replying_to",
+    "cn": "回复",
+    "en": "Reply to",
+    "jp": "返信先"
+  },
+  {
+    "id": "msg_reply_cancel_btn",
+    "cn": "取消",
+    "en": "Cancel",
+    "jp": "キャンセル"
   }
 ]
