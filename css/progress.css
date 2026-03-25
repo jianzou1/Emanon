@@ -30,6 +30,15 @@
     margin-right: 2px;
 }
 
+.progress-bar .grid.blink {
+    animation: gridBlink 5.0s step-end infinite;
+}
+
+@keyframes gridBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
 #progress-percentage,
 #month-percentage,
 #day-percentage {

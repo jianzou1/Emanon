@@ -108,6 +108,13 @@ export function updateProgressBar(skipTimerRestart = false) {
             progressBar.appendChild(grid);
             setTimeout(() => addGrid(i + 1), GRID_INTERVAL);
           } else {
+            // 仅日进度条：动画完成后最后一个 grid 持续闪烁
+            if (progressBarId === 'day-progress-bar') {
+              const lastGrid = progressBar.lastElementChild;
+              if (lastGrid) {
+                lastGrid.classList.add('blink');
+              }
+            }
             markProgressCompleted();
           }
         }
