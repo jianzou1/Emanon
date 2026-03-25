@@ -13,13 +13,16 @@
   }
   
   .logo .text-container {
+    /* --logo-scale 由 JS 动态设置，默认 1 防止 JS 未执行时无效 */
+    --logo-scale: 1;
+
     font-family: "Courier New", Courier, monospace;
     font-size: 14px;
     white-space: pre;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(var(--logo-scale));
     margin: 0;
     padding: 0;
     line-height: 1;
@@ -37,7 +40,8 @@
   }
   
   .logo .text-container:hover {
-    transform: translate(-50%, -50%) scale(1.08);
+    /* 在 JS 计算的适配缩放基础上再放大 1.08 倍，而非覆盖 */
+    transform: translate(-50%, -50%) scale(calc(var(--logo-scale) * 1.08));
     /* 悬停时增强立体阴影效果 */
     text-shadow: 
       0 2px 2px rgba(255, 255, 255, 0.4),    /* 强化顶部反光 */

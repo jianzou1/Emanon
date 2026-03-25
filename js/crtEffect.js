@@ -122,115 +122,171 @@ export function initCRT() {
         { sx: 1, sy: 1 }
     ];
 
-    const drawCornerDistortion = () => {
-        if (!CORNER.ENABLED) return;
+    // ==== OffscreenCanvas 缓存：暗角 + 四角效果 ====
+    // 这些效果仅依赖 distortionPhase（闪烁相位）和画布尺寸，变化极慢。
+    // 缓存到离屏 canvas，仅在 phase 变化超过阈值或尺寸改变时重绘，
+    // 其余帧直接 drawImage 拷贝，避免每帧重建 10 个 gradient 对象。
+    const STATIC_PHASE_THRESHOLD = 0.08; // phase 变化超过此值才重绘缓存
+    let staticCache = null;  // 离屏 canvas
+    let staticCtx = null;    // 离屏 context
+    let cachedW = 0;
+    let cachedH = 0;
+    let cachedPhase = -Infinity;
 
-        const { width, height } = canvas;
-        const minSize = Math.min(width, height);
-        const radius = minSize * CORNER.RADIUS_RATIO;
-        const flicker = 1 + Math.sin(distortionPhase) * CORNER.FLICKER_DEPTH;
-        const centerOffset = radius * CORNER.CENTER_OFFSET_RATIO;
-        const edgeRadius = radius * CORNER.SOFT_EDGE_RATIO;
-
-        ctx.save();
-        ctx.globalCompositeOperation = 'multiply';
-        for (let i = 0; i < cornerSigns.length; i++) {
-            const sign = cornerSigns[i];
-            const x = sign.sx < 0 ? 0 : width;
-            const y = sign.sy < 0 ? 0 : height;
-            const originX = sign.sx < 0 ? -centerOffset : width + centerOffset;
-            const originY = sign.sy < 0 ? -centerOffset : height + centerOffset;
-
-            const shadow = ctx.createRadialGradient(originX, originY, radius * 0.02, x, y, edgeRadius);
-            shadow.addColorStop(0, `rgba(0, 0, 0, ${CORNER.SHADOW_ALPHA * 0.55 * flicker})`);
-            shadow.addColorStop(0.22, `rgba(0, 0, 0, ${CORNER.SHADOW_ALPHA * 0.35 * flicker})`);
-            shadow.addColorStop(0.5, `rgba(0, 0, 0, ${CORNER.SHADOW_ALPHA * 0.14 * flicker})`);
-            shadow.addColorStop(0.78, 'rgba(0, 0, 0, 0.03)');
-            shadow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-            ctx.fillStyle = shadow;
-            ctx.fillRect(x - edgeRadius, y - edgeRadius, edgeRadius * 2, edgeRadius * 2);
+    const ensureStaticCache = () => {
+        const w = canvas.width;
+        const h = canvas.height;
+        if (staticCache && cachedW === w && cachedH === h) return;
+        // 优先使用 OffscreenCanvas（无 DOM 开销），不支持时回退
+        if (typeof OffscreenCanvas !== 'undefined') {
+            staticCache = new OffscreenCanvas(w, h);
+        } else {
+            staticCache = document.createElement('canvas');
+            staticCache.width = w;
+            staticCache.height = h;
         }
-        ctx.restore();
+        staticCtx = staticCache.getContext('2d');
+        cachedW = w;
+        cachedH = h;
+        cachedPhase = -Infinity; // 强制首次重绘
+    };
 
-        for (let i = 0; i < cornerSigns.length; i++) {
-            const sign = cornerSigns[i];
-            const x = sign.sx < 0 ? 0 : width;
-            const y = sign.sy < 0 ? 0 : height;
-            const chromaOffset = radius * CORNER.CHROMA_OFFSET;
-            const chroma = ctx.createRadialGradient(
-                x + (sign.sx < 0 ? chromaOffset : -chromaOffset),
-                y + (sign.sy < 0 ? chromaOffset : -chromaOffset),
-                0,
-                x,
-                y,
-                edgeRadius * 0.9
-            );
-            chroma.addColorStop(0, `rgba(120, 180, 255, ${CORNER.HIGHLIGHT_ALPHA * 0.65 * flicker})`);
-            chroma.addColorStop(0.35, `rgba(100, 145, 230, ${CORNER.HIGHLIGHT_ALPHA * 0.22 * flicker})`);
-            chroma.addColorStop(0.7, 'rgba(90, 130, 220, 0.02)');
-            chroma.addColorStop(1, 'rgba(90, 130, 220, 0)');
+    const renderStaticEffects = () => {
+        const sctx = staticCtx;
+        const w = cachedW;
+        const h = cachedH;
 
-            ctx.fillStyle = chroma;
-            ctx.fillRect(x - edgeRadius, y - edgeRadius, edgeRadius * 2, edgeRadius * 2);
+        sctx.clearRect(0, 0, w, h);
+
+        // ---- 暗角 ----
+        if (EDGE_VIGNETTE.ENABLED) {
+            const edgeHeight = Math.max(14, h * EDGE_VIGNETTE.HEIGHT_RATIO);
+            const flicker = 1 + Math.sin(distortionPhase * 0.82 + 1.1) * EDGE_VIGNETTE.FLICKER_DEPTH;
+            const edgeAlpha = EDGE_VIGNETTE.ALPHA * flicker;
+
+            const topGradient = sctx.createLinearGradient(0, 0, 0, edgeHeight);
+            topGradient.addColorStop(0, `rgba(0, 0, 0, ${edgeAlpha})`);
+            topGradient.addColorStop(0.24, `rgba(0, 0, 0, ${edgeAlpha * 0.62})`);
+            topGradient.addColorStop(0.58, `rgba(0, 0, 0, ${edgeAlpha * 0.21})`);
+            topGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            const bottomGradient = sctx.createLinearGradient(0, h, 0, h - edgeHeight);
+            bottomGradient.addColorStop(0, `rgba(0, 0, 0, ${edgeAlpha})`);
+            bottomGradient.addColorStop(0.24, `rgba(0, 0, 0, ${edgeAlpha * 0.62})`);
+            bottomGradient.addColorStop(0.58, `rgba(0, 0, 0, ${edgeAlpha * 0.21})`);
+            bottomGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            sctx.save();
+            sctx.globalCompositeOperation = 'multiply';
+            sctx.fillStyle = topGradient;
+            sctx.fillRect(0, 0, w, edgeHeight);
+            sctx.fillStyle = bottomGradient;
+            sctx.fillRect(0, h - edgeHeight, w, edgeHeight);
+            sctx.restore();
         }
 
+        // ---- 四角阴影 ----
+        if (CORNER.ENABLED) {
+            const minSize = Math.min(w, h);
+            const radius = minSize * CORNER.RADIUS_RATIO;
+            const flicker = 1 + Math.sin(distortionPhase) * CORNER.FLICKER_DEPTH;
+            const centerOffset = radius * CORNER.CENTER_OFFSET_RATIO;
+            const edgeRadius = radius * CORNER.SOFT_EDGE_RATIO;
+
+            sctx.save();
+            sctx.globalCompositeOperation = 'multiply';
+            for (let i = 0; i < cornerSigns.length; i++) {
+                const sign = cornerSigns[i];
+                const x = sign.sx < 0 ? 0 : w;
+                const y = sign.sy < 0 ? 0 : h;
+                const originX = sign.sx < 0 ? -centerOffset : w + centerOffset;
+                const originY = sign.sy < 0 ? -centerOffset : h + centerOffset;
+
+                const shadow = sctx.createRadialGradient(originX, originY, radius * 0.02, x, y, edgeRadius);
+                shadow.addColorStop(0, `rgba(0, 0, 0, ${CORNER.SHADOW_ALPHA * 0.55 * flicker})`);
+                shadow.addColorStop(0.22, `rgba(0, 0, 0, ${CORNER.SHADOW_ALPHA * 0.35 * flicker})`);
+                shadow.addColorStop(0.5, `rgba(0, 0, 0, ${CORNER.SHADOW_ALPHA * 0.14 * flicker})`);
+                shadow.addColorStop(0.78, 'rgba(0, 0, 0, 0.03)');
+                shadow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+                sctx.fillStyle = shadow;
+                sctx.fillRect(x - edgeRadius, y - edgeRadius, edgeRadius * 2, edgeRadius * 2);
+            }
+            sctx.restore();
+
+            // 色差高光
+            for (let i = 0; i < cornerSigns.length; i++) {
+                const sign = cornerSigns[i];
+                const x = sign.sx < 0 ? 0 : w;
+                const y = sign.sy < 0 ? 0 : h;
+                const chromaOffset = radius * CORNER.CHROMA_OFFSET;
+                const chroma = sctx.createRadialGradient(
+                    x + (sign.sx < 0 ? chromaOffset : -chromaOffset),
+                    y + (sign.sy < 0 ? chromaOffset : -chromaOffset),
+                    0, x, y, edgeRadius * 0.9
+                );
+                chroma.addColorStop(0, `rgba(120, 180, 255, ${CORNER.HIGHLIGHT_ALPHA * 0.65 * flicker})`);
+                chroma.addColorStop(0.35, `rgba(100, 145, 230, ${CORNER.HIGHLIGHT_ALPHA * 0.22 * flicker})`);
+                chroma.addColorStop(0.7, 'rgba(90, 130, 220, 0.02)');
+                chroma.addColorStop(1, 'rgba(90, 130, 220, 0)');
+
+                sctx.fillStyle = chroma;
+                sctx.fillRect(x - edgeRadius, y - edgeRadius, edgeRadius * 2, edgeRadius * 2);
+            }
+        }
+
+        cachedPhase = distortionPhase;
+    };
+
+    // 将缓存的静态效果合成到主 canvas（按需重绘缓存）
+    const compositeStaticEffects = () => {
+        ensureStaticCache();
+        // 只有 phase 变化超过阈值，或尺寸刚变过（cachedPhase = -Infinity），才重绘
+        if (Math.abs(distortionPhase - cachedPhase) >= STATIC_PHASE_THRESHOLD) {
+            renderStaticEffects();
+        }
+        ctx.drawImage(staticCache, 0, 0);
         distortionPhase += CORNER.FLICKER_SPEED;
     };
 
-    const drawVerticalEdgeVignette = () => {
-        if (!EDGE_VIGNETTE.ENABLED) return;
+    // ==== 批量扫描线绘制：同色扫描线合并到单个 Path，stroke() 从 ~1350 次降至 3 次 ====
+    const drawScanLinesBatch = (baseOffset) => {
+        const w = canvas.width;
+        const h = canvas.height;
+        const halfW = w * 0.5;
+        const colorCount = scanLineColorOffsets.length;
 
-        const { width, height } = canvas;
-        const edgeHeight = Math.max(14, height * EDGE_VIGNETTE.HEIGHT_RATIO);
-        const flicker = 1 + Math.sin(distortionPhase * 0.82 + 1.1) * EDGE_VIGNETTE.FLICKER_DEPTH;
-        const edgeAlpha = EDGE_VIGNETTE.ALPHA * flicker;
+        for (let ci = 0; ci < colorCount; ci++) {
+            ctx.strokeStyle = SCAN_LINE.COLORS[ci];
+            ctx.beginPath();
 
-        const topGradient = ctx.createLinearGradient(0, 0, 0, edgeHeight);
-        topGradient.addColorStop(0, `rgba(0, 0, 0, ${edgeAlpha})`);
-        topGradient.addColorStop(0.24, `rgba(0, 0, 0, ${edgeAlpha * 0.62})`);
-        topGradient.addColorStop(0.58, `rgba(0, 0, 0, ${edgeAlpha * 0.21})`);
-        topGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            for (let ri = 0; ri < scanLineRows.length; ri++) {
+                const row = scanLineRows[ri];
+                const lineOffset = baseOffset + row.waveOffset + scanLineColorOffsets[ci];
+                const lineY = ((row.y + lineOffset) % h + h) % h;
 
-        const bottomGradient = ctx.createLinearGradient(0, height, 0, height - edgeHeight);
-        bottomGradient.addColorStop(0, `rgba(0, 0, 0, ${edgeAlpha})`);
-        bottomGradient.addColorStop(0.24, `rgba(0, 0, 0, ${edgeAlpha * 0.62})`);
-        bottomGradient.addColorStop(0.58, `rgba(0, 0, 0, ${edgeAlpha * 0.21})`);
-        bottomGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                if (!BARREL.ENABLED) {
+                    ctx.moveTo(0, lineY);
+                    ctx.lineTo(w, lineY);
+                } else {
+                    const normalizedY = (lineY / h) * 2 - 1;
+                    const intensity = Math.pow(Math.abs(normalizedY), BARREL.POWER);
+                    const xInset = w * BARREL.EDGE_COMPRESS * intensity;
+                    const overscan = w * BARREL.OVERSCAN;
+                    const bowOffset = h * BARREL.CURVE_STRENGTH * normalizedY * intensity;
+                    const startX = -overscan - xInset;
+                    const endX = w + overscan + xInset;
+                    if (endX > startX) {
+                        ctx.moveTo(startX, lineY);
+                        ctx.quadraticCurveTo(halfW, lineY + bowOffset, endX, lineY);
+                    }
+                }
+            }
 
-        ctx.save();
-        ctx.globalCompositeOperation = 'multiply';
-        ctx.fillStyle = topGradient;
-        ctx.fillRect(0, 0, width, edgeHeight);
-        ctx.fillStyle = bottomGradient;
-        ctx.fillRect(0, height - edgeHeight, width, edgeHeight);
-        ctx.restore();
-    };
-
-    const drawScanLine = (y, color) => {
-        if (!BARREL.ENABLED) {
-            ctx.fillStyle = color;
-            ctx.fillRect(0, y, canvas.width, 1);
-            return;
+            ctx.stroke();
         }
-
-        const normalizedY = (y / canvas.height) * 2 - 1;
-        const intensity = Math.pow(Math.abs(normalizedY), BARREL.POWER);
-        const xInset = canvas.width * BARREL.EDGE_COMPRESS * intensity;
-        const overscan = canvas.width * BARREL.OVERSCAN;
-        const bowOffset = canvas.height * BARREL.CURVE_STRENGTH * normalizedY * intensity;
-        const startX = -overscan - xInset;
-        const endX = canvas.width + overscan + xInset;
-
-        if (endX <= startX) return;
-
-        ctx.strokeStyle = color;
-        ctx.beginPath();
-        ctx.moveTo(startX, y);
-        ctx.quadraticCurveTo(canvas.width / 2, y + bowOffset, endX, y);
-        ctx.stroke();
     };
-    
+
     const renderFrame = () => {
         if (!isEffectEnabled) {
             isAnimating = false;
@@ -244,23 +300,12 @@ export function initCRT() {
         ctx.fillStyle = `rgba(0, 0, 0, ${VISUAL.BACKGROUND_ALPHA})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 绘制扫描线效果
-        const baseOffset = scanOffset % SCAN_LINE.INTERVAL;
-        const colorCount = scanLineColorOffsets.length;
+        // 绘制扫描线效果（批量路径合并）
         ctx.lineWidth = SCAN_LINE.LINE_WIDTH;
         ctx.lineCap = 'butt';
-        for (let rowIndex = 0; rowIndex < scanLineRows.length; rowIndex++) {
-            const row = scanLineRows[rowIndex];
-            for (let index = 0; index < colorCount; index++) {
-                const color = SCAN_LINE.COLORS[index];
-                const lineOffset = baseOffset + row.waveOffset + scanLineColorOffsets[index];
-                const lineY = ((row.y + lineOffset) % canvas.height + canvas.height) % canvas.height;
-                drawScanLine(lineY, color);
-            }
-        }
+        drawScanLinesBatch(scanOffset % SCAN_LINE.INTERVAL);
 
-        drawVerticalEdgeVignette();
-        drawCornerDistortion();
+        compositeStaticEffects();
 
         scanOffset += SCAN_LINE.SPEED;
         animationId = requestAnimationFrame(renderFrame);
