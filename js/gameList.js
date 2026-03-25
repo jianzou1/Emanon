@@ -1,5 +1,6 @@
 // gameList.js
 import langManager from '/js/langManager.js';
+import { fetchJSON } from '/js/dataCache.js';
 
 export function gameList() {
     const GAME_CONFIG_URL = '/cfg/game_time_cfg.json';
@@ -15,8 +16,8 @@ export function gameList() {
     async function fetchGameData() {
         try {
             const [gameData, systemData] = await Promise.all([
-                fetchData(GAME_CONFIG_URL),
-                fetchData(SYSTEM_CONFIG_URL)
+                fetchJSON(GAME_CONFIG_URL),
+                fetchJSON(SYSTEM_CONFIG_URL)
             ]);
 
             const systemTypeName = getSystemValue(systemData, 'typeName');
@@ -47,17 +48,6 @@ export function gameList() {
             if (Array.isArray(gameData[1])) return gameData[1];
         }
         return [];
-    }
-
-    async function fetchData(url) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`网络错误: ${response.status}`);
-            return response.json();
-        } catch (error) {
-            console.error("数据获取失败:", error.message);
-            throw error;
-        }
     }
 
     function calculateStats(games) {

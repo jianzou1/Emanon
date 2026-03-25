@@ -1,4 +1,6 @@
 // gameRoll.js
+import { fetchJSON } from '/js/dataCache.js';
+
 export function initGameRoll() {
   const CONFIG = {
     GAME_JSON_PATH: '/cfg/game_time_cfg.json',
@@ -106,13 +108,7 @@ export function initGameRoll() {
   // 加载系统配置（typeName 和 qualityName）
   async function loadSystemConfig() {
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-      const response = await fetch(CONFIG.SYSTEM_JSON_PATH, { signal: controller.signal });
-      clearTimeout(timeoutId);
-
-      const data = await response.json();
+      const data = await fetchJSON(CONFIG.SYSTEM_JSON_PATH);
       
       // 解析系统配置
       data.forEach(item => {
@@ -154,13 +150,7 @@ export function initGameRoll() {
 
   async function loadGameData() {
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-      const response = await fetch(CONFIG.GAME_JSON_PATH, { signal: controller.signal });
-      clearTimeout(timeoutId);
-
-      const data = await response.json();
+      const data = await fetchJSON(CONFIG.GAME_JSON_PATH);
       const gameData = normalizeGameData(data);
       if (!gameData.length) throw new Error('无效的游戏数据格式');
 

@@ -3,6 +3,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
     <title data-lang-id="<%= titleId %>">‎</title>
+    <!-- 预加载关键 JSON 配置（消除 JS 执行后的瀑布流延迟） -->
+    <link rel="preload" href="/cfg/lang_cfg.json?v=3.1" as="fetch" crossorigin>
+    <!-- CDN 预连接（提前完成 DNS + TCP + TLS 握手） -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="dns-prefetch" href="https://github.elemecdn.com">
+    <link rel="dns-prefetch" href="https://cdn.bootcdn.net">
+    <link rel="dns-prefetch" href="https://cdn.staticfile.net">
+    <link rel="dns-prefetch" href="https://api.github.com">
     <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <link rel="shortcut icon" href="/favicon/favicon.ico" />

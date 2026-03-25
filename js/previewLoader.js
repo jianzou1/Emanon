@@ -1,7 +1,11 @@
 // previewLoader.js
 
+// 内存缓存：避免 pjax 切换选项卡时重复 fetch + 重建 DOM
+let cachedLinks = null;
+let boundContainer = null; // 已绑定事件的容器引用，防止重复绑定
+
 export async function loadPreviewLinks(pjax, tabHandler) {
-    const links = await fetchLinks(); // 获取包含name字段的配置数据
+    const links = cachedLinks || (cachedLinks = await fetchLinks());
 
     const linksContainer = document.getElementById('links-container');
     if (!linksContainer) {
@@ -9,19 +13,20 @@ export async function loadPreviewLinks(pjax, tabHandler) {
         return;
     }
 
-    linksContainer.innerHTML = ''; // 清空容器
+    linksContainer.innerHTML = '';
 
-    // 同步创建所有链接
+    // 批量创建 DOM（使用 DocumentFragment 减少重排）
+    const fragment = document.createDocumentFragment();
     links.forEach(link => {
-        linksContainer.appendChild(
-            createLinkDiv(link.name, { 
-                url: link.url, 
-                icon: link.icon 
-            })
-        );
+        fragment.appendChild(createLinkDiv(link.name, link.url, link.icon));
     });
+    linksContainer.appendChild(fragment);
 
-    setupLinksContainer(linksContainer, pjax, tabHandler); // 绑定事件
+    // 事件委托只绑定一次
+    if (boundContainer !== linksContainer) {
+        setupLinksContainer(linksContainer, pjax, tabHandler);
+        boundContainer = linksContainer;
+    }
 }
 
 const fetchLinks = async () => {
@@ -32,9 +37,9 @@ const fetchLinks = async () => {
         const links = await response.json();
         return links.map(({ id, url, icon, name }) => ({
             id,
-            url: `/post/${url}`,  // 构造完整URL
-            icon: `/icon/${icon}`,           // 构造图标路径
-            name: name || '未命名'           // 使用配置表标题，缺省时用"未命名"
+            url: `/post/${url}`,
+            icon: `/icon/${icon}`,
+            name: name || '未命名'
         }));
     } catch (error) {
         console.error('配置加载失败:', error);
@@ -42,21 +47,21 @@ const fetchLinks = async () => {
     }
 };
 
-const createLinkDiv = (title, { url, icon }) => {
-    const linkDiv = document.createElement('div');
-    linkDiv.className = 'link-preview';
-    linkDiv.innerHTML = `
-        <div class="link-container" data-url="${url}">
-            <span class="link-icon" style="background-image: url('${icon}')"></span>
-            <p class="link-title">${title}</p>
-        </div>
+// 合并为单层 DOM：原 link-preview > link-container 两层合并为 link-preview 一层
+const createLinkDiv = (title, url, icon) => {
+    const div = document.createElement('div');
+    div.className = 'link-preview';
+    div.dataset.url = url;
+    div.innerHTML = `
+        <span class="link-icon" style="background-image: url('${icon}')"></span>
+        <p class="link-title">${title}</p>
     `;
-    return linkDiv;
+    return div;
 };
 
 const setupLinksContainer = (linksContainer, pjax, tabHandler) => {
     linksContainer.addEventListener('click', event => {
-        const target = event.target.closest('.link-container');
+        const target = event.target.closest('.link-preview');
         if (target?.dataset.url) {
             event.preventDefault();
             pjax.loadUrl(target.dataset.url);

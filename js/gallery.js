@@ -1,4 +1,5 @@
 // gallery.js
+import { fetchJSON } from '/js/dataCache.js';
 
 const CONFIG = {
     GALLERY_CONFIG_URL: '/cfg/gallery_cfg.json',
@@ -24,8 +25,8 @@ export async function initializeGallery() {
 
     try {
         const [galleryData, systemData] = await Promise.all([
-            fetchGalleryConfig(),
-            fetchSystemConfig()
+            fetchJSON(CONFIG.GALLERY_CONFIG_URL),
+            fetchJSON(CONFIG.SYSTEM_CONFIG_URL)
         ]);
         additional = getSystemValue(systemData, 'additional');
         allImages = normalizeGalleryData(galleryData);
@@ -41,18 +42,6 @@ export async function initializeGallery() {
     } catch (error) {
         console.error('错误:', error);
         alert('加载失败: ' + error.message);
-    }
-
-    async function fetchGalleryConfig() {
-        const response = await fetch(CONFIG.GALLERY_CONFIG_URL);
-        if (!response.ok) throw new Error('网络错误，请重试');
-        return await response.json();
-    }
-
-    async function fetchSystemConfig() {
-        const response = await fetch(CONFIG.SYSTEM_CONFIG_URL);
-        if (!response.ok) throw new Error('系统配置加载失败');
-        return await response.json();
     }
 
     function getSystemValue(systemData, id) {
