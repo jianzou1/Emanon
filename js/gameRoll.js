@@ -201,8 +201,7 @@ export function initGameRoll() {
     dom.items.forEach(item => item.classList.remove('winner-spring'));
 
     if (dom.story) {
-      dom.story.textContent = '\u00A0';
-      dom.story.style.animation = '';
+      dom.story.textContent = '';
     }
 
     state.currentWinner = getWeightedRandom();
@@ -299,9 +298,19 @@ export function initGameRoll() {
       sessionStorage.setItem('gameWonNames', JSON.stringify([...state.wonNames]));
 
       if (dom.story) {
-        dom.story.style.animation = 'none';
-        void dom.story.offsetWidth;
-        dom.story.textContent = state.currentWinner?.story || '\u00A0';
+        dom.story.textContent = '';
+        const text = state.currentWinner?.story || '';
+        if (text) {
+          let i = 0;
+          const type = () => {
+            if (i < text.length) {
+              dom.story.textContent += text[i];
+              i++;
+              setTimeout(type, 50);
+            }
+          };
+          type();
+        }
       }
 
       state.isRolling = false;

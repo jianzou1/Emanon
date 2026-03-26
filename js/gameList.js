@@ -32,22 +32,12 @@ export function gameList() {
             updateHtmlContent(stats);
             sortGames('按游戏评级排序');
 
-            // 绑定排序选项（在数据加载完成、DOM 确认存在后绑定）
+            // 绑定排序选项
             document.querySelectorAll('input[name="sort-option"]').forEach((radio) => {
                 radio.addEventListener('change', (event) => {
                     sortGames(event.target.value);
                 });
             });
-
-            // 事件委托：在 .game-list 上统一处理成就展开/收起（替代内联 onclick）
-            const gameListElement = document.querySelector(GAME_LIST_HTML_CLASS);
-            if (gameListElement) {
-                gameListElement.addEventListener('click', (event) => {
-                    const li = event.target.closest('li[data-has-achievement]');
-                    if (!li) return;
-                    toggleAchievement(li);
-                });
-            }
         } catch (error) {
             console.error("读取游戏数据失败:", error.message);
         }
@@ -144,34 +134,36 @@ export function gameList() {
             });
     }
 
-    function generateQualityHtml(orderedGroups) {
-        return orderedGroups.map(({ key, games }) => {
-            const quality = qualityNames.find(q => q.key === key);
-            const title = quality ? quality.value : `未定义评级（${key}）`;
-            return `<h3>${title}</h3>${games.map(createGameListItem).join('')}`;
-        }).join('');
+    // ── Tree-view HTML 生成 ──
+
+    function wrapTreeView(innerHtml) {
+        return `<ul class="tree-view">${innerHtml}</ul>`;
     }
 
-    function groupAndSortGamesByType() {
-        const groupedGames = groupGames(games);
-        Object.keys(groupedGames).forEach(type => {
-            Object.keys(groupedGames[type]).forEach(seriesTag => {
-                groupedGames[type][seriesTag].sort((a, b) => b.time - a.time);
-            });
-        });
-        Object.keys(groupedGames).forEach(type => {
-            const seriesTags = Object.keys(groupedGames[type]);
-            seriesTags.sort((a, b) => {
-                const maxTimeA = Math.max(...groupedGames[type][a].map(game => game.time));
-                const maxTimeB = Math.max(...groupedGames[type][b].map(game => game.time));
-                return maxTimeB - maxTimeA;
-            });
-            groupedGames[type] = seriesTags.reduce((acc, seriesTag) => {
-                acc[seriesTag] = groupedGames[type][seriesTag];
-                return acc;
-            }, {});
-        });
-        return groupedGames;
+    function generateQualityHtml(orderedGroups) {
+        const items = orderedGroups.map(({ key, games }) => {
+            const quality = qualityNames.find(q => q.key === key);
+            const title = escHtml(quality ? quality.value : `未定义评级（${key}）`);
+            const children = games.map(createGameListItem).join('');
+            return `<li><details open><summary>${title}</summary><ul>${children}</ul></details></li>`;
+        }).join('');
+        return wrapTreeView(items);
+    }
+
+    function generateHtmlContent(groupedGames, typeNames = {}) {
+        const items = Object.entries(groupedGames).map(([type, series]) => {
+            const typeName = escHtml(typeNames[type] || type);
+            const children = Object.entries(series).map(([seriesTag, gamesInSeries]) =>
+                gamesInSeries.map(createGameListItem).join('')
+            ).join('');
+            return `<li><details open><summary>${typeName}</summary><ul>${children}</ul></details></li>`;
+        }).join('');
+        return wrapTreeView(items);
+    }
+
+    function generateFlatHtml(sortedGames) {
+        if (!Array.isArray(sortedGames) || !sortedGames.length) return '';
+        return wrapTreeView(sortedGames.map(createGameListItem).join(''));
     }
 
     function updateHtmlContentDetails(sortedGames, selectedOption) {
@@ -182,13 +174,13 @@ export function gameList() {
         } else if (selectedOption === '按游戏类型排序') {
             html = generateHtmlContent(sortedGames, typeNames);
         } else {
-            html = Array.isArray(sortedGames)
-                ? sortedGames.map(createGameListItem).join('')
-                : '';
+            html = generateFlatHtml(sortedGames);
         }
         gameListElement.innerHTML = html || '';
-        gameListElement.querySelectorAll('li').forEach((item, index) => {
-            setTimeout(() => item.classList.add('flip-in'), index * 12);
+        // 逐行淡入动画：只对直接游戏条目生效
+        const items = gameListElement.querySelectorAll('.tree-view > li');
+        items.forEach((item, index) => {
+            setTimeout(() => item.classList.add('tree-fade-in'), index * 20);
         });
     }
 
@@ -213,51 +205,44 @@ export function gameList() {
         }, {});
     }
 
-    function generateHtmlContent(groupedGames, typeNames = {}) {
-        return Object.entries(groupedGames).map(([type, series], index, types) => {
-            const seriesContent = Object.entries(series).map(([seriesTag, gamesInSeries]) =>
-                gamesInSeries.map(createGameListItem).join('')
-            ).join('');
-            return `<h3>${typeNames[type] || ''}</h3>${seriesContent}${index < types.length - 1 ? '<hr>' : ''}`;
-        }).join('');
+    function groupAndSortGamesByType() {
+        const groupedGames = groupGames(games);
+        Object.keys(groupedGames).forEach(type => {
+            Object.keys(groupedGames[type]).forEach(seriesTag => {
+                groupedGames[type][seriesTag].sort((a, b) => b.time - a.time);
+            });
+        });
+        Object.keys(groupedGames).forEach(type => {
+            const seriesTags = Object.keys(groupedGames[type]);
+            seriesTags.sort((a, b) => {
+                const maxTimeA = Math.max(...groupedGames[type][a].map(game => game.time));
+                const maxTimeB = Math.max(...groupedGames[type][b].map(game => game.time));
+                return maxTimeB - maxTimeA;
+            });
+            groupedGames[type] = seriesTags.reduce((acc, seriesTag) => {
+                acc[seriesTag] = groupedGames[type][seriesTag];
+                return acc;
+            }, {});
+        });
+        return groupedGames;
     }
 
     function createGameListItem(game) {
-        const heart = game.isLoved ? '💜' : '';
+        const heart = game.isLoved ? '<span class="game-loved">★</span>' : '';
         const sign = escHtml(game.sign || '');
-        const trophy = game.spacialAchievements ? '🏆' : '';
         const achievementText = game.spacialAchievements ? escHtml(game.spacialAchievements).replace(/\n/g, '<br>') : '';
         const escapedName = escHtml(game.name);
         const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${escapedName}</i>` : escapedName;
         const qualityClass = `quality-${game.quality || 1}`;
 
-        return `
-            <li class="${qualityClass}" ${achievementText ? 'data-has-achievement' : ''}>
-                <span>
-                    <strong>${gameName}</strong> ${heart} ${trophy}
-                </span>
-                <span>${sign} ${game.time}小时 <span class="toggle-icon">${achievementText ? '🙈' : ''}</span></span>
-                <div class="achievement" style="display: none;">${achievementText}</div>
-            </li>
-        `;
-    }
+        // 严格遵循 98.css tree-view 标准结构
+        const timeHtml = `<span class="game-time">${sign} ${game.time}h</span>`;
+        const nameHtml = `<strong>${gameName}</strong> ${heart}`;
 
-    function toggleAchievement(li) {
-        const achievementDiv = li.querySelector('.achievement');
-        const toggleIcon = li.querySelector('.toggle-icon');
-
-        if (!achievementDiv) return;
-
-        const nextElement = li.nextElementSibling;
-        if (nextElement && nextElement.classList.contains('achievement-info')) {
-            nextElement.remove();
-            toggleIcon.innerHTML = achievementDiv.innerHTML ? '🙈' : '';
-        } else {
-            const achievementInfoDiv = document.createElement('div');
-            achievementInfoDiv.className = 'achievement-info';
-            achievementInfoDiv.innerHTML = achievementDiv.innerHTML;
-            li.parentNode.insertBefore(achievementInfoDiv, nextElement);
-            toggleIcon.innerHTML = '👀';
+        if (achievementText) {
+            return `<li class="${qualityClass}"><details><summary>${nameHtml} ${timeHtml}</summary><ul><li><div class="achievement-info">${achievementText}</div></li></ul></details></li>`;
         }
+
+        return `<li class="${qualityClass}">${nameHtml} ${timeHtml}</li>`;
     }
 }

@@ -1,36 +1,66 @@
-.game-list ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-/* 特异性 0-2-1 覆盖全局 .window li (0-1-1) */
-.window .game-list li {
-  opacity: 0;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 4px;
-  margin-top: 0;
-  padding: 3px 6px;
-  border-radius: 0;
-  text-indent: 0;
-  font-family: var(--font-ui);
-  font-size: 12px;
-  line-height: 1.6;
-  border: none;
-  border-bottom: 1px solid var(--color-win-gray);
-}
-
-.window .game-list li:hover {
-  background-color: rgba(0, 0, 128, 0.06);
-}
-
-li[data-has-achievement] {
-  cursor: pointer;
-}
+/* ── 游戏列表：98.css tree-view ── */
 
 .game-list {
   padding: 0 8px;
 }
+
+ul.tree-view .game-list .tree-view li,
+.game-list ul.tree-view li {
+  line-height: 12px !important;
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  text-decoration: none;
+}
+
+.game-list .tree-view details {
+  margin: 0;
+  padding: 0;
+}
+
+.game-list .tree-view details > summary {
+  line-height: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.game-list .tree-view details[open] > summary {
+  margin-bottom: 0;
+}
+
+.window .game-list li {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 0;
+  font-family: var(--font-ui);
+  font-size: 11px;
+}
+
+/* 只有顶层条目初始隐藏，由 JS tree-fade-in 动画显示 */
+.game-list .tree-view > li {
+  opacity: 0;
+}
+
+/* 时长靠右 */
+.game-time {
+  float: right;
+  color: var(--color-text-secondary);
+  margin-left: 12px;
+}
+
+/* 喜爱标记 ★ */
+.game-loved {
+  color: #d4a017;
+  margin-left: 2px;
+}
+
+/* ── 品质色：文字颜色 ── */
+.quality-1 { color: #6b7194; }
+.quality-2 { color: #1c5fe2; }
+.quality-3 { color: #7b3be0; }
+.quality-4 { color: #b8860b; }
+.quality-5 { color: #c93da0; }
+.quality-6 { color: #4a7ec8; }
+.quality-7 { color: #0ea832; }
 
 /* ── 说明区域 ── */
 .explain-content {
@@ -62,24 +92,27 @@ li[data-has-achievement] {
   }
 }
 
-/* ── 成就展开信息：Win98 凹陷文本区 ── */
+/* ── 成就展开信息 ── */
 .achievement-info {
-  font-size: 12px;
-  font-family: var(--font-body);
-  background-color: var(--color-white);
-  padding: 8px 10px;
-  margin-bottom: 4px;
-  /* Win98 凹陷：左上暗、右下亮 */
-  border: 1px solid;
-  border-color: #808080 #fff #fff #808080;
-  box-shadow: inset 1px 1px 0 #404040,
-              inset -1px -1px 0 #dfdfdf;
+  font-size: 11px;
+  font-family: var(--font-ui);
+  padding: 4px 6px;
+  margin: 2px 0;
+  color: var(--color-text-dark);
+  line-height: 1.6;
 }
 
-.flip-in {
-  animation: flipIn 0.2s forwards;
+/* ── tree-view 逐行淡入动效 ── */
+.tree-fade-in {
+  animation: treeFadeIn 0.15s ease forwards;
 }
 
+@keyframes treeFadeIn {
+  from { opacity: 0; transform: translateX(-4px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── 老虎机动效 ── */
 @keyframes winnerSpring {
   0%   { transform: scale(1); }
   25%  { transform: scale(1.28); }
@@ -94,24 +127,6 @@ li[data-has-achievement] {
   animation: winnerSpring 0.25s ease-out forwards;
 }
 
-@keyframes flipIn {
-  0% {
-    transform: translate(200%, -500%) scale(4);
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.quality-1 { background: linear-gradient(to right, rgba(168, 173, 192, 0.75), rgba(199, 220, 228, 0.4)); }
-.quality-2 { background: linear-gradient(to right, rgba(44, 96, 226, 0.75), rgba(29, 143, 255, 0.4)); }
-.quality-3 { background: linear-gradient(to right, rgba(139, 67, 232, 0.75), rgba(108, 59, 248, 0.4)); }
-.quality-4 { background: linear-gradient(to right, rgba(215, 158, 22, 0.75), rgba(242, 206, 40, 0.4)); }
-.quality-5 { background: linear-gradient(to right, rgba(233, 92, 176, 0.75), rgba(231, 107, 158, 0.4)); }
-.quality-6 { background: linear-gradient(to right, rgba(166, 203, 254, 0.75), rgba(167, 232, 254, 0.4)); }
-.quality-7 { background: linear-gradient(to right, rgba(26, 247, 90, 0.75), rgba(29, 23, 22, 0.4)); }
-
 /* ── 老虎机：Win98 凹陷输入框风格 ── */
 #gameResult {
   position: relative;
@@ -122,7 +137,6 @@ li[data-has-achievement] {
   align-items: center;
   width: 100%;
   background-color: var(--color-white);
-  /* Win98 凹陷边框（与进度条一致） */
   border: 1px solid;
   border-color: #808080 #fff #fff #808080;
   box-shadow: inset 1px 1px 0 #404040,
@@ -133,7 +147,6 @@ li[data-has-achievement] {
   width: 100%;
   height: 100%;
   position: relative;
-  /* JS 通过 style.top 控制滚动，必须禁用 CSS 过渡 */
   transition: none;
   will-change: transform;
 }
