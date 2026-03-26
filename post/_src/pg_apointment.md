@@ -1,3 +1,8 @@
+---
+title: 预约
+hidden: true
+---
+
 ## 预约
 
 #### <b style="background-color:#BB2649;color:white;">感谢您喜欢我的写真，并有意向与我预约，我的每一部写真是独一无二的 ；</b>

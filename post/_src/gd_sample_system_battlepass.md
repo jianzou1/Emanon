@@ -1,4 +1,9 @@
-## 战令通行证功能
+---
+title: 战令通行证功能
+icon: application-x-gamecube-rom.png
+order: 7
+hidden: false
+---
 
 ## 1. 设计目的
 

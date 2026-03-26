@@ -1,4 +1,9 @@
-## 角色设计：无聊猿
+---
+title: 角色设计：无聊猿
+icon: application-x-genesis-rom.png
+order: 3
+hidden: false
+---
 
 ## 一、设计目的
 

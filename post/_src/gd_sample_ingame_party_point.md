@@ -1,4 +1,9 @@
-## 局内派对点奖励规则
+---
+title: 局内派对点奖励规则
+icon: application-x-gamecube-rom.png
+order: 6
+hidden: false
+---
 
 ## 一、设计目的
 

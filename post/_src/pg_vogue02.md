@@ -1,3 +1,8 @@
+---
+title: Vogue收录02
+hidden: true
+---
+
 ## Vogue收录02
 
 model: [cry](https://weibo.com/876154319)

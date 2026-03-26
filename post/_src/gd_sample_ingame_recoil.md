@@ -1,4 +1,9 @@
-## 枪械后坐力规则
+---
+title: 枪械后坐力规则
+icon: application-x-nes-rom.png
+order: 5
+hidden: false
+---
 
 ## 一、设计目的
 
