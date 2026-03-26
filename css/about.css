@@ -25,13 +25,33 @@ table td {
   vertical-align: middle;
 }
 
-.computer-fail-icon {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+/* ── 关于页底部快捷图标（Win98 桌面风格） ── */
+.about-shortcuts {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 8px 4px 4px;
+}
+
+.computer-fail-icon,
+.password {
   width: 48px;
   height: 48px;
-  background-image: url('/icon/computer-fail.png');
   background-size: cover;
   cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.computer-fail-icon:hover,
+.password:hover {
+  opacity: 1;
+}
+
+.computer-fail-icon {
+  background-image: url('/icon/computer-fail.png');
+}
+
+.password {
+  background-image: url('/icon/keys-5.png');
 }

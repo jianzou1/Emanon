@@ -109,8 +109,16 @@ function processMarkdownFile(mdPath) {
   const htmlBody = marked.parse(contentMd);
 
   const template = fs.readFileSync(TEMPLATE_FILE, 'utf8');
+
+  // 文章发布日期：优先 frontmatter date 字段，否则取 md 文件修改时间
+  const articleDate = meta.date
+    ? String(meta.date)
+    : fs.statSync(mdPath).mtime.toISOString().slice(0, 10);
+  const dateMeta = `<meta name="article:published_time" content="${articleDate}">`;
+
   const finalHtml = template
     .replace(/<!--\s*TITLE\s*-->/g, title)
+    .replace(/<!--\s*DATE\s*-->/g, dateMeta)
     .replace(/<!--\s*CONTENT\s*-->/g, htmlBody);
 
   const fileName = path.basename(mdPath, '.md');

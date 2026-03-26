@@ -3,6 +3,7 @@ title: 复杂游戏系统设计与"涌现"理论
 icon: text-markdown.png
 order: 2
 hidden: false
+date: 2025-04-23
 ---
 
 ## 什么是系统？

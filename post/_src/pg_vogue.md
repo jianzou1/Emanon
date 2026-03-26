@@ -1,6 +1,7 @@
 ---
 title: Vogue收录
 hidden: true
+date: 2025-04-23
 ---
 
 ## Vogue收录

@@ -78,9 +78,25 @@
 
     #home {
       cursor: pointer;
-      text-decoration: underline; /* 增加可点击效果 */
+      text-decoration: underline;
+    }
+
+    .crt-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 5000;
+      pointer-events: none;
+      will-change: contents;
+      contain: strict;
     }
   </style>
+  <script type="module">
+    import { initCRT } from '/js/crtEffect.js';
+    initCRT();
+  </script>
 </head>
 
 <body>
@@ -113,6 +129,7 @@
       }
     });
   </script>
+  <canvas class="crt-effect"></canvas>
 </body>
 
 </html>

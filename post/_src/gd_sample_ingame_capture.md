@@ -3,6 +3,7 @@ title: 占领模式战场规则
 icon: application-x-nes-rom.png
 order: 4
 hidden: false
+date: 2025-04-23
 ---
 
 ## 一、设计目的

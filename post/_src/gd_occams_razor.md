@@ -3,6 +3,7 @@ title: 如无必要，勿增实体
 icon: text-markdown.png
 order: 1
 hidden: false
+date: 2025-04-23
 ---
 
 很多设计问题，最后都会回到一个很朴素的原则：

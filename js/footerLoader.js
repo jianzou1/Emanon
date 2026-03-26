@@ -1,35 +1,68 @@
 // footerLoader.js
 import langManager from '/js/langManager.js'; 
 export function footerLoader() {
-    const footerContainer = document.querySelector('.dynamic-footer');
+    // 优先插入到 .window 内部底部（紧跟 .window-body 之后）
+    // 回退到 .dynamic-footer（兼容无 .window 的页面）
+    const windowEl = document.querySelector('#main .window[role="tabpanel"]')
+                  || document.querySelector('#main .window');
+    const fallbackContainer = document.querySelector('.dynamic-footer');
 
-    if (!footerContainer) {
-        console.error(langManager.translate('errors.element_not_found', 'dynamic-footer'));
-        return;
-    }
+    // 清理旧的页脚（防止 PJAX 切换后重复）
+    document.querySelectorAll('.window-footer').forEach(el => el.remove());
+    if (fallbackContainer) fallbackContainer.innerHTML = '';
 
     // 检查路径是否包含'post'
     const isPostPage = window.location.href.includes('post');
 
-    // 页脚模板（根据条件决定是否包含last-updated元素）
+    // 页脚模板
+    // post 页面：读取 <meta name="article:published_time"> 显示发布日期（多语言）
+    let postDateField = '';
+    if (isPostPage) {
+        const dateMeta = document.querySelector('meta[name="article:published_time"]');
+        const dateStr = dateMeta ? dateMeta.getAttribute('content') : '';
+        if (dateStr) {
+            postDateField = `<p class="status-bar-field" id="post-publish-date" data-lang-id="post_publish_date"></p>`;
+        }
+    }
+
     const footerContent = `
-      <div class="status-bar">
+      <div class="status-bar window-footer">
         <p class="status-bar-field" data-lang-id="footer_name"></p>
-        ${!isPostPage ? '<p class="status-bar-field" id="last-updated" data-lang-id="footer_update_time"></p>' : ''}
+        ${isPostPage ? postDateField : '<p class="status-bar-field" id="last-updated" data-lang-id="footer_update_time"></p>'}
         ${!isPostPage ? '<p class="status-bar-field footer-password-link"><a href="/page/about.html" data-lang-id="about_title"></a></p>' : ''}
       </div>
     `;
-    
-    footerContainer.innerHTML = footerContent;
 
-    // 如果不是post页面，则处理更新时间
-    if (!isPostPage) {
-        const lastUpdatedElement = footerContainer.querySelector('#last-updated');
+    if (windowEl) {
+        // 插入到 .window 的末尾（.window-body 之后）
+        windowEl.insertAdjacentHTML('beforeend', footerContent);
+    } else if (fallbackContainer) {
+        fallbackContainer.innerHTML = footerContent;
+    } else {
+        console.error(langManager.translate('errors.element_not_found', 'dynamic-footer'));
+        return;
+    }
+
+    // 查找刚插入的元素并注入多语言参数
+    if (isPostPage) {
+        const publishDateEl = document.getElementById('post-publish-date');
+        if (publishDateEl) {
+            const dateMeta = document.querySelector('meta[name="article:published_time"]');
+            const dateStr = dateMeta ? dateMeta.getAttribute('content').replace(/-/g, '/') : '';
+            const applyDate = () => langManager.applyParameters(publishDateEl, 'post_publish_date', dateStr);
+            if (langManager.isInitialized) {
+                applyDate();
+            } else {
+                langManager.init().then(applyDate);
+            }
+        }
+    } else {
+        const lastUpdatedElement = document.getElementById('last-updated');
+        if (!lastUpdatedElement) return;
 
         const handleParameters = async () => {
             try {
                 const lastUpdated = await getLastUpdatedDateFromGitHub();
-                // 使用新的参数传递方式
                 langManager.applyParameters(
                     lastUpdatedElement,
                     'footer_update_time',
@@ -45,7 +78,6 @@ export function footerLoader() {
             }
         };
 
-        // 初始化语言管理器
         if (!langManager.isInitialized) {
             langManager.init().then(handleParameters);
         } else {

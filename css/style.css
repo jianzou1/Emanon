@@ -93,15 +93,20 @@ menu[role=tablist] > li {
 
 .status-bar {
   background-color: var(--color-win-gray);
-  margin: 5px 0 2%;
   padding: 2px;
 }
 
 .status-bar p {
   font-family: var(--font-ui);
   font-size: 12px;
-  padding: 2px;
+  padding: 2px 4px;
   white-space: pre-wrap;
+  text-align: left;
+}
+
+/* 页脚融入 .window 底部 */
+.window-footer {
+  margin: 4px 0 0;
 }
 
 p, .window li, h1, h2, h3, h4, h5 {

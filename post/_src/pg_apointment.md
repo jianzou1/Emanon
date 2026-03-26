@@ -1,6 +1,7 @@
 ---
 title: 预约
 hidden: true
+date: 2025-04-23
 ---
 
 ## 预约

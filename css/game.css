@@ -3,34 +3,47 @@
   padding: 0;
 }
 
-/* 特异性 0-2-1 覆盖全局 .window li (0-1-1)，避免 !important */
+/* 特异性 0-2-1 覆盖全局 .window li (0-1-1) */
 .window .game-list li {
   opacity: 0;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
-  margin-top: 2px;
-  padding: 4px;
-  border-radius: 5px;
-  text-indent: 5px;
+  margin-bottom: 4px;
+  margin-top: 0;
+  padding: 3px 6px;
+  border-radius: 0;
+  text-indent: 0;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.6;
+  border: none;
+  border-bottom: 1px solid var(--color-win-gray);
+}
+
+.window .game-list li:hover {
+  background-color: rgba(0, 0, 128, 0.06);
+}
+
+li[data-has-achievement] {
+  cursor: pointer;
 }
 
 .game-list {
-  padding: 0 15px;
+  padding: 0 8px;
 }
 
+/* ── 说明区域 ── */
 .explain-content {
-  line-height: 15px;
-  font-weight: bold;
-  margin-top: 20px;
-  color: var(--color-text-dark);
-  background-color: rgba(0, 0, 0, 0.15);
-  padding: 10px;
-  border-radius: 5px;
-  position: relative;
-  margin-bottom: 15px;
+  display: flex;
   flex-direction: column;
   align-items: center;
+  line-height: 15px;
+  font-weight: bold;
+  margin-top: 16px;
+  color: var(--color-text-dark);
+  padding: 10px;
+  position: relative;
+  margin-bottom: 12px;
 }
 
 .select-container {
@@ -41,16 +54,18 @@
   z-index: var(--z-base);
 }
 
+/* ── 成就展开信息：Win98 凹陷文本区 ── */
 .achievement-info {
   font-size: 12px;
   font-family: var(--font-body);
-  background-color: rgba(0, 0, 0, 0.15);
-  padding: 10px;
-  border-radius: 5px;
-}
-
-li[data-has-achievement] {
-  cursor: pointer;
+  background-color: var(--color-white);
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  /* Win98 凹陷：左上暗、右下亮 */
+  border: 1px solid;
+  border-color: #808080 #fff #fff #808080;
+  box-shadow: inset 1px 1px 0 #404040,
+              inset -1px -1px 0 #dfdfdf;
 }
 
 .flip-in {
@@ -89,16 +104,21 @@ li[data-has-achievement] {
 .quality-6 { background: linear-gradient(to right, rgba(166, 203, 254, 0.75), rgba(167, 232, 254, 0.4)); }
 .quality-7 { background: linear-gradient(to right, rgba(26, 247, 90, 0.75), rgba(29, 23, 22, 0.4)); }
 
+/* ── 老虎机：Win98 凹陷输入框风格 ── */
 #gameResult {
   position: relative;
   height: 30px;
   overflow: hidden;
-  box-shadow: inset 2px 2px 2px 1px rgb(0, 0, 0);
-  border-radius: 8px;
   margin-top: 15px;
   transition: all 0.3s ease;
   align-items: center;
   width: 100%;
+  background-color: var(--color-white);
+  /* Win98 凹陷边框（与进度条一致） */
+  border: 1px solid;
+  border-color: #808080 #fff #fff #808080;
+  box-shadow: inset 1px 1px 0 #404040,
+              inset -1px -1px 0 #dfdfdf;
 }
 
 .scroll-container {
@@ -116,8 +136,9 @@ li[data-has-achievement] {
 }
 
 .scroll-item {
-  font-size: 16px;
-  border-bottom: 1px solid #585858;
+  font-size: 14px;
+  font-family: var(--font-ui);
+  border-bottom: 1px solid var(--color-win-gray);
   display: flex;
   align-items: center;
   justify-content: center;
