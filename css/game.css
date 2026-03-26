@@ -54,6 +54,14 @@ li[data-has-achievement] {
   z-index: var(--z-base);
 }
 
+@media (max-width: 768px) {
+  .select-container {
+    position: static;
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+
 /* ── 成就展开信息：Win98 凹陷文本区 ── */
 .achievement-info {
   font-size: 12px;
