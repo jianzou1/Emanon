@@ -1,5 +1,5 @@
 [build]
-  command   = "npm run pack"
+  command   = "npm run post && npm run pack"
   publish   = "."
   functions = "netlify/functions"
 
