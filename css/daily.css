@@ -1,51 +1,62 @@
-    /* 半透明黑色背景 */
-    .overlay {
-        position: fixed;
-        inset: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 299;
-      }
-  
-      /* 弹窗样式 */
-      #welcome-popup {
-        height: auto;
-        display: inline-block;
-        padding: 3px;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 300;
-        width: 450px;
-        max-height: 80vh;
-        /* 设置最大高度 */
-        overflow-y: auto;
-        /* 内容溢出时出现滚动条 */
-        user-select: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-  
-      #welcome-popup p {
-        line-height: 1;
-        font-size: 12px;
-        text-align: left;
-        margin-bottom: -1%;
-      }
-  
-      /* 关闭按钮居中 */
-      #close-popup {
-        display: block;
-        margin: 10px auto 3px;
-      }
-  
-      .version-date {
-        background: linear-gradient(to bottom, #0b8525, #076607);
-        line-height: 1.8;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-  
-      #lang-switcher {
-        margin-top: 15px;
-        margin-bottom: 15px;
-      }
+/* 半透明遮罩 */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: var(--z-overlay);
+}
+
+/* 弹窗公共样式（daily + password 共用） */
+#welcome-popup,
+#password-error-popup {
+  height: auto;
+  display: inline-block;
+  padding: 3px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-popup);
+  max-height: 80vh;
+  overflow-y: auto;
+  user-select: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#welcome-popup p,
+#password-error-popup p {
+  line-height: 1;
+  font-size: 12px;
+  text-align: left;
+  margin-bottom: -1%;
+}
+
+#close-popup,
+#password-error-close {
+  display: block;
+  margin: 10px auto 3px;
+}
+
+/* 每日弹窗独有宽度 */
+#welcome-popup {
+  width: 450px;
+}
+
+.version-date {
+  background: linear-gradient(to bottom, #0b8525, #076607);
+  line-height: 1.8;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#lang-switcher {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  #welcome-popup,
+  #password-error-popup {
+    max-width: calc(100vw - 32px);
+  }
+}

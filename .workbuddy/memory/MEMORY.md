@@ -17,6 +17,13 @@
 - 用户对 CRT 闪烁效果敏感，之前的降频更新（每 N 帧更新）导致闪烁变强烈被否决
 - 构建验证时注意：产物被 terser 混淆，不能用原始变量名搜索
 
+## CSS 设计令牌（2026-03-27 新增）
+- `:root` 变量定义在 `css/style.css` 顶部
+- 字体：`--font-ui`（Pixelated MS Sans Serif）、`--font-body`（Microsoft Yahei）、`--font-mono`（Courier New）
+- 颜色：`--color-win-blue`(#000080)、`--color-win-gray`(#c0c0c0)、`--color-bg`(#EBECE8)、`--color-text-*`系列、`--color-border*`系列、`--color-error`(#cc0000)
+- z-index 分层：`--z-base`(1) → `--z-back-to-top`(99) → `--z-modal`(100) → `--z-overlay`(299) → `--z-popup`(300) → `--z-crt`(5000) → `--z-tooltip`(9000) → `--z-toast`(9999)
+- 弹窗公共样式在 `daily.css` 中通过 `#welcome-popup, #password-error-popup` 选择器组合定义
+
 ## 公共工具模块
 - `js/utils.js` — 导出 `escHtml` / `escAttr`，供 messageBoard.js 和 gameList.js 共用
 - `js/messageBoardMock.js` — 留言板 Mock 数据，通过 dynamic import 分离为独立 chunk，生产环境按需加载不进主 bundle
