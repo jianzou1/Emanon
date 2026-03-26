@@ -65,7 +65,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: jsonHeaders,
-      body: JSON.stringify(result),
+      body: JSON.stringify({ items: result, total: sorted.length }),
     };
   } catch (err) {
     console.error('get-messages error:', err);

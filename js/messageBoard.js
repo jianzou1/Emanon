@@ -18,15 +18,16 @@ const USE_MOCK_MESSAGES = (() => {
 
 let currentPage = 1;
 let isLoading = false;
-let hasMore = true;
-let allEntries = [];
+let totalEntries = 0;
+let totalPages = 1;
+let currentEntries = [];
 let activeReplyMessageId = null;
 let activeReplyFormEl = null;
 let activeReplyBtn = null;
 // 评论互回：当前回复目标的昵称（点击评论的"回复"按钮时设置）
 let activeReplyToNickname = '';
 
-const MOCK_BASE_TIME = new Date('2026-03-16T14:00:00+08:00').getTime();
+const MOCK_BASE_TIME = Date.now();
 const MOCK_NICKNAMES = ['Shelton', 'Cry', 'Mika', 'Sora', 'Aki', 'Neko', 'Pixel', 'Rin'];
 const MOCK_MESSAGES = [
   '这个站的复古风格太戳我了。',
@@ -54,12 +55,13 @@ const MOCK_LOCATIONS = ['上海 · 中国', '东京 · 日本', '首尔 · 韩�
 export function initializeMessageBoard() {
   currentPage = 1;
   isLoading = false;
-  hasMore = true;
-  allEntries = [];
+  totalEntries = 0;
+  totalPages = 1;
+  currentEntries = [];
   activeReplyToNickname = '';
   closeReplyComposer();
   bindFormEvents();
-  loadMessages(true);
+  loadMessages(1);
 }
 
 // ── 表单事件绑定 ────────────────────────────────────────────
@@ -114,13 +116,8 @@ function bindFormEvents() {
     messageIdInput.value = '';
     if (charCount) charCount.textContent = '0';
     showToast(langManager.translate('msg_success_title') || '留言已提交！');
-    await loadMessages(true);
+    await loadMessages(1);
   });
-
-  // 加载更多
-  if (loadMoreBtn) {
-    loadMoreBtn.addEventListener('click', () => loadMessages(false));
-  }
 }
 
 // ── 留言提交 ────────────────────────────────────────────────
@@ -180,45 +177,32 @@ async function submitReplyToNetlify(form, submitBtn) {
 
 // ── 留言列表加载 ─────────────────────────────────────────────
 
-async function loadMessages(reset = false) {
+async function loadMessages(page = 1) {
   if (isLoading) return;
 
-  if (reset) {
-    currentPage = 1;
-    hasMore = true;
-    allEntries = [];
-    closeReplyComposer();
-    clearMessageList();
-  }
-
-  if (!hasMore) return;
-
   isLoading = true;
+  currentPage = page;
+  currentEntries = [];
+  closeReplyComposer();
+  clearMessageList();
   showLoading(true);
   hideEmpty();
   hideError();
 
   try {
-    const items = USE_MOCK_MESSAGES
+    const result = USE_MOCK_MESSAGES
       ? getMockPageData(currentPage)
       : await fetchMessagePage(currentPage);
 
-    if (!Array.isArray(items) || items.length === 0) {
-      hasMore = false;
-      renderMessageList();
-      updatePagination();
-      return;
-    }
+    currentEntries = Array.isArray(result.items) ? result.items : [];
+    totalEntries = result.total || 0;
+    totalPages = Math.max(1, Math.ceil(totalEntries / PAGE_SIZE));
 
-    allEntries.push(...items);
     renderMessageList();
-
-    hasMore = items.length === PAGE_SIZE;
-    currentPage++;
     updatePagination();
   } catch (err) {
     console.error('加载留言失败:', err);
-    if (currentPage === 1) showError();
+    showError();
   } finally {
     isLoading = false;
     showLoading(false);
@@ -234,13 +218,13 @@ async function fetchMessagePage(page) {
 function getMockPageData(page) {
   const totalMessages = 48;
   const start = (page - 1) * PAGE_SIZE;
-  if (start >= totalMessages) return [];
+  if (start >= totalMessages) return { items: [], total: totalMessages };
 
   const end = Math.min(start + PAGE_SIZE, totalMessages);
   const items = [];
 
   for (let i = start; i < end; i++) {
-    const messageTs = MOCK_BASE_TIME - i * 36 * 60 * 1000;
+    const messageTs = MOCK_BASE_TIME - i * 240 * 60 * 1000;
     const messageId = String(messageTs);
     const msgNickname = MOCK_NICKNAMES[i % MOCK_NICKNAMES.length];
 
@@ -327,7 +311,8 @@ function getMockPageData(page) {
   }
 
   // 模拟接口返回：按时间降序
-  return items.sort((a, b) => parseTime(b.created_at) - parseTime(a.created_at));
+  const sorted = items.sort((a, b) => parseTime(b.created_at) - parseTime(a.created_at));
+  return { items: sorted, total: totalMessages };
 }
 
 // ── 渲染单条留言 ────────────────────────────────────────────
@@ -341,7 +326,7 @@ function renderMessageList() {
   const messages = [];
   const repliesMap = new Map();
 
-  allEntries.forEach(raw => {
+  currentEntries.forEach(raw => {
     const item = normalizeEntry(raw);
 
     if (item.replyTo) {
@@ -596,7 +581,7 @@ function buildReplyComposer(messageId, replyToNickname = '') {
       localStorage.setItem(NICKNAME_STORAGE_KEY, nickname);
       showToast(translateWithFallback('msg_reply_success', '评论已发送！'));
       closeReplyComposer();
-      await loadMessages(true);
+      await loadMessages(1);
     });
   }
 
@@ -642,7 +627,51 @@ function hideError() {
 
 function updatePagination() {
   const pag = document.getElementById('msg-pagination');
-  if (pag) pag.style.display = hasMore ? 'block' : 'none';
+  if (!pag) return;
+
+  if (totalPages <= 1) {
+    pag.style.display = 'none';
+    return;
+  }
+
+  pag.style.display = 'flex';
+  pag.innerHTML = '';
+
+  const prevText = translateWithFallback('previous_page', '上一页');
+  const nextText = translateWithFallback('next_page', '下一页');
+
+  // 上一页按钮（首页不显示）
+  if (currentPage > 1) {
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'msg-page-btn msg-page-prev';
+    prevBtn.textContent = prevText;
+    prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
+    pag.appendChild(prevBtn);
+  }
+
+  // 页码指示器：当前页/总页数
+  const indicator = document.createElement('span');
+  indicator.className = 'msg-page-indicator';
+  indicator.textContent = `${currentPage}/${totalPages}`;
+  pag.appendChild(indicator);
+
+  // 下一页按钮（尾页不显示）
+  if (currentPage < totalPages) {
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'msg-page-btn msg-page-next';
+    nextBtn.textContent = nextText;
+    nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+    pag.appendChild(nextBtn);
+  }
+}
+
+async function goToPage(page) {
+  await loadMessages(page);
+  // 滚动到导航栏位置，刚好能看到 tab 栏 + 第一条留言
+  const tabBar = document.querySelector('menu[role="tablist"]');
+  if (tabBar) {
+    tabBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 function showToast(text) {
@@ -663,6 +692,24 @@ function formatTime(isoString) {
   if (!isoString) return '';
   try {
     const d = new Date(isoString);
+    if (Number.isNaN(d.getTime())) return isoString;
+
+    const now = Date.now();
+    const diffMs = now - d.getTime();
+
+    // 未来时间或刚刚发布，显示"1分钟前"
+    if (diffMs < 60 * 1000) return langManager.translate('msg_time_minutes_ago', 1);
+
+    const diffMin = Math.floor(diffMs / (60 * 1000));
+    const diffHour = Math.floor(diffMs / (3600 * 1000));
+
+    // 小于1小时：N分钟前
+    if (diffMin < 60) return langManager.translate('msg_time_minutes_ago', diffMin);
+
+    // 小于1天：N小时前
+    if (diffHour < 24) return langManager.translate('msg_time_hours_ago', diffHour);
+
+    // 大于等于1天：显示具体时间
     const pad = n => String(n).padStart(2, '0');
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
   } catch {

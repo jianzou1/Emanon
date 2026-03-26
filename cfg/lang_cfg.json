@@ -400,5 +400,17 @@
     "cn": "取消",
     "en": "Cancel",
     "jp": "キャンセル"
+  },
+  {
+    "id": "msg_time_minutes_ago",
+    "cn": "{0}分钟前",
+    "en": "{0}m ago",
+    "jp": "{0}分前"
+  },
+  {
+    "id": "msg_time_hours_ago",
+    "cn": "{0}小时前",
+    "en": "{0}h ago",
+    "jp": "{0}時間前"
   }
 ]
