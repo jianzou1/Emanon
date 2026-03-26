@@ -15,12 +15,11 @@ export function footerLoader() {
     const isPostPage = window.location.href.includes('post');
 
     // 页脚模板
-    // post 页面：读取 <meta name="article:published_time"> 显示发布日期（多语言）
+    // post 页面：从 .window[data-publish-date] 读取发布日期（在 #main 内，PJAX 可替换）
     let postDateField = '';
     if (isPostPage) {
-        const dateMeta = document.querySelector('meta[name="article:published_time"]');
-        const dateStr = dateMeta ? dateMeta.getAttribute('content') : '';
-        if (dateStr) {
+        const dateWindow = document.querySelector('#main .window[data-publish-date]');
+        if (dateWindow) {
             postDateField = `<p class="status-bar-field" id="post-publish-date" data-lang-id="post_publish_date"></p>`;
         }
     }
@@ -47,8 +46,8 @@ export function footerLoader() {
     if (isPostPage) {
         const publishDateEl = document.getElementById('post-publish-date');
         if (publishDateEl) {
-            const dateMeta = document.querySelector('meta[name="article:published_time"]');
-            const dateStr = dateMeta ? dateMeta.getAttribute('content').replace(/-/g, '/') : '';
+            const windowEl2 = document.querySelector('#main .window[data-publish-date]');
+            const dateStr = windowEl2 ? windowEl2.getAttribute('data-publish-date').replace(/-/g, '/') : '';
             const applyDate = () => langManager.applyParameters(publishDateEl, 'post_publish_date', dateStr);
             if (langManager.isInitialized) {
                 applyDate();

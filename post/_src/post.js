@@ -114,7 +114,7 @@ function processMarkdownFile(mdPath) {
   const articleDate = meta.date
     ? String(meta.date)
     : fs.statSync(mdPath).mtime.toISOString().slice(0, 10);
-  const dateMeta = `<meta name="article:published_time" content="${articleDate}">`;
+  const dateMeta = `data-publish-date="${articleDate}"`;
 
   const finalHtml = template
     .replace(/<!--\s*TITLE\s*-->/g, title)
