@@ -6,7 +6,29 @@ const CONFIG = {
     SYSTEM_CONFIG_URL: '/cfg/system_cfg.json'
 };
 
+// 模块级状态，用于跨调用清理
+let activeObserver = null;
+let activeWindowClickHandler = null;
+
+/**
+ * 清理画廊模块的后台资源（IntersectionObserver + window click 监听器）。
+ * 在 PJAX 导航离开画廊页时由 main.js 调用。
+ */
+export function cleanupGallery() {
+    if (activeObserver) {
+        activeObserver.disconnect();
+        activeObserver = null;
+    }
+    if (activeWindowClickHandler) {
+        window.removeEventListener('click', activeWindowClickHandler);
+        activeWindowClickHandler = null;
+    }
+}
+
 export async function initializeGallery() {
+    // 清理上一次初始化的残留资源
+    cleanupGallery();
+
     const galleryImages = document.getElementById('gallery-images');
     const prevButton = document.getElementById('prevPage');
     const nextButton = document.getElementById('nextPage');
@@ -23,6 +45,18 @@ export async function initializeGallery() {
     let additional = '';
     let maxPage = 1;
 
+    // 创建共享的 IntersectionObserver 实例（整个画廊生命周期复用）
+    activeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.getAttribute('data-src');
+                img.onload = () => { img.style.opacity = 1; };
+                activeObserver.unobserve(img);
+            }
+        });
+    });
+
     try {
         const [galleryData, systemData] = await Promise.all([
             fetchJSON(CONFIG.GALLERY_CONFIG_URL),
@@ -34,7 +68,11 @@ export async function initializeGallery() {
         populateTitleSelect(allImages);
         titleSelect.addEventListener('change', handleTitleChange);
         modalClose.addEventListener('click', closeModal);
-        window.addEventListener('click', handleWindowClick);
+
+        // window click 使用模块级引用，便于清理
+        activeWindowClickHandler = handleWindowClick;
+        window.addEventListener('click', activeWindowClickHandler);
+
         prevButton.addEventListener('click', () => navigatePage(-1));
         nextButton.addEventListener('click', () => navigatePage(1));
 
@@ -128,16 +166,6 @@ export async function initializeGallery() {
 
     function lazyLoadImages() {
         const imgs = document.querySelectorAll('#gallery-images img');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.getAttribute('data-src');
-                    img.onload = () => { img.style.opacity = 1; };
-                    observer.unobserve(img);
-                }
-            });
-        });
-        imgs.forEach(img => observer.observe(img));
+        imgs.forEach(img => activeObserver.observe(img));
     }
 }

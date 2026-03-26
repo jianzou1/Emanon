@@ -1,7 +1,7 @@
 // main.js
 import { loadResources } from '/js/cdnLoader.js';
 import { TabHandler } from '/js/tabHandler.js';
-import { updateProgressBar } from '/js/progressBar.js';
+import { updateProgressBar, cleanupProgressBar } from '/js/progressBar.js';
 import { loadPreviewLinks } from '/js/previewLoader.js';
 import { footerLoader } from '/js/footerLoader.js';
 import { handleScrollAndScrollToTop } from '/js/scrollToTop.js';
@@ -9,7 +9,7 @@ import { initializeDailyPopup } from '/js/dailyPopup.js';
 import { initializeTips } from '/js/tips.js';
 import { gameList } from '/js/gameList.js';
 import { initGameRoll } from '/js/gameRoll.js';
-import { initializeGallery } from '/js/gallery.js';
+import { initializeGallery, cleanupGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
 import { initializePassword } from '/js/password.js';
@@ -24,6 +24,9 @@ const TAB_DATA = [
   { url: '/page/gallery.html', text: 'tab_gallery' },
   { url: '/page/message.html', text: 'tab_message' },
 ];
+
+// 防止 HMR / 重初始化时重复绑定全局事件监听器
+let globalBindingsDone = false;
 
 const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
   const navigateByPjax = (url, event) => {
@@ -119,17 +122,13 @@ const initializeApp = async () => {
       currentTabHandler = new TabHandler(TABLIST_SELECTOR, TAB_DATA, pjax);
     };
 
-    bindGlobalPjaxNavigation(pjax, getTabHandler);
-
-    // PJAX事件监听
-    document.addEventListener('pjax:complete', () => {
-      handlePageLoad();
-      langManager.applyTranslations();
-    });
-
-    // 页面加载处理器
+    // 页面加载处理器（提前声明，供下方 globalBindings 引用）
     const handlePageLoad = () => {
       try {
+        // 清理上一页的后台资源（定时器、Observer 等）
+        cleanupProgressBar();
+        cleanupGallery();
+
         const currentUrl = window.location.pathname;
 
         refreshTabHandler();
@@ -169,6 +168,16 @@ const initializeApp = async () => {
         console.error('页面加载过程中出错:', error);
       }
     };
+
+    // 全局事件只绑定一次（防止 HMR 重初始化累积）
+    if (!globalBindingsDone) {
+      bindGlobalPjaxNavigation(pjax, getTabHandler);
+      document.addEventListener('pjax:complete', () => {
+        handlePageLoad();
+        langManager.applyTranslations();
+      });
+      globalBindingsDone = true;
+    }
 
     // 初始页面加载
     handlePageLoad();

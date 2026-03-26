@@ -1,6 +1,7 @@
 // gameList.js
 import langManager from '/js/langManager.js';
 import { fetchJSON } from '/js/dataCache.js';
+import { escHtml } from '/js/utils.js';
 
 export function gameList() {
     const GAME_CONFIG_URL = '/cfg/game_time_cfg.json';
@@ -30,6 +31,23 @@ export function gameList() {
             const stats = calculateStats(games);
             updateHtmlContent(stats);
             sortGames('按游戏评级排序');
+
+            // 绑定排序选项（在数据加载完成、DOM 确认存在后绑定）
+            document.querySelectorAll('input[name="sort-option"]').forEach((radio) => {
+                radio.addEventListener('change', (event) => {
+                    sortGames(event.target.value);
+                });
+            });
+
+            // 事件委托：在 .game-list 上统一处理成就展开/收起（替代内联 onclick）
+            const gameListElement = document.querySelector(GAME_LIST_HTML_CLASS);
+            if (gameListElement) {
+                gameListElement.addEventListener('click', (event) => {
+                    const li = event.target.closest('li[data-has-achievement]');
+                    if (!li) return;
+                    toggleAchievement(li);
+                });
+            }
         } catch (error) {
             console.error("读取游戏数据失败:", error.message);
         }
@@ -74,12 +92,6 @@ export function gameList() {
 
         updateHtmlContentDetails(groupAndSortGamesByType());
     }
-
-    document.querySelectorAll('input[name="sort-option"]').forEach((radio) => {
-        radio.addEventListener('change', (event) => {
-            sortGames(event.target.value);
-        });
-    });
 
     function sortGames(selectedOption) {
         let sortedGames;
@@ -212,14 +224,15 @@ export function gameList() {
 
     function createGameListItem(game) {
         const heart = game.isLoved ? '💜' : '';
-        const sign = game.sign || '';
+        const sign = escHtml(game.sign || '');
         const trophy = game.spacialAchievements ? '🏆' : '';
-        const achievementText = game.spacialAchievements ? game.spacialAchievements.replace(/\n/g, '<br>') : '';
-        const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${game.name}</i>` : game.name;
+        const achievementText = game.spacialAchievements ? escHtml(game.spacialAchievements).replace(/\n/g, '<br>') : '';
+        const escapedName = escHtml(game.name);
+        const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${escapedName}</i>` : escapedName;
         const qualityClass = `quality-${game.quality || 1}`;
 
         return `
-            <li class="${qualityClass}" ${achievementText ? 'onclick="toggleAchievement(this)"' : ''}>
+            <li class="${qualityClass}" ${achievementText ? 'data-has-achievement' : ''}>
                 <span>
                     <strong>${gameName}</strong> ${heart} ${trophy}
                 </span>
@@ -229,7 +242,7 @@ export function gameList() {
         `;
     }
 
-    window.toggleAchievement = function (li) {
+    function toggleAchievement(li) {
         const achievementDiv = li.querySelector('.achievement');
         const toggleIcon = li.querySelector('.toggle-icon');
 

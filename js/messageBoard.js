@@ -2,11 +2,14 @@
 // 基于 Netlify Blobs 的留言板模块
 
 import langManager from '/js/langManager.js';
+import { escHtml, escAttr } from '/js/utils.js';
 
 const MESSAGES_API = '/.netlify/functions/get-messages';
 const POST_MESSAGE_API = '/.netlify/functions/post-message';
 const PAGE_SIZE = 20;
 const NICKNAME_STORAGE_KEY = 'msg_last_nickname';
+
+// Mock 模式判断：仅在 URL 参数或 localStorage 开启时激活
 const USE_MOCK_MESSAGES = (() => {
   try {
     const params = new URLSearchParams(window.location.search);
@@ -16,6 +19,21 @@ const USE_MOCK_MESSAGES = (() => {
   }
 })();
 
+// Mock 数据模块：条件动态导入，生产打包时 __DEV__ 为 false，
+// Terser 的 dead code elimination 会把整个分支和 import() 移除
+// __DEV__ 由 webpack DefinePlugin 注入，生产构建为 false，
+// Terser dead code elimination 会移除整个 if 分支及 import()，不生成 Mock chunk
+let mockModule = null;
+async function getMockPageData(page) {
+  if (__DEV__) {
+    if (!mockModule) {
+      mockModule = await import('/js/messageBoardMock.js');
+    }
+    return mockModule.getMockPageData(page, PAGE_SIZE);
+  }
+  return { items: [], total: 0 };
+}
+
 let currentPage = 1;
 let isLoading = false;
 let totalEntries = 0;
@@ -24,30 +42,7 @@ let currentEntries = [];
 let activeReplyMessageId = null;
 let activeReplyFormEl = null;
 let activeReplyBtn = null;
-// 评论互回：当前回复目标的昵称（点击评论的"回复"按钮时设置）
 let activeReplyToNickname = '';
-
-const MOCK_BASE_TIME = Date.now();
-const MOCK_NICKNAMES = ['Shelton', 'Cry', 'Mika', 'Sora', 'Aki', 'Neko', 'Pixel', 'Rin'];
-const MOCK_MESSAGES = [
-  '这个站的复古风格太戳我了。',
-  '今天路过来打个卡，界面做得很细。',
-  '文章区更新频率很舒服，继续保持！',
-  'CRT效果开关很有意思，细节满分。',
-  '游戏清单看得出来很用心整理。',
-  '配色和字体真的很有年代感。',
-  '收藏了，准备慢慢把文章都看一遍。',
-  '留言板能评论之后互动感更强了。',
-];
-const MOCK_REPLIES = [
-  '同感，尤其是像素字体部分。',
-  '我也最喜欢这个页面布局。',
-  '哈哈我也是这么想的。',
-  '期待下一次更新内容。',
-  '这个细节确实很棒。',
-  '握手，审美在线。',
-];
-const MOCK_LOCATIONS = ['上海 · 中国', '东京 · 日本', '首尔 · 韩国', '台北 · 中国', '新加坡', '香港 · 中国'];
 
 /**
  * 初始化留言板
@@ -72,7 +67,6 @@ function bindFormEvents() {
   const contentInput = document.getElementById('msg-content');
   const messageIdInput = document.getElementById('msg-message-id');
   const charCount = document.getElementById('msg-char-count');
-  const loadMoreBtn = document.getElementById('msg-load-more');
 
   if (!form || !nicknameInput || !contentInput || !messageIdInput) return;
 
@@ -104,7 +98,7 @@ function bindFormEvents() {
     messageIdInput.value = String(Date.now());
 
     const submitBtn = document.getElementById('msg-submit-btn');
-    const ok = await submitToNetlify(form, submitBtn);
+    const ok = await submitMessage(form, submitBtn);
     if (!ok) {
       showToast(langManager.translate('msg_submit_error') || '提交失败，请稍后再试');
       return;
@@ -120,35 +114,11 @@ function bindFormEvents() {
   });
 }
 
-// ── 留言提交 ────────────────────────────────────────────────
+// ── 统一留言/回复提交 ────────────────────────────────────────
+// 合并原 submitToNetlify 和 submitReplyToNetlify，
+// 差异仅在 replyToNickname 字段——不存在时发送空字符串即可
 
-async function submitToNetlify(form, submitBtn) {
-  setSubmitting(true, submitBtn);
-
-  try {
-    const formData = new FormData(form);
-    const payload = {
-      nickname: String(formData.get('nickname') || ''),
-      message: String(formData.get('message') || ''),
-      messageId: String(formData.get('messageId') || ''),
-    };
-
-    const res = await fetch(POST_MESSAGE_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    return res.ok;
-  } catch (err) {
-    console.error('留言提交失败:', err);
-    return false;
-  } finally {
-    setSubmitting(false, submitBtn);
-  }
-}
-
-async function submitReplyToNetlify(form, submitBtn) {
+async function submitMessage(form, submitBtn) {
   setSubmitting(true, submitBtn);
 
   try {
@@ -168,7 +138,7 @@ async function submitReplyToNetlify(form, submitBtn) {
 
     return res.ok;
   } catch (err) {
-    console.error('评论提交失败:', err);
+    console.error('留言提交失败:', err);
     return false;
   } finally {
     setSubmitting(false, submitBtn);
@@ -191,7 +161,7 @@ async function loadMessages(page = 1) {
 
   try {
     const result = USE_MOCK_MESSAGES
-      ? getMockPageData(currentPage)
+      ? await getMockPageData(currentPage)
       : await fetchMessagePage(currentPage);
 
     currentEntries = Array.isArray(result.items) ? result.items : [];
@@ -215,113 +185,12 @@ async function fetchMessagePage(page) {
   return res.json();
 }
 
-function getMockPageData(page) {
-  const totalMessages = 48;
-  const start = (page - 1) * PAGE_SIZE;
-  if (start >= totalMessages) return { items: [], total: totalMessages };
-
-  const end = Math.min(start + PAGE_SIZE, totalMessages);
-  const items = [];
-
-  for (let i = start; i < end; i++) {
-    const messageTs = MOCK_BASE_TIME - i * 240 * 60 * 1000;
-    const messageId = String(messageTs);
-    const msgNickname = MOCK_NICKNAMES[i % MOCK_NICKNAMES.length];
-
-    items.push({
-      id: `mock-msg-${i}`,
-      messageId,
-      replyTo: '',
-      replyToNickname: '',
-      isReply: false,
-      nickname: msgNickname,
-      message: MOCK_MESSAGES[i % MOCK_MESSAGES.length],
-      ip: `203.0.113.${(i % 200) + 1}`,
-      location: MOCK_LOCATIONS[i % MOCK_LOCATIONS.length],
-      created_at: new Date(messageTs).toISOString(),
-    });
-
-    if (i % 3 === 0) {
-      const replyTs = messageTs + 8 * 60 * 1000;
-      const replyNick = MOCK_NICKNAMES[(i + 2) % MOCK_NICKNAMES.length];
-      items.push({
-        id: `mock-reply-a-${i}`,
-        messageId: String(replyTs),
-        replyTo: messageId,
-        replyToNickname: '',
-        isReply: true,
-        nickname: replyNick,
-        message: MOCK_REPLIES[i % MOCK_REPLIES.length],
-        ip: `203.0.113.${((i + 7) % 200) + 1}`,
-        location: MOCK_LOCATIONS[(i + 1) % MOCK_LOCATIONS.length],
-        created_at: new Date(replyTs).toISOString(),
-      });
-
-      // 评论互回：第三个人回复第一条评论的作者
-      if (i % 6 === 0) {
-        const reReplyTs = replyTs + 5 * 60 * 1000;
-        items.push({
-          id: `mock-reply-c-${i}`,
-          messageId: String(reReplyTs),
-          replyTo: messageId,
-          replyToNickname: replyNick,
-          isReply: true,
-          nickname: MOCK_NICKNAMES[(i + 5) % MOCK_NICKNAMES.length],
-          message: '确实，说得太对了！',
-          ip: `203.0.113.${((i + 13) % 200) + 1}`,
-          location: MOCK_LOCATIONS[(i + 3) % MOCK_LOCATIONS.length],
-          created_at: new Date(reReplyTs).toISOString(),
-        });
-      }
-    }
-
-    if (i % 5 === 0) {
-      const replyTs = messageTs + 12 * 60 * 1000;
-      const replyNick = MOCK_NICKNAMES[(i + 4) % MOCK_NICKNAMES.length];
-      items.push({
-        id: `mock-reply-b-${i}`,
-        messageId: String(replyTs),
-        replyTo: messageId,
-        replyToNickname: '',
-        isReply: true,
-        nickname: replyNick,
-        message: MOCK_REPLIES[(i + 1) % MOCK_REPLIES.length],
-        ip: `203.0.113.${((i + 11) % 200) + 1}`,
-        location: MOCK_LOCATIONS[(i + 2) % MOCK_LOCATIONS.length],
-        created_at: new Date(replyTs).toISOString(),
-      });
-
-      // 评论互回：原作者回复评论者
-      if (i % 10 === 0) {
-        const reReplyTs = replyTs + 3 * 60 * 1000;
-        items.push({
-          id: `mock-reply-d-${i}`,
-          messageId: String(reReplyTs),
-          replyTo: messageId,
-          replyToNickname: replyNick,
-          isReply: true,
-          nickname: msgNickname,
-          message: '谢谢支持～',
-          ip: `203.0.113.${((i + 17) % 200) + 1}`,
-          location: MOCK_LOCATIONS[i % MOCK_LOCATIONS.length],
-          created_at: new Date(reReplyTs).toISOString(),
-        });
-      }
-    }
-  }
-
-  // 模拟接口返回：按时间降序
-  const sorted = items.sort((a, b) => parseTime(b.created_at) - parseTime(a.created_at));
-  return { items: sorted, total: totalMessages };
-}
-
-// ── 渲染单条留言 ────────────────────────────────────────────
+// ── 渲染留言列表 ────────────────────────────────────────────
+// 使用 DocumentFragment 批量构建 DOM，减少重排次数
 
 function renderMessageList() {
   const list = document.getElementById('message-list');
   if (!list) return;
-
-  list.innerHTML = '';
 
   const messages = [];
   const repliesMap = new Map();
@@ -339,6 +208,7 @@ function renderMessageList() {
   });
 
   if (messages.length === 0) {
+    list.innerHTML = '';
     showEmpty();
     return;
   }
@@ -349,16 +219,19 @@ function renderMessageList() {
     replies.sort((a, b) => parseTime(a.created_at) - parseTime(b.created_at));
   });
 
+  // 使用 DocumentFragment 批量插入，避免逐条 appendChild 触发多次重排
+  const fragment = document.createDocumentFragment();
   messages.forEach((item, idx) => {
     const replies = repliesMap.get(item.messageId) || [];
-    renderMessageCard(item, idx, replies);
+    const card = buildMessageCard(item, idx, replies);
+    fragment.appendChild(card);
   });
+
+  list.innerHTML = '';
+  list.appendChild(fragment);
 }
 
-function renderMessageCard(item, idx, replies) {
-  const list = document.getElementById('message-list');
-  if (!list) return;
-
+function buildMessageCard(item, idx, replies) {
   const nickname = escHtml(item.nickname || 'unknown');
   const location = escHtml(formatLocation(item));
   const body = escHtml(item.message || '');
@@ -434,14 +307,33 @@ function renderMessageCard(item, idx, replies) {
     });
   });
 
-  list.appendChild(card);
+  return card;
 }
 
+/**
+ * 标准化后端返回的留言条目，统一 messageId / replyTo 字段语义。
+ *
+ * 后端数据可能出现以下情况：
+ *   1. 普通留言：replyTo 为空，messageId 为时间戳字符串
+ *   2. 旧格式回复：replyTo 为空，但 messageId 以 "re:" 开头（如 "re:1711234567890"），
+ *      此时 "re:" 后面的部分是被回复的原始留言 messageId
+ *   3. 新格式回复：replyTo 直接给出原始留言 messageId
+ *
+ * 标准化逻辑：
+ *   - 优先使用 replyTo 字段
+ *   - 若 replyTo 为空但 messageId 带 "re:" 前缀，则从中提取父留言 ID
+ *   - 回复的 messageId 统一重设为 created_at 时间戳（保证唯一性）
+ *   - 普通留言保持原始 messageId，兜底使用 created_at 时间戳
+ */
 function normalizeEntry(entry) {
   const createdTs = parseTime(entry.created_at) || Date.now();
   const rawMessageId = String(entry.messageId || '').trim();
   const rawReplyTo = String(entry.replyTo || '').trim();
+
+  // 确定父留言 ID：优先 replyTo，其次从 "re:" 前缀提取
   const replyTo = rawReplyTo || (rawMessageId.startsWith('re:') ? rawMessageId.slice(3) : '');
+
+  // 回复条目的 messageId 用自身时间戳，普通留言保持原值或兜底时间戳
   const messageId = replyTo ? String(createdTs) : (rawMessageId || String(createdTs));
 
   return {
@@ -572,7 +464,7 @@ function buildReplyComposer(messageId, replyToNickname = '') {
       }
 
       nicknameInput.value = nickname;
-      const ok = await submitReplyToNetlify(form, submitBtn);
+      const ok = await submitMessage(form, submitBtn);
       if (!ok) {
         showToast(langManager.translate('msg_submit_error') || '提交失败，请稍后再试');
         return;
@@ -717,19 +609,6 @@ function formatTime(isoString) {
   }
 }
 
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function escAttr(str) {
-  return escHtml(str).replace(/`/g, '&#96;');
-}
-
 function translateWithFallback(id, fallback) {
   const translated = langManager.translate(id);
   if (!translated || translated === id) return fallback;
@@ -741,4 +620,3 @@ function formatLocation(entry) {
   if (location) return location;
   return translateWithFallback('msg_location_unknown', '未知地区');
 }
-

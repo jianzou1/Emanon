@@ -17,6 +17,20 @@
 - 用户对 CRT 闪烁效果敏感，之前的降频更新（每 N 帧更新）导致闪烁变强烈被否决
 - 构建验证时注意：产物被 terser 混淆，不能用原始变量名搜索
 
+## 公共工具模块
+- `js/utils.js` — 导出 `escHtml` / `escAttr`，供 messageBoard.js 和 gameList.js 共用
+- `js/messageBoardMock.js` — 留言板 Mock 数据，通过 dynamic import 分离为独立 chunk，生产环境按需加载不进主 bundle
+
+## webpack 配置
+- DefinePlugin 提供 `__BUILD_HASH__`（构建哈希）和 `__DEV__`（开发模式标志）
+- TerserPlugin 配置了 `drop_console: true`（生产环境移除 console）
+
+## PJAX 生命周期管理（2026-03-26 新增）
+- `main.js` 中 handlePageLoad 开头调用各模块的 cleanup 函数（cleanupProgressBar / cleanupGallery）
+- `progressBar.js` 导出 `cleanupProgressBar()`：清理定时器 + visibilitychange 监听器
+- `gallery.js` 导出 `cleanupGallery()`：断开 IntersectionObserver + 移除 window click 监听器
+- `tips.js` 使用事件委托（body 级 mouseover/mouseout），单例模式不需要 cleanup
+
 ## 文章构建管线（post/_src/post.js）
 - Markdown 文件支持 frontmatter（`---` 分隔），字段：title、icon、order、hidden
 - `post.js` 自动生成 `cfg/article_cfg.json`（过滤 hidden、按 order 排序）

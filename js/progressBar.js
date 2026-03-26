@@ -5,6 +5,23 @@ let nextRefreshAt = 0;
 const GRID_WIDTH = 28;
 const GRID_GAP = 2;
 const GRID_INTERVAL = 40;
+const DOM_READY_MAX_RETRIES = 40; // ensureDOMReady 最大重试次数（40×50ms = 2s）
+
+/**
+ * 清理进度条模块的所有后台资源（定时器 + visibilitychange 监听器）。
+ * 应在 PJAX 导航离开首页时调用，防止后台操作已不存在的 DOM 元素。
+ */
+export function cleanupProgressBar() {
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
+  }
+  if (visibilityHandler) {
+    document.removeEventListener('visibilitychange', visibilityHandler);
+    visibilityHandler = null;
+  }
+  isUpdating = false;
+}
 
 const PROGRESS_ITEMS = (now) => [
   {
@@ -202,10 +219,11 @@ function startCountdownTimer() {
   };
 
   const ensureDOMReady = (callback, interval = 50) => {
+    let retries = 0;
     const check = () => {
       if (document.getElementById('refresh-timer')) {
         callback();
-      } else {
+      } else if (retries++ < DOM_READY_MAX_RETRIES) {
         setTimeout(check, interval);
       }
     };

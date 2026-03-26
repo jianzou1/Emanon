@@ -115,7 +115,8 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        __BUILD_HASH__: JSON.stringify(buildHash)
+        __BUILD_HASH__: JSON.stringify(buildHash),
+        __DEV__: JSON.stringify(!isProduction)
       }),
       new MiniCssExtractPlugin({
         filename: 'styles.css',
