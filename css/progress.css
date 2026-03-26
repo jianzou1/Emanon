@@ -31,7 +31,7 @@
 }
 
 .progress-bar .grid.blink {
-    animation: gridBlink 5.0s step-end infinite;
+    animation: gridBlink cubic-bezier(0.55, 0.085, 0.68, 0.53) step-end infinite;
 }
 
 @keyframes gridBlink {

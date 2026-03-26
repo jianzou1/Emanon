@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const ejs = require('ejs');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -9,11 +10,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
+  // 构建时间戳，用于缓存破坏（替代手动维护的版本号）
+  const buildHash = Date.now().toString(36);
+
+  // 读取统一 CDN 配置
+  const cdnConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'cfg/cdn.json'), 'utf-8'));
+
   // 获取所有页面文件名
   const pagesDir = path.resolve(__dirname, 'ejs/pages');
   const pageFiles = fs.readdirSync(pagesDir).filter(file => file.endsWith('.ejs'));
   const pageNames = pageFiles.map(file => path.basename(file, '.ejs'));
-
 
   // 为每个页面生成 HtmlWebpackPlugin 实例
   const htmlPlugins = pageNames.map(page => {
@@ -31,7 +37,9 @@ module.exports = (env, argv) => {
             files: assets.files,
             options: options
           },
-          titleId: `${page}_title`
+          titleId: `${page}_title`,
+          cdn: cdnConfig,
+          buildHash: buildHash
         };
       },
       minify: isProduction ? {
@@ -86,7 +94,9 @@ module.exports = (env, argv) => {
               preprocessor: (content, loaderContext) => {
                 try {
                   return ejs.render(content, {
-                    titleId: `${path.basename(loaderContext.resourcePath, '.ejs')}_title`
+                    titleId: `${path.basename(loaderContext.resourcePath, '.ejs')}_title`,
+                    cdn: cdnConfig,
+                    buildHash: buildHash
                   }, {
                     filename: loaderContext.resourcePath,
                     root: path.resolve(__dirname, 'ejs')
@@ -104,6 +114,9 @@ module.exports = (env, argv) => {
       ]
     },
     plugins: [
+      new webpack.DefinePlugin({
+        __BUILD_HASH__: JSON.stringify(buildHash)
+      }),
       new MiniCssExtractPlugin({
         filename: 'styles.css',
         chunkFilename: '[id].css'

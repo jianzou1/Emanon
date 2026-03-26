@@ -1,25 +1,9 @@
 // cdn-loader.js
-
-// 定义 CDN 配置 - 支持多个备用源
-export const CDN_CONFIG = {
-  pjax: [
-    'https://github.elemecdn.com/pjax@0.2.8/pjax.min.js',
-    'https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js',
-    'https://unpkg.com/pjax@0.2.8/pjax.min.js',
-    'https://cdn.bootcdn.net/ajax/libs/pjax/0.2.8/pjax.js',
-    'https://cdn.staticfile.net/pjax/0.2.8/pjax.js'
-  ],
-  css98: [
-    'https://cdn.jsdelivr.net/npm/98.css@0.1.21/dist/98.min.css',
-    'https://unpkg.com/98.css@0.1.20/dist/98.min.css',
-    'https://cdn.jsdelivr.net/npm/98.css@0.1.21/build.min.js'
-  ]
-};
+import CDN_CONFIG from '../cfg/cdn.json';
 
 // 通用加载函数 - 支持多个备用源
 const loadScript = (urls) => {
   const urlList = Array.isArray(urls) ? urls : [urls];
-  const start = performance.now();
 
   // 并行 fetch 多个源，优先使用第一个成功返回的内容（避免多个脚本同时执行）
   const fetchPromises = urlList.map(url =>
@@ -40,7 +24,6 @@ const loadScript = (urls) => {
         const script = document.createElement('script');
         script.src = blobUrl;
         script.onload = () => {
-          console.log(`Successfully loaded from: ${url} (${Math.round(performance.now() - start)}ms)`);
           URL.revokeObjectURL(blobUrl);
           resolve();
         };
@@ -51,10 +34,8 @@ const loadScript = (urls) => {
         document.head.appendChild(script);
       });
     })
-    .catch(err => {
+    .catch(() => {
       // Promise.any 在所有 promise 都 reject 时会到这里（AggregateError）
-      console.warn('Parallel fetch failed or all sources unreachable, falling back to sequential script append', err);
-
       // 回退到顺序加载（通过创建 script 标签）以兼容无法 fetch 的跨域源
       return new Promise((resolve, reject) => {
         let idx = 0;
@@ -68,11 +49,9 @@ const loadScript = (urls) => {
           const script = document.createElement('script');
           script.src = url;
           script.onload = () => {
-            console.log(`Successfully loaded (sequential) from: ${url} (${Math.round(performance.now() - start)}ms)`);
             resolve();
           };
           script.onerror = () => {
-            console.warn(`Failed to load (sequential) from: ${url}, trying next...`);
             tryLoadSequential();
           };
           document.head.appendChild(script);
@@ -84,7 +63,6 @@ const loadScript = (urls) => {
 
 const loadStylesheet = async (urls, id) => {
   const orderedUrls = Array.isArray(urls) ? [...urls] : [urls];
-  const start = performance.now();
 
   if (id && document.getElementById(id)) {
     return;
@@ -108,11 +86,9 @@ const loadStylesheet = async (urls, id) => {
       }
 
       link.onload = () => {
-        console.log(`Successfully loaded stylesheet from: ${url} (${Math.round(performance.now() - start)}ms)`);
         resolve();
       };
       link.onerror = () => {
-        console.warn(`Failed to load stylesheet from: ${url}, trying next...`);
         link.remove();
         tryLoad();
       };

@@ -11,7 +11,6 @@
 class LangManager {
   static DEFAULT_CONFIG = {
     debug: false,
-    version: '3.1',
     fallbackLang: 'en',
     storageKey: 'user_lang', // 仅存储用户语言设置
     langFile: '/cfg/lang_cfg.json',
@@ -74,7 +73,7 @@ class LangManager {
 
   async #loadLanguageData() {
     try {
-      const response = await fetch(`${this.config.langFile}?v=${this.config.version}`);
+      const response = await fetch(`${this.config.langFile}?v=${typeof __BUILD_HASH__ !== 'undefined' ? __BUILD_HASH__ : ''}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const rawData = await response.json();

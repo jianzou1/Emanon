@@ -1,0 +1,27 @@
+{
+  "pjax": [
+    "https://github.elemecdn.com/pjax@0.2.8/pjax.min.js",
+    "https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js",
+    "https://unpkg.com/pjax@0.2.8/pjax.min.js",
+    "https://cdn.bootcdn.net/ajax/libs/pjax/0.2.8/pjax.js",
+    "https://cdn.staticfile.net/pjax/0.2.8/pjax.js"
+  ],
+  "css98": [
+    "https://cdn.jsdelivr.net/npm/98.css@0.1.21/dist/98.min.css",
+    "https://unpkg.com/98.css@0.1.20/dist/98.min.css",
+    "https://cdn.jsdelivr.net/npm/98.css@0.1.21/build.min.js"
+  ],
+  "preload": [
+    { "href": "/cfg/lang_cfg.json", "as": "fetch", "crossorigin": true, "cacheBust": true }
+  ],
+  "preconnect": [
+    "https://cdn.jsdelivr.net",
+    "https://unpkg.com"
+  ],
+  "dnsPrefetch": [
+    "https://github.elemecdn.com",
+    "https://cdn.bootcdn.net",
+    "https://cdn.staticfile.net",
+    "https://api.github.com"
+  ]
+}
