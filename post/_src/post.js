@@ -164,7 +164,7 @@ async function main() {
   mkdirp(TARGET_DIR);
 
   const mdFiles = fs.readdirSync(SOURCE_DIR)
-    .filter(file => file.endsWith('.md'))
+    .filter(file => file.endsWith('.md') && !file.startsWith('_'))
     .sort()
     .map(file => path.join(SOURCE_DIR, file));
 

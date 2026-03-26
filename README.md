@@ -76,7 +76,7 @@ Emanon/
 │       ├── header.ejs         # <head> 模板（charset/viewport/favicon）
 │       └── function.ejs       # 底部组件（CRT/tips/返回顶部/footer）
 ├── cfg/
-│   ├── article_cfg.json       # 文章列表配置
+│   ├── article_cfg.json       # 文章列表配置（由 post.js 自动生成）
 │   ├── gallery_cfg.json       # 画廊配置
 │   ├── game_time_cfg.json     # 游戏/记录配置
 │   ├── lang_cfg.json          # 多语言文本配置（~60+ 条目）
@@ -86,8 +86,9 @@ Emanon/
 │   └── trans_table_tool_v1.2.zip  # 配置表转换工具
 ├── post/
 │   ├── _src/                  # Markdown 文章源文件
-│   │   ├── post.js            # 文章构建脚本（marked + html-minifier-terser）
-│   │   └── template.html      # 文章 HTML 模板（Win98 窗口风格）
+│   │   ├── post.js            # 文章构建脚本（Frontmatter + marked + html-minifier-terser）
+│   │   ├── template.html      # 文章 HTML 模板（Win98 窗口风格）
+│   │   └── _template.md       # 新文章 Frontmatter 模板
 │   └── <文章名>/              # 构建产物，每篇文章一个文件夹
 ├── netlify/
 │   └── functions/             # Netlify Serverless 函数
@@ -177,28 +178,51 @@ npm run cfg
 
 ### 三、文章功能
 
-#### 3.1 文章内容构建
+#### 3.1 创建新文章
 
-Markdown 源文件存放于 `post/_src/`，新增文章后运行以下命令构建：
+在 `post/_src/` 目录下新建 `.md` 文件，使用 Frontmatter 定义元数据：
+
+```markdown
+---
+title: 文章标题
+icon: text-markdown.png
+order: 1
+hidden: false
+---
+
+正文内容（Markdown 格式）...
+```
+
+**Frontmatter 字段说明**：
+
+| 字段     | 类型    | 必填 | 默认值              | 说明                           |
+| :------: | :-----: | :--: | :-----------------: | :----------------------------: |
+| title    | string  |  否  | 正文首行            | 文章标题                       |
+| icon     | string  |  否  | text-markdown.png   | 文章列表图标（icon/ 目录下）   |
+| order    | number  |  否  | 999                 | 排序权重，数字小的排前面       |
+| hidden   | boolean |  否  | false               | 是否隐藏（不出现在文章列表中） |
+
+> **注意**：以 `_` 开头的 `.md` 文件会被跳过（如 `_template.md`）。
+
+#### 3.2 在 GitHub 上直接创建文章
+
+点击以下链接可在 GitHub 网页上直接创建新文章，Frontmatter 模板已预填：
+
+👉 [**新建文章**](https://github.com/jianzou1/Emanon/new/master/post/_src?filename=new_article.md&value=---%0Atitle%3A%20%E6%96%87%E7%AB%A0%E6%A0%87%E9%A2%98%0Aicon%3A%20text-markdown.png%0Aorder%3A%20999%0Ahidden%3A%20false%0A---%0A%0A%23%20%E6%96%87%E7%AB%A0%E6%A0%87%E9%A2%98%0A%0A%E6%AD%A3%E6%96%87%E5%86%85%E5%AE%B9...)
+
+提交后 Netlify 会自动触发构建，无需本地操作。
+
+也可参考 `post/_src/_template.md` 模板文件。
+
+#### 3.3 构建命令
 
 ```bash
 npm run post
 ```
 
-- 构建后会在 `post/` 下生成与 Markdown 文件名同名的文章文件夹
-- 建议文件名使用英文，避免路径编码问题
-- Markdown **首行**内容将作为文章页面的 `<title>` 标题
-
-#### 3.2 文章入口编辑
-
-编辑 `cfg/article_cfg.json`（或对应 Excel）中的以下字段，使文章在列表页可见：
-
-| 字段 |      描述      |     示例值      |
-| :--: | :------------: | :-------------: |
-|  id  | 排序ID（升序） |      1001       |
-| url  |   文章目录名   | 2023-tech-guide |
-| icon |   图标文件名   |   article.svg   |
-| name |    显示标题    |    技术指南     |
+- 解析 Frontmatter 元数据，将 Markdown 转换为 HTML
+- 自动生成 `cfg/article_cfg.json`（仅包含非隐藏文章，按 order 排序）
+- 隐藏文章仍会生成 HTML，可通过直接 URL 访问（如 `/post/文章名/`）
 
 ### 四、画廊功能
 
@@ -358,7 +382,7 @@ netlify dev
 
 ```toml
 [build]
-  command   = "npm run pack"   # 构建命令
+  command   = "npm run post && npm run pack"  # 文章构建 + Webpack 打包
   publish   = "."              # 发布目录（整个项目）
   functions = "netlify/functions"  # Serverless 函数目录
 
@@ -426,6 +450,7 @@ Markdown 文件 (post/_src/*.md)
         │ npm run post
         ▼
 HTML 文章页 (post/<name>/index.html)
+  + article_cfg.json (cfg/)
 
 EJS 模板 (ejs/pages/*.ejs)
         │
