@@ -44,6 +44,30 @@ let activeReplyFormEl = null;
 let activeReplyBtn = null;
 let activeReplyToNickname = '';
 
+// ── 留言数据预取缓存 ─────────────────────────────────────────
+// 页面加载时静默预取第 1 页，切到留言板时直接渲染，无需等待
+let prefetchedData = null;   // { items, total } | null
+let prefetchPromise = null;  // Promise | null（防止重复请求）
+
+/**
+ * 静默预取留言第 1 页数据（由 main.js 在应用初始化时调用）
+ * 不依赖 DOM，纯数据请求
+ */
+export function prefetchMessages() {
+  if (prefetchedData || prefetchPromise) return; // 已有缓存或正在请求
+
+  prefetchPromise = (USE_MOCK_MESSAGES ? getMockPageData(1) : fetchMessagePage(1))
+    .then(result => {
+      prefetchedData = result;
+    })
+    .catch(() => {
+      // 预取失败不影响后续正常加载
+    })
+    .finally(() => {
+      prefetchPromise = null;
+    });
+}
+
 /**
  * 初始化留言板
  */
@@ -56,7 +80,35 @@ export function initializeMessageBoard() {
   activeReplyToNickname = '';
   closeReplyComposer();
   bindFormEvents();
-  loadMessages(1);
+
+  // 优先使用预取缓存，跳过网络请求
+  if (prefetchedData) {
+    const cached = prefetchedData;
+    currentEntries = Array.isArray(cached.items) ? cached.items : [];
+    totalEntries = cached.total || 0;
+    totalPages = Math.max(1, Math.ceil(totalEntries / PAGE_SIZE));
+    renderMessageList();
+    updatePagination();
+  } else if (prefetchPromise) {
+    // 预取还在进行中，等它完成后渲染
+    showLoading(true);
+    prefetchPromise.then(() => {
+      if (prefetchedData) {
+        currentEntries = Array.isArray(prefetchedData.items) ? prefetchedData.items : [];
+        totalEntries = prefetchedData.total || 0;
+        totalPages = Math.max(1, Math.ceil(totalEntries / PAGE_SIZE));
+        renderMessageList();
+        updatePagination();
+      } else {
+        // 预取失败，降级为正常加载
+        loadMessages(1);
+      }
+      showLoading(false);
+    });
+  } else {
+    // 无预取数据（不应发生），降级为正常加载
+    loadMessages(1);
+  }
 }
 
 // ── 表单事件绑定 ────────────────────────────────────────────
@@ -110,6 +162,8 @@ function bindFormEvents() {
     messageIdInput.value = '';
     if (charCount) charCount.textContent = '0';
     showToast(langManager.translate('msg_success_title') || '留言已提交！');
+    // 清除预取缓存，强制重新拉取最新数据
+    prefetchedData = null;
     await loadMessages(1);
   });
 }
@@ -473,6 +527,8 @@ function buildReplyComposer(messageId, replyToNickname = '') {
       localStorage.setItem(NICKNAME_STORAGE_KEY, nickname);
       showToast(translateWithFallback('msg_reply_success', '评论已发送！'));
       closeReplyComposer();
+      // 清除预取缓存，强制重新拉取最新数据
+      prefetchedData = null;
       await loadMessages(1);
     });
   }

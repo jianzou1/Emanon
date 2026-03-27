@@ -13,7 +13,7 @@ import { initializeGallery, cleanupGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
 import { initializePassword } from '/js/password.js';
-import { initializeMessageBoard } from '/js/messageBoard.js';
+import { initializeMessageBoard, prefetchMessages } from '/js/messageBoard.js';
 import langManager from '/js/langManager.js';
 
 const TABLIST_SELECTOR = '[role="tablist"]';
@@ -208,6 +208,9 @@ const initializeApp = async () => {
 
     // 初始页面加载
     handlePageLoad();
+
+    // 静默预取留言板第 1 页数据（后台请求，不阻塞页面）
+    prefetchMessages();
   } catch (error) {
     console.error('应用初始化失败:', error);
   }
