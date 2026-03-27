@@ -5,10 +5,10 @@
 }
 
 ul.tree-view .game-list .tree-view li,
-.game-list ul.tree-view li {
-  line-height: 12px !important;
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
+.window .game-list ul.tree-view li {
+  line-height: 16px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   text-decoration: none;
 }
 
@@ -18,7 +18,7 @@ ul.tree-view .game-list .tree-view li,
 }
 
 .game-list .tree-view details > summary {
-  line-height: 12px;
+  line-height: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -29,8 +29,20 @@ ul.tree-view .game-list .tree-view li,
   display: none;
 }
 
+/* 覆盖 98.css：展开/缩略图标（+/-）从 float:left 改为 inline-block，与文本垂直居中对齐 */
+.game-list .tree-view details > summary::before {
+  float: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .game-list .tree-view details[open] > summary {
   margin-bottom: 0;
+}
+
+/* 覆盖 98.css：水平连接线的 top 值适配 16px 行高 + 3px padding */
+.game-list .tree-view ul > li::before {
+  top: 11px;
 }
 
 .window .game-list li {
@@ -96,6 +108,12 @@ ul.tree-view .game-list .tree-view li,
     margin-top: 10px;
     width: 100%;
   }
+  .window .game-list li {
+    font-size: 12px;
+  }
+  .achievement-info {
+    font-size: 12px;
+  }
 }
 
 /* ── 成就展开信息 ── */
@@ -154,6 +172,9 @@ ul.tree-view .game-list .tree-view li,
   height: 100%;
   position: relative;
   transition: none;
+}
+
+.scroll-container.animating {
   will-change: transform;
 }
 

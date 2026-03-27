@@ -57,6 +57,12 @@
 @media (max-width: 768px) {
   #welcome-popup,
   #password-error-popup {
+    width: auto;
     max-width: calc(100vw - 32px);
+  }
+  #welcome-popup p,
+  #password-error-popup p {
+    font-size: 13px;
+    margin-bottom: -2px;
   }
 }

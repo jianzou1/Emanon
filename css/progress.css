@@ -79,3 +79,12 @@
     padding: 5px;
     font-weight: bold;
 }
+
+@media (max-width: 768px) {
+  #refresh-timer {
+    font-size: 12px;
+  }
+  .progress-text {
+    font-size: 13px;
+  }
+}

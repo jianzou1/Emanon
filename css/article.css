@@ -41,7 +41,14 @@
   border: 1px solid transparent;
 }
 
-.link-preview:hover .link-title {
+@media (hover: hover) {
+  .link-preview:hover .link-title {
+    background-color: rgba(0, 2, 129, 1);
+    color: rgb(223, 223, 223);
+    border: 1px dotted rgb(161, 161, 161);
+  }
+}
+.link-preview:active .link-title {
   background-color: rgba(0, 2, 129, 1);
   color: rgb(223, 223, 223);
   border: 1px dotted rgb(161, 161, 161);
@@ -51,5 +58,8 @@
   /* 小屏幕：6 列 → 3 列 */
   .link-preview {
     flex: 0 1 calc(33.33% - 8px);
+  }
+  .link-title {
+    max-width: 72px;
   }
 }

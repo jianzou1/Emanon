@@ -144,7 +144,12 @@
   outline-offset: 1px;
 }
 
-.msg-reply-btn:hover {
+@media (hover: hover) {
+  .msg-reply-btn:hover {
+    color: var(--color-win-blue);
+  }
+}
+.msg-reply-btn:active {
   color: var(--color-win-blue);
 }
 
@@ -222,7 +227,12 @@
   outline-offset: 1px;
 }
 
-.msg-reply-reply-btn:hover {
+@media (hover: hover) {
+  .msg-reply-reply-btn:hover {
+    color: var(--color-win-blue);
+  }
+}
+.msg-reply-reply-btn:active {
   color: var(--color-win-blue);
 }
 
@@ -254,7 +264,12 @@
   padding: 0 2px;
 }
 
-.message-reply-hint-close:hover {
+@media (hover: hover) {
+  .message-reply-hint-close:hover {
+    color: var(--color-error);
+  }
+}
+.message-reply-hint-close:active {
   color: var(--color-error);
 }
 
@@ -358,4 +373,80 @@
 .msg-toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* ── 移动端适配 ── */
+@media (max-width: 768px) {
+  /* 表单输入框：≥16px 避免 iOS 自动缩放 */
+  .message-form-body input[type="text"],
+  .message-form-body textarea {
+    font-size: 16px;
+  }
+  .message-form-body .field-row-stacked label {
+    font-size: 13px;
+  }
+  .msg-char-counter {
+    font-size: 12px;
+  }
+  /* 留言列表标题 */
+  .message-list-header {
+    font-size: 13px;
+  }
+  /* 留言卡片元信息 */
+  .message-location,
+  .message-time {
+    font-size: 12px;
+  }
+  .message-card-body {
+    font-size: 14px;
+  }
+  /* 回复按钮：扩展触摸区域 */
+  .msg-reply-btn,
+  .msg-reply-reply-btn {
+    display: inline-block;
+    font-size: 12px;
+    padding: 6px 4px;
+  }
+  /* 回复区域 */
+  .message-reply-nickname {
+    font-size: 13px;
+  }
+  .message-reply-location,
+  .message-reply-time {
+    font-size: 12px;
+  }
+  .message-reply-body {
+    font-size: 13px;
+  }
+  .message-reply-at {
+    font-size: 13px;
+  }
+  .message-reply-hint {
+    font-size: 12px;
+  }
+  .message-reply-hint-close {
+    padding: 8px 6px;
+  }
+  /* 回复表单输入框 */
+  .msg-reply-form input[type="text"],
+  .msg-reply-form textarea {
+    font-size: 16px;
+  }
+  /* 状态提示 */
+  .msg-loading,
+  .msg-empty,
+  .msg-error {
+    font-size: 13px;
+  }
+  /* 分页按钮：扩展触摸区域 */
+  .msg-page-btn {
+    height: 36px;
+    font-size: 13px;
+  }
+  .msg-page-indicator {
+    font-size: 13px;
+  }
+  .msg-toast {
+    font-size: 13px;
+  }
 }

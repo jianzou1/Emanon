@@ -39,13 +39,15 @@
       text-shadow 0.3s ease;
   }
   
-  .logo .text-container:hover {
-    /* 在 JS 计算的适配缩放基础上再放大 1.08 倍，而非覆盖 */
-    transform: translate(-50%, -50%) scale(calc(var(--logo-scale) * 1.08));
-    /* 悬停时增强立体阴影效果 */
-    text-shadow: 
-      0 2px 2px rgba(255, 255, 255, 0.4),    /* 强化顶部反光 */
-      0 -2px 4px rgba(0, 0, 0, 0.6),         /* 加深底部投影 */
-      0 4px 8px rgba(0, 0, 0, 0.3),          /* 扩展整体阴影 */
-      0 0 12px rgba(0, 0, 0, 0.2);           /* 添加弥散阴影效果 */
+  @media (hover: hover) {
+    .logo .text-container:hover {
+      /* 在 JS 计算的适配缩放基础上再放大 1.08 倍，而非覆盖 */
+      transform: translate(-50%, -50%) scale(calc(var(--logo-scale) * 1.08));
+      /* 悬停时增强立体阴影效果 */
+      text-shadow: 
+        0 2px 2px rgba(255, 255, 255, 0.4),    /* 强化顶部反光 */
+        0 -2px 4px rgba(0, 0, 0, 0.6),         /* 加深底部投影 */
+        0 4px 8px rgba(0, 0, 0, 0.3),          /* 扩展整体阴影 */
+        0 0 12px rgba(0, 0, 0, 0.2);           /* 添加弥散阴影效果 */
+    }
   }

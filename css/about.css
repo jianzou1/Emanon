@@ -43,8 +43,14 @@ table td {
   transition: opacity 0.15s;
 }
 
-.computer-fail-icon:hover,
-.password:hover {
+@media (hover: hover) {
+  .computer-fail-icon:hover,
+  .password:hover {
+    opacity: 1;
+  }
+}
+.computer-fail-icon:active,
+.password:active {
   opacity: 1;
 }
 
@@ -54,4 +60,12 @@ table td {
 
 .password {
   background-image: url('/icon/keys-5.png');
+}
+
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }

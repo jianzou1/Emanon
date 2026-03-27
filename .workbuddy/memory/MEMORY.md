@@ -57,6 +57,22 @@
 - `gallery.js` 导出 `cleanupGallery()`：断开 IntersectionObserver + 移除 window click 监听器
 - `tips.js` 使用事件委托（body 级 mouseover/mouseout），单例模式不需要 cleanup
 
+## CSS 移动端优化（2026-03-28 实施）
+- 全局 `body` 添加 `overflow-wrap: break-word`
+- tab 菜单 `width: 75px` → `min-width: 75px`
+- `.window`/`.logo` 移动端 `max-width: 375px` → `calc(100vw - 16px)` 自适应
+- `status-bar p` 移动端字号 12px → 13px；`ul.tree-view li` 移动端 11px → 12px
+- `password.css` 新增 `@media(max-width:768px)` 断点：输入框 height 36px / width 100% / font-size 16px
+- `message.css` 新增移动端断点：分页按钮 height 36px、回复按钮 padding 扩展触摸区域、全局字号提升、输入框 16px
+- `about.css` 新增移动端断点：表格 `display:block; overflow-x:auto`
+- `article.css` 移动端 `.link-title` max-width 55px → 72px
+- 全部 6 处 `:hover` 迁移至 `@media(hover:hover)` 包裹，添加 `:active` 触摸替代（logo/article/about/message×3）
+- `game.css`：tree-view `!important` 替换为高特异性选择器；`.scroll-container` 移除 `will-change` 常驻（JS 内联已设置，不影响功能）
+- `daily.css` 移动端弹窗 `width:auto`、字号 12px → 13px
+- `progress.css` 新增移动端断点：`#refresh-timer` 11px → 12px、`.progress-text` 12px → 13px
+- `gallery.css` 无需修改（已有良好实践）
+- CRT 效果未触碰（用户要求不改）
+
 ## 文章构建管线（post/_src/post.js）
 - Markdown 文件支持 frontmatter（`---` 分隔），字段：title、icon、order、hidden
 - `post.js` 自动生成 `cfg/article_cfg.json`（过滤 hidden、按 order 排序）

@@ -59,13 +59,14 @@ body {
   align-items: center;
   justify-content: center;
   background-color: var(--color-bg);
+  overflow-wrap: break-word;
 }
 
 menu[role=tablist] > li {
   font-family: var(--font-ui);
   font-weight: bold;
   text-align: center;
-  width: 75px;
+  min-width: 75px;
   background-color: var(--color-win-gray);
 }
 
@@ -120,7 +121,7 @@ ul.tree-view li {
   margin-top: 1%;
   font-family: var(--font-ui);
   font-size: 11px;
-  line-height: 0.2 !important;
+  line-height: 1.4;
   text-decoration: underline dotted blue;
 }
 
@@ -163,20 +164,22 @@ code {
 }
 
 @media (max-width: 768px) {
-  .logo { margin: 5% auto 20px; max-width: 375px; height: 136px; }
+  .logo { margin: 5% auto 20px; max-width: calc(100vw - 16px); height: 136px; }
   .window {
     width: 100%;
-    max-width: 375px;
+    max-width: calc(100vw - 16px);
     padding: 5px;
   }
   .window img { max-width: 100%; }
   .status-bar { margin-bottom: 5%; }
+  .status-bar p { font-size: 13px; }
   p, .window li, h1, h2, h3, h4 {
     font-size: 16px;
     margin-bottom: 10px;
   }
+  ul.tree-view li { font-size: 12px; }
   code { font-size: 12px; }
-  .table-figure { font-size: 12px; }
+  .table-figure { font-size: 12px; overflow-x: auto; }
   .back-to-top { margin-right: 5%; }
 }
 
