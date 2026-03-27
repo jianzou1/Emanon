@@ -27,6 +27,8 @@ const TAB_DATA = [
 
 // 防止 HMR / 重初始化时重复绑定全局事件监听器
 let globalBindingsDone = false;
+// 标志位：当 popstate 由内存缓存处理时，跳过后续 pjax:complete 的重复处理
+let skipNextPjaxComplete = false;
 
 const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
   const navigateByPjax = (url, event) => {
@@ -111,18 +113,7 @@ const initializeApp = async () => {
     let currentTabHandler = null;
     const getTabHandler = () => currentTabHandler;
 
-    const refreshTabHandler = () => {
-      const tablist = document.querySelector(TABLIST_SELECTOR);
-      if (!tablist) {
-        currentTabHandler = null;
-        return;
-      }
-
-      tablist.innerHTML = '';
-      currentTabHandler = new TabHandler(TABLIST_SELECTOR, TAB_DATA, pjax);
-    };
-
-    // 页面加载处理器（提前声明，供下方 globalBindings 引用）
+    // 页面加载处理器（清理 + 初始化 + 通用功能）
     const handlePageLoad = () => {
       try {
         // 清理上一页的后台资源（定时器、Observer 等）
@@ -164,18 +155,54 @@ const initializeApp = async () => {
         handleScrollAndScrollToTop();
         initializeTips();
         initCRT();
+
+        // 确保多语言翻译应用到新内容
+        langManager.applyTranslations();
       } catch (error) {
         console.error('页面加载过程中出错:', error);
       }
     };
 
+    const refreshTabHandler = () => {
+      const tablist = document.querySelector(TABLIST_SELECTOR);
+      if (!tablist) {
+        currentTabHandler = null;
+        return;
+      }
+
+      tablist.innerHTML = '';
+      currentTabHandler = new TabHandler(TABLIST_SELECTOR, TAB_DATA, pjax, handlePageLoad);
+    };
+
     // 全局事件只绑定一次（防止 HMR 重初始化累积）
     if (!globalBindingsDone) {
       bindGlobalPjaxNavigation(pjax, getTabHandler);
+
+      // PJAX 完成事件（文章详情页等非页签页面仍走 PJAX）
       document.addEventListener('pjax:complete', () => {
+        // 如果是内存缓存处理的 popstate，跳过 PJAX 的重复处理
+        if (skipNextPjaxComplete) {
+          skipNextPjaxComplete = false;
+          return;
+        }
         handlePageLoad();
-        langManager.applyTranslations();
       });
+
+      // 浏览器前进/后退：从内存缓存恢复页签内容
+      // 注册到捕获阶段，先于 PJAX 的 popstate handler 执行
+      window.addEventListener('popstate', (event) => {
+        const url = window.location.pathname;
+        const cached = TabHandler.htmlCache.get(url);
+        if (cached) {
+          const main = document.getElementById('main');
+          if (main) main.innerHTML = cached;
+          // 标记：下一次 pjax:complete 跳过（PJAX 可能仍会触发自己的 popstate 处理）
+          skipNextPjaxComplete = true;
+          handlePageLoad();
+        }
+        // 非页签页面：不干预，让 PJAX 正常处理 popstate
+      }, true); // ← 捕获阶段
+
       globalBindingsDone = true;
     }
 

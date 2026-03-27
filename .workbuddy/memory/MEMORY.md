@@ -32,6 +32,17 @@
 - DefinePlugin 提供 `__BUILD_HASH__`（构建哈希）和 `__DEV__`（开发模式标志）
 - TerserPlugin 配置了 `drop_console: true`（生产环境移除 console）
 
+## 导航架构：SPA 化（2026-03-27 实施）
+- **页签切换**：内存缓存 + innerHTML 替换，零网络请求
+  - `TabHandler.htmlCache`（static Map）存储 URL → #main innerHTML
+  - 首次加载缓存当前页，`preloadTabs()` fetch + DOMParser 提取其他页签
+  - 点击页签：缓存命中 → innerHTML 注入 + `history.pushState()`；缓存 miss → fallback PJAX
+  - `popstate`（捕获阶段）：缓存命中时直接恢复，`skipNextPjaxComplete` 标志防双重触发
+- **PJAX 保留用途**：文章详情页（`/post/*`）、密码页、about 页等非页签页面
+- `handlePageLoad()` 内部调用 `langManager.applyTranslations()`，不再在 pjax:complete 中单独调用
+- `TabHandler` 构造函数接收 4 参数：selector, tabData, pjaxInstance, onPageLoad
+- `main.js` 中 handlePageLoad 声明在 refreshTabHandler 之前（作为参数传递）
+
 ## PJAX 生命周期管理（2026-03-26 新增）
 - `main.js` 中 handlePageLoad 开头调用各模块的 cleanup 函数（cleanupProgressBar / cleanupGallery）
 - `progressBar.js` 导出 `cleanupProgressBar()`：清理定时器 + visibilitychange 监听器
