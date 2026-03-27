@@ -3,246 +3,273 @@ import langManager from '/js/langManager.js';
 import { fetchJSON } from '/js/dataCache.js';
 import { escHtml } from '/js/utils.js';
 
+const GAME_CONFIG_URL = '/cfg/game_time_cfg.json';
+const SYSTEM_CONFIG_URL = '/cfg/system_cfg.json';
+const GAME_LIST_HTML_CLASS = '.game-list';
+
+// ── 模块级状态：跨页签切换持久化，避免重复计算 ──
+let games = [];
+let typeNames = {};
+let qualityNames = [];
+let dataLoaded = false;
+let radiosBound = false;  // 事件委托标志，防止重复绑定
+
+// ── 排序结果缓存：切换排序选项时命中缓存，避免重复分组/排序 ──
+const sortCache = new Map(); // sortOption → html string
+function invalidateSortCache() { sortCache.clear(); }
+
 export function gameList() {
-    const GAME_CONFIG_URL = '/cfg/game_time_cfg.json';
-    const SYSTEM_CONFIG_URL = '/cfg/system_cfg.json';
-    const GAME_LIST_HTML_CLASS = '.game-list';
-
-    let games = [];
-    let typeNames = {};
-    let qualityNames = [];
-
+    if (dataLoaded) {
+        // 数据已加载：直接渲染 + 绑定事件
+        renderStats();
+        renderSorted('按游戏评级排序');
+        bindSortRadios();
+        return;
+    }
     fetchGameData();
+}
 
-    async function fetchGameData() {
-        try {
-            const [gameData, systemData] = await Promise.all([
-                fetchJSON(GAME_CONFIG_URL),
-                fetchJSON(SYSTEM_CONFIG_URL)
-            ]);
+async function fetchGameData() {
+    try {
+        const [gameData, systemData] = await Promise.all([
+            fetchJSON(GAME_CONFIG_URL),
+            fetchJSON(SYSTEM_CONFIG_URL)
+        ]);
 
-            const systemTypeName = getSystemValue(systemData, 'typeName');
-            const systemQualityName = getSystemValue(systemData, 'qualityName');
+        typeNames = parseTypeNames(getSystemValue(systemData, 'typeName'));
+        qualityNames = parseQualityNames(getSystemValue(systemData, 'qualityName'));
+        games = normalizeGameData(gameData);
+        dataLoaded = true;
 
-            typeNames = parseTypeNames(systemTypeName);
-            qualityNames = parseQualityNames(systemQualityName);
-            games = normalizeGameData(gameData);
+        renderStats();
+        renderSorted('按游戏评级排序');
+        bindSortRadios();
+    } catch (error) {
+        console.error("读取游戏数据失败:", error.message);
+    }
+}
 
-            const stats = calculateStats(games);
-            updateHtmlContent(stats);
-            sortGames('按游戏评级排序');
+// ── 统计 + 渲染 ──
 
-            // 绑定排序选项
-            document.querySelectorAll('input[name="sort-option"]').forEach((radio) => {
-                radio.addEventListener('change', (event) => {
-                    sortGames(event.target.value);
-                });
-            });
-        } catch (error) {
-            console.error("读取游戏数据失败:", error.message);
+function renderStats() {
+    const totalTime = games.reduce((sum, g) => sum + g.time, 0);
+    const totalDays = Math.floor(totalTime / 24);
+    const totalYears = (totalTime / 24 / 365).toFixed(2);
+
+    applyParam('total_time', totalTime);
+    applyParam('equivalent_days', totalDays);
+    applyParam('equivalent_years', totalYears);
+}
+
+function applyParam(id, value) {
+    const el = document.querySelector(`[data-lang-id="${id}"]`);
+    if (!el) return;
+    el.dataset.langParams = JSON.stringify([value]);
+    langManager.setParams(id, [value]);
+}
+
+// ── 排序选项事件：事件委托，只绑定一次 ──
+
+function bindSortRadios() {
+    if (radiosBound) return;
+    const container = document.querySelector('.select-container');
+    if (!container) return;
+    radiosBound = true;
+
+    container.addEventListener('change', (event) => {
+        const radio = event.target.closest('input[name="sort-option"]');
+        if (radio) renderSorted(radio.value);
+    });
+}
+
+// ── 排序 + 渲染（带缓存） ──
+
+function renderSorted(selectedOption) {
+    const gameListElement = document.querySelector(GAME_LIST_HTML_CLASS);
+    if (!gameListElement) return;
+
+    // 缓存命中
+    let html = sortCache.get(selectedOption);
+    if (!html) {
+        html = buildSortedHtml(selectedOption);
+        sortCache.set(selectedOption, html);
+    }
+
+    gameListElement.innerHTML = html;
+
+    // 淡入动画：使用 CSS stagger，不需要 setTimeout
+    const items = gameListElement.querySelectorAll('.tree-view > li');
+    const len = items.length;
+    for (let i = 0; i < len; i++) {
+        items[i].style.animationDelay = `${i * 20}ms`;
+        items[i].classList.add('tree-fade-in');
+    }
+}
+
+function buildSortedHtml(selectedOption) {
+    if (selectedOption === '按游戏评级排序') {
+        return generateQualityHtml(sortGamesByQuality());
+    }
+    if (selectedOption === '按游戏类型排序') {
+        return generateTypeHtml(groupAndSortGamesByType());
+    }
+    // 按游戏时长排序
+    const sorted = [...games].sort((a, b) => b.time - a.time);
+    return wrapTreeView(sorted.map(createGameListItem).join(''));
+}
+
+// ── 分组排序 ──
+
+function sortGamesByQuality() {
+    const grouped = Object.create(null);
+    for (let i = 0; i < games.length; i++) {
+        const key = String(games[i].quality || '0');
+        (grouped[key] || (grouped[key] = [])).push(games[i]);
+    }
+
+    const orderedGroups = [];
+    for (let i = 0; i < qualityNames.length; i++) {
+        const key = qualityNames[i].key;
+        if (grouped[key]) {
+            orderedGroups.push({ key, games: grouped[key].sort((a, b) => b.time - a.time) });
+            delete grouped[key];
         }
     }
 
-    function getSystemValue(systemData, id) {
-        if (!Array.isArray(systemData)) return '';
-        return systemData.find(item => item.id === id)?.value || '';
+    // 未定义的评级
+    const remaining = Object.keys(grouped);
+    remaining.sort((a, b) => b.localeCompare(a));
+    for (let i = 0; i < remaining.length; i++) {
+        orderedGroups.push({ key: remaining[i], games: grouped[remaining[i]] });
+    }
+    return orderedGroups;
+}
+
+function groupAndSortGamesByType() {
+    // 分组
+    const grouped = Object.create(null);
+    for (let i = 0; i < games.length; i++) {
+        const g = games[i];
+        const type = g.type;
+        const series = g.seriesTag || '无系列';
+        if (!grouped[type]) grouped[type] = Object.create(null);
+        (grouped[type][series] || (grouped[type][series] = [])).push(g);
     }
 
-    function normalizeGameData(gameData) {
-        if (Array.isArray(gameData)) {
-            if (gameData[0] && typeof gameData[0] === 'object' && 'name' in gameData[0]) {
-                return gameData;
+    // 每个系列内部按时长降序
+    const types = Object.keys(grouped);
+    for (let t = 0; t < types.length; t++) {
+        const seriesMap = grouped[types[t]];
+        const seriesKeys = Object.keys(seriesMap);
+
+        for (let s = 0; s < seriesKeys.length; s++) {
+            seriesMap[seriesKeys[s]].sort((a, b) => b.time - a.time);
+        }
+
+        // 系列之间按最大时长降序（用 reduce 代替 Math.max(...) 防止爆栈）
+        seriesKeys.sort((a, b) => {
+            return maxTime(seriesMap[b]) - maxTime(seriesMap[a]);
+        });
+
+        // 重建有序对象
+        const ordered = Object.create(null);
+        for (let s = 0; s < seriesKeys.length; s++) {
+            ordered[seriesKeys[s]] = seriesMap[seriesKeys[s]];
+        }
+        grouped[types[t]] = ordered;
+    }
+    return grouped;
+}
+
+function maxTime(arr) {
+    let max = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].time > max) max = arr[i].time;
+    }
+    return max;
+}
+
+// ── HTML 生成 ──
+
+function wrapTreeView(innerHtml) {
+    return `<ul class="tree-view">${innerHtml}</ul>`;
+}
+
+function generateQualityHtml(orderedGroups) {
+    const parts = [];
+    for (let i = 0; i < orderedGroups.length; i++) {
+        const { key, games: groupGames } = orderedGroups[i];
+        const quality = qualityNames.find(q => q.key === key);
+        const title = escHtml(quality ? quality.value : `未定义评级（${key}）`);
+        const children = groupGames.map(createGameListItem).join('');
+        parts.push(`<li><details open><summary>${title}</summary><ul>${children}</ul></details></li>`);
+    }
+    return wrapTreeView(parts.join(''));
+}
+
+function generateTypeHtml(groupedGames) {
+    const parts = [];
+    const types = Object.keys(groupedGames);
+    for (let t = 0; t < types.length; t++) {
+        const typeName = escHtml(typeNames[types[t]] || types[t]);
+        const series = groupedGames[types[t]];
+        const seriesKeys = Object.keys(series);
+        const children = [];
+        for (let s = 0; s < seriesKeys.length; s++) {
+            const items = series[seriesKeys[s]];
+            for (let g = 0; g < items.length; g++) {
+                children.push(createGameListItem(items[g]));
             }
-            if (Array.isArray(gameData[1])) return gameData[1];
         }
-        return [];
+        parts.push(`<li><details open><summary>${typeName}</summary><ul>${children.join('')}</ul></details></li>`);
     }
+    return wrapTreeView(parts.join(''));
+}
 
-    function calculateStats(games) {
-        const totalTime = games.reduce((sum, game) => sum + game.time, 0);
-        const totalDays = Math.floor(totalTime / 24);
-        const totalYears = (totalTime / 24 / 365).toFixed(2);
-        return { totalTime, totalDays, totalYears };
+function createGameListItem(game) {
+    const heart = game.isLoved ? '<span class="game-loved">★</span>' : '';
+    const sign = escHtml(game.sign || '');
+    const achievementText = game.spacialAchievements ? escHtml(game.spacialAchievements).replace(/\n/g, '<br>') : '';
+    const escapedName = escHtml(game.name);
+    const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${escapedName}</i>` : escapedName;
+    const qualityClass = `quality-${game.quality || 1}`;
+
+    const timeHtml = `<span class="game-time">${sign} ${game.time}h</span>`;
+    const nameHtml = `<strong>${gameName}</strong> ${heart}`;
+
+    if (achievementText) {
+        return `<li class="${qualityClass}"><details><summary>${nameHtml} ${timeHtml}</summary><ul><li><div class="achievement-info">${achievementText}</div></li></ul></details></li>`;
     }
+    return `<li class="${qualityClass}">${nameHtml} ${timeHtml}</li>`;
+}
 
-    function updateHtmlContent({ totalTime, totalDays, totalYears }) {
-        const updateParam = (id, value) => {
-            try {
-                const el = document.querySelector(`[data-lang-id="${id}"]`);
-                if (el) {
-                    el.dataset.langParams = JSON.stringify([value]);
-                    langManager.setParams(id, [value]);
-                }
-            } catch (e) {}
-        };
+// ── 工具函数 ──
 
-        updateParam('total_time', totalTime);
-        updateParam('equivalent_days', totalDays);
-        updateParam('equivalent_years', totalYears);
+function getSystemValue(systemData, id) {
+    if (!Array.isArray(systemData)) return '';
+    return systemData.find(item => item.id === id)?.value || '';
+}
 
-        updateHtmlContentDetails(groupAndSortGamesByType());
+function normalizeGameData(gameData) {
+    if (Array.isArray(gameData)) {
+        if (gameData[0] && typeof gameData[0] === 'object' && 'name' in gameData[0]) return gameData;
+        if (Array.isArray(gameData[1])) return gameData[1];
     }
+    return [];
+}
 
-    function sortGames(selectedOption) {
-        let sortedGames;
+function parseTypeNames(str) {
+    if (!str) return {};
+    return Object.fromEntries(str.split(',').map(c => {
+        const [k, v] = c.split(':');
+        return [k.trim(), v.trim()];
+    }));
+}
 
-        if (selectedOption === '按游戏评级排序') {
-            sortedGames = sortGamesByQuality();
-        } else if (selectedOption === '按游戏类型排序') {
-            sortedGames = groupAndSortGamesByType();
-        } else if (selectedOption === '按游戏时长排序') {
-            sortedGames = [...games].sort((a, b) => b.time - a.time);
-        }
-
-        updateHtmlContentDetails(sortedGames, selectedOption);
-    }
-
-    function sortGamesByQuality() {
-        const grouped = games.reduce((acc, game) => {
-            const qualityKey = String(game.quality || "0");
-            if (!acc[qualityKey]) acc[qualityKey] = [];
-            acc[qualityKey].push(game);
-            return acc;
-        }, {});
-
-        const orderedGroups = [];
-        qualityNames.forEach(({ key }) => {
-            if (grouped[key]) {
-                orderedGroups.push({
-                    key,
-                    games: grouped[key].sort((a, b) => b.time - a.time)
-                });
-                delete grouped[key];
-            }
-        });
-
-        Object.entries(grouped)
-            .sort((a, b) => b[0].localeCompare(a[0]))
-            .forEach(([key, games]) => {
-                orderedGroups.push({ key, games });
-            });
-
-        return orderedGroups;
-    }
-
-    function parseQualityNames(qualityNameStr) {
-        if (!qualityNameStr) return [];
-        return qualityNameStr.split(',')
-            .map(item => {
-                const [key, value] = item.trim().split(':');
-                return { key: key.trim(), value: value.trim() };
-            });
-    }
-
-    // ── Tree-view HTML 生成 ──
-
-    function wrapTreeView(innerHtml) {
-        return `<ul class="tree-view">${innerHtml}</ul>`;
-    }
-
-    function generateQualityHtml(orderedGroups) {
-        const items = orderedGroups.map(({ key, games }) => {
-            const quality = qualityNames.find(q => q.key === key);
-            const title = escHtml(quality ? quality.value : `未定义评级（${key}）`);
-            const children = games.map(createGameListItem).join('');
-            return `<li><details open><summary>${title}</summary><ul>${children}</ul></details></li>`;
-        }).join('');
-        return wrapTreeView(items);
-    }
-
-    function generateHtmlContent(groupedGames, typeNames = {}) {
-        const items = Object.entries(groupedGames).map(([type, series]) => {
-            const typeName = escHtml(typeNames[type] || type);
-            const children = Object.entries(series).map(([seriesTag, gamesInSeries]) =>
-                gamesInSeries.map(createGameListItem).join('')
-            ).join('');
-            return `<li><details open><summary>${typeName}</summary><ul>${children}</ul></details></li>`;
-        }).join('');
-        return wrapTreeView(items);
-    }
-
-    function generateFlatHtml(sortedGames) {
-        if (!Array.isArray(sortedGames) || !sortedGames.length) return '';
-        return wrapTreeView(sortedGames.map(createGameListItem).join(''));
-    }
-
-    function updateHtmlContentDetails(sortedGames, selectedOption) {
-        const gameListElement = document.querySelector(GAME_LIST_HTML_CLASS);
-        let html;
-        if (selectedOption === '按游戏评级排序') {
-            html = generateQualityHtml(sortedGames);
-        } else if (selectedOption === '按游戏类型排序') {
-            html = generateHtmlContent(sortedGames, typeNames);
-        } else {
-            html = generateFlatHtml(sortedGames);
-        }
-        gameListElement.innerHTML = html || '';
-        // 逐行淡入动画：只对直接游戏条目生效
-        const items = gameListElement.querySelectorAll('.tree-view > li');
-        items.forEach((item, index) => {
-            setTimeout(() => item.classList.add('tree-fade-in'), index * 20);
-        });
-    }
-
-    function parseTypeNames(typeNameStr) {
-        if (!typeNameStr) return {};
-        return Object.fromEntries(
-            typeNameStr.split(',').map(curr => {
-                const [key, value] = curr.split(':');
-                return [key.trim(), value.trim()];
-            })
-        );
-    }
-
-    function groupGames(games) {
-        return games.reduce((acc, game) => {
-            const type = game.type;
-            const seriesTag = game.seriesTag || "无系列";
-            acc[type] = acc[type] || {};
-            acc[type][seriesTag] = acc[type][seriesTag] || [];
-            acc[type][seriesTag].push(game);
-            return acc;
-        }, {});
-    }
-
-    function groupAndSortGamesByType() {
-        const groupedGames = groupGames(games);
-        Object.keys(groupedGames).forEach(type => {
-            Object.keys(groupedGames[type]).forEach(seriesTag => {
-                groupedGames[type][seriesTag].sort((a, b) => b.time - a.time);
-            });
-        });
-        Object.keys(groupedGames).forEach(type => {
-            const seriesTags = Object.keys(groupedGames[type]);
-            seriesTags.sort((a, b) => {
-                const maxTimeA = Math.max(...groupedGames[type][a].map(game => game.time));
-                const maxTimeB = Math.max(...groupedGames[type][b].map(game => game.time));
-                return maxTimeB - maxTimeA;
-            });
-            groupedGames[type] = seriesTags.reduce((acc, seriesTag) => {
-                acc[seriesTag] = groupedGames[type][seriesTag];
-                return acc;
-            }, {});
-        });
-        return groupedGames;
-    }
-
-    function createGameListItem(game) {
-        const heart = game.isLoved ? '<span class="game-loved">★</span>' : '';
-        const sign = escHtml(game.sign || '');
-        const achievementText = game.spacialAchievements ? escHtml(game.spacialAchievements).replace(/\n/g, '<br>') : '';
-        const escapedName = escHtml(game.name);
-        const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${escapedName}</i>` : escapedName;
-        const qualityClass = `quality-${game.quality || 1}`;
-
-        // 严格遵循 98.css tree-view 标准结构
-        const timeHtml = `<span class="game-time">${sign} ${game.time}h</span>`;
-        const nameHtml = `<strong>${gameName}</strong> ${heart}`;
-
-        if (achievementText) {
-            return `<li class="${qualityClass}"><details><summary>${nameHtml} ${timeHtml}</summary><ul><li><div class="achievement-info">${achievementText}</div></li></ul></details></li>`;
-        }
-
-        return `<li class="${qualityClass}">${nameHtml} ${timeHtml}</li>`;
-    }
+function parseQualityNames(str) {
+    if (!str) return [];
+    return str.split(',').map(item => {
+        const [k, v] = item.trim().split(':');
+        return { key: k.trim(), value: v.trim() };
+    });
 }

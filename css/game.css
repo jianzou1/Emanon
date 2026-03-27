@@ -35,7 +35,7 @@ ul.tree-view .game-list .tree-view li,
   font-size: 11px;
 }
 
-/* 只有顶层条目初始隐藏，由 JS tree-fade-in 动画显示 */
+/* 只有顶层条目初始隐藏，由 .tree-fade-in class 触发淡入动画 */
 .game-list .tree-view > li {
   opacity: 0;
 }

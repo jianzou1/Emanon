@@ -44,36 +44,30 @@ export function initGameRoll() {
   };
 
   function init() {
-    setupDOM()
-      .then(() => {
-        dom.story = document.getElementById('story');
-        createScrollContainer();
-        loadSystemConfig();
-        loadGameData();
-        bindEvents();
-      })
-      .catch(() => {
-        dom.result.innerHTML = '<div class="error">系统初始化失败，请检查网络</div>';
-      });
-  }
+    // SPA 化后 DOM 是同步注入的，优先同步查找
+    dom.rollBtn = document.getElementById('gameRollBtn');
+    dom.result = document.getElementById('gameResult');
 
-  function setupDOM() {
-    return new Promise((resolve, reject) => {
-      let retries = 0;
-      const checkElements = () => {
+    if (dom.rollBtn && dom.result) {
+      setup();
+    } else {
+      // 极端情况：DOM 还没就绪（首次整页加载 + 脚本提前执行），用 rAF 重试一次
+      requestAnimationFrame(() => {
         dom.rollBtn = document.getElementById('gameRollBtn');
         dom.result = document.getElementById('gameResult');
-
         if (dom.rollBtn && dom.result) {
-          resolve();
-        } else if (retries++ < 20) {
-          setTimeout(checkElements, 50);
-        } else {
-          reject(new Error('DOM元素加载超时'));
+          setup();
         }
-      };
-      checkElements();
-    });
+      });
+    }
+  }
+
+  function setup() {
+    dom.story = document.getElementById('story');
+    createScrollContainer();
+    loadSystemConfig();
+    loadGameData();
+    bindEvents();
   }
 
   function createScrollContainer() {
@@ -178,19 +172,23 @@ export function initGameRoll() {
     return [];
   }
 
-  // 填充滚动列表数据，数量不足时重复打乱填充，确保始终达到 PARTICIPATION_COUNT
+  // 填充滚动列表数据——一次性生成，避免 while 循环反复复制+洗牌
   function generateLoopData() {
     const loop = state.currentWinner ? [state.currentWinner] : [];
-    // base 排除当前 winner（避免 loop 中重复出现）
     const base = getAvailableData().filter(
       item => !state.currentWinner || item.name !== state.currentWinner.name
     );
 
-    if (base.length) {
-      while (loop.length < CONFIG.PARTICIPATION_COUNT) {
-        const needed = CONFIG.PARTICIPATION_COUNT - loop.length;
-        loop.push(...shuffleArray([...base]).slice(0, needed));
-      }
+    if (!base.length) return shuffleArray(loop);
+
+    // 一次性计算需要多少轮 base 来填满 PARTICIPATION_COUNT
+    const needed = CONFIG.PARTICIPATION_COUNT - loop.length;
+    const fullRounds = Math.ceil(needed / base.length);
+
+    for (let r = 0; r < fullRounds; r++) {
+      const chunk = shuffleArray([...base]);
+      const take = Math.min(chunk.length, CONFIG.PARTICIPATION_COUNT - loop.length);
+      for (let i = 0; i < take; i++) loop.push(chunk[i]);
     }
 
     return shuffleArray(loop);

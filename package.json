@@ -8,6 +8,7 @@
     "pack": "webpack --mode production",
     "post": "node post/_src/post.js",
     "cfg": "node cfg/excelToJson.js",
+    "cfg:export": "node cfg/jsonToExcel.js",
     "build": "node post/_src/post.js && node cfg/excelToJson.js && webpack --mode production"
   },
   "keywords": [],
