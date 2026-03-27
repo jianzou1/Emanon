@@ -45,7 +45,7 @@
   - `TabHandler.htmlCache`（static Map）存储 URL → #main innerHTML
   - 首次加载缓存当前页，`preloadTabs()` fetch + DOMParser 提取其他页签
   - 点击页签：缓存命中 → innerHTML 注入 + `history.pushState()`；缓存 miss → fallback PJAX
-  - `popstate`（捕获阶段）：缓存命中时直接恢复，`skipNextPjaxComplete` 标志防双重触发
+  - `popstate`（捕获阶段）：缓存命中时 `stopImmediatePropagation()` 阻止 PJAX 的 popstate 处理，直接恢复缓存内容
 - **PJAX 保留用途**：文章详情页（`/post/*`）、密码页、about 页等非页签页面
 - `handlePageLoad()` 内部调用 `langManager.applyTranslations()`，不再在 pjax:complete 中单独调用
 - `TabHandler` 构造函数接收 4 参数：selector, tabData, pjaxInstance, onPageLoad

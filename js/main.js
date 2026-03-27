@@ -27,8 +27,6 @@ const TAB_DATA = [
 
 // 防止 HMR / 重初始化时重复绑定全局事件监听器
 let globalBindingsDone = false;
-// 标志位：当 popstate 由内存缓存处理时，跳过后续 pjax:complete 的重复处理
-let skipNextPjaxComplete = false;
 
 const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
   const navigateByPjax = (url, event) => {
@@ -180,11 +178,6 @@ const initializeApp = async () => {
 
       // PJAX 完成事件（文章详情页等非页签页面仍走 PJAX）
       document.addEventListener('pjax:complete', () => {
-        // 如果是内存缓存处理的 popstate，跳过 PJAX 的重复处理
-        if (skipNextPjaxComplete) {
-          skipNextPjaxComplete = false;
-          return;
-        }
         handlePageLoad();
       });
 
@@ -194,10 +187,10 @@ const initializeApp = async () => {
         const url = window.location.pathname;
         const cached = TabHandler.htmlCache.get(url);
         if (cached) {
+          // 阻止 PJAX 的 popstate 处理器执行，避免异步请求覆盖已恢复的缓存内容
+          event.stopImmediatePropagation();
           const main = document.getElementById('main');
           if (main) main.innerHTML = cached;
-          // 标记：下一次 pjax:complete 跳过（PJAX 可能仍会触发自己的 popstate 处理）
-          skipNextPjaxComplete = true;
           handlePageLoad();
         }
         // 非页签页面：不干预，让 PJAX 正常处理 popstate
