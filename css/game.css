@@ -21,6 +21,12 @@ ul.tree-view .game-list .tree-view li,
   line-height: 12px;
   margin: 0;
   padding: 0;
+  list-style: none;
+}
+
+/* iOS Safari / WebKit: 隐藏 summary 默认的展开箭头 */
+.game-list .tree-view details > summary::-webkit-details-marker {
+  display: none;
 }
 
 .game-list .tree-view details[open] > summary {
