@@ -7,23 +7,32 @@ const GAME_CONFIG_URL = '/cfg/game_time_cfg.json';
 const SYSTEM_CONFIG_URL = '/cfg/system_cfg.json';
 const GAME_LIST_HTML_CLASS = '.game-list';
 
+// 排序标识符常量（与 EJS radio value 对应，语言无关）
+const SORT_QUALITY = 'sort_quality';
+const SORT_TYPE = 'sort_type';
+const SORT_TIME = 'sort_time';
+const DEFAULT_SORT = SORT_QUALITY;
+
 // ── 模块级状态：跨页签切换持久化，避免重复计算 ──
 let games = [];
-let typeNames = {};
-let qualityNames = [];
+let typeKeys = [];      // ['1','2',...] — 从 system_cfg 解析的类型编号顺序
+let qualityKeys = [];   // ['6','5',...] — 从 system_cfg 解析的评级编号顺序
 let dataLoaded = false;
 let radiosBound = false;  // 事件委托标志，防止重复绑定
+let langListenerBound = false; // 语言切换监听标志
+let currentSort = DEFAULT_SORT; // 当前排序选项
 
 // ── 排序结果缓存：切换排序选项时命中缓存，避免重复分组/排序 ──
-const sortCache = new Map(); // sortOption → html string
+// key 格式：`${sortOption}_${lang}` — 语言切换后自动 miss
+const sortCache = new Map();
 function invalidateSortCache() { sortCache.clear(); }
 
 export function gameList() {
     if (dataLoaded) {
-        // 数据已加载：直接渲染 + 绑定事件
         renderStats();
-        renderSorted('按游戏评级排序');
+        renderSorted(currentSort);
         bindSortRadios();
+        bindLangSwitchListener();
         return;
     }
     fetchGameData();
@@ -36,17 +45,45 @@ async function fetchGameData() {
             fetchJSON(SYSTEM_CONFIG_URL)
         ]);
 
-        typeNames = parseTypeNames(getSystemValue(systemData, 'typeName'));
-        qualityNames = parseQualityNames(getSystemValue(systemData, 'qualityName'));
+        typeKeys = parseKeys(getSystemValue(systemData, 'typeName'));
+        qualityKeys = parseKeys(getSystemValue(systemData, 'qualityName'));
         games = normalizeGameData(gameData);
         dataLoaded = true;
 
         renderStats();
-        renderSorted('按游戏评级排序');
+        renderSorted(DEFAULT_SORT);
         bindSortRadios();
+        bindLangSwitchListener();
     } catch (error) {
-        console.error("读取游戏数据失败:", error.message);
+        console.error("Failed to load game data:", error.message);
     }
+}
+
+// ── 语言切换监听：清除缓存 + 重渲染 ──
+
+function bindLangSwitchListener() {
+    if (langListenerBound) return;
+    langListenerBound = true;
+
+    // 监听语言切换器的 change 事件（冒泡阶段，在 langManager 处理之后）
+    const switcher = document.getElementById('lang-switcher');
+    if (switcher) {
+        // 用 MutationObserver 监听 switcher 被替换的情况（langManager 每次 applyTranslations 会 cloneNode）
+        // 更可靠的方案：监听 localStorage 变化 or 定期检查
+        // 最简方案：在 body 上委托 change 事件
+    }
+
+    // 使用 storage 事件不可靠（同页面不触发），改用轮询检测 + 事件委托
+    // 最简且可靠：委托 change 事件到 document，过滤 #lang-switcher
+    document.addEventListener('change', (e) => {
+        if (e.target.id === 'lang-switcher' || e.target.closest('#lang-switcher')) {
+            // 语言已经被 langManager 切换，延迟一个微任务确保 langManager 已更新
+            Promise.resolve().then(() => {
+                invalidateSortCache();
+                renderSorted(currentSort);
+            });
+        }
+    });
 }
 
 // ── 统计 + 渲染 ──
@@ -78,21 +115,26 @@ function bindSortRadios() {
 
     container.addEventListener('change', (event) => {
         const radio = event.target.closest('input[name="sort-option"]');
-        if (radio) renderSorted(radio.value);
+        if (radio) {
+            currentSort = radio.value;
+            renderSorted(currentSort);
+        }
     });
 }
 
-// ── 排序 + 渲染（带缓存） ──
+// ── 排序 + 渲染（带缓存，按 sort+lang 做 key） ──
 
 function renderSorted(selectedOption) {
     const gameListElement = document.querySelector(GAME_LIST_HTML_CLASS);
     if (!gameListElement) return;
 
-    // 缓存命中
-    let html = sortCache.get(selectedOption);
+    const lang = langManager.getCurrentLang();
+    const cacheKey = `${selectedOption}_${lang}`;
+
+    let html = sortCache.get(cacheKey);
     if (!html) {
         html = buildSortedHtml(selectedOption);
-        sortCache.set(selectedOption, html);
+        sortCache.set(cacheKey, html);
     }
 
     gameListElement.innerHTML = html;
@@ -107,13 +149,13 @@ function renderSorted(selectedOption) {
 }
 
 function buildSortedHtml(selectedOption) {
-    if (selectedOption === '按游戏评级排序') {
+    if (selectedOption === SORT_QUALITY) {
         return generateQualityHtml(sortGamesByQuality());
     }
-    if (selectedOption === '按游戏类型排序') {
+    if (selectedOption === SORT_TYPE) {
         return generateTypeHtml(groupAndSortGamesByType());
     }
-    // 按游戏时长排序
+    // SORT_TIME
     const sorted = [...games].sort((a, b) => b.time - a.time);
     return wrapTreeView(sorted.map(createGameListItem).join(''));
 }
@@ -128,8 +170,8 @@ function sortGamesByQuality() {
     }
 
     const orderedGroups = [];
-    for (let i = 0; i < qualityNames.length; i++) {
-        const key = qualityNames[i].key;
+    for (let i = 0; i < qualityKeys.length; i++) {
+        const key = qualityKeys[i];
         if (grouped[key]) {
             orderedGroups.push({ key, games: grouped[key].sort((a, b) => b.time - a.time) });
             delete grouped[key];
@@ -146,12 +188,11 @@ function sortGamesByQuality() {
 }
 
 function groupAndSortGamesByType() {
-    // 分组
     const grouped = Object.create(null);
     for (let i = 0; i < games.length; i++) {
         const g = games[i];
         const type = g.type;
-        const series = g.seriesTag || '无系列';
+        const series = g.seriesTag || '__no_series__';
         if (!grouped[type]) grouped[type] = Object.create(null);
         (grouped[type][series] || (grouped[type][series] = [])).push(g);
     }
@@ -199,8 +240,7 @@ function generateQualityHtml(orderedGroups) {
     const parts = [];
     for (let i = 0; i < orderedGroups.length; i++) {
         const { key, games: groupGames } = orderedGroups[i];
-        const quality = qualityNames.find(q => q.key === key);
-        const title = escHtml(quality ? quality.value : `未定义评级（${key}）`);
+        const title = escHtml(langManager.translate(`game_quality_${key}`));
         const children = groupGames.map(createGameListItem).join('');
         parts.push(`<li><details open><summary>${title}</summary><ul>${children}</ul></details></li>`);
     }
@@ -211,7 +251,7 @@ function generateTypeHtml(groupedGames) {
     const parts = [];
     const types = Object.keys(groupedGames);
     for (let t = 0; t < types.length; t++) {
-        const typeName = escHtml(typeNames[types[t]] || types[t]);
+        const typeName = escHtml(langManager.translate(`game_type_${types[t]}`));
         const series = groupedGames[types[t]];
         const seriesKeys = Object.keys(series);
         const children = [];
@@ -229,9 +269,11 @@ function generateTypeHtml(groupedGames) {
 function createGameListItem(game) {
     const heart = game.isLoved ? '<span class="game-loved">★</span>' : '';
     const sign = escHtml(game.sign || '');
-    const achievementText = game.spacialAchievements ? escHtml(game.spacialAchievements).replace(/\n/g, '<br>') : '';
-    const escapedName = escHtml(game.name);
-    const gameName = /^[A-Za-z0-9\s]+$/.test(game.name) ? `<i>${escapedName}</i>` : escapedName;
+    const rawAchievement = getLocalizedField(game, 'spacialAchievements');
+    const achievementText = rawAchievement ? escHtml(rawAchievement).replace(/\n/g, '<br>') : '';
+    const name = getLocalizedField(game, 'name');
+    const escapedName = escHtml(name);
+    const gameName = /^[A-Za-z0-9\s]+$/.test(name) ? `<i>${escapedName}</i>` : escapedName;
     const qualityClass = `quality-${game.quality || 1}`;
 
     const timeHtml = `<span class="game-time">${sign} ${game.time}h</span>`;
@@ -244,6 +286,23 @@ function createGameListItem(game) {
 }
 
 // ── 工具函数 ──
+
+/** 语言代码 → JSON 字段后缀映射 */
+const LANG_SUFFIX = { en: '_en', jp: '_jp' };
+
+/**
+ * 从游戏对象中读取多语言字段
+ * 优先读 field_{lang}（如 name_en），无则 fallback 到原始字段（中文）
+ */
+function getLocalizedField(game, field) {
+    const lang = langManager.getCurrentLang();
+    const suffix = LANG_SUFFIX[lang];
+    if (suffix) {
+        const localized = game[field + suffix];
+        if (localized) return localized;
+    }
+    return game[field] || '';
+}
 
 function getSystemValue(systemData, id) {
     if (!Array.isArray(systemData)) return '';
@@ -258,18 +317,11 @@ function normalizeGameData(gameData) {
     return [];
 }
 
-function parseTypeNames(str) {
-    if (!str) return {};
-    return Object.fromEntries(str.split(',').map(c => {
-        const [k, v] = c.split(':');
-        return [k.trim(), v.trim()];
-    }));
-}
-
-function parseQualityNames(str) {
+/**
+ * 从 "6:大师之作,5:奇佳,4:卓越" 格式字符串中提取有序 key 数组 ['6','5','4',...]
+ * 显示名称不再从这里取，而是通过 langManager.translate(`game_quality_${key}`) 获取
+ */
+function parseKeys(str) {
     if (!str) return [];
-    return str.split(',').map(item => {
-        const [k, v] = item.trim().split(':');
-        return { key: k.trim(), value: v.trim() };
-    });
+    return str.split(',').map(item => item.trim().split(':')[0].trim());
 }

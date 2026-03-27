@@ -50,20 +50,20 @@
   {
     "id": "index_year_tips",
     "cn": "这个进度条显示了今年已经过去了多少",
-    "en": "This progress bar shows how much of the current year has passed.",
-    "jp": "このプログレスバーは、今年がどれくらい経過したかを示します。"
+    "en": "Shows how much of the current year has already passed.",
+    "jp": "今年の進捗を示すプログレスバーです。"
   },
   {
     "id": "index_month_tips",
     "cn": "这个进度条显示了本月已经过去了多少",
-    "en": "This progress bar shows how much of the current month has passed.",
-    "jp": "このプログレスバーは、今月がどれくらい経過したかを示します。"
+    "en": "Shows how much of the current month has already passed.",
+    "jp": "今月の進捗を示すプログレスバーです。"
   },
   {
     "id": "index_day_tips",
     "cn": "这个进度条显示了今天已经过去了多少",
-    "en": "This progress bar shows how much of today has passed.",
-    "jp": "このプログレスバーは、今日がどれくらい経過したかを示します。"
+    "en": "Shows how much of today has already passed.",
+    "jp": "今日の進捗を示すプログレスバーです。"
   },
   {
     "id": "index_refresh",
@@ -74,8 +74,8 @@
   {
     "id": "index_refresh_tips",
     "cn": "倒计时结束后，所有的进度条都将被刷新",
-    "en": "When the countdown ends, all progress bars will be refreshed.",
-    "jp": "カウントダウンが終了すると、すべての進捗バーが更新されます。"
+    "en": "All progress bars will refresh when the countdown ends.",
+    "jp": "カウントダウンが終わると、すべての進捗バーが更新されます。"
   },
   {
     "id": "dailty_popup_title",
@@ -152,26 +152,26 @@
   {
     "id": "total_time",
     "cn": "{0}小时，",
-    "en": "{0} hours,",
+    "en": "{0} hrs,",
     "jp": "{0}時間、"
   },
   {
     "id": "equivalent_days",
     "cn": "相当于{0}天，",
-    "en": "equivalent to {0} days,",
-    "jp": "約{0}日、"
+    "en": "that's {0} days,",
+    "jp": "{0}日相当、"
   },
   {
     "id": "equivalent_years",
     "cn": "相当于{0}年。",
-    "en": "equivalent to {0} years.",
-    "jp": "約{0}年。"
+    "en": "that's {0} years.",
+    "jp": "{0}年相当。"
   },
   {
     "id": "game_describe",
     "cn": "游戏并非人生，但是我已经玩了：",
-    "en": "Games are not life, but I have already played for:",
-    "jp": "ゲームは人生ではない。でも私はすでに："
+    "en": "Games aren't life — but I've clocked:",
+    "jp": "ゲームは人生じゃない。でも、気づいたら："
   },
   {
     "id": "game_roll_btn",
@@ -182,7 +182,7 @@
   {
     "id": "game_sort_quality",
     "cn": "按主观游戏评级排序",
-    "en": "Sort by Personal Rating",
+    "en": "Sort by My Rating",
     "jp": "個人的評価順"
   },
   {
@@ -217,9 +217,9 @@
   },
   {
     "id": "about",
-    "cn": "嗨！我是Shelton Chu，一位来自中国的游戏策划与艺术家。\r\n想要更深入地了解我，最好的方式就是浏览这个网站。\r\n若要开始探索，你可以看看顶部的导航栏，希望你在此浏览愉快！\r\n",
-    "en": "Hi! I'm Shelton Chu, a game designer and artist from China. \r\nThe best way to get to know me is by exploring this website. \r\nTo start your journey, check out the navigation bar above. Hope you enjoy your time here!",
-    "jp": "こんにちは！私はShelton Chu、中国出身のゲームプランナー兼アーティストです。\r\n私をより深く知る一番の方法は、このサイトをゆっくりと閲覧することです。\r\nまずは上のナビゲーションバーから探索してみてください。このサイトでの時間を楽しんでいただければ嬉しいです！"
+    "cn": "嗨！我是Shelton Chu，一位来自中国的游戏策划与艺术家。\r\r\n想要更深入地了解我，最好的方式就是浏览这个网站。\r\r\n若要开始探索，你可以看看顶部的导航栏，希望你在此浏览愉快！\r\r\n",
+    "en": "Hi! I'm Shelton Chu, a game designer and artist from China. \r\r\nThe best way to get to know me is by exploring this website. \r\r\nTo start your journey, check out the navigation bar above. Hope you enjoy your time here!",
+    "jp": "こんにちは！私はShelton Chu、中国出身のゲームプランナー兼アーティストです。\r\r\n私をより深く知る一番の方法は、このサイトをゆっくりと閲覧することです。\r\r\nまずは上のナビゲーションバーから探索してみてください。このサイトでの時間を楽しんでいただければ嬉しいです！"
   },
   {
     "id": "thanks_project",
@@ -229,9 +229,9 @@
   },
   {
     "id": "update_info",
-    "cn": "最近更新\r\n版本号：14.0.0\r\n发布日期：2026年3月12日\r\n新增留言板功能",
-    "en": "Recent Updates\r\nVersion: 14.0.0\r\nRelease Date: March 12, 2026\r\nAdded: Message Board Feature",
-    "jp": "最近の更新\r\nバージョン：14.0.0\r\nリリース日：2026年3月12日\r\nメッセージボード機能を追加"
+    "cn": "最近更新\r\r\n版本号：14.0.0\r\r\n发布日期：2026年3月12日\r\r\n新增留言板功能",
+    "en": "Recent Updates\r\r\nVersion: 14.0.0\r\r\nRelease Date: March 12, 2026\r\r\nAdded: Message Board Feature",
+    "jp": "最近の更新\r\r\nバージョン：14.0.0\r\r\nリリース日：2026年3月12日\r\r\nメッセージボード機能を追加"
   },
   {
     "id": "password_title",
@@ -248,8 +248,8 @@
   {
     "id": "timer.refresh_complete",
     "cn": "正在刷新",
-    "en": "Refreshing",
-    "jp": "更新中"
+    "en": "Refreshing…",
+    "jp": "更新中…"
   },
   {
     "id": "message_title",
@@ -315,25 +315,25 @@
     "id": "msg_loading",
     "cn": "正在加载留言…",
     "en": "Loading messages…",
-    "jp": "メッセージを読み込み中…"
+    "jp": "メッセージを読み込んでいます…"
   },
   {
     "id": "msg_empty",
     "cn": "暂无留言，和我说点什么！",
-    "en": "No messages yet. Say something!",
-    "jp": "まだメッセージがありません。ぜひ書いてください！"
+    "en": "No messages yet — say something!",
+    "jp": "まだメッセージはありません。ぜひ一言どうぞ！"
   },
   {
     "id": "msg_error",
     "cn": "加载留言失败，请稍后再试。",
-    "en": "Failed to load messages. Please try again later.",
-    "jp": "メッセージの読み込みに失敗しました。後でもう一度お試しください。"
+    "en": "Could not load messages. Try again later.",
+    "jp": "メッセージを読み込めませんでした。後ほどお試しください。"
   },
   {
     "id": "msg_load_more",
     "cn": "加载更多",
-    "en": "Load More",
-    "jp": "さらに読み込む"
+    "en": "Load more",
+    "jp": "もっと見る"
   },
   {
     "id": "msg_warn_nickname",
@@ -356,8 +356,8 @@
   {
     "id": "msg_submit_error",
     "cn": "发送失败，请稍后再试",
-    "en": "Failed to send message. Please try again later.",
-    "jp": "送信に失敗しました。後でもう一度お試しください。"
+    "en": "Failed to send. Please try again later.",
+    "jp": "送信に失敗しました。後ほどもう一度お試しください。"
   },
   {
     "id": "msg_reply_btn",
@@ -392,8 +392,8 @@
   {
     "id": "msg_replying_to",
     "cn": "回复",
-    "en": "Reply to",
-    "jp": "返信先"
+    "en": "Replying to",
+    "jp": "返信先："
   },
   {
     "id": "msg_reply_cancel_btn",
@@ -418,5 +418,107 @@
     "cn": "发布时间：{0}",
     "en": "Published: {0}",
     "jp": "公開日：{0}"
+  },
+  {
+    "id": "game_quality_6",
+    "cn": "大师之作",
+    "en": "Masterpiece",
+    "jp": "傑作"
+  },
+  {
+    "id": "game_quality_5",
+    "cn": "奇佳",
+    "en": "Outstanding",
+    "jp": "秀逸"
+  },
+  {
+    "id": "game_quality_4",
+    "cn": "卓越",
+    "en": "Excellent",
+    "jp": "卓越"
+  },
+  {
+    "id": "game_quality_3",
+    "cn": "优秀",
+    "en": "Great",
+    "jp": "優秀"
+  },
+  {
+    "id": "game_quality_2",
+    "cn": "尚可",
+    "en": "Decent",
+    "jp": "まずまず"
+  },
+  {
+    "id": "game_quality_1",
+    "cn": "平庸",
+    "en": "Mediocre",
+    "jp": "平凡"
+  },
+  {
+    "id": "game_type_1",
+    "cn": "竞技类",
+    "en": "Competitive",
+    "jp": "対戦"
+  },
+  {
+    "id": "game_type_2",
+    "cn": "动作&沙盒类",
+    "en": "Action & Sandbox",
+    "jp": "アクション＆サンドボックス"
+  },
+  {
+    "id": "game_type_3",
+    "cn": "模拟经营类",
+    "en": "Simulation & Management",
+    "jp": "シミュレーション＆経営"
+  },
+  {
+    "id": "game_type_4",
+    "cn": "独立游戏&Roguelike",
+    "en": "Indie & Roguelike",
+    "jp": "インディー＆ローグライク"
+  },
+  {
+    "id": "game_type_5",
+    "cn": "RTS",
+    "en": "RTS",
+    "jp": "RTS"
+  },
+  {
+    "id": "game_type_6",
+    "cn": "集换式卡牌&自走棋",
+    "en": "TCG & Auto Chess",
+    "jp": "TCG＆オートチェス"
+  },
+  {
+    "id": "game_type_7",
+    "cn": "手游",
+    "en": "Mobile Games",
+    "jp": "モバイルゲーム"
+  },
+  {
+    "id": "game_type_8",
+    "cn": "其他网游",
+    "en": "Other Online Games",
+    "jp": "その他のオンラインゲーム"
+  },
+  {
+    "id": "game_no_series",
+    "cn": "无系列",
+    "en": "No Series",
+    "jp": "シリーズなし"
+  },
+  {
+    "id": "game_unknown_quality",
+    "cn": "未定义评级（{0}）",
+    "en": "Undefined Rating ({0})",
+    "jp": "未定義の評価（{0}）"
+  },
+  {
+    "id": "game_load_error",
+    "cn": "数据加载失败，请刷新页面",
+    "en": "Failed to load data. Please refresh the page.",
+    "jp": "データの読み込みに失敗しました。ページを更新してください。"
   }
 ]

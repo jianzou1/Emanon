@@ -1,4 +1,5 @@
 // gameRoll.js
+import langManager from '/js/langManager.js';
 import { fetchJSON } from '/js/dataCache.js';
 
 export function initGameRoll() {
@@ -81,7 +82,7 @@ export function initGameRoll() {
       item.className = 'scroll-item';
       Object.assign(item.style, ITEM_STYLE);
       const span = document.createElement('span');
-      span.textContent = `游戏${i + 1}`;
+      span.textContent = `Game ${i + 1}`;
       item.appendChild(span);
       return item;
     });
@@ -157,7 +158,7 @@ export function initGameRoll() {
       updateItems();
       dom.rollBtn.disabled = false;
     } catch {
-      dom.result.innerHTML = '<div class="error">数据加载失败，请刷新页面</div>';
+      dom.result.innerHTML = `<div class="error">${langManager.translate('game_load_error')}</div>`;
       dom.rollBtn.disabled = true;
     }
   }
@@ -262,7 +263,7 @@ export function initGameRoll() {
 
       // 仅在内容变化时写入，减少不必要的 DOM 操作
       const span = item.firstElementChild;
-      const newText = itemData?.name || `游戏${i + 1}`;
+      const newText = getLocalizedField(itemData, 'name') || `Game ${i + 1}`;
       const newClass = `scroll-item quality-${itemData?.quality || 1}`;
       if (span.textContent !== newText) span.textContent = newText;
       if (item.className !== newClass) item.className = newClass;
@@ -297,7 +298,7 @@ export function initGameRoll() {
 
       if (dom.story) {
         dom.story.textContent = '';
-        const text = state.currentWinner?.story || '';
+        const text = getLocalizedField(state.currentWinner, 'story');
         if (text) {
           let i = 0;
           const type = () => {
@@ -336,6 +337,20 @@ export function initGameRoll() {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  }
+
+  /** 语言代码 → JSON 字段后缀映射 */
+  const LANG_SUFFIX = { en: '_en', jp: '_jp' };
+
+  function getLocalizedField(obj, field) {
+    if (!obj) return '';
+    const lang = langManager.getCurrentLang();
+    const suffix = LANG_SUFFIX[lang];
+    if (suffix) {
+      const localized = obj[field + suffix];
+      if (localized) return localized;
+    }
+    return obj[field] || '';
   }
 
   init();

@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "CSGO/CS2",
+    "name": "反恐精英：全球攻势 / 反恐精英2",
     "sign": null,
     "time": 278,
     "type": "1",
@@ -10,7 +10,13 @@
     "seriesTag": "CS",
     "spacialAchievements": null,
     "quality": 4,
-    "story": "身体好直接开睡"
+    "story": "身体好直接开睡",
+    "name_en": "Counter-Strike: Global Offensive / Counter-Strike 2",
+    "name_jp": "カウンターストライク：グローバルオフェンシブ / カウンターストライク 2",
+    "story_en": "If you're feeling healthy, just go to sleep.",
+    "story_jp": "体力があるなら、もう寝ろ。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 2,
@@ -23,7 +29,13 @@
     "seriesTag": null,
     "spacialAchievements": "国服第二赛季3508分。",
     "quality": 5,
-    "story": "用心做CG，用脚做游戏"
+    "story": "用心做CG，用脚做游戏",
+    "name_en": "Overwatch",
+    "name_jp": "オーバーウォッチ",
+    "story_en": "They put their heart into the cinematics and their feet into the game itself.",
+    "story_jp": "CGには全力、ゲーム本体は足で作った。",
+    "spacialAchievements_en": "CN server, Season 2: 3508 SR.",
+    "spacialAchievements_jp": "中国サーバー第2シーズン：3508 SR。"
   },
   {
     "id": 3,
@@ -34,9 +46,15 @@
     "isRecently": false,
     "isLoved": true,
     "seriesTag": null,
-    "spacialAchievements": "2018年第5赛季亚洲服前500名。\r\n2018年第6赛季亚洲服、北美服前100名。",
+    "spacialAchievements": "2018年第5赛季亚洲服前500名。\r\r\n2018年第6赛季亚洲服、北美服前100名。",
     "quality": 6,
-    "story": "三级头不如炒菜锅"
+    "story": "搜了一座城，送给一个人",
+    "name_en": "PUBG: Battlegrounds",
+    "name_jp": "PlayerUnknown's Battlegrounds",
+    "story_en": "Looted an entire city just to donate it all to one guy.",
+    "story_jp": "一つの街を漁り尽くして、全部ひとりに献上した。",
+    "spacialAchievements_en": "2018 Season 5: Top 500 on Asia server.2018 Season 6: Top 100 on both Asia and North America servers.",
+    "spacialAchievements_jp": "2018年第5シーズン：アジアサーバーTOP500。2018年第6シーズン：アジアサーバー・北米サーバーともにTOP100。"
   },
   {
     "id": 4,
@@ -47,9 +65,15 @@
     "isRecently": true,
     "isLoved": true,
     "seriesTag": null,
-    "spacialAchievements": "S2-S3赛季暗影岛服务器排位分达到1700分。\r\nS5赛季艾欧尼亚服务器段位达到“璀璨钻石Ⅰ”。",
+    "spacialAchievements": "S2-S3赛季暗影岛服务器排位分达到1700分。\r\r\nS5赛季艾欧尼亚服务器段位达到“璀璨钻石Ⅰ”。",
     "quality": 4,
-    "story": "SB也能当策划？"
+    "story": "SB也能当策划？",
+    "name_en": "League of Legends",
+    "name_jp": "League of Legends",
+    "story_en": "So even idiots can become game designers?",
+    "story_jp": "バカでもゲームプランナーになれるの？",
+    "spacialAchievements_en": "S2–S3: Reached 1700 rating on the Shadow Isles server.S5: Reached Diamond I on the Ionia server.",
+    "spacialAchievements_jp": "S2〜S3：シャドウアイルズサーバーでレート1700到達。S5：アイオニアサーバーでダイヤモンドI到達。"
   },
   {
     "id": 5,
@@ -62,7 +86,13 @@
     "seriesTag": "Battlefield",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "国外玩家社群在首发时把专家系统吐槽为APEX2042"
+    "story": "国外玩家社群在首发时把专家系统吐槽为APEX2042",
+    "name_en": "Battlefield 2042",
+    "name_jp": "バトルフィールド 2042",
+    "story_en": "At launch, overseas players roasted the Specialist system as “APEX 2042.”",
+    "story_jp": "海外コミュニティでは、発売当初のスペシャリスト制が「APEX 2042」とまで言われていた。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 6,
@@ -75,11 +105,17 @@
     "seriesTag": "Battlefield",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "好玩，步兵最好玩的一集"
+    "story": "好玩，步兵最好玩的一集",
+    "name_en": "Battlefield 3",
+    "name_jp": "バトルフィールド 3",
+    "story_en": "Great fun—the infantry combat was the best in the series.",
+    "story_jp": "普通に面白い。歩兵戦がいちばん楽しい回だった。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 7,
-    "name": "Apex Legends",
+    "name": "Apex 英雄",
     "sign": null,
     "time": 50,
     "type": "1",
@@ -88,11 +124,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "你的G7没我的G8长"
+    "story": "你的G7没我的G8长",
+    "name_en": "Apex Legends",
+    "name_jp": "エーペックスレジェンズ",
+    "story_en": "Your G7 isn't as long as my G8.",
+    "story_jp": "お前のG7、俺のG8ほど長くないな。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 8,
-    "name": "CS 1.6",
+    "name": "反恐精英1.6",
     "sign": null,
     "time": 300,
     "type": "1",
@@ -101,11 +143,17 @@
     "seriesTag": "CS",
     "spacialAchievements": null,
     "quality": 6,
-    "story": "网吧老板的终身养老保险"
+    "story": "网吧老板的终身养老保险",
+    "name_en": "Counter-Strike 1.6",
+    "name_jp": "カウンターストライク 1.6",
+    "story_en": "A lifelong pension plan for internet café owners.",
+    "story_jp": "ネカフェ店主の生涯年金。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 9,
-    "name": "CSOL/CSOL2",
+    "name": "反恐精英Online / 反恐精英Online 2",
     "sign": "＞",
     "time": 500,
     "type": "1",
@@ -114,11 +162,17 @@
     "seriesTag": "CS",
     "spacialAchievements": null,
     "quality": 2,
-    "story": "韩国人魔改枪战游戏"
+    "story": "韩国人魔改枪战游戏",
+    "name_en": "Counter-Strike Online / Counter-Strike Online 2",
+    "name_jp": "カウンターストライク オンライン / カウンターストライク オンライン 2",
+    "story_en": "A shooter game that Korean devs modded into something else entirely.",
+    "story_jp": "韓国人が魔改造した銃撃ゲーム。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 10,
-    "name": "H1Z1 Battle Royale",
+    "name": "H1Z1：杀戮之王",
     "sign": null,
     "time": 124,
     "type": "1",
@@ -127,11 +181,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "疑似早期作弊猎豹"
+    "story": "疑似早期作弊猎豹",
+    "name_en": "H1Z1: Battle Royale",
+    "name_jp": "H1Z1: Battle Royale",
+    "story_en": "It felt like an early breeding ground for cheaters.",
+    "story_jp": "早期のチーター養成所みたいな空気があった。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 11,
-    "name": "无限法则",
+    "name": "无限法则（Ring of Elysium）",
     "sign": null,
     "time": 12,
     "type": "1",
@@ -140,11 +200,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "免费吃鸡体验卡"
+    "story": "免费吃鸡体验卡",
+    "name_en": "Ring of Elysium",
+    "name_jp": "Ring of Elysium",
+    "story_en": "A free battle royale trial card.",
+    "story_jp": "無料バトロワ体験版。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 12,
-    "name": "VALORANT",
+    "name": "无畏契约",
     "sign": null,
     "time": 50,
     "type": "1",
@@ -153,7 +219,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 6,
-    "story": "小科比找妈妈"
+    "story": "小科比找妈妈",
+    "name_en": "VALORANT",
+    "name_jp": "ヴァロラント",
+    "story_en": "Little Kobe looking for his mom.",
+    "story_jp": "ちびコービーがママを探してる。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 13,
@@ -166,7 +238,13 @@
     "seriesTag": "Borderlands",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "无厘头废土世界"
+    "story": "无厘头废土世界",
+    "name_en": "Borderlands",
+    "name_jp": "ボーダーランズ",
+    "story_en": "An absurd wasteland world.",
+    "story_jp": "ナンセンスな世紀末ワールド。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 14,
@@ -179,7 +257,13 @@
     "seriesTag": "Borderlands",
     "spacialAchievements": null,
     "quality": 5,
-    "story": "剧情封神"
+    "story": "剧情封神",
+    "name_en": "Borderlands 2",
+    "name_jp": "ボーダーランズ 2",
+    "story_en": "A god-tier story.",
+    "story_jp": "ストーリーが神がかっている。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 15,
@@ -192,7 +276,13 @@
     "seriesTag": "Borderlands",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "策划喝了假酒"
+    "story": "枪更多了，嘴也更碎了",
+    "name_en": "Borderlands 3",
+    "name_jp": "ボーダーランズ 3",
+    "story_en": "More guns, and even more nonstop chatter.",
+    "story_jp": "銃は増えたし、口数もさらに増えた。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 16,
@@ -205,7 +295,13 @@
     "seriesTag": "TitanFall",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "被APEX偷走人生"
+    "story": "被APEX偷走人生",
+    "name_en": "Titanfall",
+    "name_jp": "タイタンフール",
+    "story_en": "Its life got stolen by Apex.",
+    "story_jp": "人生をAPEXに持っていかれた。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 17,
@@ -218,7 +314,13 @@
     "seriesTag": "TitanFall",
     "spacialAchievements": null,
     "quality": 4,
-    "story": "远超APEX"
+    "story": "机甲刚起飞，人生就被隔壁借去做大逃杀",
+    "name_en": "Titanfall 2",
+    "name_jp": "タイタンフール 2",
+    "story_en": "The Titans had barely taken off before the franchise next door borrowed its life for a battle royale.",
+    "story_jp": "タイタンが飛び立ったと思ったら、その人生は隣のバトロワに持っていかれた。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 18,
@@ -231,7 +333,13 @@
     "seriesTag": "GTA",
     "spacialAchievements": null,
     "quality": 6,
-    "story": "神作"
+    "story": "你以为在犯法，其实在体验第二人生",
+    "name_en": "Grand Theft Auto V",
+    "name_jp": "グランド・セフト・オートV",
+    "story_en": "You think you're committing crimes, but you're really just living a second life.",
+    "story_jp": "犯罪してるつもりが、実際は第二の人生を送ってる。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 19,
@@ -244,7 +352,13 @@
     "seriesTag": "GTA",
     "spacialAchievements": null,
     "quality": 4,
-    "story": "表哥欠钱不还"
+    "story": "表哥欠钱不还",
+    "name_en": "Grand Theft Auto IV",
+    "name_jp": "グランド・セフト・オートIV",
+    "story_en": "Cousin still hasn't paid back the money.",
+    "story_jp": "いとこがまだ金を返してくれない。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 20,
@@ -257,7 +371,13 @@
     "seriesTag": "GTA",
     "spacialAchievements": null,
     "quality": 5,
-    "story": "健身模拟器"
+    "story": "健身模拟器",
+    "name_en": "Grand Theft Auto: San Andreas",
+    "name_jp": "グランド・セフト・オート：サンアンドレアス",
+    "story_en": "Gym simulator.",
+    "story_jp": "筋トレシミュレーター。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 21,
@@ -270,7 +390,13 @@
     "seriesTag": "GTA",
     "spacialAchievements": null,
     "quality": 6,
-    "story": "PANZER，SEAWAYS"
+    "story": "PANZER，SEAWAYS",
+    "name_en": "Grand Theft Auto: Vice City",
+    "name_jp": "グランド・セフト・オート：バイスシティ",
+    "story_en": "PANZER, SEAWAYS.",
+    "story_jp": "PANZER、SEAWAYS。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 22,
@@ -283,11 +409,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 5,
-    "story": "砍人带樱花特效"
+    "story": "砍人带樱花特效",
+    "name_en": "Ghost of Tsushima",
+    "name_jp": "ゴーストオブツシマ",
+    "story_en": "Slashing enemies with sakura particle effects.",
+    "story_jp": "斬るたびに桜エフェクトが舞う。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 23,
-    "name": "全境封锁1",
+    "name": "全境封锁",
     "sign": null,
     "time": 19,
     "type": "2",
@@ -296,7 +428,13 @@
     "seriesTag": "TheDivision",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "土豆服务器"
+    "story": "曼哈顿很冷，土豆服务器更冷",
+    "name_en": "Tom Clancy's The Division",
+    "name_jp": "トム・クランシーズ ザ・ディビジョン",
+    "story_en": "Manhattan is cold, but the potato servers are even colder.",
+    "story_jp": "マンハッタンは寒いが、ポテトサーバーはもっと寒い。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 24,
@@ -309,11 +447,17 @@
     "seriesTag": "TheDivision",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "全境封号2.0"
+    "story": "全境封号2.0",
+    "name_en": "Tom Clancy's The Division 2",
+    "name_jp": "トム・クランシーズ ザ・ディビジョン 2",
+    "story_en": "The Division Banwave 2.0.",
+    "story_jp": "ディビジョンBAN祭り2.0。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 25,
-    "name": "Far Cry5",
+    "name": "孤岛惊魂5",
     "sign": null,
     "time": 8,
     "type": "2",
@@ -322,11 +466,17 @@
     "seriesTag": "FarCry",
     "spacialAchievements": null,
     "quality": 2,
-    "story": "邪教团建模拟器"
+    "story": "邪教团建模拟器",
+    "name_en": "Far Cry 5",
+    "name_jp": "ファークライ5",
+    "story_en": "Cult retreat simulator.",
+    "story_jp": "カルト団体の社員旅行シミュレーター。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 26,
-    "name": "Far Cry4",
+    "name": "孤岛惊魂4",
     "sign": null,
     "time": 32,
     "type": "2",
@@ -335,7 +485,13 @@
     "seriesTag": "FarCry",
     "spacialAchievements": null,
     "quality": 5,
-    "story": "罐头沙盒祖师爷"
+    "story": "罐头沙盒祖师爷",
+    "name_en": "Far Cry 4",
+    "name_jp": "ファークライ4",
+    "story_en": "The forefather of the canned sandbox formula.",
+    "story_jp": "缶詰サンドボックスの元祖みたいな存在。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 27,
@@ -348,7 +504,13 @@
     "seriesTag": "DeadRising",
     "spacialAchievements": null,
     "quality": 4,
-    "story": "拍照系统比主线好玩"
+    "story": "拍照系统比主线好玩",
+    "name_en": "Dead Rising 4",
+    "name_jp": "デッドライジング4",
+    "story_en": "The photo system is more fun than the main story.",
+    "story_jp": "写真システムのほうが本編より面白い。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 28,
@@ -361,7 +523,13 @@
     "seriesTag": "DeadRising",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "电锯永动机"
+    "story": "电锯永动机",
+    "name_en": "Dead Rising 3",
+    "name_jp": "デッドライジング3",
+    "story_en": "A chainsaw perpetual-motion machine.",
+    "story_jp": "チェーンソー永久機関。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 29,
@@ -374,7 +542,13 @@
     "seriesTag": "DeadRising",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "合成武器才是本体"
+    "story": "合成武器才是本体",
+    "name_en": "Dead Rising 2",
+    "name_jp": "デッドライジング2",
+    "story_en": "Combo weapons are the real game.",
+    "story_jp": "合成武器こそ本体。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 30,
@@ -387,11 +561,17 @@
     "seriesTag": "L4D",
     "spacialAchievements": null,
     "quality": 6,
-    "story": "G胖不会数三"
+    "story": "G胖不会数三",
+    "name_en": "Left 4 Dead 2",
+    "name_jp": "レフト 4 デッド 2",
+    "story_en": "Gabe can't count to three.",
+    "story_jp": "Gabeは3まで数えられない。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 31,
-    "name": "求生之路1",
+    "name": "求生之路",
     "sign": null,
     "time": 6,
     "type": "2",
@@ -400,7 +580,13 @@
     "seriesTag": "L4D",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "G胖数三启蒙教育失败案例"
+    "story": "G胖数三启蒙教育失败案例",
+    "name_en": "Left 4 Dead",
+    "name_jp": "レフト 4 デッド",
+    "story_en": "A failed case in Gabe's early education on counting to three.",
+    "story_jp": "Gabeの「3を数える教育」が失敗した初期事例。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 32,
@@ -413,7 +599,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "尸潮如海，玩法如沙"
+    "story": "尸潮像海啸，枪声像加班铃",
+    "name_en": "World War Z",
+    "name_jp": "ワールド・ウォーZ",
+    "story_en": "Zombie waves like a tsunami, gunfire like the overtime bell.",
+    "story_jp": "ゾンビの波は津波みたいで、銃声は残業開始のベルみたい。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 33,
@@ -426,7 +618,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "受苦三小时，通关五分钟"
+    "story": "受苦三小时，通关五分钟",
+    "name_en": "Remnant: From the Ashes",
+    "name_jp": "レムナント：フロム・ザ・アッシェズ",
+    "story_en": "Suffer for three hours, clear it in five minutes.",
+    "story_jp": "3時間苦しんで、5分でクリア。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 34,
@@ -439,7 +637,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 6,
-    "story": "滴滴，你个王八蛋！"
+    "story": "滴滴，你个王八蛋！",
+    "name_en": "Cyberpunk 2077",
+    "name_jp": "サイバーパンク2077",
+    "story_en": "Beep-beep, you bastard!",
+    "story_jp": "ピーピー、この野郎！",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 35,
@@ -452,11 +656,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "大名鼎鼎的冰箱"
+    "story": "大名鼎鼎的冰箱",
+    "name_en": "Atomic Heart",
+    "name_jp": "アトミックハート",
+    "story_en": "The world-famous fridge.",
+    "story_jp": "あの有名な冷蔵庫。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 36,
-    "name": "黑神话:悟空",
+    "name": "黑神话：悟空",
     "sign": "≈",
     "time": 30,
     "type": "2",
@@ -465,11 +675,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "虎先锋三拳干碎我的大圣梦"
+    "story": "虎先锋三拳干碎我的大圣梦",
+    "name_en": "Black Myth: Wukong",
+    "name_jp": "ブラック・ミス：悟空",
+    "story_en": "Tiger Vanguard shattered my Great Sage dream in three punches.",
+    "story_jp": "虎先鋒に3発で、大聖になる夢を砕かれた。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 37,
-    "name": "看门狗1",
+    "name": "看门狗",
     "sign": "≈",
     "time": 10,
     "type": "2",
@@ -478,7 +694,13 @@
     "seriesTag": "WatchDogs",
     "spacialAchievements": null,
     "quality": 2,
-    "story": "缩水狗"
+    "story": "缩水狗",
+    "name_en": "Watch Dogs",
+    "name_jp": "ウォッチドッグス",
+    "story_en": "Watch_Downgrade.",
+    "story_jp": "ウォッチダウングレード。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 38,
@@ -491,11 +713,17 @@
     "seriesTag": "WatchDogs",
     "spacialAchievements": null,
     "quality": 2,
-    "story": "黑客模拟器"
+    "story": "黑客模拟器",
+    "name_en": "Watch Dogs 2",
+    "name_jp": "ウォッチドッグス2",
+    "story_en": "Hacker simulator.",
+    "story_jp": "ハッカーシミュレーター。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 39,
-    "name": "虐杀原形1",
+    "name": "虐杀原形",
     "sign": "≈",
     "time": 15,
     "type": "2",
@@ -504,7 +732,13 @@
     "seriesTag": "Prototype",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "A哥吞人动作片，纽约市民集体蒸发"
+    "story": "A哥吞人动作片，纽约市民集体蒸发",
+    "name_en": "Prototype",
+    "name_jp": "プロトタイプ",
+    "story_en": "Alex Mercer eats people in an action movie while New York civilians collectively evaporate.",
+    "story_jp": "A哥が人を食いまくるアクション映画、その裏でニューヨーク市民は集団蒸発。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 40,
@@ -517,11 +751,17 @@
     "seriesTag": "Prototype",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "黑哥会武术，谁也挡不住"
+    "story": "黑哥会武术，谁也挡不住",
+    "name_en": "Prototype 2",
+    "name_jp": "プロトタイプ2",
+    "story_en": "Once Heller starts throwing hands, nobody can stop him.",
+    "story_jp": "ヘラーが本気で殴り始めたら、もう誰にも止められない。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 41,
-    "name": "消逝的光芒1",
+    "name": "消逝的光芒",
     "sign": "≈",
     "time": 8,
     "type": "2",
@@ -530,11 +770,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "跑酷打僵尸"
+    "story": "跑酷打僵尸",
+    "name_en": "Dying Light",
+    "name_jp": "ダイイングライト",
+    "story_en": "Parkour and zombie-smashing.",
+    "story_jp": "パルクールでゾンビ退治。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 42,
-    "name": "荒野大镖客2",
+    "name": "荒野大镖客：救赎2",
     "sign": null,
     "time": 20,
     "type": "2",
@@ -543,11 +789,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 5,
-    "story": "西部摄影家协会指定器材"
+    "story": "西部摄影家协会指定器材",
+    "name_en": "Red Dead Redemption 2",
+    "name_jp": "レッド・デッド・リデンプション2",
+    "story_en": "Officially designated gear of the Wild West Photographers Association.",
+    "story_jp": "西部写真家協会公認機材。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 43,
-    "name": "死亡岛1",
+    "name": "死亡岛",
     "sign": null,
     "time": 45,
     "type": "2",
@@ -556,7 +808,13 @@
     "seriesTag": "DeadIsland",
     "spacialAchievements": null,
     "quality": 5,
-    "story": "度假岛变丧尸岛"
+    "story": "度假岛变丧尸岛",
+    "name_en": "Dead Island",
+    "name_jp": "デッドアイランド",
+    "story_en": "A vacation island turned zombie island.",
+    "story_jp": "リゾート島がゾンビ島になった。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 44,
@@ -569,7 +827,13 @@
     "seriesTag": "DeadIsland",
     "spacialAchievements": null,
     "quality": 2,
-    "story": "不如一代"
+    "story": "不如一代",
+    "name_en": "Dead Island 2",
+    "name_jp": "デッドアイランド2",
+    "story_en": "Not as good as the first one.",
+    "story_jp": "初代には及ばない。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 45,
@@ -582,11 +846,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "香港GTA"
+    "story": "香港GTA",
+    "name_en": "Sleeping Dogs",
+    "name_jp": "スリーピングドッグス",
+    "story_en": "Hong Kong GTA.",
+    "story_jp": "香港版GTA。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 46,
-    "name": "使命召唤6:现代战争",
+    "name": "使命召唤：现代战争2",
     "sign": null,
     "time": 30,
     "type": "2",
@@ -595,24 +865,36 @@
     "seriesTag": "COD",
     "spacialAchievements": null,
     "quality": 5,
-    "story": "Ghost面具淘宝同款"
+    "story": "Ghost面具淘宝同款",
+    "name_en": "Call of Duty: Modern Warfare 2",
+    "name_jp": "コール オブ デューティ モダンウォーフェア2",
+    "story_en": "Ghost's mask—same model available on Taobao.",
+    "story_jp": "Ghostのマスク、淘宝で同款あり。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 47,
-    "name": "The Last of Us 1",
+    "name": "最后的生还者",
     "sign": null,
     "time": 10,
-    "type": null,
+    "type": "2",
     "isRecently": false,
     "isLoved": false,
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 5,
-    "story": "好玩，电视剧也好看"
+    "story": "好玩，电视剧也好看",
+    "name_en": "The Last of Us",
+    "name_jp": "ラスト・オブ・アス",
+    "story_en": "Great game, and the TV series is great too.",
+    "story_jp": "ゲームも面白いし、ドラマも良かった。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 48,
-    "name": "地平线4",
+    "name": "极限竞速：地平线4",
     "sign": null,
     "time": 10,
     "type": "2",
@@ -621,11 +903,17 @@
     "seriesTag": "Horizon",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "开车十分钟拍照两小时"
+    "story": "开车十分钟拍照两小时",
+    "name_en": "Forza Horizon 4",
+    "name_jp": "フォルツァ ホライズン4",
+    "story_en": "Drive for ten minutes, take photos for two hours.",
+    "story_jp": "10分走って、2時間写真を撮る。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 49,
-    "name": "地平线5",
+    "name": "极限竞速：地平线5",
     "sign": null,
     "time": 20,
     "type": "2",
@@ -634,11 +922,17 @@
     "seriesTag": "Horizon",
     "spacialAchievements": null,
     "quality": 2,
-    "story": "墨西哥旅游宣传片，泥头车创碎你的车损险"
+    "story": "墨西哥旅游宣传片，泥头车创碎你的车损险",
+    "name_en": "Forza Horizon 5",
+    "name_jp": "フォルツァ ホライズン5",
+    "story_en": "A tourism ad for Mexico, where one dump truck can wreck your insurance.",
+    "story_jp": "メキシコ観光PR動画みたいな顔をして、ダンプ一台で保険が吹き飛ぶ。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 50,
-    "name": "分手厨房2",
+    "name": "煮糊了2",
     "sign": null,
     "time": 10,
     "type": "3",
@@ -647,7 +941,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "没分手算我输"
+    "story": "没分手算我输",
+    "name_en": "Overcooked! 2",
+    "name_jp": "オーバークックド! 2",
+    "story_en": "If you don't break up over this, I lose.",
+    "story_jp": "これで別れなかったら俺の負け。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 51,
@@ -660,7 +960,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "韩国人不会做模拟经营"
+    "story": "韩国人不会做模拟经营",
+    "name_en": "Dave the Diver",
+    "name_jp": "デイヴ・ザ・ダイバー",
+    "story_en": "Koreans can't make management sims? Think again.",
+    "story_jp": "韓国人は経営シムを作れない？ そんなことはなかった。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 52,
@@ -673,11 +979,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "强化版牧场物语"
+    "story": "强化版牧场物语",
+    "name_en": "Stardew Valley",
+    "name_jp": "スターデューバレー",
+    "story_en": "Story of Seasons, but upgraded.",
+    "story_jp": "強化版牧場物語。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 53,
-    "name": "牧场物语：矿石镇的伙伴",
+    "name": "牧场物语：矿石镇的伙伴们",
     "sign": "≈",
     "time": 30,
     "type": "3",
@@ -686,7 +998,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "矿洞才是本体"
+    "story": "矿洞才是本体",
+    "name_en": "Story of Seasons: Friends of Mineral Town",
+    "name_jp": "牧場物語 ～鉱石の町のなかまたち～",
+    "story_en": "The mine is the real game.",
+    "story_jp": "鉱山こそ本体。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 54,
@@ -699,7 +1017,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "宇宙流水线工人"
+    "story": "宇宙流水线工人",
+    "name_en": "Dyson Sphere Program",
+    "name_jp": "ダイソンスフィアプログラム",
+    "story_en": "Cosmic assembly-line worker.",
+    "story_jp": "宇宙ライン工。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 55,
@@ -712,7 +1036,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "水电工模拟器"
+    "story": "水电工模拟器",
+    "name_en": "Oxygen Not Included",
+    "name_jp": "Oxygen Not Included",
+    "story_en": "Plumber-and-electrician simulator.",
+    "story_jp": "水道工兼電気工シミュレーター。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 56,
@@ -725,7 +1055,13 @@
     "seriesTag": "SimCity",
     "spacialAchievements": null,
     "quality": 5,
-    "story": "堵车模拟器，市民集体路怒症"
+    "story": "堵车模拟器，市民集体路怒症",
+    "name_en": "SimCity 4: Rush Hour",
+    "name_jp": "シムシティ4：ラッシュアワー",
+    "story_en": "Traffic jam simulator, with a whole city full of road rage.",
+    "story_jp": "渋滞シミュレーター、市民全員がロードレイジ気味。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 57,
@@ -738,11 +1074,17 @@
     "seriesTag": "SimCity",
     "spacialAchievements": null,
     "quality": 4,
-    "story": "经典永流传，win10跑不动"
+    "story": "经典永流传，win10跑不动",
+    "name_en": "SimCity 3000",
+    "name_jp": "シムシティ3000",
+    "story_en": "A timeless classic that just refuses to run on Win10.",
+    "story_jp": "永遠の名作、でもWin10ではまともに動かない。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 58,
-    "name": "模拟城市5:未来之城",
+    "name": "模拟城市：未来之城",
     "sign": "≈",
     "time": 50,
     "type": "3",
@@ -751,11 +1093,17 @@
     "seriesTag": "SimCity",
     "spacialAchievements": null,
     "quality": 2,
-    "story": "脑子带包想出来模拟城市联网的玩法"
+    "story": "脑子带包想出来模拟城市联网的玩法",
+    "name_en": "SimCity: Cities of Tomorrow",
+    "name_jp": "シムシティ：シティーズ・オブ・トゥモロー",
+    "story_en": "It takes a special kind of genius to think online-only SimCity was a good idea.",
+    "story_jp": "SimCityをオンライン前提にしようと考えたのは、ある意味で特別な発想。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 59,
-    "name": "都市天际线1",
+    "name": "城市：天际线",
     "sign": null,
     "time": 36,
     "type": "3",
@@ -764,11 +1112,17 @@
     "seriesTag": "Skyline",
     "spacialAchievements": null,
     "quality": 5,
-    "story": "喝污水行为艺术"
+    "story": "喝污水行为艺术",
+    "name_en": "Cities: Skylines",
+    "name_jp": "シティーズ：スカイライン",
+    "story_en": "Drinking sewage water as performance art.",
+    "story_jp": "下水を飲む行為芸術。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 60,
-    "name": "都市天际线2",
+    "name": "城市：天际线2",
     "sign": null,
     "time": 20,
     "type": "3",
@@ -777,7 +1131,13 @@
     "seriesTag": "Skyline",
     "spacialAchievements": null,
     "quality": 4,
-    "story": "DLC地狱再临"
+    "story": "DLC地狱再临",
+    "name_en": "Cities: Skylines II",
+    "name_jp": "シティーズ：スカイライン2",
+    "story_en": "DLC hell returns.",
+    "story_jp": "DLC地獄、再び。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 61,
@@ -790,7 +1150,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "人性拷问机，越管越像法西斯模拟器"
+    "story": "人性拷问机，越管越像法西斯模拟器",
+    "name_en": "Frostpunk",
+    "name_jp": "フロストパンク",
+    "story_en": "A machine for interrogating humanity—the more you govern, the more it feels like a fascism simulator.",
+    "story_jp": "人間性を問い詰める装置。統治すればするほど、ファシズムシミュレーターっぽくなる。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 62,
@@ -803,7 +1169,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "黑心院长模拟器，走廊比病房更重要"
+    "story": "黑心院长模拟器，走廊比病房更重要",
+    "name_en": "Two Point Hospital",
+    "name_jp": "ツーポイントホスピタル",
+    "story_en": "Ruthless hospital director simulator, where hallways matter more than wards.",
+    "story_jp": "闇院長シミュレーター。病室より廊下のほうが大事。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 63,
@@ -816,11 +1188,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "反向上班模拟，数值爆炸升天"
+    "story": "开局像逃命，后期像烟花厂",
+    "name_en": "Vampire Survivors",
+    "name_jp": "ヴァンパイア・サバイバーズ",
+    "story_en": "It starts like a desperate escape and ends like a fireworks factory.",
+    "story_jp": "序盤は命からがら逃げて、終盤は花火工場になる。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 64,
-    "name": "Balatro",
+    "name": "小丑牌",
     "sign": null,
     "time": 104,
     "type": "4",
@@ -829,11 +1207,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 6,
-    "story": "德州肉鸽，神中神"
+    "story": "你以为在打牌，其实在和概率做法",
+    "name_en": "Balatro",
+    "name_jp": "バラトロ",
+    "story_en": "You think you're playing cards, but you're really performing dark arts on probability.",
+    "story_jp": "カードゲームしてるつもりが、実際は確率に呪術をかけている。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 65,
-    "name": "Hades",
+    "name": "哈迪斯",
     "sign": "≈",
     "time": 10,
     "type": "4",
@@ -842,11 +1226,17 @@
     "seriesTag": "Hades",
     "spacialAchievements": null,
     "quality": 3,
-    "story": "冥界996，死了重开下一班，爹见打模拟器"
+    "story": "冥界996，死了重开下一班，爹见打模拟器",
+    "name_en": "Hades",
+    "name_jp": "ハデス",
+    "story_en": "Underworld 996: die, restart the next shift, and get beaten by dad simulator.",
+    "story_jp": "冥界996。死んでは次のシフトに入り直し、親父にしばかれるシミュレーター。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 66,
-    "name": "Hades II",
+    "name": "哈迪斯2",
     "sign": null,
     "time": 39,
     "type": "4",
@@ -855,7 +1245,13 @@
     "seriesTag": "Hades",
     "spacialAchievements": null,
     "quality": 4,
-    "story": "冥界家族企业扩招，这次轮到妹妹加班"
+    "story": "冥界家族企业扩招，这次轮到妹妹加班",
+    "name_en": "Hades II",
+    "name_jp": "ハデス2",
+    "story_en": "The Underworld family business is hiring again—this time little sis is the one working overtime.",
+    "story_jp": "冥界の家族経営が増員中。今回は妹が残業担当。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 67,
@@ -868,7 +1264,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "肉鸽界拼多多"
+    "story": "肉鸽界拼多多",
+    "name_en": "Brotato",
+    "name_jp": "Brotato",
+    "story_en": "The Pinduoduo of roguelites.",
+    "story_jp": "ローグライト界の拼多多。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 68,
@@ -881,11 +1283,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 5,
-    "story": "机制神"
+    "story": "机制神",
+    "name_en": "Luck be a Landlord",
+    "name_jp": "Luck be a Landlord",
+    "story_en": "God-tier mechanics.",
+    "story_jp": "システムが神。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 69,
-    "name": "人类一败涂地",
+    "name": "人类：一败涂地",
     "sign": null,
     "time": 7,
     "type": "4",
@@ -894,7 +1302,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "软体动物成精"
+    "story": "软体动物成精",
+    "name_en": "Human: Fall Flat",
+    "name_jp": "人間：フォール・フラット",
+    "story_en": "A floppy-bodied creature gains sentience.",
+    "story_jp": "軟体動物が知性を持ってしまった。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 70,
@@ -907,11 +1321,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "捡垃圾也要KPI"
+    "story": "捡垃圾也要KPI",
+    "name_en": "Lethal Company",
+    "name_jp": "リーサルカンパニー",
+    "story_en": "Even junk collecting comes with KPI targets.",
+    "story_jp": "ゴミ拾いにもKPIがある。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 71,
-    "name": "Chained Together",
+    "name": "锁链在一起",
     "sign": null,
     "time": 6,
     "type": "4",
@@ -920,11 +1340,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "连体婴跑酷"
+    "story": "连体婴跑酷",
+    "name_en": "Chained Together",
+    "name_jp": "Chained Together",
+    "story_en": "Conjoined parkour.",
+    "story_jp": "連結体パルクール。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 72,
-    "name": "一起开火车",
+    "name": "一起开火车！",
     "sign": null,
     "time": 11,
     "type": "4",
@@ -933,11 +1359,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "铁轨铺到哪，友谊断到哪"
+    "story": "铁轨铺到哪，友谊断到哪",
+    "name_en": "Unrailed!",
+    "name_jp": "アンレイルド！",
+    "story_en": "Wherever the tracks go, friendship breaks there.",
+    "story_jp": "線路を敷いた先から友情が壊れていく。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 73,
-    "name": "Totally Accurate Battlegrounds",
+    "name": "完全 accurate 大逃杀",
     "sign": null,
     "time": 7,
     "type": "4",
@@ -946,11 +1378,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "唐氏绝地求生"
+    "story": "唐氏绝地求生",
+    "name_en": "Totally Accurate BattlegroundS",
+    "name_jp": "Totally Accurate BattlegroundS",
+    "story_en": "Derpy PUBG.",
+    "story_jp": "おバカPUBG。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 74,
-    "name": "雨中冒险2",
+    "name": "雨中冒险：回归",
     "sign": null,
     "time": 30,
     "type": "4",
@@ -959,7 +1397,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "道具叠到宇宙坍缩"
+    "story": "道具叠到宇宙坍缩",
+    "name_en": "Risk of Rain",
+    "name_jp": "リスク・オブ・レイン",
+    "story_en": "Stack enough items to collapse the universe.",
+    "story_jp": "アイテムを積みすぎて宇宙が崩壊する。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 75,
@@ -972,7 +1416,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "天亮了"
+    "story": "天亮了",
+    "name_en": "Sid Meier's Civilization IV",
+    "name_jp": "シド・マイヤーズ シビライゼーションIV",
+    "story_en": "It's morning already.",
+    "story_jp": "もう朝だ。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 76,
@@ -985,11 +1435,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 6,
-    "story": "伐伐伐伐伐木工"
+    "story": "伐伐伐伐伐木工",
+    "name_en": "Age of Empires II: Definitive Edition",
+    "name_jp": "エイジ・オブ・エンパイアーズ II",
+    "story_en": "Chop-chop-chop-chop, lumberjack.",
+    "story_jp": "伐って伐って伐って伐る木こり。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 77,
-    "name": "红色警戒2",
+    "name": "命令与征服：红色警戒2",
     "sign": "＞",
     "time": 100,
     "type": "5",
@@ -998,7 +1454,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 6,
-    "story": "我叫磁力棒"
+    "story": "我叫磁力棒",
+    "name_en": "Command & Conquer: Red Alert 2",
+    "name_jp": "コマンド＆コンカー レッドアラート2",
+    "story_en": "My name is Magnet Rod.",
+    "story_jp": "俺の名は磁力棒。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 78,
@@ -1011,11 +1473,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 5,
-    "story": "欲买桂花同载酒，终不似，少年游"
+    "story": "欲买桂花同载酒，终不似，少年游",
+    "name_en": "Stronghold",
+    "name_jp": "ストロングホールド",
+    "story_en": "I would buy osmanthus and carry wine with you once more, yet it can never be the same as in our youth.",
+    "story_jp": "桂花を買って酒を携え、ともに往年を味わいたい。だが、あの少年の日々にはもう戻れない。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 79,
-    "name": "星际争霸1",
+    "name": "星际争霸",
     "sign": "≈",
     "time": 20,
     "type": "5",
@@ -1024,11 +1492,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "韩国电竞传国玉玺"
+    "story": "韩国电竞传国玉玺",
+    "name_en": "StarCraft",
+    "name_jp": "スタークラフト",
+    "story_en": "Korea's heirloom imperial seal of esports.",
+    "story_jp": "韓国eスポーツの伝国の玉璽。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 80,
-    "name": "魔兽争霸3",
+    "name": "魔兽争霸III",
     "sign": "＞",
     "time": 100,
     "type": "5",
@@ -1037,7 +1511,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 5,
-    "story": "活到今天全靠玩家自制"
+    "story": "活到今天全靠玩家自制",
+    "name_en": "Warcraft III",
+    "name_jp": "ワークラフトIII",
+    "story_en": "It's still alive today almost entirely thanks to player-made content.",
+    "story_jp": "今日まで生きているのは、ほぼ全部プレイヤー制作のおかげ。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 81,
@@ -1050,7 +1530,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "CIA年终考核"
+    "story": "CIA年终考核",
+    "name_en": "Tropico 5",
+    "name_jp": "トロピコ5",
+    "story_en": "The CIA's year-end performance review.",
+    "story_jp": "CIAの年末査定。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 82,
@@ -1063,7 +1549,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "哭能解决问题"
+    "story": "哭能解决问题",
+    "name_en": "The Binding of Isaac",
+    "name_jp": "ザ・バインディング・オブ・アイザック",
+    "story_en": "Crying really does solve problems.",
+    "story_jp": "泣けばだいたい解決する。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 83,
@@ -1076,7 +1568,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "唉，死亡与机器人"
+    "story": "唉，死亡与机器人",
+    "name_en": "Slay the Spire",
+    "name_jp": "スレイ・ザ・スパイア",
+    "story_en": "Ah yes, death and robots.",
+    "story_jp": "はいはい、死とロボット。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 84,
@@ -1089,11 +1587,17 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "注：这项改动极为大胆"
+    "story": "注：这项改动极为大胆",
+    "name_en": "Hearthstone",
+    "name_jp": "ハースストーン",
+    "story_en": "Note: this change is extremely bold.",
+    "story_jp": "注：この変更は極めて大胆です。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 85,
-    "name": "Kards",
+    "name": "KARDS",
     "sign": null,
     "time": 56,
     "type": "6",
@@ -1102,7 +1606,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "鱼雷炸飞机"
+    "story": "鱼雷炸飞机",
+    "name_en": "KARDS",
+    "name_jp": "KARDS",
+    "story_en": "Torpedoes blowing up planes.",
+    "story_jp": "魚雷で飛行機を落とす。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 86,
@@ -1115,7 +1625,13 @@
     "seriesTag": null,
     "spacialAchievements": "最高段位：阴阳大允",
     "quality": 3,
-    "story": "皮肤比段位保值"
+    "story": "皮肤比段位保值",
+    "name_en": "Onmyoji Arena",
+    "name_jp": "決戦！平安京",
+    "story_en": "Skins hold their value better than rank does.",
+    "story_jp": "スキンのほうが段位より価値が落ちない。",
+    "spacialAchievements_en": "Highest rank: Onmyo Grand Rank (阴阳大允).",
+    "spacialAchievements_jp": "最高ランク：陰陽大允。"
   },
   {
     "id": 87,
@@ -1128,7 +1644,13 @@
     "seriesTag": null,
     "spacialAchievements": "最高段位：王者10星",
     "quality": 1,
-    "story": "喜欢干农活"
+    "story": "喜欢干农活",
+    "name_en": "Honor of Kings",
+    "name_jp": "Honor of Kings",
+    "story_en": "Apparently everyone loves doing farm work.",
+    "story_jp": "みんな農作業が好きらしい。",
+    "spacialAchievements_en": "Highest rank: King, 10 stars.",
+    "spacialAchievements_jp": "最高ランク：王者10星。"
   },
   {
     "id": 88,
@@ -1141,7 +1663,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 3,
-    "story": "崩3电脑版"
+    "story": "崩3电脑版",
+    "name_en": "Zenless Zone Zero",
+    "name_jp": "ゼンレスゾーンゼロ",
+    "story_en": "Honkai Impact 3 on PC.",
+    "story_jp": "崩壊3rdのPC版みたいなもの。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 89,
@@ -1154,7 +1682,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 4,
-    "story": "还挺骄傲？有什么用？一个2分钟一把的4399小游戏，拿出去给人说自己成天苦练一个4399凉批小游戏，谁不在心里暗骂你一句s比？"
+    "story": "还挺骄傲？有什么用？一个2分钟一把的4399小游戏，拿出去给人说自己成天苦练一个4399凉批小游戏，谁不在心里暗骂你一句s比？",
+    "name_en": "Brawl Stars",
+    "name_jp": "ブロウルスターズ",
+    "story_en": "Proud of it, are you? For what? It's just a tiny two-minute casual game. If you tell people you spend all day grinding this kind of thing, who isn't going to think you're kind of an idiot?",
+    "story_jp": "そんなに誇らしいの？ 何が？ 1試合2分の小さなカジュアルゲームじゃん。こんなのを一日中やり込んでるって言ったら、心の中で「バカかな」って思われても仕方ない。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 90,
@@ -1167,7 +1701,13 @@
     "seriesTag": null,
     "spacialAchievements": "最高段位：白金",
     "quality": 2,
-    "story": "拳头做的？"
+    "story": "拳头做的？",
+    "name_en": "League of Legends: Wild Rift",
+    "name_jp": "ワイルドリフト",
+    "story_en": "Riot made this?",
+    "story_jp": "これ、本当にRiot製？",
+    "spacialAchievements_en": "Highest rank: Platinum.",
+    "spacialAchievements_jp": "最高ランク：プラチナ。"
   },
   {
     "id": 91,
@@ -1180,7 +1720,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "网易就爱招些不玩游戏的高材生策划"
+    "story": "网易就爱招些不玩游戏的高材生策划",
+    "name_en": "Onmyoji",
+    "name_jp": "陰陽師",
+    "story_en": "NetEase really loves hiring top students who don't play games to be planners.",
+    "story_jp": "NetEaseって、本当にゲームをやらない優等生プランナーを採るのが好きだよな。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 92,
@@ -1193,7 +1739,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 1,
-    "story": "无厘头"
+    "story": "无厘头",
+    "name_en": "最强蜗牛",
+    "name_jp": "最強の蝸牛",
+    "story_en": "Absurd for the sake of absurdity.",
+    "story_jp": "ひたすらナンセンス。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 93,
@@ -1206,7 +1758,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 1,
-    "story": "不会出男性人物？"
+    "story": "不会出男性人物？",
+    "name_en": "Honkai Impact 3rd",
+    "name_jp": "崩壊3rd",
+    "story_en": "So you're just never going to add male characters?",
+    "story_jp": "男性キャラは、結局ずっと実装しないの？",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 94,
@@ -1219,7 +1777,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "启动"
+    "story": "启动",
+    "name_en": "Genshin Impact",
+    "name_jp": "原神",
+    "story_en": "Launching.",
+    "story_jp": "起動。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 95,
@@ -1232,7 +1796,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 1,
-    "story": "老婆收集器"
+    "story": "老婆收集器",
+    "name_en": "Girls' Frontline",
+    "name_jp": "少女前線",
+    "story_en": "Waifu collector.",
+    "story_jp": "嫁コレクター。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 96,
@@ -1245,7 +1815,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "优香算数教室"
+    "story": "优香算数教室",
+    "name_en": "Blue Archive",
+    "name_jp": "ブルーアーカイブ",
+    "story_en": "Yuuka's math class.",
+    "story_jp": "ユウカの算数教室。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 97,
@@ -1256,9 +1832,15 @@
     "isRecently": false,
     "isLoved": false,
     "seriesTag": null,
-    "spacialAchievements": "金铲铲之战：超凡大师\r\n云顶之弈：璀璨钻石",
+    "spacialAchievements": "金铲铲之战：超凡大师\r\r\n云顶之弈：璀璨钻石",
     "quality": 5,
-    "story": "用心做游戏，用脚做平衡"
+    "story": "用心做游戏，用脚做平衡",
+    "name_en": "Teamfight Tactics",
+    "name_jp": "チームファイトタクティクス",
+    "story_en": "They put their heart into the game and their feet into balance.",
+    "story_jp": "ゲーム作りには本気、バランス調整は足でやってる。",
+    "spacialAchievements_en": "Golden Spatula: Master.Teamfight Tactics: Diamond.",
+    "spacialAchievements_jp": "金铲铲之战：マスター。チームファイト タクティクス：ダイヤモンド。"
   },
   {
     "id": 98,
@@ -1271,7 +1853,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 2,
-    "story": "赛博义乌小商城"
+    "story": "赛博义乌小商城",
+    "name_en": "Dungeon & Fighter",
+    "name_jp": "アラド戦記",
+    "story_en": "A cyber Yiwu wholesale market.",
+    "story_jp": "サイバー義烏小商品市場。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 99,
@@ -1284,7 +1872,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 1,
-    "story": "小学生第一套QQ秀"
+    "story": "小学生第一套QQ秀",
+    "name_en": "Rainbow Island Story",
+    "name_jp": "ラインストーリー",
+    "story_en": "Every grade-school kid's first QQ Show outfit set.",
+    "story_jp": "小学生時代、最初のQQショー一式。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 100,
@@ -1297,7 +1891,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 1,
-    "story": "屠龙者终成韭菜"
+    "story": "屠龙者终成韭菜",
+    "name_en": "Dragon Nest",
+    "name_jp": "ドラゴンネスト",
+    "story_en": "Every dragon slayer becomes paying fodder in the end.",
+    "story_jp": "竜を狩った者も、最後は養分になる。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 101,
@@ -1310,7 +1910,13 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 1,
-    "story": "三亿鼠标的枪战梦想"
+    "story": "三亿鼠标的枪战梦想",
+    "name_en": "CrossFire",
+    "name_jp": "クロスファイア",
+    "story_en": "The shooting dream of 300 million mouse users.",
+    "story_jp": "3億のマウスが抱いた銃撃の夢。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   },
   {
     "id": 102,
@@ -1323,6 +1929,12 @@
     "seriesTag": null,
     "spacialAchievements": null,
     "quality": 1,
-    "story": "据说匹配和排位在同一个池子"
+    "story": "有人在搜 有人在打 有人在问撤离点呢",
+    "name_en": "Delta Force",
+    "name_jp": "デルタフォース",
+    "story_en": "Some are looting, some are fighting, and some are still asking where the extraction point is.",
+    "story_jp": "漁ってるやつもいれば、撃ち合ってるやつもいて、まだ脱出地点どこって聞いてるやつもいる。",
+    "spacialAchievements_en": null,
+    "spacialAchievements_jp": null
   }
 ]

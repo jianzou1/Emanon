@@ -28,6 +28,14 @@
 - `js/utils.js` — 导出 `escHtml` / `escAttr`，供 messageBoard.js 和 gameList.js 共用
 - `js/messageBoardMock.js` — 留言板 Mock 数据，通过 dynamic import 分离为独立 chunk，生产环境按需加载不进主 bundle
 
+## 游戏列表多语言
+- 排序选项 radio value 已改为语言无关标识符：`sort_quality` / `sort_type` / `sort_time`
+- 评级名（大师之作等）和类型名（竞技类等）通过 `langManager.translate('game_quality_N')` / `langManager.translate('game_type_N')` 获取
+- 排序缓存 key 为 `${sortOption}_${lang}`，语言切换时通过监听 `#lang-switcher` change 自动清缓存+重渲染
+- `getLocalizedField(game, field)` 支持读取 `field_en` / `field_jp` 多语言字段，fallback 到原始中文
+- game_time_cfg.json 数据层多语言字段（story_en/story_jp/name_en/name_jp）待人工补充
+- `parseKeys(str)` 从 system_cfg 的 value 字符串中提取有序 key 数组（不再解析中文名称）
+
 ## webpack 配置
 - DefinePlugin 提供 `__BUILD_HASH__`（构建哈希）和 `__DEV__`（开发模式标志）
 - TerserPlugin 配置了 `drop_console: true`（生产环境移除 console）
