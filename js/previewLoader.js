@@ -4,7 +4,7 @@
 let cachedLinks = null;
 let boundContainer = null; // 已绑定事件的容器引用，防止重复绑定
 
-export async function loadPreviewLinks(pjax, tabHandler) {
+export async function loadPreviewLinks(pjax) {
     const links = cachedLinks || (cachedLinks = await fetchLinks());
 
     const linksContainer = document.getElementById('links-container');
@@ -24,7 +24,7 @@ export async function loadPreviewLinks(pjax, tabHandler) {
 
     // 事件委托只绑定一次
     if (boundContainer !== linksContainer) {
-        setupLinksContainer(linksContainer, pjax, tabHandler);
+        setupLinksContainer(linksContainer, pjax);
         boundContainer = linksContainer;
     }
 }
@@ -59,13 +59,12 @@ const createLinkDiv = (title, url, icon) => {
     return div;
 };
 
-const setupLinksContainer = (linksContainer, pjax, tabHandler) => {
+const setupLinksContainer = (linksContainer, pjax) => {
     linksContainer.addEventListener('click', event => {
         const target = event.target.closest('.link-preview');
         if (target?.dataset.url) {
             event.preventDefault();
             pjax.loadUrl(target.dataset.url);
-            tabHandler.updateSelectedTab(target.dataset.url);
         }
     });
 };

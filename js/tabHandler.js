@@ -102,6 +102,8 @@ export class TabHandler {
     // 更新选项卡的选择状态
     updateSelectedTab(currentUrl) {
         if (!this.tabList) return;
+        // 非页签 URL（如文章详情页）不改变当前选中状态
+        if (!this.isTabUrl(currentUrl)) return;
         this.tabList.querySelectorAll('[role="tab"]').forEach(tab => {
             const tabUrl = tab.dataset.url;
             const isActive = currentUrl === tabUrl;

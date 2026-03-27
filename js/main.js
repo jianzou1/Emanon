@@ -129,7 +129,7 @@ const initializeApp = async () => {
             initializeDailyPopup();
             break;
           case '/page/article.html':
-            loadPreviewLinks(pjax, currentTabHandler);
+            loadPreviewLinks(pjax);
             break;
           case '/page/game.html':
             gameList();
