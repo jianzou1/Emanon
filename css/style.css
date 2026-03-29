@@ -172,7 +172,7 @@ code {
   }
   .window img { max-width: 100%; }
   .status-bar { margin-bottom: 5%; }
-  .status-bar p { font-size: 13px; }
+  .status-bar p { font-size: clamp(10px, 2.8vw, 13px); white-space: nowrap; }
   p, .window li, h1, h2, h3, h4 {
     font-size: 16px;
     margin-bottom: 10px;
