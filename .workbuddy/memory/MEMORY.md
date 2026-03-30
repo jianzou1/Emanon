@@ -73,6 +73,15 @@
 - `gallery.css` 无需修改（已有良好实践）
 - CRT 效果未触碰（用户要求不改）
 
+## 数据预加载架构（2026-03-31 实施）
+- `dataCache.js`：统一 JSON 缓存层，`fetchJSON(url)` 缓存 Promise（非结果），天然防竞态
+  - `warmUpCache(urls)` 批量预热，静默 catch 不影响后续按需加载
+- `main.js` 启动时序：`await langManager.init()` → 首屏渲染 → `prefetchMessages()` → `requestIdleCallback` 预热 4 个 JSON（article_cfg / game_time_cfg / system_cfg / gallery_cfg）
+  - Safari fallback: `setTimeout(fn, 200)`；timeout 兜底: 3000ms
+- `previewLoader.js` 已统一使用 `fetchJSON()` 替代原生 fetch，接入缓存层
+- 消费者对照：gameList.js / gallery.js / previewLoader.js 全部通过 `fetchJSON()` 加载 JSON → 预热缓存自动命中
+- `lang_cfg.json` 不参与预热（langManager 独立管理，最高优先级阻塞式 await）
+
 ## 文章构建管线（post/_src/post.js）
 - Markdown 文件支持 frontmatter（`---` 分隔），字段：title、icon、order、hidden
 - `post.js` 自动生成 `cfg/article_cfg.json`（过滤 hidden、按 order 排序）

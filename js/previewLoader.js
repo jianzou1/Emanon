@@ -1,6 +1,8 @@
 // previewLoader.js
+import { fetchJSON } from '/js/dataCache.js';
 
 // 内存缓存：避免 pjax 切换选项卡时重复 fetch + 重建 DOM
+// （cachedLinks 缓存 transform 后的结果，与 fetchJSON 缓存的原始 JSON 不冲突）
 let cachedLinks = null;
 let boundContainer = null; // 已绑定事件的容器引用，防止重复绑定
 
@@ -31,10 +33,7 @@ export async function loadPreviewLinks(pjax) {
 
 const fetchLinks = async () => {
     try {
-        const response = await fetch('/cfg/article_cfg.json');
-        if (!response.ok) throw new Error('配置加载失败');
-
-        const links = await response.json();
+        const links = await fetchJSON('/cfg/article_cfg.json');
         return links.map(({ id, url, icon, name }) => ({
             id,
             url: `/post/${url}`,

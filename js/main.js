@@ -15,6 +15,7 @@ import { initializeRandomLogo } from '/js/logoRandomizer.js';
 import { initializePassword } from '/js/password.js';
 import { initializeMessageBoard, prefetchMessages } from '/js/messageBoard.js';
 import langManager from '/js/langManager.js';
+import { warmUpCache } from '/js/dataCache.js';
 
 const TABLIST_SELECTOR = '[role="tablist"]';
 const TAB_DATA = [
@@ -204,6 +205,22 @@ const initializeApp = async () => {
 
     // 静默预取留言板第 1 页数据（后台请求，不阻塞页面）
     prefetchMessages();
+
+    // 低优先级预热 JSON 配置缓存（首屏渲染完成后空闲时段触发）
+    // lang_cfg.json 已在 langManager.init() 中最高优先级加载，此处仅预热其余 4 个配置文件
+    const scheduleWarmUp = () => warmUpCache([
+      '/cfg/article_cfg.json',
+      '/cfg/game_time_cfg.json',
+      '/cfg/system_cfg.json',
+      '/cfg/gallery_cfg.json',
+    ]);
+
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(scheduleWarmUp, { timeout: 3000 });
+    } else {
+      // Safari 等不支持 requestIdleCallback 的浏览器，用 setTimeout 兜底
+      setTimeout(scheduleWarmUp, 200);
+    }
   } catch (error) {
     console.error('应用初始化失败:', error);
   }

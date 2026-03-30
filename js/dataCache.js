@@ -20,3 +20,14 @@ export function fetchJSON(url) {
     cache.set(url, promise);
     return promise;
 }
+
+/**
+ * 预热缓存：批量调用 fetchJSON 将 Promise 写入 cache Map。
+ * 各消费模块后续调用 fetchJSON(同一 URL) 直接命中，零网络请求。
+ * 失败静默处理——不影响后续按需加载（fetchJSON 的 catch 会清除失败缓存允许重试）。
+ */
+export function warmUpCache(urls) {
+    urls.forEach(url => {
+        fetchJSON(url).catch(() => {});
+    });
+}
