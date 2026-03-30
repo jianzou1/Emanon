@@ -40,5 +40,11 @@
     "url": "gd_sample_system_battlepass",
     "icon": "application-x-gamecube-rom.png",
     "name": "战令通行证功能"
+  },
+  {
+    "id": 8,
+    "url": "moon",
+    "icon": "secret.png",
+    "name": "to the moon"
   }
 ]
