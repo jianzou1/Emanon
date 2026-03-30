@@ -450,3 +450,40 @@
     font-size: 13px;
   }
 }
+
+/* ── 调试模式：Blob Key 标签 ── */
+.msg-debug-tag {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  color: #fff;
+  background: var(--color-error, #cc0000);
+  border: 1px solid #900;
+  cursor: pointer;
+  user-select: all;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+.msg-debug-tag:hover {
+  background: #900;
+}
+
+/* 回复中的调试标签稍微缩小 */
+.message-reply-item .msg-debug-tag {
+  font-size: 10px;
+  padding: 1px 5px;
+}
+
+@media (max-width: 768px) {
+  .msg-debug-tag {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+  .message-reply-item .msg-debug-tag {
+    font-size: 9px;
+  }
+}

@@ -19,6 +19,16 @@ const USE_MOCK_MESSAGES = (() => {
   }
 })();
 
+// 调试模式：?debug=1 时显示每条留言的 Blob Key，用于 Netlify 后台维护
+const DEBUG_MODE = (() => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('debug') === '1';
+  } catch {
+    return false;
+  }
+})();
+
 // Mock 数据模块：条件动态导入，生产打包时 __DEV__ 为 false，
 // Terser 的 dead code elimination 会把整个分支和 import() 移除
 // __DEV__ 由 webpack DefinePlugin 注入，生产构建为 false，
@@ -301,6 +311,9 @@ function buildMessageCard(item, idx, replies) {
     const atTag = replyToNick
       ? `<span class="message-reply-at">@${escHtml(replyToNick)}</span> `
       : '';
+    const replyDebugHtml = DEBUG_MODE && reply.blobKey
+      ? `<div class="msg-debug-tag" data-blob-key="${escAttr(reply.blobKey)}" title="点击复制 Blob Key">🔑 ${escHtml(reply.blobKey)}</div>`
+      : '';
     return `
       <div class="message-reply-item" data-reply-nickname="${escAttr(reply.nickname || 'unknown')}">
         <div class="message-reply-meta">
@@ -310,6 +323,7 @@ function buildMessageCard(item, idx, replies) {
           <span class="msg-reply-reply-btn" role="button" tabindex="0">${replyBtnText}</span>
         </div>
         <div class="message-reply-body">${atTag}${replyBody}</div>
+        ${replyDebugHtml}
       </div>
     `;
   }).join('');
@@ -318,6 +332,11 @@ function buildMessageCard(item, idx, replies) {
   card.className = 'message-card';
   card.style.animationDelay = `${idx * 40}ms`;
   card.dataset.messageId = item.messageId;
+
+  const debugHtml = DEBUG_MODE && item.blobKey
+    ? `<div class="msg-debug-tag" data-blob-key="${escAttr(item.blobKey)}" title="点击复制 Blob Key">🔑 ${escHtml(item.blobKey)}</div>`
+    : '';
+
   card.innerHTML = `
     <div class="message-card-header">
       <div class="message-meta">
@@ -328,6 +347,7 @@ function buildMessageCard(item, idx, replies) {
       </div>
     </div>
     <div class="message-card-body">${body}</div>
+    ${debugHtml}
     ${repliesHtml ? `<div class="message-reply-list">${repliesHtml}</div>` : ''}
   `;
 
@@ -360,6 +380,27 @@ function buildMessageCard(item, idx, replies) {
       }
     });
   });
+
+  // 调试标签点击复制 Blob Key
+  if (DEBUG_MODE) {
+    card.querySelectorAll('.msg-debug-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        const key = tag.dataset.blobKey;
+        if (!key) return;
+        navigator.clipboard.writeText(key).then(() => {
+          showToast('Blob Key 已复制');
+        }).catch(() => {
+          // fallback: 选中文本
+          const range = document.createRange();
+          range.selectNodeContents(tag);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          showToast('请手动复制选中的 Key');
+        });
+      });
+    });
+  }
 
   return card;
 }

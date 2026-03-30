@@ -46,7 +46,9 @@ exports.handler = async (event) => {
         try {
           const raw = await store.get(blob.key);
           if (!raw) return null;
-          return normalizeEntry(JSON.parse(raw));
+          const entry = normalizeEntry(JSON.parse(raw));
+          entry.blobKey = blob.key;
+          return entry;
         } catch (err) {
           console.warn('skip invalid blob:', blob?.key, err?.message || err);
           return null;
