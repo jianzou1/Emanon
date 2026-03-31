@@ -1,7 +1,7 @@
 ---
 title: 如无必要，勿增实体
 icon: text-markdown.png
-order: 1
+order: 2
 hidden: false
 date: 2025-04-23
 ---

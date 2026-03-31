@@ -1,7 +1,7 @@
 ---
 title: to the moon
 icon: secret.png
-order: 100
+order: 1
 hidden: false
 date: 2026-03-30
 ---

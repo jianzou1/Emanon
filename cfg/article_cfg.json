@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
+    "url": "moon",
+    "icon": "secret.png",
+    "name": "to the moon"
+  },
+  {
+    "id": 2,
     "url": "gd_occams_razor",
     "icon": "text-markdown.png",
     "name": "如无必要，勿增实体"
   },
   {
-    "id": 2,
+    "id": 3,
     "url": "gd_system",
     "icon": "text-markdown.png",
     "name": "复杂游戏系统设计与\"涌现\"理论"
-  },
-  {
-    "id": 3,
-    "url": "moon",
-    "icon": "secret.png",
-    "name": "to the moon"
   }
 ]
