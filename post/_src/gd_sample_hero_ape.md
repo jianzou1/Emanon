@@ -2,7 +2,7 @@
 title: 角色设计：无聊猿
 icon: application-x-genesis-rom.png
 order: 3
-hidden: false
+hidden: true
 date: 2025-04-23
 ---
 

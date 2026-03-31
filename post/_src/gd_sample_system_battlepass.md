@@ -2,7 +2,7 @@
 title: 战令通行证功能
 icon: application-x-gamecube-rom.png
 order: 7
-hidden: false
+hidden: true
 date: 2025-04-23
 ---
 
