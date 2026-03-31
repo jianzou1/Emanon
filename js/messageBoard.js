@@ -99,6 +99,7 @@ export function initializeMessageBoard() {
     totalPages = Math.max(1, Math.ceil(totalEntries / PAGE_SIZE));
     renderMessageList();
     updatePagination();
+    updateListTitle();
   } else if (prefetchPromise) {
     // 预取还在进行中，等它完成后渲染
     showLoading(true);
@@ -109,6 +110,7 @@ export function initializeMessageBoard() {
         totalPages = Math.max(1, Math.ceil(totalEntries / PAGE_SIZE));
         renderMessageList();
         updatePagination();
+        updateListTitle();
       } else {
         // 预取失败，降级为正常加载
         loadMessages(1);
@@ -234,6 +236,7 @@ async function loadMessages(page = 1) {
 
     renderMessageList();
     updatePagination();
+    updateListTitle();
   } catch (err) {
     console.error('加载留言失败:', err);
     showError();
@@ -612,6 +615,10 @@ function showError() {
 function hideError() {
   const el = document.getElementById('msg-error');
   if (el) el.style.display = 'none';
+}
+
+function updateListTitle() {
+  langManager.setParams('msg_list_title', [totalEntries]);
 }
 
 function updatePagination() {

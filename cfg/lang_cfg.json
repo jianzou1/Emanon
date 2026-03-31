@@ -301,9 +301,9 @@
   },
   {
     "id": "msg_list_title",
-    "cn": "留言列表",
-    "en": "Message List",
-    "jp": "メッセージ一覧"
+    "cn": "留言板（{0}）",
+    "en": "Message Board ({0})",
+    "jp": "メッセージボード（{0}）"
   },
   {
     "id": "msg_refresh_btn",
