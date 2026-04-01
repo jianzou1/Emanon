@@ -4,7 +4,7 @@ import { TabHandler } from '/js/tabHandler.js';
 import { updateProgressBar, cleanupProgressBar } from '/js/progressBar.js';
 import { loadPreviewLinks } from '/js/previewLoader.js';
 import { footerLoader } from '/js/footerLoader.js';
-import { handleScrollAndScrollToTop } from '/js/scrollToTop.js';
+import { initScrollToTop, cleanupScrollToTop } from '/js/scrollToTop.js';
 import { initializeDailyPopup } from '/js/dailyPopup.js';
 import { initializeTips } from '/js/tips.js';
 import { gameList } from '/js/gameList.js';
@@ -28,6 +28,8 @@ const TAB_DATA = [
 
 // 防止 HMR / 重初始化时重复绑定全局事件监听器
 let globalBindingsDone = false;
+// gameRoll 返回的 cleanup 函数引用
+let gameRollCleanup = null;
 
 const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
   const navigateByPjax = (url, event) => {
@@ -118,6 +120,11 @@ const initializeApp = async () => {
         // 清理上一页的后台资源（定时器、Observer 等）
         cleanupProgressBar();
         cleanupGallery();
+        cleanupScrollToTop();
+        if (gameRollCleanup) {
+          gameRollCleanup();
+          gameRollCleanup = null;
+        }
 
         const currentUrl = window.location.pathname;
 
@@ -134,7 +141,7 @@ const initializeApp = async () => {
             break;
           case '/page/game.html':
             gameList();
-            initGameRoll();
+            gameRollCleanup = initGameRoll();
             break;
           case '/page/gallery.html':
             initializeGallery();
@@ -151,7 +158,7 @@ const initializeApp = async () => {
 
         // 通用功能初始化
         footerLoader();
-        handleScrollAndScrollToTop();
+        initScrollToTop();
         initializeTips();
         initCRT();
 

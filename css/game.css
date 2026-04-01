@@ -157,7 +157,7 @@ ul.tree-view .game-list .tree-view li,
   height: 30px;
   overflow: hidden;
   margin-top: 15px;
-  transition: all 0.3s ease;
+  transition: height 0.3s ease;
   align-items: center;
   width: 100%;
   background-color: var(--color-white);

@@ -7,6 +7,8 @@
 - 打包产物 `main.js` 和 `styles.css` 在根目录，经 TerserPlugin 混淆压缩，变量名会被重命名
 - 入口：`js/index.js` → `js/main.js`（应用核心）
 - 部署：Netlify，配置在 `netlify.toml`
+  - 构建命令：`npm run build`（post → cfg → webpack production）
+  - 安全头：X-Frame-Options(DENY) / X-Content-Type-Options(nosniff) / X-XSS-Protection / Referrer-Policy / Permissions-Policy
 
 ## CRT 效果（js/crtEffect.js）
 - 全屏 Canvas 叠加层，RGB 扫描线 + 桶形畸变 + 边缘暗角 + 四角色差
@@ -25,7 +27,9 @@
 - 弹窗公共样式在 `daily.css` 中通过 `#welcome-popup, #password-error-popup` 选择器组合定义
 
 ## 公共工具模块
-- `js/utils.js` — 导出 `escHtml` / `escAttr`，供 messageBoard.js 和 gameList.js 共用
+- `js/utils.js` — 导出 `escHtml` / `escAttr` / `getSystemValue` / `getLocalizedField(obj, field, lang)` / `normalizeGameData` / `parseKeys` / `parseConfigString` / `shuffleArray`
+  - `getLocalizedField` 接收 lang 参数（避免 utils.js 依赖 langManager），调用处传入 `langManager.getCurrentLang()`
+  - 供 gameList.js / gameRoll.js / gallery.js / messageBoard.js / previewLoader.js 共用
 - `js/messageBoardMock.js` — 留言板 Mock 数据，通过 dynamic import 分离为独立 chunk，生产环境按需加载不进主 bundle
 
 ## 游戏列表多语言
@@ -51,11 +55,14 @@
 - `TabHandler` 构造函数接收 4 参数：selector, tabData, pjaxInstance, onPageLoad
 - `main.js` 中 handlePageLoad 声明在 refreshTabHandler 之前（作为参数传递）
 
-## PJAX 生命周期管理（2026-03-26 新增）
-- `main.js` 中 handlePageLoad 开头调用各模块的 cleanup 函数（cleanupProgressBar / cleanupGallery）
-- `progressBar.js` 导出 `cleanupProgressBar()`：清理定时器 + visibilitychange 监听器
+## PJAX 生命周期管理（2026-04-01 更新）
+- `main.js` 中 handlePageLoad 开头调用 4 个 cleanup：cleanupProgressBar / cleanupGallery / cleanupScrollToTop / gameRollCleanup
+- `scrollToTop.js` 导出 `initScrollToTop()` + `cleanupScrollToTop()`：清理 scroll 监听器 + button onclick；带 100ms throttle
+- `gameRoll.js` 的 `initGameRoll()` 返回 cleanup 函数：清理 click 监听器 + 打字机 setTimeout + 动画 rAF
+- `progressBar.js` 导出 `cleanupProgressBar()`：清理定时器 + visibilitychange 监听器；已统一使用 `import langManager`
 - `gallery.js` 导出 `cleanupGallery()`：断开 IntersectionObserver + 移除 window click 监听器
 - `tips.js` 使用事件委托（body 级 mouseover/mouseout），单例模式不需要 cleanup
+- `dailyPopup.js`：interval=86400（24h）、closePopup 重构为闭包 closeHandler、移除底部自执行
 
 ## CSS 移动端优化（2026-03-28 实施）
 - 全局 `body` 添加 `overflow-wrap: break-word`

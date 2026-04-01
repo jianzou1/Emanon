@@ -1,5 +1,6 @@
 // previewLoader.js
 import { fetchJSON } from '/js/dataCache.js';
+import { escHtml, escAttr } from '/js/utils.js';
 
 // 内存缓存：避免 pjax 切换选项卡时重复 fetch + 重建 DOM
 // （cachedLinks 缓存 transform 后的结果，与 fetchJSON 缓存的原始 JSON 不冲突）
@@ -52,8 +53,8 @@ const createLinkDiv = (title, url, icon) => {
     div.className = 'link-preview';
     div.dataset.url = url;
     div.innerHTML = `
-        <span class="link-icon" style="background-image: url('${icon}')"></span>
-        <p class="link-title">${title}</p>
+        <span class="link-icon" style="background-image: url('${escAttr(icon)}')"></span>
+        <p class="link-title">${escHtml(title)}</p>
     `;
     return div;
 };

@@ -214,6 +214,5 @@ code {
   height: 100vh;
   z-index: var(--z-crt);
   pointer-events: none;
-  will-change: contents;
   contain: strict;
 }

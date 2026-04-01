@@ -1,5 +1,6 @@
 // gallery.js
 import { fetchJSON } from '/js/dataCache.js';
+import { getSystemValue } from '/js/utils.js';
 
 const CONFIG = {
     GALLERY_CONFIG_URL: '/cfg/gallery_cfg.json',
@@ -80,11 +81,6 @@ export async function initializeGallery() {
     } catch (error) {
         console.error('错误:', error);
         alert('加载失败: ' + error.message);
-    }
-
-    function getSystemValue(systemData, id) {
-        if (!Array.isArray(systemData)) return '';
-        return systemData.find(item => item.id === id)?.value || '';
     }
 
     function normalizeGalleryData(data) {

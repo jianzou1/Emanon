@@ -1,6 +1,7 @@
 // gameRoll.js
 import langManager from '/js/langManager.js';
 import { fetchJSON } from '/js/dataCache.js';
+import { normalizeGameData, parseConfigString, shuffleArray, getLocalizedField } from '/js/utils.js';
 
 export function initGameRoll() {
   const CONFIG = {
@@ -24,7 +25,9 @@ export function initGameRoll() {
     systemConfig: {
       typeName: {},
       qualityName: {}
-    }
+    },
+    typewriterTimer: null, // 打字机 setTimeout ID
+    animationRafId: null   // 滚动动画 rAF ID
   };
 
   const dom = {
@@ -118,20 +121,6 @@ export function initGameRoll() {
     }
   }
 
-  // 解析格式为 "1:value1,2:value2" 的字符串为对象
-  function parseConfigString(str) {
-    const result = {};
-    if (!str) return result;
-    const pairs = str.split(',');
-    pairs.forEach(pair => {
-      const [key, val] = pair.split(':');
-      if (key && val) {
-        result[key.trim()] = val.trim();
-      }
-    });
-    return result;
-  }
-
   function handleRollClick() {
     if (!state.isRolling && state.gameData.length) {
       // 全部游戏已抽完时自动重置记录
@@ -161,16 +150,6 @@ export function initGameRoll() {
       dom.result.innerHTML = `<div class="error">${langManager.translate('game_load_error')}</div>`;
       dom.rollBtn.disabled = true;
     }
-  }
-
-  function normalizeGameData(data) {
-    if (Array.isArray(data)) {
-      if (data[0] && typeof data[0] === 'object' && 'name' in data[0]) {
-        return data;
-      }
-      if (Array.isArray(data[1])) return data[1];
-    }
-    return [];
   }
 
   // 填充滚动列表数据——一次性生成，避免 while 循环反复复制+洗牌
@@ -242,11 +221,11 @@ export function initGameRoll() {
       updateItems();
 
       progress < 1 ?
-        requestAnimationFrame(animate) :
+        (state.animationRafId = requestAnimationFrame(animate)) :
         finalizeAnimation();
     };
 
-    requestAnimationFrame(animate);
+    state.animationRafId = requestAnimationFrame(animate);
   }
 
   function updateItems() {
@@ -263,7 +242,7 @@ export function initGameRoll() {
 
       // 仅在内容变化时写入，减少不必要的 DOM 操作
       const span = item.firstElementChild;
-      const newText = getLocalizedField(itemData, 'name') || `Game ${i + 1}`;
+      const newText = getLocalizedField(itemData, 'name', langManager.getCurrentLang()) || `Game ${i + 1}`;
       const newClass = `scroll-item quality-${itemData?.quality || 1}`;
       if (span.textContent !== newText) span.textContent = newText;
       if (item.className !== newClass) item.className = newClass;
@@ -298,14 +277,16 @@ export function initGameRoll() {
 
       if (dom.story) {
         dom.story.textContent = '';
-        const text = getLocalizedField(state.currentWinner, 'story');
+        const text = getLocalizedField(state.currentWinner, 'story', langManager.getCurrentLang());
         if (text) {
           let i = 0;
           const type = () => {
             if (i < text.length) {
               dom.story.textContent += text[i];
               i++;
-              setTimeout(type, 50);
+              state.typewriterTimer = setTimeout(type, 50);
+            } else {
+              state.typewriterTimer = null;
             }
           };
           type();
@@ -331,27 +312,24 @@ export function initGameRoll() {
     return available[0];
   }
 
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  /** 语言代码 → JSON 字段后缀映射 */
-  const LANG_SUFFIX = { en: '_en', jp: '_jp' };
-
-  function getLocalizedField(obj, field) {
-    if (!obj) return '';
-    const lang = langManager.getCurrentLang();
-    const suffix = LANG_SUFFIX[lang];
-    if (suffix) {
-      const localized = obj[field + suffix];
-      if (localized) return localized;
-    }
-    return obj[field] || '';
-  }
-
   init();
+
+  // 返回 cleanup 函数，供 main.js 在页面切换时调用
+  return function cleanupGameRoll() {
+    // 清理打字机 setTimeout
+    if (state.typewriterTimer) {
+      clearTimeout(state.typewriterTimer);
+      state.typewriterTimer = null;
+    }
+    // 清理动画 rAF
+    if (state.animationRafId) {
+      cancelAnimationFrame(state.animationRafId);
+      state.animationRafId = null;
+    }
+    // 移除 click 监听器
+    if (dom.rollBtn) {
+      dom.rollBtn.removeEventListener('click', handleRollClick);
+    }
+    state.isRolling = false;
+  };
 }

@@ -1,7 +1,7 @@
 // gameList.js
 import langManager from '/js/langManager.js';
 import { fetchJSON } from '/js/dataCache.js';
-import { escHtml } from '/js/utils.js';
+import { escHtml, getSystemValue, getLocalizedField, normalizeGameData, parseKeys } from '/js/utils.js';
 
 const GAME_CONFIG_URL = '/cfg/game_time_cfg.json';
 const SYSTEM_CONFIG_URL = '/cfg/system_cfg.json';
@@ -269,9 +269,9 @@ function generateTypeHtml(groupedGames) {
 function createGameListItem(game) {
     const heart = game.isLoved ? '<span class="game-loved">★</span>' : '';
     const sign = escHtml(game.sign || '');
-    const rawAchievement = getLocalizedField(game, 'spacialAchievements');
+    const rawAchievement = getLocalizedField(game, 'spacialAchievements', langManager.getCurrentLang());
     const achievementText = rawAchievement ? escHtml(rawAchievement).replace(/\n/g, '<br>') : '';
-    const name = getLocalizedField(game, 'name');
+    const name = getLocalizedField(game, 'name', langManager.getCurrentLang());
     const escapedName = escHtml(name);
     const gameName = /^[A-Za-z0-9\s]+$/.test(name) ? `<i>${escapedName}</i>` : escapedName;
     const qualityClass = `quality-${game.quality || 1}`;
@@ -283,45 +283,4 @@ function createGameListItem(game) {
         return `<li class="${qualityClass}"><details><summary>${nameHtml} ${timeHtml}</summary><ul><li><div class="achievement-info">${achievementText}</div></li></ul></details></li>`;
     }
     return `<li class="${qualityClass}">${nameHtml} ${timeHtml}</li>`;
-}
-
-// ── 工具函数 ──
-
-/** 语言代码 → JSON 字段后缀映射 */
-const LANG_SUFFIX = { en: '_en', jp: '_jp' };
-
-/**
- * 从游戏对象中读取多语言字段
- * 优先读 field_{lang}（如 name_en），无则 fallback 到原始字段（中文）
- */
-function getLocalizedField(game, field) {
-    const lang = langManager.getCurrentLang();
-    const suffix = LANG_SUFFIX[lang];
-    if (suffix) {
-        const localized = game[field + suffix];
-        if (localized) return localized;
-    }
-    return game[field] || '';
-}
-
-function getSystemValue(systemData, id) {
-    if (!Array.isArray(systemData)) return '';
-    return systemData.find(item => item.id === id)?.value || '';
-}
-
-function normalizeGameData(gameData) {
-    if (Array.isArray(gameData)) {
-        if (gameData[0] && typeof gameData[0] === 'object' && 'name' in gameData[0]) return gameData;
-        if (Array.isArray(gameData[1])) return gameData[1];
-    }
-    return [];
-}
-
-/**
- * 从 "6:大师之作,5:奇佳,4:卓越" 格式字符串中提取有序 key 数组 ['6','5','4',...]
- * 显示名称不再从这里取，而是通过 langManager.translate(`game_quality_${key}`) 获取
- */
-function parseKeys(str) {
-    if (!str) return [];
-    return str.split(',').map(item => item.trim().split(':')[0].trim());
 }

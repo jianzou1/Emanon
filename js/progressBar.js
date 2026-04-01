@@ -1,3 +1,5 @@
+import langManager from '/js/langManager.js';
+
 let isUpdating = false;
 let timerId = null;
 let visibilityHandler = null;
@@ -53,9 +55,9 @@ const REFRESH_INTERVAL = 1800;
 
 // Simplified i18n wrapper (仅保留真正需要多语言的部分)
 export const i18n = {
-  getTranslation: (key, ...params) => LangManager.cachedTranslate(key, ...params),
+  getTranslation: (key, ...params) => langManager.cachedTranslate(key, ...params),
   safeUpdateElement: (element, key, ...params) => 
-    LangManager.applyParameters(element, key, ...params)
+    langManager.applyParameters(element, key, ...params)
 };
 
 export function updateProgressBar(skipTimerRestart = false) {
@@ -184,7 +186,7 @@ function startCountdownTimer() {
       const minutesLeft = Math.floor(secondsLeft / 60);
       const secondsLeftWithinMinute = secondsLeft % 60;
 
-      LangManager.applyParameters(
+      langManager.applyParameters(
         refreshTimerElement,
         'index_refresh',
         minutesLeft,
@@ -209,7 +211,7 @@ function startCountdownTimer() {
       updateProgressBar(false);
 
       if (refreshTimerElement) {
-        LangManager.applyParameters(
+        langManager.applyParameters(
           refreshTimerElement,
           'timer.refresh_complete',
           new Date().toLocaleTimeString()
@@ -237,10 +239,10 @@ function startCountdownTimer() {
   };
   document.addEventListener('visibilitychange', visibilityHandler);
 
-  if (LangManager.isInitialized) {
+  if (langManager.isInitialized) {
     ensureDOMReady(updateTimer);
   } else {
-    LangManager.init().then(() => ensureDOMReady(updateTimer));
+    langManager.init().then(() => ensureDOMReady(updateTimer));
   }
 }
 
