@@ -296,6 +296,20 @@ class LangManager {
     this.#safeBindSwitcher();
   }
 
+  /**
+   * 增量翻译：仅扫描指定 DOM 子树内的 data-lang-id / data-lang-placeholder 元素。
+   * 用于 Tab 缓存切换等场景，避免全文档 querySelectorAll 的开销。
+   * 不触发 #safeBindSwitcher()（lang-switcher 不在内容区域内）。
+   * @param {Element} rootElement - 限定翻译的 DOM 子树根节点
+   */
+  applyTranslationsIn(rootElement) {
+    if (!rootElement) return;
+    const elements = rootElement.querySelectorAll('[data-lang-id], [data-lang-placeholder]');
+    elements.forEach(element => {
+      this.#translateElement(element);
+    });
+  }
+
   async init(defaultLang = this.config.fallbackLang) {
     if (this.isInitialized) return;
 

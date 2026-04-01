@@ -1,9 +1,11 @@
 // tabHandler.js
-// SPA 化：页签内容缓存到内存，切换时 innerHTML 注入，跳过网络请求
+// SPA 化：页签内容缓存到内存，切换时只替换内容区域（保留 Tab 栏），零网络请求
 
 export class TabHandler {
     static preloaded = false;    // 静态标志，防止重复预加载
-    static htmlCache = new Map(); // URL → #main innerHTML 的内存缓存
+    static htmlCache = new Map(); // URL → { inner, outer } 内存缓存（不含 tablist）
+    //   inner: .window-body 内 tablist 之后的兄弟节点 HTML
+    //   outer: .window-body 之后的 #main 直接子元素 HTML（如 gallery 的 #imageModal）
 
     /**
      * @param {string}   tabListSelector
@@ -50,7 +52,71 @@ export class TabHandler {
         this.preloadTabs();
     }
 
-    // 缓存当前页面的 #main 内容
+    /**
+     * 从 #main 中提取需要缓存的内容 HTML（不含 tablist）。
+     * 返回结构化对象，分别存储两层内容：
+     *   inner: .window-body 内 tablist 之后的兄弟节点（如 .window[role="tabpanel"]）
+     *   outer: .window-body 之后的 #main 直接子元素（如 gallery 的 #imageModal）
+     * @param {Element} mainEl - #main 元素
+     * @returns {{ inner: string, outer: string }|null}
+     */
+    static getContentHtml(mainEl) {
+        const windowBody = mainEl.querySelector('.window-body');
+        if (!windowBody) return null;
+        const tablist = windowBody.querySelector('menu[role="tablist"]');
+        if (!tablist) return null;
+
+        let inner = '';
+        let sibling = tablist.nextElementSibling;
+        while (sibling) {
+            inner += sibling.outerHTML;
+            sibling = sibling.nextElementSibling;
+        }
+
+        let outer = '';
+        sibling = windowBody.nextElementSibling;
+        while (sibling) {
+            outer += sibling.outerHTML;
+            sibling = sibling.nextElementSibling;
+        }
+
+        return { inner, outer };
+    }
+
+    /**
+     * 替换 #main 中的内容区域，保留 .window-body 和 tablist 不变。
+     * @param {Element} mainEl  - #main 元素
+     * @param {{ inner: string, outer: string }} content - getContentHtml 返回的结构化对象
+     * @returns {Element|null} 替换后的第一个内容元素（用于增量翻译范围限定）
+     */
+    static replaceContent(mainEl, content) {
+        const windowBody = mainEl.querySelector('.window-body');
+        if (!windowBody) return null;
+        const tablist = windowBody.querySelector('menu[role="tablist"]');
+        if (!tablist) return null;
+
+        // 移除 .window-body 内 tablist 之后的所有兄弟节点
+        while (tablist.nextElementSibling) {
+            tablist.nextElementSibling.remove();
+        }
+        // 移除 .window-body 之后的 #main 直接子元素
+        while (windowBody.nextElementSibling) {
+            windowBody.nextElementSibling.remove();
+        }
+
+        // 注入 inner 内容到 .window-body（tablist 之后）
+        if (content.inner) {
+            tablist.insertAdjacentHTML('afterend', content.inner);
+        }
+        // 注入 outer 内容到 #main（.window-body 之后）
+        if (content.outer) {
+            windowBody.insertAdjacentHTML('afterend', content.outer);
+        }
+
+        return tablist.nextElementSibling;
+    }
+
+    // 缓存当前页面的内容区域（不含 tablist）
     cacheCurrentPage() {
         const currentUrl = window.location.pathname;
         if (!this.isTabUrl(currentUrl)) return;
@@ -58,7 +124,10 @@ export class TabHandler {
 
         const main = document.getElementById('main');
         if (main) {
-            TabHandler.htmlCache.set(currentUrl, main.innerHTML);
+            const contentHtml = TabHandler.getContentHtml(main);
+            if (contentHtml) {
+                TabHandler.htmlCache.set(currentUrl, contentHtml);
+            }
         }
     }
 
@@ -80,15 +149,15 @@ export class TabHandler {
 
         const cached = TabHandler.htmlCache.get(clickedTabUrl);
         if (cached) {
-            // ★ 内存缓存命中：直接注入，零网络请求
+            // ★ 内存缓存命中：细粒度替换，保留 Tab 栏不变
             const main = document.getElementById('main');
-            if (main) main.innerHTML = cached;
+            if (main) TabHandler.replaceContent(main, cached);
 
             // 更新 URL（不触发页面刷新）
             history.pushState({ tabUrl: clickedTabUrl }, '', clickedTabUrl);
 
-            // 触发页面初始化（复用现有分发逻辑）
-            if (this.onPageLoad) this.onPageLoad();
+            // 触发页面初始化（传入 isTabSwitch 标识走快速路径）
+            if (this.onPageLoad) this.onPageLoad(true);
         } else {
             // 缓存未命中：降级走 PJAX
             try {
@@ -113,7 +182,7 @@ export class TabHandler {
         });
     }
 
-    // 预加载所有页签内容到内存缓存
+    // 预加载所有页签内容到内存缓存（只缓存内容区域）
     preloadTabs() {
         if (TabHandler.preloaded) return;
         TabHandler.preloaded = true;
@@ -128,11 +197,14 @@ export class TabHandler {
                     return response.text();
                 })
                 .then(html => {
-                    // 从完整 HTML 中提取 #main 的内容
+                    // 从完整 HTML 中提取 #main 的内容区域（不含 tablist）
                     const doc = new DOMParser().parseFromString(html, 'text/html');
                     const main = doc.getElementById('main');
                     if (main) {
-                        TabHandler.htmlCache.set(tab.url, main.innerHTML);
+                        const contentHtml = TabHandler.getContentHtml(main);
+                        if (contentHtml) {
+                            TabHandler.htmlCache.set(tab.url, contentHtml);
+                        }
                     }
                 })
                 .catch(error => {

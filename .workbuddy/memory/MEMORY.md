@@ -44,14 +44,20 @@
 - DefinePlugin 提供 `__BUILD_HASH__`（构建哈希）和 `__DEV__`（开发模式标志）
 - TerserPlugin 配置了 `drop_console: true`（生产环境移除 console）
 
-## 导航架构：SPA 化（2026-03-27 实施）
-- **页签切换**：内存缓存 + innerHTML 替换，零网络请求
-  - `TabHandler.htmlCache`（static Map）存储 URL → #main innerHTML
-  - 首次加载缓存当前页，`preloadTabs()` fetch + DOMParser 提取其他页签
-  - 点击页签：缓存命中 → innerHTML 注入 + `history.pushState()`；缓存 miss → fallback PJAX
-  - `popstate`（捕获阶段）：缓存命中时 `stopImmediatePropagation()` 阻止 PJAX 的 popstate 处理，直接恢复缓存内容
+## 导航架构：SPA 化（2026-03-27 实施，2026-04-01 性能优化）
+- **页签切换（优化后）**：细粒度内容替换 + Tab 栏保留，零网络请求
+  - `TabHandler.htmlCache`（static Map）存储 URL → `{ inner, outer }` 结构化对象
+    - `inner`: `.window-body` 内 tablist 之后的兄弟节点 HTML
+    - `outer`: `.window-body` 之后的 `#main` 直接子元素 HTML（如 gallery 的 `#imageModal`）
+  - 新增静态方法 `getContentHtml(mainEl)` / `replaceContent(mainEl, content)` — 提取/替换两层内容
+  - 点击页签：缓存命中 → `replaceContent` 细粒度替换（Tab 栏保留不动）+ `history.pushState()` + `handlePageLoad(true)` 快速路径
+  - `handlePageLoad(isTabSwitch)` 双路径：
+    - `isTabSwitch=true`：跳过 refreshTabHandler / initCRT / safeBindSwitcher，只调 updateSelectedTab + `langManager.applyTranslationsIn(main)` 增量翻译
+    - `isTabSwitch=false`：完整路径（PJAX / 首次加载）
+  - `popstate`（捕获阶段）：replaceContent 成功 → 快速路径；失败（从非页签页后退，无 tablist）→ `main.innerHTML` 完整重写 + `handlePageLoad(false)`
+- **langManager** 新增 `applyTranslationsIn(rootElement)`：仅扫描指定子树，不触发 safeBindSwitcher
+- **footerLoader** 新增 `isTabSwitch` 参数：Tab 切换时检测 footer 是否已存在，已存在则跳过重建
 - **PJAX 保留用途**：文章详情页（`/post/*`）、密码页、about 页等非页签页面
-- `handlePageLoad()` 内部调用 `langManager.applyTranslations()`，不再在 pjax:complete 中单独调用
 - `TabHandler` 构造函数接收 4 参数：selector, tabData, pjaxInstance, onPageLoad
 - `main.js` 中 handlePageLoad 声明在 refreshTabHandler 之前（作为参数传递）
 

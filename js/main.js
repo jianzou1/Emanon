@@ -114,8 +114,11 @@ const initializeApp = async () => {
     let currentTabHandler = null;
     const getTabHandler = () => currentTabHandler;
 
-    // 页面加载处理器（清理 + 初始化 + 通用功能）
-    const handlePageLoad = () => {
+    /**
+     * 页面加载处理器（清理 + 初始化 + 通用功能）
+     * @param {boolean} isTabSwitch - true: Tab 缓存切换走快速路径；false: PJAX/首次加载走完整路径
+     */
+    const handlePageLoad = (isTabSwitch = false) => {
       try {
         // 清理上一页的后台资源（定时器、Observer 等）
         cleanupProgressBar();
@@ -128,7 +131,15 @@ const initializeApp = async () => {
 
         const currentUrl = window.location.pathname;
 
-        refreshTabHandler();
+        if (isTabSwitch) {
+          // ★ Tab 缓存切换快速路径：Tab 栏已保留在 DOM 中，只需更新选中状态
+          if (currentTabHandler) {
+            currentTabHandler.updateSelectedTab(currentUrl);
+          }
+        } else {
+          // PJAX / 首次加载完整路径：Tab 栏可能被替换，需要重建
+          refreshTabHandler();
+        }
 
         // 页面类型判断
         switch (currentUrl) {
@@ -157,13 +168,21 @@ const initializeApp = async () => {
         }
 
         // 通用功能初始化
-        footerLoader();
+        footerLoader(isTabSwitch);
         initScrollToTop();
         initializeTips();
-        initCRT();
 
-        // 确保多语言翻译应用到新内容
-        langManager.applyTranslations();
+        if (isTabSwitch) {
+          // ★ Tab 缓存切换：CRT 已是单例无需重调；翻译只扫描内容区域
+          const main = document.getElementById('main');
+          if (main) {
+            langManager.applyTranslationsIn(main);
+          }
+        } else {
+          // PJAX / 首次加载：完整初始化
+          initCRT();
+          langManager.applyTranslations();
+        }
       } catch (error) {
         console.error('页面加载过程中出错:', error);
       }
@@ -198,8 +217,17 @@ const initializeApp = async () => {
           // 阻止 PJAX 的 popstate 处理器执行，避免异步请求覆盖已恢复的缓存内容
           event.stopImmediatePropagation();
           const main = document.getElementById('main');
-          if (main) main.innerHTML = cached;
-          handlePageLoad();
+          if (main) {
+            const replaced = TabHandler.replaceContent(main, cached);
+            if (replaced) {
+              // tablist 保留在 DOM 中，内容已替换 → 快速路径
+              handlePageLoad(true);
+            } else {
+              // 当前 DOM 没有 tablist（从非页签页后退）→ 完整重建
+              main.innerHTML = '<div class="window-body"><menu role="tablist"></menu>' + cached.inner + '</div>' + (cached.outer || '');
+              handlePageLoad(false);
+            }
+          }
         }
         // 非页签页面：不干预，让 PJAX 正常处理 popstate
       }, true); // ← 捕获阶段

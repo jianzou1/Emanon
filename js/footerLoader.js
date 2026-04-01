@@ -1,6 +1,16 @@
 // footerLoader.js
 import langManager from '/js/langManager.js'; 
-export function footerLoader() {
+export function footerLoader(isTabSwitch = false) {
+    // ★ Tab 缓存切换快速路径：footer 已在缓存的 HTML 中，检测是否已存在
+    if (isTabSwitch) {
+        const existingFooter = document.querySelector('#main .window-footer');
+        if (existingFooter) {
+            // footer 已存在，仅确保动态数据（GitHub 更新时间）已填充
+            refreshFooterData(existingFooter);
+            return;
+        }
+        // footer 不存在，走完整创建逻辑
+    }
     // 优先插入到 .window 内部底部（紧跟 .window-body 之后）
     // 回退到 .dynamic-footer（兼容无 .window 的页面）
     const windowEl = document.querySelector('#main .window[role="tabpanel"]')
@@ -168,5 +178,32 @@ async function getLastUpdatedDateFromGitHub() {
         // 所有都失败，返回当前日期作为最后降级
         console.log('[Footer] 返回当前日期作为降级方案');
         return fallbackDate;
+    }
+}
+
+/**
+ * Tab 缓存切换时 footer 已存在的轻量刷新：
+ * 仅检查并填充动态数据（GitHub 更新时间），跳过 DOM 重建。
+ */
+function refreshFooterData(footerEl) {
+    const isPostPage = window.location.href.includes('post');
+    if (isPostPage) return; // post 页面不走 Tab 切换
+
+    const lastUpdatedElement = footerEl.querySelector('#last-updated');
+    if (!lastUpdatedElement || lastUpdatedElement.innerHTML.trim()) return; // 已有内容则跳过
+
+    const handleParameters = async () => {
+        try {
+            const lastUpdated = await getLastUpdatedDateFromGitHub();
+            langManager.applyParameters(lastUpdatedElement, 'footer_update_time', lastUpdated);
+        } catch {
+            langManager.applyParameters(lastUpdatedElement, 'footer_update_time', '---');
+        }
+    };
+
+    if (langManager.isInitialized) {
+        handleParameters();
+    } else {
+        langManager.init().then(handleParameters);
     }
 }
