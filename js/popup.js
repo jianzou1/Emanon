@@ -50,7 +50,9 @@ export function showPopup({
     <section class="window-body">
       ${bodyHTML}
     </section>
-    <button class="popup-confirm-btn" data-lang-id="${confirmLangId}">${confirmText}</button>
+    <div class="popup-footer">
+      <button class="popup-confirm-btn" data-lang-id="${confirmLangId}">${confirmText}</button>
+    </div>
   `;
 
   document.body.append(overlay, popup);

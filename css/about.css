@@ -35,8 +35,8 @@ table td {
 
 .computer-fail-icon,
 .password {
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   background-size: cover;
   cursor: pointer;
   opacity: 0.7;
@@ -82,4 +82,14 @@ table td {
   background-size: 100%;
   margin-bottom: 15px;
   margin-top: 20px;
+}
+
+/* 密码图标按钮（弹窗底部按钮栏） */
+.about-password-btn {
+  width: 28px;
+  height: 23px;
+  padding: 2px;
+  background: url('/icon/keys-5.png') no-repeat center;
+  background-size: 16px 16px;
+  cursor: pointer;
 }

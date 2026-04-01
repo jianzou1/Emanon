@@ -23,15 +23,22 @@
 }
 
 .popup-window p {
-  line-height: 1;
+  line-height: 1.5;
   font-size: 12px;
   text-align: left;
   margin-bottom: -1%;
 }
 
+.popup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 3px 3px;
+}
+
 .popup-confirm-btn {
-  display: block;
-  margin: 10px auto 3px;
+  min-width: 70px;
 }
 
 /* 每日弹窗独有宽度 */

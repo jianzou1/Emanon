@@ -18,9 +18,6 @@ export function showAboutPopup() {
             <a href="https://www.netlify.com/" target="_blank" data-no-pjax>Netlify</a><br>
             <a href="https://neocities.org/" target="_blank" data-no-pjax>Neocities</a>
         </p>
-        <div class="about-shortcuts">
-            <div class="password" data-pjax-url="/page/password.html" id="about-popup-password"></div>
-        </div>
     `;
 
     const { close } = showPopup({
@@ -35,10 +32,15 @@ export function showAboutPopup() {
             // 多语言翻译
             langManager.applyTranslationsIn(popup);
 
-            // 密码快捷图标：关闭弹窗后触发 PJAX 导航
-            const passwordIcon = popup.querySelector('#about-popup-password');
-            if (passwordIcon) {
-                passwordIcon.addEventListener('click', (e) => {
+            // 在确认按钮前插入密码图标按钮
+            const confirmBtn = popup.querySelector('.popup-confirm-btn');
+            if (confirmBtn) {
+                const passwordBtn = document.createElement('button');
+                passwordBtn.className = 'about-password-btn';
+                passwordBtn.id = 'about-popup-password';
+                confirmBtn.before(passwordBtn);
+
+                passwordBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     close();
                     const fakeLink = document.createElement('div');
