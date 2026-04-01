@@ -7,7 +7,6 @@ import langManager from '/js/langManager.js';
  */
 export function showAboutPopup() {
     const bodyHTML = `
-        <div class="about-popup-icon"></div>
         <p data-lang-id="about"></p>
         <p data-lang-id="thanks_project"></p>
         <p>

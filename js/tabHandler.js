@@ -1,5 +1,6 @@
 // tabHandler.js
 // SPA 化：页签内容缓存到内存，切换时只替换内容区域（保留 Tab 栏），零网络请求
+import langManager from '/js/langManager.js';
 
 export class TabHandler {
     static preloaded = false;    // 静态标志，防止重复预加载
@@ -153,6 +154,9 @@ export class TabHandler {
             const main = document.getElementById('main');
             if (main) TabHandler.replaceContent(main, cached);
 
+            // 更新页面标题
+            this.updateTitle(clickedTabUrl);
+
             // 更新 URL（不触发页面刷新）
             history.pushState({ tabUrl: clickedTabUrl }, '', clickedTabUrl);
 
@@ -180,6 +184,19 @@ export class TabHandler {
             tab.setAttribute('aria-selected', isActive);
             isActive ? tab.classList.add('active') : tab.classList.remove('active');
         });
+    }
+
+    // 更新页面标题（Tab 缓存切换时调用，PJAX 路径由 head title 替换自动处理）
+    updateTitle(url) {
+        const tab = this.tabData.find(t => t.url === url);
+        if (tab?.titleId) {
+            // 更新 <title> 的 data-lang-id，确保 MutationObserver 翻译时也指向正确标题
+            const titleEl = document.querySelector('head title');
+            if (titleEl) {
+                titleEl.setAttribute('data-lang-id', tab.titleId);
+            }
+            document.title = langManager.translate(tab.titleId);
+        }
     }
 
     // 预加载所有页签内容到内存缓存（只缓存内容区域）

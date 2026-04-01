@@ -20,11 +20,11 @@ import { warmUpCache } from '/js/dataCache.js';
 
 const TABLIST_SELECTOR = '[role="tablist"]';
 const TAB_DATA = [
-  { url: '/', text: 'tab_progress' },
-  { url: '/page/article.html', text: 'tab_article' },
-  { url: '/page/game.html', text: 'tab_game' },
-  { url: '/page/gallery.html', text: 'tab_gallery' },
-  { url: '/page/message.html', text: 'tab_message' },
+  { url: '/', text: 'tab_progress', titleId: 'index_title' },
+  { url: '/page/article.html', text: 'tab_article', titleId: 'article_title' },
+  { url: '/page/game.html', text: 'tab_game', titleId: 'game_title' },
+  { url: '/page/gallery.html', text: 'tab_gallery', titleId: 'gallery_title' },
+  { url: '/page/message.html', text: 'tab_message', titleId: 'message_title' },
 ];
 
 // 防止 HMR / 重初始化时重复绑定全局事件监听器
@@ -225,6 +225,10 @@ const initializeApp = async () => {
         if (cached) {
           // 阻止 PJAX 的 popstate 处理器执行，避免异步请求覆盖已恢复的缓存内容
           event.stopImmediatePropagation();
+
+          // 更新页面标题
+          if (currentTabHandler) currentTabHandler.updateTitle(url);
+
           const main = document.getElementById('main');
           if (main) {
             const replaced = TabHandler.replaceContent(main, cached);
