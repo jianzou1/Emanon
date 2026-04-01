@@ -24,24 +24,24 @@ const MOCK_LOCATIONS = ['上海 · 中国', '东京 · 日本', '首尔 · 韩�
 
 /**
  * 生成指定页码的 Mock 留言数据
+ * 分页逻辑与后端一致：仅对主留言分页，当前页主留言的所有回复一并返回
  * @param {number} page - 页码（从 1 开始）
  * @param {number} pageSize - 每页条数
  * @returns {{ items: Array, total: number }}
  */
 export function getMockPageData(page, pageSize) {
   const totalMessages = 48;
-  const start = (page - 1) * pageSize;
-  if (start >= totalMessages) return { items: [], total: totalMessages };
 
-  const end = Math.min(start + pageSize, totalMessages);
-  const items = [];
+  // 生成全部主留言（不含回复）
+  const allMessages = [];
+  const repliesByMessageId = new Map();
 
-  for (let i = start; i < end; i++) {
+  for (let i = 0; i < totalMessages; i++) {
     const messageTs = MOCK_BASE_TIME - i * 240 * 60 * 1000;
     const messageId = String(messageTs);
     const msgNickname = MOCK_NICKNAMES[i % MOCK_NICKNAMES.length];
 
-    items.push({
+    allMessages.push({
       id: `mock-msg-${i}`,
       messageId,
       replyTo: '',
@@ -54,10 +54,13 @@ export function getMockPageData(page, pageSize) {
       created_at: new Date(messageTs).toISOString(),
     });
 
+    // 生成回复，按 messageId 归组
+    const replies = [];
+
     if (i % 3 === 0) {
       const replyTs = messageTs + 8 * 60 * 1000;
       const replyNick = MOCK_NICKNAMES[(i + 2) % MOCK_NICKNAMES.length];
-      items.push({
+      replies.push({
         id: `mock-reply-a-${i}`,
         messageId: String(replyTs),
         replyTo: messageId,
@@ -70,10 +73,9 @@ export function getMockPageData(page, pageSize) {
         created_at: new Date(replyTs).toISOString(),
       });
 
-      // 评论互回：第三个人回复第一条评论的作者
       if (i % 6 === 0) {
         const reReplyTs = replyTs + 5 * 60 * 1000;
-        items.push({
+        replies.push({
           id: `mock-reply-c-${i}`,
           messageId: String(reReplyTs),
           replyTo: messageId,
@@ -91,7 +93,7 @@ export function getMockPageData(page, pageSize) {
     if (i % 5 === 0) {
       const replyTs = messageTs + 12 * 60 * 1000;
       const replyNick = MOCK_NICKNAMES[(i + 4) % MOCK_NICKNAMES.length];
-      items.push({
+      replies.push({
         id: `mock-reply-b-${i}`,
         messageId: String(replyTs),
         replyTo: messageId,
@@ -104,10 +106,9 @@ export function getMockPageData(page, pageSize) {
         created_at: new Date(replyTs).toISOString(),
       });
 
-      // 评论互回：原作者回复评论者
       if (i % 10 === 0) {
         const reReplyTs = replyTs + 3 * 60 * 1000;
-        items.push({
+        replies.push({
           id: `mock-reply-d-${i}`,
           messageId: String(reReplyTs),
           replyTo: messageId,
@@ -121,13 +122,27 @@ export function getMockPageData(page, pageSize) {
         });
       }
     }
+
+    if (replies.length > 0) {
+      repliesByMessageId.set(messageId, replies);
+    }
   }
 
-  // 模拟接口返回：按时间降序
-  const sorted = items.sort((a, b) => {
-    const tsA = new Date(a.created_at).getTime();
-    const tsB = new Date(b.created_at).getTime();
-    return tsB - tsA;
-  });
-  return { items: sorted, total: totalMessages };
+  // 仅对主留言分页
+  const start = (page - 1) * pageSize;
+  if (start >= totalMessages) return { items: [], total: totalMessages };
+  const end = Math.min(start + pageSize, totalMessages);
+  const pageMessages = allMessages.slice(start, end);
+
+  // 收集当前页主留言的所有回复
+  const items = [];
+  for (const msg of pageMessages) {
+    items.push(msg);
+    const replies = repliesByMessageId.get(msg.messageId);
+    if (replies) {
+      items.push(...replies);
+    }
+  }
+
+  return { items, total: totalMessages };
 }

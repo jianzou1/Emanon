@@ -8,6 +8,8 @@ const MESSAGES_API = '/.netlify/functions/get-messages';
 const POST_MESSAGE_API = '/.netlify/functions/post-message';
 const PAGE_SIZE = 20;
 const NICKNAME_STORAGE_KEY = 'msg_last_nickname';
+const PAGE_STORAGE_KEY = 'msg_current_page';
+const SCROLL_TARGET_KEY = 'msg_scroll_target';
 
 // Mock 模式判断：仅在 URL 参数或 localStorage 开启时激活
 const USE_MOCK_MESSAGES = (() => {
@@ -91,7 +93,16 @@ export function initializeMessageBoard() {
   closeReplyComposer();
   bindFormEvents();
 
-  // 优先使用预取缓存，跳过网络请求
+  // 尝试从 sessionStorage 恢复页码
+  const savedPage = getSavedPage();
+
+  // 如果恢复到非第 1 页，跳过预取缓存（预取仅缓存第 1 页）
+  if (savedPage > 1) {
+    loadMessages(savedPage);
+    return;
+  }
+
+  // 第 1 页：优先使用预取缓存
   if (prefetchedData) {
     const cached = prefetchedData;
     currentEntries = Array.isArray(cached.items) ? cached.items : [];
@@ -100,6 +111,7 @@ export function initializeMessageBoard() {
     renderMessageList();
     updatePagination();
     updateListTitle();
+    tryScrollToTarget();
   } else if (prefetchPromise) {
     // 预取还在进行中，等它完成后渲染
     showLoading(true);
@@ -111,6 +123,7 @@ export function initializeMessageBoard() {
         renderMessageList();
         updatePagination();
         updateListTitle();
+        tryScrollToTarget();
       } else {
         // 预取失败，降级为正常加载
         loadMessages(1);
@@ -176,6 +189,8 @@ function bindFormEvents() {
     showToast(langManager.translate('msg_success_title') || '留言已提交！');
     // 清除预取缓存，强制重新拉取最新数据
     prefetchedData = null;
+    // 新留言出现在第一页顶部，清除页码缓存
+    clearPageState();
     await loadMessages(1);
   });
 }
@@ -234,9 +249,21 @@ async function loadMessages(page = 1) {
     totalEntries = result.total || 0;
     totalPages = Math.max(1, Math.ceil(totalEntries / PAGE_SIZE));
 
+    // 页码越界自动回退到最后一页（如恢复的页码已超出）
+    if (currentPage > totalPages) {
+      currentPage = totalPages;
+      savePageState(currentPage);
+      // 重新加载正确的页
+      isLoading = false;
+      await loadMessages(currentPage);
+      return;
+    }
+
     renderMessageList();
     updatePagination();
     updateListTitle();
+    // 检查是否有待定的滚动定位目标
+    tryScrollToTarget();
   } catch (err) {
     console.error('加载留言失败:', err);
     showError();
@@ -570,10 +597,14 @@ function buildReplyComposer(messageId, replyToNickname = '') {
 
       localStorage.setItem(NICKNAME_STORAGE_KEY, nickname);
       showToast(translateWithFallback('msg_reply_success', '评论已发送！'));
+      // 记住被回复的主留言 ID，加载完成后滚动定位
+      const parentMessageId = messageId;
       closeReplyComposer();
       // 清除预取缓存，强制重新拉取最新数据
       prefetchedData = null;
-      await loadMessages(1);
+      // 保持当前页，不跳回第一页
+      savePageState(currentPage, parentMessageId);
+      await loadMessages(currentPage);
     });
   }
 
@@ -662,6 +693,7 @@ function updatePagination() {
 }
 
 async function goToPage(page) {
+  savePageState(page);
   await loadMessages(page);
   // 滚动到导航栏位置，刚好能看到 tab 栏 + 第一条留言
   const tabBar = document.querySelector('menu[role="tablist"]');
@@ -723,4 +755,56 @@ function formatLocation(entry) {
   const location = String(entry?.location || '').trim();
   if (location) return location;
   return translateWithFallback('msg_location_unknown', '未知地区');
+}
+
+// ── 页码持久化 & 滚动定位 ─────────────────────────────────────
+
+function savePageState(page, scrollTarget) {
+  try {
+    sessionStorage.setItem(PAGE_STORAGE_KEY, String(page));
+    if (scrollTarget) {
+      sessionStorage.setItem(SCROLL_TARGET_KEY, String(scrollTarget));
+    }
+  } catch { /* sessionStorage 不可用时静默忽略 */ }
+}
+
+function clearPageState() {
+  try {
+    sessionStorage.removeItem(PAGE_STORAGE_KEY);
+    sessionStorage.removeItem(SCROLL_TARGET_KEY);
+  } catch { /* 静默忽略 */ }
+}
+
+function getSavedPage() {
+  try {
+    const saved = sessionStorage.getItem(PAGE_STORAGE_KEY);
+    if (!saved) return 0;
+    const page = parseInt(saved, 10);
+    return (page > 0 && Number.isFinite(page)) ? page : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function tryScrollToTarget() {
+  try {
+    const targetId = sessionStorage.getItem(SCROLL_TARGET_KEY);
+    if (!targetId) return;
+    sessionStorage.removeItem(SCROLL_TARGET_KEY);
+    scrollToMessage(targetId);
+  } catch { /* 静默忽略 */ }
+}
+
+function scrollToMessage(messageId) {
+  if (!messageId) return;
+  const card = document.querySelector(`.message-card[data-message-id="${CSS.escape(messageId)}"]`);
+  if (!card) return;
+
+  // 延迟一帧确保 DOM 渲染完成
+  requestAnimationFrame(() => {
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // 短暂高亮闪烁标识目标留言
+    card.classList.add('message-card-highlight');
+    setTimeout(() => card.classList.remove('message-card-highlight'), 2000);
+  });
 }

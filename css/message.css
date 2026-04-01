@@ -78,6 +78,17 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* 滚动定位后短暂高亮标识 */
+.message-card-highlight {
+  animation: msgHighlight 2s ease;
+}
+
+@keyframes msgHighlight {
+  0%   { box-shadow: 0 0 0 2px var(--color-win-blue); }
+  70%  { box-shadow: 0 0 0 2px var(--color-win-blue); }
+  100% { box-shadow: none; }
+}
+
 .message-card-header {
   display: flex;
   align-items: flex-start;

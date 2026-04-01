@@ -56,18 +56,38 @@ exports.handler = async (event) => {
       })
     );
 
-    const sorted = loaded
-      .filter(Boolean)
-      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    const valid = loaded.filter(Boolean);
 
+    // 分离主留言和回复
+    const messages = [];
+    const replies = [];
+    for (const entry of valid) {
+      if (entry.isReply || entry.replyTo) {
+        replies.push(entry);
+      } else {
+        messages.push(entry);
+      }
+    }
+
+    // 仅对主留言按时间倒序排列并分页
+    messages.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+    const totalMessages = messages.length;
     const start = (page - 1) * PER_PAGE;
     const end = start + PER_PAGE;
-    const result = sorted.slice(start, end);
+    const pageMessages = messages.slice(start, end);
+
+    // 收集当前页主留言的 messageId，筛选对应回复
+    const pageMessageIds = new Set(pageMessages.map(m => m.messageId));
+    const pageReplies = replies.filter(r => pageMessageIds.has(r.replyTo));
+
+    // 合并：当前页主留言 + 其完整回复
+    const result = [...pageMessages, ...pageReplies];
 
     return {
       statusCode: 200,
       headers: jsonHeaders,
-      body: JSON.stringify({ items: result, total: sorted.length }),
+      body: JSON.stringify({ items: result, total: totalMessages }),
     };
   } catch (err) {
     console.error('get-messages error:', err);

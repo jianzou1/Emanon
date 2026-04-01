@@ -18,7 +18,6 @@ let games = [];
 let typeKeys = [];      // ['1','2',...] — 从 system_cfg 解析的类型编号顺序
 let qualityKeys = [];   // ['6','5',...] — 从 system_cfg 解析的评级编号顺序
 let dataLoaded = false;
-let radiosBound = false;  // 事件委托标志，防止重复绑定
 let langListenerBound = false; // 语言切换监听标志
 let currentSort = DEFAULT_SORT; // 当前排序选项
 
@@ -105,14 +104,24 @@ function applyParam(id, value) {
     langManager.setParams(id, [value]);
 }
 
-// ── 排序选项事件：事件委托，只绑定一次 ──
+// ── 排序选项事件 ──
+// 每次进入 game 页签都需要重新绑定，因为 Tab 缓存切换会替换整个内容区域 DOM，
+// 之前绑定事件的 .select-container 元素已被移除。
+// 同时恢复 radio 选中状态与 currentSort 模块变量保持一致。
+
+let currentContainer = null; // 记住当前已绑定事件的 DOM 引用
 
 function bindSortRadios() {
-    if (radiosBound) return;
     const container = document.querySelector('.select-container');
     if (!container) return;
-    radiosBound = true;
 
+    // 如果当前 DOM 中的 container 与上次绑定的是同一个引用，无需重复绑定
+    if (container === currentContainer) {
+        syncRadioState(container);
+        return;
+    }
+
+    currentContainer = container;
     container.addEventListener('change', (event) => {
         const radio = event.target.closest('input[name="sort-option"]');
         if (radio) {
@@ -120,6 +129,16 @@ function bindSortRadios() {
             renderSorted(currentSort);
         }
     });
+
+    // 恢复 radio 选中状态（缓存 HTML 中 checked 始终指向默认值，需同步）
+    syncRadioState(container);
+}
+
+function syncRadioState(container) {
+    const target = container.querySelector(`input[name="sort-option"][value="${currentSort}"]`);
+    if (target && !target.checked) {
+        target.checked = true;
+    }
 }
 
 // ── 排序 + 渲染（带缓存，按 sort+lang 做 key） ──
