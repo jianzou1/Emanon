@@ -15,6 +15,7 @@ export function showAboutPopup() {
             <a href="https://github.com/MoOx/pjax" target="_blank" data-no-pjax>pjax</a><br>
             <a href="https://github.com/markedjs/marked" target="_blank" data-no-pjax>marked</a><br>
             <a href="https://github.com/mde/ejs" target="_blank" data-no-pjax>ejs</a><br>
+            <a href="https://github.com/SheetJS/sheetjs" target="_blank" data-no-pjax>xlsx</a><br>
             <a href="https://www.netlify.com/" target="_blank" data-no-pjax>Netlify</a><br>
             <a href="https://neocities.org/" target="_blank" data-no-pjax>Neocities</a>
         </p>
