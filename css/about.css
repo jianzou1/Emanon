@@ -69,3 +69,17 @@ table td {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* ── 关于弹窗独有样式 ── */
+#about-popup {
+  width: 450px;
+}
+
+.about-popup-icon {
+  background: url('/favicon/android-chrome-192x192.png') no-repeat;
+  height: 100px;
+  width: 100px;
+  background-size: 100%;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}

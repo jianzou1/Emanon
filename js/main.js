@@ -14,6 +14,7 @@ import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
 import { initializePassword } from '/js/password.js';
 import { initializeMessageBoard, prefetchMessages } from '/js/messageBoard.js';
+import { showAboutPopup } from '/js/aboutPopup.js';
 import langManager from '/js/langManager.js';
 import { warmUpCache } from '/js/dataCache.js';
 
@@ -54,6 +55,14 @@ const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
     }
 
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    // ★ 优先拦截"关于"弹窗触发器
+    const aboutTrigger = event.target.closest('[data-about-popup]');
+    if (aboutTrigger) {
+      event.preventDefault();
+      showAboutPopup();
       return;
     }
 

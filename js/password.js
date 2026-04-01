@@ -1,4 +1,6 @@
-// password.js
+// password.js — 使用通用弹窗组件
+import { showPopup } from '/js/popup.js';
+
 let passwordInputListener = null; // 保存输入框的监听函数
 
 export function initializePassword(pjax = null) {
@@ -61,42 +63,19 @@ function showPasswordError(message, passwordInput) {
         passwordInput.removeEventListener('keydown', passwordInputListener);
     }
 
-    const overlay = document.createElement('div');
-    overlay.className = 'overlay';
-    overlay.id = 'password-error-overlay';
-
-    const popup = document.createElement('div');
-    popup.id = 'password-error-popup';
-    popup.className = 'window';
-    popup.innerHTML = `
-        <header class="title-bar">
-            <div class="title-bar-text" data-lang-id="提示">Error</div>
-            <div class="title-bar-controls">
-                <button aria-label="Close" id="password-error-close-icon"></button>
-            </div>
-        </header>
-        <section class="window-body">
-            <p>${message}</p>
-        </section>
-        <button id="password-error-close" data-lang-id="btn_ok">OK</button>
-    `;
-
-    document.body.append(overlay, popup);
-
-    const closeFn = () => {
-        overlay.remove();
-        popup.remove();
-        document.removeEventListener('keydown', handleKeyDown);
-        if (passwordInput && passwordInputListener) {
-            passwordInput.addEventListener('keydown', passwordInputListener);
-        }
-    };
-
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') closeFn();
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    popup.querySelector('#password-error-close').addEventListener('click', closeFn);
-    popup.querySelector('#password-error-close-icon')?.addEventListener('click', closeFn);
+    showPopup({
+        id: 'password-error-popup',
+        title: 'Error',
+        titleLangId: '提示',
+        bodyHTML: `<p>${message}</p>`,
+        confirmLangId: 'btn_ok',
+        confirmText: 'OK',
+        overlayClose: false,
+        onClose: () => {
+            // 关闭后恢复密码输入框的 keydown 监听器
+            if (passwordInput && passwordInputListener) {
+                passwordInput.addEventListener('keydown', passwordInputListener);
+            }
+        },
+    });
 }

@@ -6,9 +6,8 @@
   z-index: var(--z-overlay);
 }
 
-/* 弹窗公共样式（daily + password 共用） */
-#welcome-popup,
-#password-error-popup {
+/* 弹窗公共样式（通用 class 选择器，任何 .popup-window 自动继承） */
+.popup-window {
   height: auto;
   display: inline-block;
   padding: 3px;
@@ -23,16 +22,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#welcome-popup p,
-#password-error-popup p {
+.popup-window p {
   line-height: 1;
   font-size: 12px;
   text-align: left;
   margin-bottom: -1%;
 }
 
-#close-popup,
-#password-error-close {
+.popup-confirm-btn {
   display: block;
   margin: 10px auto 3px;
 }
@@ -55,13 +52,11 @@
 }
 
 @media (max-width: 768px) {
-  #welcome-popup,
-  #password-error-popup {
-    width: auto;
+  .popup-window {
+    width: auto !important;
     max-width: calc(100vw - 32px);
   }
-  #welcome-popup p,
-  #password-error-popup p {
+  .popup-window p {
     font-size: 13px;
     margin-bottom: -2px;
   }

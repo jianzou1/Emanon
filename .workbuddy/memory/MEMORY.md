@@ -24,7 +24,8 @@
 - 字体：`--font-ui`（Pixelated MS Sans Serif）、`--font-body`（Microsoft Yahei）、`--font-mono`（Courier New）
 - 颜色：`--color-win-blue`(#000080)、`--color-win-gray`(#c0c0c0)、`--color-bg`(#EBECE8)、`--color-text-*`系列、`--color-border*`系列、`--color-error`(#cc0000)
 - z-index 分层：`--z-base`(1) → `--z-back-to-top`(99) → `--z-modal`(100) → `--z-overlay`(299) → `--z-popup`(300) → `--z-crt`(5000) → `--z-tooltip`(9000) → `--z-toast`(9999)
-- 弹窗公共样式在 `daily.css` 中通过 `#welcome-popup, #password-error-popup` 选择器组合定义
+- 弹窗公共样式在 `daily.css` 中通过通用 class 选择器 `.popup-window` / `.popup-window p` / `.popup-confirm-btn` 定义（2026-04-02 从 ID 组迁移）
+- 新增弹窗只需添加 `popup-window` class 即可自动继承公共样式，无需修改 CSS
 
 ## 公共工具模块
 - `js/utils.js` — 导出 `escHtml` / `escAttr` / `getSystemValue` / `getLocalizedField(obj, field, lang)` / `normalizeGameData` / `parseKeys` / `parseConfigString` / `shuffleArray`
@@ -57,7 +58,7 @@
   - `popstate`（捕获阶段）：replaceContent 成功 → 快速路径；失败（从非页签页后退，无 tablist）→ `main.innerHTML` 完整重写 + `handlePageLoad(false)`
 - **langManager** 新增 `applyTranslationsIn(rootElement)`：仅扫描指定子树，不触发 safeBindSwitcher
 - **footerLoader** 新增 `isTabSwitch` 参数：Tab 切换时检测 footer 是否已存在，已存在则跳过重建
-- **PJAX 保留用途**：文章详情页（`/post/*`）、密码页、about 页等非页签页面
+- **PJAX 保留用途**：文章详情页（`/post/*`）、密码页等非页签页面（about 已改为弹窗模式）
 - `TabHandler` 构造函数接收 4 参数：selector, tabData, pjaxInstance, onPageLoad
 - `main.js` 中 handlePageLoad 声明在 refreshTabHandler 之前（作为参数传递）
 
@@ -68,7 +69,7 @@
 - `progressBar.js` 导出 `cleanupProgressBar()`：清理定时器 + visibilitychange 监听器；已统一使用 `import langManager`
 - `gallery.js` 导出 `cleanupGallery()`：断开 IntersectionObserver + 移除 window click 监听器
 - `tips.js` 使用事件委托（body 级 mouseover/mouseout），单例模式不需要 cleanup
-- `dailyPopup.js`：interval=86400（24h）、closePopup 重构为闭包 closeHandler、移除底部自执行
+- `dailyPopup.js`：interval=86400（24h）、通过 `showPopup()` 创建 DOM（不再 fetch HTML 模板）、`window.closePopup` 兼容旧版
 
 ## CSS 移动端优化（2026-03-28 实施）
 - 全局 `body` 添加 `overflow-wrap: break-word`
@@ -100,3 +101,29 @@
 - `post.js` 自动生成 `cfg/article_cfg.json`（过滤 hidden、按 order 排序）
 - `cfg/excel/article_cfg.xlsx` 已删除，文章索引不再由 Excel 维护
 - 隐藏文章仍会生成 HTML（可通过直接 URL 访问），只是不出现在文章列表中
+
+## 通用弹窗组件（2026-04-02 实施）
+- `js/popup.js`：导出 `showPopup(options)` — 统一封装 overlay + Win98 弹窗创建/关闭/键盘交互
+  - 参数：`id` / `title` / `titleLangId` / `bodyHTML` / `confirmLangId` / `confirmText` / `overlayClose` / `onClose` / `onReady`
+  - 关闭方式：ESC / Enter / 遮罩点击（可配置） / 确认按钮 / 标题栏×按钮，五种统一支持
+  - 关闭行为：`remove()` 彻底清理 DOM + keydown 监听器
+  - 防重复打开：通过 `document.getElementById(id)` 检测
+  - CSS class：自动添加 `popup-window`（继承公共样式）+ `.popup-confirm-btn` + `.popup-close-icon`
+  - 返回 `{ close }` 对象供外部手动关闭
+- 三个弹窗均已改造使用 `showPopup()`：
+  - `dailyPopup.js`：不再 fetch HTML 模板，直接在 JS 中构建 bodyHTML
+  - `password.js`：`showPasswordError` 使用 `showPopup()` + `onClose` 回调恢复 inputListener
+  - `aboutPopup.js`：使用 `showPopup()` + `onReady` 回调绑定多语言和密码图标
+
+## 关于弹窗（2026-04-02 实施）
+- `js/aboutPopup.js`：新模块，导出 `showAboutPopup()`
+  - createElement 动态创建（参照 password.js 的 showPasswordError 模式）
+  - 关闭时 `remove()` 彻底清理 DOM + keydown 监听器
+  - 防重复打开：检测 `#about-popup` 是否已存在
+  - 多语言：注入后调用 `langManager.applyTranslationsIn(popup)`
+  - 密码快捷图标：关闭弹窗后通过 fakeLink + data-pjax-url 触发全局委托导航
+  - 外部链接添加 `target="_blank"` + `data-no-pjax`
+- `footerLoader.js`：页脚"关于"链接改为 `<a href="#" data-about-popup data-no-pjax>`
+- `main.js`：import aboutPopup；全局点击委托中优先拦截 `[data-about-popup]` → `showAboutPopup()`
+- `css/about.css`：新增 `#about-popup` 宽度 450px + `.about-popup-icon` 图标容器样式
+- `page/about.html` 和 `ejs/pages/about.ejs` 保留不删除，作为直接 URL 访问兜底

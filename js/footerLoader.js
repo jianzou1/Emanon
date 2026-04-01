@@ -38,7 +38,7 @@ export function footerLoader(isTabSwitch = false) {
       <div class="status-bar window-footer">
         <p class="status-bar-field" data-lang-id="footer_name"></p>
         ${isPostPage ? postDateField : '<p class="status-bar-field" id="last-updated" data-lang-id="footer_update_time"></p>'}
-        ${!isPostPage ? '<p class="status-bar-field footer-password-link"><a href="/page/about.html" data-lang-id="about_title"></a></p>' : ''}
+        ${!isPostPage ? '<p class="status-bar-field footer-password-link"><a href="#" data-about-popup data-no-pjax data-lang-id="about_title"></a></p>' : ''}
       </div>
     `;
 
