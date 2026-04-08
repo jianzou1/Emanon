@@ -1,22 +1,18 @@
 // main.js
 import { loadResources } from '/js/cdnLoader.js';
 import { TabHandler } from '/js/tabHandler.js';
-import { updateProgressBar, cleanupProgressBar } from '/js/progressBar.js';
-import { loadPreviewLinks } from '/js/previewLoader.js';
+import { cleanupProgressBar } from '/js/progressBar.js';
 import { footerLoader } from '/js/footerLoader.js';
 import { initScrollToTop, cleanupScrollToTop } from '/js/scrollToTop.js';
-import { initializeDailyPopup } from '/js/dailyPopup.js';
 import { initializeTips } from '/js/tips.js';
-import { gameList } from '/js/gameList.js';
-import { initGameRoll } from '/js/gameRoll.js';
-import { initializeGallery, cleanupGallery } from '/js/gallery.js';
+import { cleanupGallery } from '/js/gallery.js';
 import { initCRT } from '/js/crtEffect.js';
 import { initializeRandomLogo } from '/js/logoRandomizer.js';
-import { initializePassword } from '/js/password.js';
-import { initializeMessageBoard, prefetchMessages } from '/js/messageBoard.js';
+import { prefetchMessages } from '/js/messageBoard.js';
 import { showAboutPopup } from '/js/aboutPopup.js';
 import langManager from '/js/langManager.js';
 import { warmUpCache } from '/js/dataCache.js';
+import { runPageModuleByUrl } from '/js/pageRegistry.js';
 
 const TABLIST_SELECTOR = '[role="tablist"]';
 const TAB_DATA = [
@@ -150,31 +146,14 @@ const initializeApp = async () => {
           refreshTabHandler();
         }
 
-        // 页面类型判断
-        switch (currentUrl) {
-          case '/':
-            updateProgressBar();
-            initializeDailyPopup();
-            break;
-          case '/page/article.html':
-            loadPreviewLinks(pjax);
-            break;
-          case '/page/game.html':
-            gameList();
-            gameRollCleanup = initGameRoll();
-            break;
-          case '/page/gallery.html':
-            initializeGallery();
-            break;
-          case '/page/password.html':
-            initializePassword(pjax);
-            break;
-          case '/page/message.html':
-            initializeMessageBoard();
-            break;
-          default:
-            break;
-        }
+        // 页面类型判断（通过注册表调度）
+        runPageModuleByUrl(currentUrl, {
+          pjax,
+          setGameRollCleanup: (cleanupFn) => {
+            gameRollCleanup = typeof cleanupFn === 'function' ? cleanupFn : null;
+          },
+        });
+
 
         // 通用功能初始化
         footerLoader(isTabSwitch);

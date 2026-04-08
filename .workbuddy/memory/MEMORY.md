@@ -61,6 +61,8 @@
 - **PJAX 保留用途**：文章详情页（`/post/*`）、密码页等非页签页面（about 已改为弹窗模式）
 - `TabHandler` 构造函数接收 4 参数：selector, tabData, pjaxInstance, onPageLoad
 - `main.js` 中 handlePageLoad 声明在 refreshTabHandler 之前（作为参数传递）
+- 2026-04-09：`handlePageLoad` 的 URL 分发由 `switch(currentUrl)` 改为 `js/pageRegistry.js` 的 `runPageModuleByUrl(url, context)` 注册表调度；页面模块依赖通过 context 注入（如 `pjax`、`setGameRollCleanup`），未命中 URL 保持 no-op
+- 2026-04-09：`langManager.init()` 等待时机从 `window.load` 前移到 DOM ready（`DOMContentLoaded`/文档已可交互即执行），以缩短首屏翻译文本就绪时间
 
 ## PJAX 生命周期管理（2026-04-01 更新）
 - `main.js` 中 handlePageLoad 开头调用 4 个 cleanup：cleanupProgressBar / cleanupGallery / cleanupScrollToTop / gameRollCleanup

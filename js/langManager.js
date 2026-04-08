@@ -314,7 +314,11 @@ class LangManager {
     if (this.isInitialized) return;
 
     await new Promise(resolve => {
-      document.readyState === 'complete' ? resolve() : window.addEventListener('load', resolve);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', resolve, { once: true });
+      } else {
+        resolve();
+      }
     });
 
     this.currentLang = localStorage.getItem(this.config.storageKey) || defaultLang;
