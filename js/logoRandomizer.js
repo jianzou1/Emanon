@@ -6,6 +6,11 @@ const ASCII_TXT_PATHS = [
 
 const FONT_FAMILY = '"Courier New", Courier, monospace';
 const FONT_SIZE = 14; // px, 与 CSS 一致
+const DEFAULT_LINE_INTERVAL_MS = 3;
+
+
+// 用于中止旧的逐行渲染任务，避免重复初始化时动画叠加
+let renderTaskId = 0;
 
 // 缓存等宽字体的单字符宽度（只测量一次）
 let charWidth = 0;
@@ -26,8 +31,77 @@ const getRandomAsciiTxt = () => {
   return ASCII_TXT_PATHS[randomIndex];
 };
 
+const getOrCreateTextContainer = (logo) => {
+  let textContainer = logo.querySelector('.text-container');
+  if (!textContainer) {
+    textContainer = document.createElement('div');
+    textContainer.classList.add('text-container');
+    logo.appendChild(textContainer);
+  }
+  return textContainer;
+};
+
+const normalizeLineInterval = (lineIntervalMs) => {
+  const value = Number(lineIntervalMs);
+  return Number.isFinite(value) && value >= 0 ? value : DEFAULT_LINE_INTERVAL_MS;
+};
+
+// 阶段一：预置所有行（visibility:hidden 占位）并计算缩放
+// 返回行元素数组供阶段二使用
+const setupLinesAndScale = (logo, textContainer, lines) => {
+  // 清空旧内容
+  textContainer.textContent = '';
+
+  // 为每行创建独立 span，全部 hidden（占位但不可见）
+  const lineEls = lines.map((line, i) => {
+    const span = document.createElement('span');
+    span.textContent = line;
+    span.style.visibility = 'hidden';
+    // 除了最后一行，每行末尾加换行
+    if (i < lines.length - 1) {
+      textContainer.appendChild(span);
+      textContainer.appendChild(document.createTextNode('\n'));
+    } else {
+      textContainer.appendChild(span);
+    }
+    return span;
+  });
+
+  // 计算缩放（此时所有行已在 DOM 中占位，布局完整且稳定）
+  let maxChars = 0;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].length > maxChars) maxChars = lines[i].length;
+  }
+  const safeChars = Math.max(maxChars, 1);
+  const textWidth = safeChars * getCharWidth();
+  const scale = logo.offsetWidth / textWidth;
+
+  textContainer.style.setProperty('--logo-scale', scale);
+
+  return lineEls;
+};
+
+// 阶段二：逐行显示（仅切换 visibility，布局零变化）
+const revealLines = (lineEls, lineIntervalMs) => {
+  const currentTaskId = ++renderTaskId;
+
+  if (!lineEls.length) return;
+
+  const step = (index) => {
+    if (currentTaskId !== renderTaskId) return;
+
+    lineEls[index].style.visibility = 'visible';
+
+    if (index >= lineEls.length - 1) return;
+    window.setTimeout(() => step(index + 1), lineIntervalMs);
+  };
+
+  step(0);
+};
+
+
 // 读取 txt 文件内容并显示到对应 div 中
-const displayAsciiContent = async () => {
+const displayAsciiContent = async (lineIntervalMs = DEFAULT_LINE_INTERVAL_MS) => {
   const logo = document.querySelector('.logo');
   if (!logo) return;
 
@@ -42,31 +116,17 @@ const displayAsciiContent = async () => {
     return;
   }
 
-  let textContainer = logo.querySelector('.text-container');
-  if (!textContainer) {
-    textContainer = document.createElement('div');
-    textContainer.classList.add('text-container');
-    logo.appendChild(textContainer);
-  }
-  textContainer.textContent = asciiContent;
-
-  // 计算文本自然宽度（最长行字符数 × 单字符宽度）
+  const textContainer = getOrCreateTextContainer(logo);
   const lines = asciiContent.split('\n');
-  let maxChars = 0;
-  for (let i = 0; i < lines.length; i++) {
-    if (lines[i].length > maxChars) maxChars = lines[i].length;
-  }
-  const textWidth = maxChars * getCharWidth();
+  const interval = normalizeLineInterval(lineIntervalMs);
 
-  // 宽度铺满，高度溢出由容器 overflow:hidden 裁剪（与原始设计一致）
-  const scale = logo.offsetWidth / textWidth;
-
-  // 通过 CSS 自定义属性传递 scale，让 hover 可以继承叠加
-  textContainer.style.setProperty('--logo-scale', scale);
-  textContainer.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  const lineEls = setupLinesAndScale(logo, textContainer, lines);
+  revealLines(lineEls, interval);
 };
+
 
 // 主逻辑：显示随机 ASCII 字符
-export const initializeRandomLogo = () => {
-  displayAsciiContent();
+export const initializeRandomLogo = ({ lineIntervalMs = DEFAULT_LINE_INTERVAL_MS } = {}) => {
+  displayAsciiContent(lineIntervalMs);
 };
+
