@@ -73,7 +73,11 @@ const setupLinesAndScale = (logo, textContainer, lines) => {
     if (lines[i].length > maxChars) maxChars = lines[i].length;
   }
   const safeChars = Math.max(maxChars, 1);
-  const textWidth = safeChars * getCharWidth();
+  const cw = getCharWidth();
+  const textWidth = safeChars * cw;
+
+  // 以容器宽度为基准缩放，高度超出部分由 CSS overflow:hidden 裁切
+  // 这样字符画始终撑满容器宽度，不会出现两侧空白
   const scale = logo.offsetWidth / textWidth;
 
   textContainer.style.setProperty('--logo-scale', scale);
