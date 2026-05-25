@@ -10,7 +10,13 @@ const jsonHeaders = {
 };
 
 const STORE_NAME = 'guestbook';
-const KEY_PREFIX = 'msg:';
+// Key 前缀约定（与 post-message.js 保持一致）：
+//   主留言：  msg:<reverseTs>:<id>
+//   回复：    re:<replyTo>:<reverseTs>:<id>
+// 旧数据所有 entry 都用 'msg:' 前缀，靠 entry.replyTo 字段区分；本函数读取时同时扫两个前缀，
+// 并以 entry.replyTo 字段为权威依据分类，确保新旧数据共存期间正确分桶。
+const MSG_KEY_PREFIX = 'msg:';
+const REPLY_KEY_PREFIX = 're:';
 const PER_PAGE = 20;
 
 exports.handler = async (event) => {
@@ -38,8 +44,15 @@ exports.handler = async (event) => {
     const store = getBlobStore();
     const page = Math.max(parseInt(event.queryStringParameters?.page || '1', 10) || 1, 1);
 
-    const listed = await store.list({ prefix: KEY_PREFIX });
-    const blobs = Array.isArray(listed?.blobs) ? listed.blobs : [];
+    // 同时 list 两个前缀，兼容存量数据（旧回复在 msg: 前缀下）
+    const [listedMsg, listedReply] = await Promise.all([
+      store.list({ prefix: MSG_KEY_PREFIX }),
+      store.list({ prefix: REPLY_KEY_PREFIX }),
+    ]);
+    const blobs = [
+      ...(Array.isArray(listedMsg?.blobs) ? listedMsg.blobs : []),
+      ...(Array.isArray(listedReply?.blobs) ? listedReply.blobs : []),
+    ];
 
     const loaded = await Promise.all(
       blobs.map(async blob => {

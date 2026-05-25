@@ -10,7 +10,13 @@ const jsonHeaders = {
 };
 
 const STORE_NAME = 'guestbook';
-const KEY_PREFIX = 'msg:';
+// Key 前缀约定：
+//   主留言：  msg:<reverseTs>:<id>
+//   回复：    re:<replyTo>:<reverseTs>:<id>
+// 通过前缀直接区分主/回复，主留言列表可只 list 'msg:' 前缀，避免读全量回复。
+// 旧数据：所有 entry 都用 'msg:' 前缀，靠 entry.replyTo 字段区分；读取侧做兼容。
+const MSG_KEY_PREFIX = 'msg:';
+const REPLY_KEY_PREFIX = 're:';
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -71,7 +77,11 @@ exports.handler = async (event) => {
     };
 
     const reverseTs = String(9999999999999 - now).padStart(13, '0');
-    const key = `${KEY_PREFIX}${reverseTs}:${id}`;
+    // 主留言：msg:<reverseTs>:<id>
+    // 回复：  re:<replyTo>:<reverseTs>:<id> —— 前缀含父 ID，便于按主留言精确拉回复
+    const key = isReply
+      ? `${REPLY_KEY_PREFIX}${replyTo}:${reverseTs}:${id}`
+      : `${MSG_KEY_PREFIX}${reverseTs}:${id}`;
 
     const store = getBlobStore();
     await store.set(key, JSON.stringify(entry));

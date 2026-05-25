@@ -129,3 +129,13 @@
 - `main.js`：import aboutPopup；全局点击委托中优先拦截 `[data-about-popup]` → `showAboutPopup()`
 - `css/about.css`：新增 `#about-popup` 宽度 450px + `.about-popup-icon` 图标容器样式
 - `page/about.html` 和 `ejs/pages/about.ejs` 保留不删除，作为直接 URL 访问兜底
+
+## 留言板 Blob Key 设计（2026-05-25 重构）
+- Store：单一 `guestbook`（未拆分主/回复 store —— Netlify Blobs 是逻辑命名空间，拆 store 不带来性能/事务收益，反增迁移成本）
+- Key 前缀（双前缀，post-message.js / get-messages.js 中作为常量定义）：
+  - 主留言：`msg:<reverseTs>:<id>` —— `reverseTs = 9999999999999 - now`（13 位）保证字典序倒排
+  - 回复：  `re:<replyTo>:<reverseTs>:<id>` —— 前缀含父 messageId，可按主留言精确 list 回复
+- 写入（`post-message.js`）：根据 `isReply` 选择前缀
+- 读取（`get-messages.js`）：`Promise.all` 同时 list 两个前缀合并 blobs；分类以 `entry.replyTo` 字段为权威（兼容旧数据：旧回复仍在 `msg:` 前缀下，靠字段而非 key 分类）
+- 旧数据无需迁移；前端 `blobKey` 仅 DEBUG_MODE 下展示，不解析前缀
+- 前端 → 后端的 `messageId="re:<parentId>"` 协议（form hidden input）与 blob key 是两个层面，不要混淆
