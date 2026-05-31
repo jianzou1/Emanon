@@ -71,6 +71,22 @@ menu[role=tablist] > li {
   background-color: var(--color-win-gray);
 }
 
+/* 移动端：页签数量较多时自动换行成双排，
+   配合 98.css 自带的 .multirows 类（flex-grow:1; text-align:center）让两排页签平均分布 */
+@media (max-width: 768px) {
+  menu[role=tablist] {
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+  menu[role=tablist] > li {
+    min-width: 0;          /* 让 flex-grow 真正生效，避免 75px 强行撑出第二排 */
+    flex: 1 1 auto;        /* 各 tab 平均分配宽度 */
+  }
+  menu[role=tablist] > li > a {
+    padding: 0 4px;        /* 收紧水平内边距，避免长文案撑破 */
+  }
+}
+
 .window {
   padding: 2px;
   transition: width 0.15s ease-in-out, height 0.15s ease-in-out;
