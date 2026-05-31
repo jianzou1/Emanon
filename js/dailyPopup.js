@@ -3,7 +3,7 @@ import { showPopup } from '/js/popup.js';
 
 // 配置项
 const POPUP_CONFIG = {
-  interval: 86400, // 24小时（秒）
+  interval: 1, // 24小时（秒）
   popupId: 'welcome-popup',
 };
 

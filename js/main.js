@@ -21,12 +21,15 @@ const TAB_DATA = [
   { url: '/page/game.html', text: 'tab_game', titleId: 'game_title' },
   { url: '/page/gallery.html', text: 'tab_gallery', titleId: 'gallery_title' },
   { url: '/page/message.html', text: 'tab_message', titleId: 'message_title' },
+  { url: '/page/test.html', text: 'tab_test', titleId: 'test_title' },
 ];
 
 // 防止 HMR / 重初始化时重复绑定全局事件监听器
 let globalBindingsDone = false;
 // gameRoll 返回的 cleanup 函数引用
 let gameRollCleanup = null;
+// baselineTest 返回的 cleanup 函数引用
+let baselineCleanup = null;
 
 const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
   const navigateByPjax = (url, event) => {
@@ -133,6 +136,10 @@ const initializeApp = async () => {
           gameRollCleanup();
           gameRollCleanup = null;
         }
+        if (baselineCleanup) {
+          baselineCleanup();
+          baselineCleanup = null;
+        }
 
         const currentUrl = window.location.pathname;
 
@@ -151,6 +158,9 @@ const initializeApp = async () => {
           pjax,
           setGameRollCleanup: (cleanupFn) => {
             gameRollCleanup = typeof cleanupFn === 'function' ? cleanupFn : null;
+          },
+          setBaselineCleanup: (cleanupFn) => {
+            baselineCleanup = typeof cleanupFn === 'function' ? cleanupFn : null;
           },
         });
 

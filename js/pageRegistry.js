@@ -6,6 +6,7 @@ import { initGameRoll } from '/js/gameRoll.js';
 import { initializeGallery } from '/js/gallery.js';
 import { initializePassword } from '/js/password.js';
 import { initializeMessageBoard } from '/js/messageBoard.js';
+import { initBaselineTest } from '/js/baselineTest.js';
 
 /**
  * 页面模块注册表（URL -> 初始化函数）
@@ -44,6 +45,14 @@ export const PAGE_MODULE_REGISTRY = {
   '/page/message.html': {
     init() {
       initializeMessageBoard();
+    },
+  },
+  '/page/test.html': {
+    init({ setBaselineCleanup }) {
+      const cleanup = initBaselineTest();
+      if (typeof setBaselineCleanup === 'function') {
+        setBaselineCleanup(cleanup);
+      }
     },
   },
 };

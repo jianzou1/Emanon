@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <%- include('../templates/header.ejs') %>
+ <body>
+    <div class="logo"></div>
+    <main id="main" class="main">
+        <div class="window-body">
+            <menu role="tablist"></menu>
+            <div class="window baseline-window" role="tabpanel">
+                <div class="window-body baseline-window-body">
+                    <div id="baseline-output" class="baseline-output" aria-live="polite"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include('../templates/function.ejs') %>
+</body>
+</html>

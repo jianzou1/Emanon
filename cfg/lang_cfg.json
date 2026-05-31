@@ -264,6 +264,18 @@
     "jp": "メッセージボード"
   },
   {
+    "id": "tab_test",
+    "cn": "基准测试",
+    "en": "Baseline Test",
+    "jp": "Baseline Test"
+  },
+  {
+    "id": "test_title",
+    "cn": "基准测试",
+    "en": "Baseline Test",
+    "jp": "Baseline Test"
+  },
+  {
     "id": "msg_form_title",
     "cn": "写下你的留言",
     "en": "Leave a Message",

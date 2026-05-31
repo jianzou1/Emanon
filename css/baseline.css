@@ -1,0 +1,98 @@
+/* baseline.css — 银翼杀手 2049 基线测试控制台
+   仿 Windows 98 cmd / PowerShell 窗口风格：
+   外层保留 .window 的 raised bezel；
+   控制台内容区是 inset 凹陷黑屏（这是 cmd 真正的边框感来源）
+*/
+
+/* ── .window 本体：保留 98.css 默认 raised bezel + 灰底（cmd 的窗口外壳） ── */
+.baseline-window {
+    /* 保留 98.css 默认样式，仅微调内边距让黑屏与边框留出 cmd 的"窗口体"感 */
+    padding: 4px !important;
+    overflow: hidden;
+}
+
+.baseline-window .window-body,
+.baseline-window-body {
+    /* 移除 98.css 默认 window-body 灰底/留白，留给黑屏 */
+    background: transparent;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* ── 控制台输出区：黑底白字 + Win98 inset 凹陷边框（这就是 cmd 的边框感） ── */
+.baseline-output {
+    background: #000;
+    color: #fff;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 14px 18px;
+    box-sizing: border-box;
+
+    width: 100%;
+    /* 固定视窗高度 — 新文本到底后旧文本自动从顶部滚出 */
+    height: 500px;
+
+    /* 支持上下滚动但不显示滚动条 */
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* IE 10+ */
+
+    /* Win98 经典 inset 凹陷边框（与 cmd 控制台内容区完全一致）
+       上、左：深色（黑+暗灰）  下、右：浅色（白+亮灰） */
+    border-style: solid;
+    border-width: 2px;
+    border-color: #808080 #ffffff #ffffff #808080;
+    box-shadow:
+        inset 1px 1px 0 #000000,
+        inset -1px -1px 0 #dfdfdf;
+}
+
+/* WebKit 内核（Chrome / Safari / Edge）隐藏滚动条 */
+.baseline-output::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.baseline-line {
+    margin-bottom: 8px;
+    word-break: break-word;
+}
+
+/* K 应答行：加粗 + 行首 > 提示符 + 闪烁光标，模拟终端反射性输入 */
+.baseline-line-input {
+    font-weight: bold;
+}
+
+.baseline-prompt {
+    color: #c8c8c8;
+    margin-right: 2px;
+}
+
+.baseline-cursor {
+    display: inline-block;
+    margin-left: 2px;
+    color: #fff;
+    animation: baseline-cursor-blink 0.9s steps(2, start) infinite;
+}
+
+@keyframes baseline-cursor-blink {
+    to {
+        visibility: hidden;
+    }
+}
+
+.baseline-text {
+    color: #fff;
+}
+
+/* ── 移动端 ── */
+@media (max-width: 768px) {
+    .baseline-output {
+        font-size: 13px;
+        padding: 12px 14px;
+        height: 400px;
+    }
+}
