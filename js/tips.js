@@ -58,12 +58,4 @@ export async function initializeTips() {
     // 使用 mouseover/mouseout 事件委托（冒泡），替代逐元素 mouseenter/mouseleave
     document.body.addEventListener('mouseover', handleMouseOver);
     document.body.addEventListener('mouseout', handleMouseOut);
-
-    // 监听语言变化事件
-    document.addEventListener('languageChanged', () => {
-        if (currentElement && tipsElement && tipsElement.style.display === 'block') {
-            updateTipContent();
-            updateTipPosition();
-        }
-    });
 }

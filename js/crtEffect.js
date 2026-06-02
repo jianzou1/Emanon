@@ -50,12 +50,9 @@ const CONFIG = {
 
 // 单例控制器
 let instance = null;
-let instanceCount = 0;
 
 export function initCRT() {
     if (instance) {
-        instanceCount++;
-        console.info(`[CRT] Using existing instance (count: ${instanceCount})`);
         return instance;
     }
 
@@ -457,7 +454,6 @@ export function initCRT() {
         // 4. 重置引用
         checkbox = null;
         instance = null;
-        instanceCount = 0;
     };
 
     // ==== 公共API ====
@@ -479,10 +475,6 @@ export function initCRT() {
         },
 
         destroy() {
-            if (instanceCount > 0) {
-                instanceCount--;
-                return;
-            }
             cleanup();
         }
     };
@@ -490,7 +482,6 @@ export function initCRT() {
     // ==== 单例初始化 ====
     initEventListeners();
     instance = api;
-    instanceCount = 1;
 
     return api;
 }

@@ -64,19 +64,11 @@ function bindLangSwitchListener() {
     if (langListenerBound) return;
     langListenerBound = true;
 
-    // 监听语言切换器的 change 事件（冒泡阶段，在 langManager 处理之后）
-    const switcher = document.getElementById('lang-switcher');
-    if (switcher) {
-        // 用 MutationObserver 监听 switcher 被替换的情况（langManager 每次 applyTranslations 会 cloneNode）
-        // 更可靠的方案：监听 localStorage 变化 or 定期检查
-        // 最简方案：在 body 上委托 change 事件
-    }
-
-    // 使用 storage 事件不可靠（同页面不触发），改用轮询检测 + 事件委托
-    // 最简且可靠：委托 change 事件到 document，过滤 #lang-switcher
+    // 委托 change 事件到 document，langManager 每次 applyTranslations 都会 cloneNode
+    // 替换 #lang-switcher，直接绑事件容易失效，委托是最稳妥的方式。
     document.addEventListener('change', (e) => {
         if (e.target.id === 'lang-switcher' || e.target.closest('#lang-switcher')) {
-            // 语言已经被 langManager 切换，延迟一个微任务确保 langManager 已更新
+            // 延迟一个微任务，确保 langManager 已完成 currentLang 切换
             Promise.resolve().then(() => {
                 invalidateSortCache();
                 renderSorted(currentSort);

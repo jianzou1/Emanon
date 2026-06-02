@@ -272,16 +272,6 @@ class LangManager {
     }
   }
 
-  bindDynamicElement(selector, translationKey, paramGenerator) {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(element => {
-      element.dataset.langId = translationKey;
-      this.dynamicParams.set(translationKey, paramGenerator(element));
-      this.pendingUpdates.add(element);
-    });
-    this.#applyTranslations();
-  }
-
   cachedTranslate(key, ...params) {
     const cacheKey = `${key}_${params.join('_')}`;
     if (!this.paramCache.has(cacheKey)) {
@@ -370,24 +360,6 @@ class LangManager {
     }
   }
 
-  clearParams(id) {
-    this.dynamicParams.delete(id);
-    this.setParams(id, []);
-  }
-
-  async reload() {
-    await this.#loadLanguageData();
-    this.paramCache.clear();
-    this.#applyTranslations();
-  }
-
-  configure(newConfig) {
-    Object.assign(this.config, newConfig);
-  }
-
-  enableDebug(enable = true) {
-    this.config.debug = enable;
-  }
 }
 
 // 单例实例

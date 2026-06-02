@@ -3,12 +3,9 @@ import { showPopup } from '/js/popup.js';
 
 // 配置项
 const POPUP_CONFIG = {
-  interval: 1, // 24小时（秒）
+  interval: 86400, // 24 小时（秒）
   popupId: 'welcome-popup',
 };
-
-// 模块级关闭引用（供 window.closePopup 调用）
-let popupInstance = null;
 
 // 初始化每日弹窗
 export function initializeDailyPopup() {
@@ -50,7 +47,7 @@ function displayPopup() {
     <hr>
   `;
 
-  popupInstance = showPopup({
+  showPopup({
     id: POPUP_CONFIG.popupId,
     title: 'welcome',
     titleLangId: 'dailty_popup_title',
@@ -62,6 +59,3 @@ function displayPopup() {
 
   localStorage.setItem('dailyPopupLastShown', new Date().toISOString());
 }
-
-// 全局访问（供旧版 HTML 内联 onclick 兼容）
-window.closePopup = () => popupInstance?.close();

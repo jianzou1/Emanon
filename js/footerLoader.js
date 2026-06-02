@@ -48,7 +48,7 @@ export function footerLoader(isTabSwitch = false) {
     } else if (fallbackContainer) {
         fallbackContainer.innerHTML = footerContent;
     } else {
-        console.error(langManager.translate('errors.element_not_found', 'dynamic-footer'));
+        console.error('[Footer] dynamic-footer container not found');
         return;
     }
 
@@ -78,7 +78,7 @@ export function footerLoader(isTabSwitch = false) {
                     lastUpdated
                 );
             } catch (error) {
-                console.error(langManager.translate('errors.update_time_fetch'));
+                console.error('[Footer] update time fetch failed');
                 langManager.applyParameters(
                     lastUpdatedElement,
                     'footer_update_time',

@@ -263,6 +263,5 @@ const initializeApp = async () => {
   }
 };
 
-// 启动应用
-
+// 实际启动入口在 index.js（HMR 友好），此处仅导出
 export { initializeApp };

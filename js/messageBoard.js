@@ -54,7 +54,6 @@ let currentEntries = [];
 let activeReplyMessageId = null;
 let activeReplyFormEl = null;
 let activeReplyBtn = null;
-let activeReplyToNickname = '';
 
 // ── 留言数据预取缓存 ─────────────────────────────────────────
 // 页面加载时静默预取第 1 页，切到留言板时直接渲染，无需等待
@@ -89,7 +88,6 @@ export function initializeMessageBoard() {
   totalEntries = 0;
   totalPages = 1;
   currentEntries = [];
-  activeReplyToNickname = '';
   closeReplyComposer();
   bindFormEvents();
 
@@ -327,14 +325,14 @@ function renderMessageList() {
 
 function buildMessageCard(item, idx, replies) {
   const nickname = escHtml(item.nickname || 'unknown');
-  const location = escHtml(formatLocation(item));
+  const location = escHtml(displayLocation(item));
   const body = escHtml(item.message || '');
   const time = formatTime(item.created_at);
   const commentBtnText = escHtml(translateWithFallback('msg_reply_btn', '评论'));
   const replyBtnText = escHtml(translateWithFallback('msg_reply_reply_btn', '回复'));
   const repliesHtml = replies.map(reply => {
     const replyNickname = escHtml(reply.nickname || 'unknown');
-    const replyLocation = escHtml(formatLocation(reply));
+    const replyLocation = escHtml(displayLocation(reply));
     const replyBody = escHtml(reply.message || '');
     const replyTime = escHtml(formatTime(reply.created_at));
     const replyToNick = (reply.replyToNickname || '').trim();
@@ -483,7 +481,6 @@ function toggleReplyComposer(messageId, card, btn, replyToNickname = '') {
 
   closeReplyComposer();
 
-  activeReplyToNickname = replyToNickname;
   const composer = buildReplyComposer(messageId, replyToNickname);
   card.appendChild(composer);
   langManager.applyTranslations();
@@ -508,7 +505,6 @@ function closeReplyComposer() {
   activeReplyMessageId = null;
   activeReplyFormEl = null;
   activeReplyBtn = null;
-  activeReplyToNickname = '';
 }
 
 function buildReplyComposer(messageId, replyToNickname = '') {
@@ -751,7 +747,7 @@ function translateWithFallback(id, fallback) {
   return translated;
 }
 
-function formatLocation(entry) {
+function displayLocation(entry) {
   const location = String(entry?.location || '').trim();
   if (location) return location;
   return translateWithFallback('msg_location_unknown', '未知地区');

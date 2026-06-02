@@ -53,13 +53,6 @@ const PROGRESS_ITEMS = (now) => [
 // - 1800: 每30分钟刷新
 const REFRESH_INTERVAL = 1800;
 
-// Simplified i18n wrapper (仅保留真正需要多语言的部分)
-export const i18n = {
-  getTranslation: (key, ...params) => langManager.cachedTranslate(key, ...params),
-  safeUpdateElement: (element, key, ...params) => 
-    langManager.applyParameters(element, key, ...params)
-};
-
 export function updateProgressBar(skipTimerRestart = false) {
   if (isUpdating) {
     return;
@@ -71,7 +64,7 @@ export function updateProgressBar(skipTimerRestart = false) {
   const containerWidth = container?.clientWidth;
 
   if (!containerWidth) {
-    console.error(i18n.getTranslation('errors.progress_container'));
+    console.error('[Progress] container .progress-container not found');
     isUpdating = false;
     return;
   }
@@ -98,7 +91,7 @@ export function updateProgressBar(skipTimerRestart = false) {
 
     const percentageElement = document.getElementById(percentageId);
     if (!percentageElement) {
-      console.error(i18n.getTranslation('errors.element_not_found', percentageId));
+      console.error(`[Progress] element not found: ${percentageId}`);
       markProgressCompleted();
       return;
     }
@@ -106,7 +99,7 @@ export function updateProgressBar(skipTimerRestart = false) {
     const gridCount = Math.max(1, Math.floor((targetPercentage / 100) * totalGrids));
     const progressBar = document.getElementById(progressBarId);
     if (!progressBar) {
-      console.error(i18n.getTranslation('errors.element_not_found', progressBarId));
+      console.error(`[Progress] element not found: ${progressBarId}`);
       markProgressCompleted();
       return;
     }
@@ -220,6 +213,8 @@ function startCountdownTimer() {
     }
   };
 
+  // SPA 化后 DOM 通常已同步注入，常规路径单次命中即返回；
+  // 保留轮询兜底是为 visibilitychange 恢复时（页面后台切回）DOM 仍可能尚未稳定的极端情况。
   const ensureDOMReady = (callback, interval = 50) => {
     let retries = 0;
     const check = () => {
@@ -246,19 +241,3 @@ function startCountdownTimer() {
   }
 }
 
-export function initProgressSystem() {
-  const init = () => {
-    if (!document.querySelector('.progress-container')) {
-      setTimeout(init, 50);
-      return;
-    }
-    // 首次加载时启动倒计时
-    updateProgressBar(false);
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-}
