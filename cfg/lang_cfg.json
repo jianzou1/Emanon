@@ -532,5 +532,11 @@
     "cn": "数据加载失败，请刷新页面",
     "en": "Failed to load data. Please refresh the page.",
     "jp": "データの読み込みに失敗しました。ページを更新してください。"
+  },
+  {
+    "id": "game_sort_legend",
+    "cn": "排序",
+    "en": "Sort By",
+    "jp": "並べ替え"
   }
 ]
