@@ -21,7 +21,7 @@ const TAB_DATA = [
   { url: '/page/game.html', text: 'tab_game', titleId: 'game_title' },
   { url: '/page/gallery.html', text: 'tab_gallery', titleId: 'gallery_title' },
   { url: '/page/message.html', text: 'tab_message', titleId: 'message_title' },
-  { url: '/page/test.html', text: 'tab_test', titleId: 'test_title' },
+  // { url: '/page/test.html', text: 'tab_test', titleId: 'test_title' },
 ];
 
 // 防止 HMR / 重初始化时重复绑定全局事件监听器
