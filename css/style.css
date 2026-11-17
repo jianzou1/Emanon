@@ -1,3 +1,6 @@
+/* 98.css 放在最前：保持它先于本站规则生效的顺序，
+   与历史上「head 里先加载 98.css、后加载 styles.css」的层叠结果一致 */
+@import "vendor/98.css";
 @import "progress.css"; 
 @import "article.css"; 
 @import "game.css";

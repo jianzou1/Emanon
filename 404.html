@@ -10,42 +10,9 @@
   <link rel="shortcut icon" href="/favicon/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <script>
-    // 注意：404 页面不走 webpack，独立维护一份 98.css CDN fallback。
-    // 如修改 CDN 源，请同步更新 cfg/cdn.json 中的 css98 字段，保持两处一致。
-    (function load404ExternalCss() {
-      const urls = [
-        'https://cdn.jsdmirror.com/npm/98.css@0.1.21/dist/98.min.css',
-        'https://cdn.jsdelivr.net/npm/98.css@0.1.21/dist/98.min.css',
-        'https://unpkg.com/98.css@0.1.21/dist/98.min.css'
-      ];
-
-      const tryLoad = (index) => {
-        if (index >= urls.length) {
-          console.warn('Failed to load 98.css from all CDN sources on 404 page.');
-          return;
-        }
-
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = urls[index];
-        link.id = 'external-98css-404';
-
-        link.onload = () => {
-          console.log(`404 stylesheet loaded from: ${urls[index]}`);
-        };
-
-        link.onerror = () => {
-          link.remove();
-          tryLoad(index + 1);
-        };
-
-        document.head.appendChild(link);
-      };
-
-      tryLoad(0);
-    })();
-  </script>
+  <!-- 404 页面不走 webpack，直接引用仓库里的 98.css 本地副本（与主站同一份）。
+       字体路径已在副本内改写为 /font/，因此这里无需再区分 CDN 源。 -->
+  <link rel="stylesheet" href="/css/vendor/98.css">
   <style>
     body {
       position: fixed;

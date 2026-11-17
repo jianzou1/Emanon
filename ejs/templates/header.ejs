@@ -3,42 +3,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
     <title data-lang-id="<%= titleId %>">‎</title>
-    <%/* 从 cdn.json 统一生成预加载标签 */%>
-    <% cdn.preload.forEach(function(item) { %>
+    <%/* 从 cdn.json 统一生成预加载/预连接标签。
+         98.css 已并入 styles.css（见 css/style.css 顶部的 @import），
+         像素字体改为同源 /font/，页面不再依赖任何第三方域。 */%>
+    <% (cdn.preload || []).forEach(function(item) { %>
     <link rel="preload" href="<%= item.href %><%= item.cacheBust ? '?v=' + buildHash : '' %>" as="<%= item.as %>"<% if (item.crossorigin) { %> crossorigin<% } %>>
     <% }); %>
-    <% cdn.preconnect.forEach(function(url) { %>
+    <% (cdn.preconnect || []).forEach(function(url) { %>
     <link rel="preconnect" href="<%= url %>" crossorigin>
     <% }); %>
-    <%/* 98.css：用 preload 抢首帧带宽，onload 后再转成样式表应用。
-         这样既不让外部 CDN 阻塞渲染，又能赶在首次绘制前生效，
-         避免早期「等 main.js 执行后由 JS 注入样式表」造成的无样式闪烁。
-         首个源失败时交给 __load98Css 顺序降级到后续源。 */%>
-    <link rel="preload" as="style" href="<%= cdn.css98[0] %>"
-          onload="this.onload=null;this.rel='stylesheet';this.id='external-98css'"
-          onerror="this.remove();window.__load98Css(1)">
-    <script>
-      window.__load98Css = function (from) {
-        var urls = <%- JSON.stringify(cdn.css98) %>;
-        var i = from || 0;
-        (function next() {
-          if (i >= urls.length) {
-            console.warn('98.css 所有 CDN 源均加载失败');
-            return;
-          }
-          var link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = urls[i++];
-          link.onerror = function () {
-            link.remove();
-            next();
-          };
-          document.head.appendChild(link);
-        })();
-      };
-    </script>
-    <noscript><link rel="stylesheet" href="<%= cdn.css98[0] %>"></noscript>
-    <% cdn.dnsPrefetch.forEach(function(url) { %>
+    <% (cdn.dnsPrefetch || []).forEach(function(url) { %>
     <link rel="dns-prefetch" href="<%= url %>">
     <% }); %>
     <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />

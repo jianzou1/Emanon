@@ -1,14 +1,5 @@
 {
-  "css98": [
-    "https://cdn.jsdelivr.net/npm/98.css@0.1.21/dist/98.min.css",
-    "https://unpkg.com/98.css@0.1.21/dist/98.min.css"
-  ],
   "preload": [
     { "href": "/cfg/lang_cfg.json", "as": "fetch", "crossorigin": true, "cacheBust": true }
-  ],
-  "preconnect": [
-    "https://cdn.jsdelivr.net",
-    "https://unpkg.com"
-  ],
-  "dnsPrefetch": []
+  ]
 }
