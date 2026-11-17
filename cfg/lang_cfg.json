@@ -3,564 +3,665 @@
     "id": "index_title",
     "cn": "回忆的爱玛侬",
     "en": "Memories of Emanon",
-    "jp": "エマノンの記憶"
+    "jp": "エマノンの記憶",
+    "kr": "에마논의 기억"
   },
   {
     "id": "article_title",
     "cn": "文章",
     "en": "Articles",
-    "jp": "記事"
+    "jp": "記事",
+    "kr": "글"
   },
   {
     "id": "game_title",
     "cn": "游戏",
     "en": "Games",
-    "jp": "ゲーム"
+    "jp": "ゲーム",
+    "kr": "게임"
   },
   {
     "id": "gallery_title",
     "cn": "画廊",
     "en": "Gallery",
-    "jp": "ギャラリー"
+    "jp": "ギャラリー",
+    "kr": "갤러리"
   },
   {
     "id": "about_title",
     "cn": "关于",
     "en": "About",
-    "jp": "このサイトについて"
+    "jp": "このサイトについて",
+    "kr": "소개"
   },
   {
     "id": "index_year_progress",
     "cn": "年进度",
     "en": "Year Progress",
-    "jp": "年の進捗"
+    "jp": "年の進捗",
+    "kr": "올해 진행률"
   },
   {
     "id": "index_month_progress",
     "cn": "月进度",
     "en": "Month Progress",
-    "jp": "月の進捗"
+    "jp": "月の進捗",
+    "kr": "이번 달 진행률"
   },
   {
     "id": "index_day_progress",
     "cn": "天进度",
     "en": "Day Progress",
-    "jp": "今日の進捗"
+    "jp": "今日の進捗",
+    "kr": "오늘 진행률"
   },
   {
     "id": "index_year_tips",
     "cn": "这个进度条显示了今年已经过去了多少",
     "en": "Shows how much of the current year has already passed.",
-    "jp": "今年の進捗を示すプログレスバーです。"
+    "jp": "今年の進捗を示すプログレスバーです。",
+    "kr": "올해가 얼마나 지났는지 보여주는 진행 바입니다."
   },
   {
     "id": "index_month_tips",
     "cn": "这个进度条显示了本月已经过去了多少",
     "en": "Shows how much of the current month has already passed.",
-    "jp": "今月の進捗を示すプログレスバーです。"
+    "jp": "今月の進捗を示すプログレスバーです。",
+    "kr": "이번 달이 얼마나 지났는지 보여주는 진행 바입니다."
   },
   {
     "id": "index_day_tips",
     "cn": "这个进度条显示了今天已经过去了多少",
     "en": "Shows how much of today has already passed.",
-    "jp": "今日の進捗を示すプログレスバーです。"
+    "jp": "今日の進捗を示すプログレスバーです。",
+    "kr": "오늘이 얼마나 지났는지 보여주는 진행 바입니다."
   },
   {
     "id": "index_refresh",
     "cn": "刷新时间剩余 {0}m {1}s",
     "en": "Refreshing in {0}m {1}s",
-    "jp": "{0}分 {1}秒後に更新"
+    "jp": "{0}分 {1}秒後に更新",
+    "kr": "{0}분 {1}초 후 새로고침"
   },
   {
     "id": "index_refresh_tips",
     "cn": "倒计时结束后，所有的进度条都将被刷新",
     "en": "All progress bars will refresh when the countdown ends.",
-    "jp": "カウントダウンが終わると、すべての進捗バーが更新されます。"
+    "jp": "カウントダウンが終わると、すべての進捗バーが更新されます。",
+    "kr": "카운트다운이 끝나면 모든 진행 바가 새로고침됩니다."
   },
   {
     "id": "dailty_popup_title",
     "cn": "欢迎登录",
     "en": "Welcome",
-    "jp": "ようこそ"
+    "jp": "ようこそ",
+    "kr": "환영합니다"
   },
   {
     "id": "dailty_popup_text",
     "cn": "欢迎回来。下面这些设置只影响这台设备，改动即时生效。",
     "en": "Welcome back. These settings only affect this device, and apply instantly.",
-    "jp": "おかえりなさい。設定はこの端末にのみ保存され、すぐに反映されます。"
+    "jp": "おかえりなさい。設定はこの端末にのみ保存され、すぐに反映されます。",
+    "kr": "다시 오신 것을 환영합니다. 아래 설정은 이 기기에만 적용되며 즉시 반영됩니다."
   },
   {
     "id": "btn_ok",
     "cn": "确定",
     "en": "OK",
-    "jp": "確定"
+    "jp": "確定",
+    "kr": "확인"
   },
   {
     "id": "tab_progress",
     "cn": "进度条",
     "en": "Progress",
-    "jp": "進捗"
+    "jp": "進捗",
+    "kr": "진행률"
   },
   {
     "id": "tab_article",
     "cn": "文章",
     "en": "Articles",
-    "jp": "記事"
+    "jp": "記事",
+    "kr": "글"
   },
   {
     "id": "tab_game",
     "cn": "游戏",
     "en": "Games",
-    "jp": "ゲーム"
+    "jp": "ゲーム",
+    "kr": "게임"
   },
   {
     "id": "tab_gallery",
     "cn": "画廊",
     "en": "Gallery",
-    "jp": "ギャラリー"
+    "jp": "ギャラリー",
+    "kr": "갤러리"
   },
   {
     "id": "tab_about",
     "cn": "关于",
     "en": "About",
-    "jp": "このサイトについて"
+    "jp": "このサイトについて",
+    "kr": "소개"
   },
   {
     "id": "footer_update_time",
     "cn": "上次更新：{0}",
     "en": "Last updated: {0}",
-    "jp": "最終更新：{0}"
+    "jp": "最終更新：{0}",
+    "kr": "마지막 업데이트: {0}"
   },
   {
     "id": "footer_name",
     "cn": "由 Shelton 进行站点创建与艺术化",
     "en": "Site created and curated by Shelton",
-    "jp": "サイト制作・運営：Shelton"
+    "jp": "サイト制作・運営：Shelton",
+    "kr": "사이트 제작 및 아트워크: Shelton"
   },
   {
     "id": "footer_art",
     "cn": "由 Cry 进行艺术化",
     "en": "Artwork by Cry",
-    "jp": "アート制作：Cry"
+    "jp": "アート制作：Cry",
+    "kr": "아트워크: Cry"
   },
   {
     "id": "CRT",
     "cn": "CRT效果模拟",
     "en": "CRT Effect Simulation",
-    "jp": "CRTエフェクトシミュレーション"
+    "jp": "CRTエフェクトシミュレーション",
+    "kr": "CRT 효과 시뮬레이션"
   },
   {
     "id": "total_time",
     "cn": "{0}小时，",
     "en": "{0} hrs,",
-    "jp": "{0}時間、"
+    "jp": "{0}時間、",
+    "kr": "{0}시간,"
   },
   {
     "id": "equivalent_days",
     "cn": "相当于{0}天，",
     "en": "that's {0} days,",
-    "jp": "{0}日相当、"
+    "jp": "{0}日相当、",
+    "kr": "{0}일에 해당,"
   },
   {
     "id": "equivalent_years",
     "cn": "相当于{0}年。",
     "en": "that's {0} years.",
-    "jp": "{0}年相当。"
+    "jp": "{0}年相当。",
+    "kr": "{0}년에 해당."
   },
   {
     "id": "game_describe",
     "cn": "游戏并非人生，但是我已经玩了：",
     "en": "Games aren't life — but I've clocked:",
-    "jp": "ゲームは人生じゃない。でも、気づいたら："
+    "jp": "ゲームは人生じゃない。でも、気づいたら：",
+    "kr": "게임은 인생이 아니다. 하지만 나는 이미 이만큼 플레이했다:"
   },
   {
     "id": "game_roll_btn",
     "cn": "随机游戏",
     "en": "Random Game",
-    "jp": "ランダムゲーム"
+    "jp": "ランダムゲーム",
+    "kr": "랜덤 게임"
   },
   {
     "id": "game_sort_quality",
     "cn": "按主观游戏评级排序",
     "en": "Sort by My Rating",
-    "jp": "個人的評価順"
+    "jp": "個人的評価順",
+    "kr": "내 평가순"
   },
   {
     "id": "game_sort_type",
     "cn": "按游戏类型排序",
     "en": "Sort by Genre",
-    "jp": "ジャンル順"
+    "jp": "ジャンル順",
+    "kr": "장르순"
   },
   {
     "id": "game_sort_time",
     "cn": "按游戏时长排序",
     "en": "Sort by Playtime",
-    "jp": "プレイ時間順"
+    "jp": "プレイ時間順",
+    "kr": "플레이 시간순"
   },
   {
     "id": "previous_page",
     "cn": "上一页",
     "en": "Previous Page",
-    "jp": "前のページ"
+    "jp": "前のページ",
+    "kr": "이전 페이지"
   },
   {
     "id": "next_page",
     "cn": "下一页",
     "en": "Next Page",
-    "jp": "次のページ"
+    "jp": "次のページ",
+    "kr": "다음 페이지"
   },
   {
     "id": "original_image",
     "cn": "原图",
     "en": "Original Image",
-    "jp": "元画像"
+    "jp": "元画像",
+    "kr": "원본 이미지"
   },
   {
     "id": "about",
     "cn": "嗨！我是Shelton Chu，一位来自中国的游戏策划与艺术家。\r\r\n想要更深入地了解我，最好的方式就是浏览这个网站。\r\r\n若要开始探索，你可以看看顶部的导航栏，希望你在此浏览愉快！\r\r\n",
     "en": "Hi! I'm Shelton Chu, a game designer and artist from China. \r\r\nThe best way to get to know me is by exploring this website. \r\r\nTo start your journey, check out the navigation bar above. Hope you enjoy your time here!",
-    "jp": "こんにちは！私はShelton Chu、中国出身のゲームプランナー兼アーティストです。\r\r\n私をより深く知る一番の方法は、このサイトをゆっくりと閲覧することです。\r\r\nまずは上のナビゲーションバーから探索してみてください。このサイトでの時間を楽しんでいただければ嬉しいです！"
+    "jp": "こんにちは！私はShelton Chu、中国出身のゲームプランナー兼アーティストです。\r\r\n私をより深く知る一番の方法は、このサイトをゆっくりと閲覧することです。\r\r\nまずは上のナビゲーションバーから探索してみてください。このサイトでの時間を楽しんでいただければ嬉しいです！",
+    "kr": "안녕하세요! 저는 중국 출신의 게임 기획자이자 아티스트, Shelton Chu입니다.\r\r\n저를 더 깊이 알고 싶다면 이 사이트를 둘러보는 것이 가장 좋은 방법입니다.\r\r\n탐색을 시작하려면 위쪽 내비게이션 바를 봐 주세요. 즐겁게 둘러보시길 바랍니다!"
   },
   {
     "id": "thanks_project",
     "cn": "感谢以下这些项目：",
     "en": "Thanks to the following projects:",
-    "jp": "以下のプロジェクトに感謝します："
+    "jp": "以下のプロジェクトに感謝します：",
+    "kr": "다음 프로젝트에 감사드립니다:"
   },
   {
     "id": "update_info",
     "cn": "最近更新\r\r\n版本号：14.0.0\r\r\n发布日期：2026年3月12日\r\r\n新增留言板功能",
     "en": "Recent Updates\r\r\nVersion: 14.0.0\r\r\nRelease Date: March 12, 2026\r\r\nAdded: Message Board Feature",
-    "jp": "最近の更新\r\r\nバージョン：14.0.0\r\r\nリリース日：2026年3月12日\r\r\nメッセージボード機能を追加"
+    "jp": "最近の更新\r\r\nバージョン：14.0.0\r\r\nリリース日：2026年3月12日\r\r\nメッセージボード機能を追加",
+    "kr": "최근 업데이트\r\r\n버전: 14.0.0\r\r\n출시일: 2026년 3월 12일\r\r\n방명록 기능 추가"
   },
   {
     "id": "password_title",
     "cn": "密码验证",
     "en": "Password Verification",
-    "jp": "パスワード認証"
+    "jp": "パスワード認証",
+    "kr": "비밀번호 확인"
   },
   {
     "id": "password_input_placeholder",
     "cn": "请输入密码",
     "en": "Enter password",
-    "jp": "パスワードを入力してください"
+    "jp": "パスワードを入力してください",
+    "kr": "비밀번호를 입력하세요"
   },
   {
     "id": "timer.refresh_complete",
     "cn": "正在刷新",
     "en": "Refreshing…",
-    "jp": "更新中…"
+    "jp": "更新中…",
+    "kr": "새로고침 중…"
   },
   {
     "id": "message_title",
     "cn": "留言板",
     "en": "Message Board",
-    "jp": "メッセージボード"
+    "jp": "メッセージボード",
+    "kr": "방명록"
   },
   {
     "id": "tab_message",
     "cn": "留言板",
     "en": "Message Board",
-    "jp": "メッセージボード"
+    "jp": "メッセージボード",
+    "kr": "방명록"
   },
   {
     "id": "tab_test",
     "cn": "基准测试",
     "en": "Baseline Test",
-    "jp": "Baseline Test"
+    "jp": "Baseline Test",
+    "kr": "벤치마크"
   },
   {
     "id": "test_title",
     "cn": "基准测试",
     "en": "Baseline Test",
-    "jp": "Baseline Test"
+    "jp": "Baseline Test",
+    "kr": "벤치마크"
   },
   {
     "id": "msg_form_title",
     "cn": "写下你的留言",
     "en": "Leave a Message",
-    "jp": "メッセージを書く"
+    "jp": "メッセージを書く",
+    "kr": "메시지 남기기"
   },
   {
     "id": "msg_nickname_label",
     "cn": "昵称",
     "en": "Nickname",
-    "jp": "ニックネーム"
+    "jp": "ニックネーム",
+    "kr": "닉네임"
   },
   {
     "id": "msg_nickname_placeholder",
     "cn": "你的昵称",
     "en": "Your nickname",
-    "jp": "ニックネームを入力"
+    "jp": "ニックネームを入力",
+    "kr": "닉네임을 입력하세요"
   },
   {
     "id": "msg_content_label",
     "cn": "留言内容",
     "en": "Message",
-    "jp": "メッセージ"
+    "jp": "メッセージ",
+    "kr": "메시지"
   },
   {
     "id": "msg_content_placeholder",
     "cn": "写点什么吧…",
     "en": "Write something…",
-    "jp": "何か書いてみましょう…"
+    "jp": "何か書いてみましょう…",
+    "kr": "무언가 적어보세요…"
   },
   {
     "id": "msg_submit_btn",
     "cn": "发送",
     "en": "Send",
-    "jp": "送信"
+    "jp": "送信",
+    "kr": "보내기"
   },
   {
     "id": "msg_list_title",
     "cn": "留言板（{0}）",
     "en": "Message Board ({0})",
-    "jp": "メッセージボード（{0}）"
+    "jp": "メッセージボード（{0}）",
+    "kr": "방명록 ({0})"
   },
   {
     "id": "msg_refresh_btn",
     "cn": "刷新",
     "en": "Refresh",
-    "jp": "更新"
+    "jp": "更新",
+    "kr": "새로고침"
   },
   {
     "id": "msg_loading",
     "cn": "正在加载留言…",
     "en": "Loading messages…",
-    "jp": "メッセージを読み込んでいます…"
+    "jp": "メッセージを読み込んでいます…",
+    "kr": "메시지를 불러오는 중…"
   },
   {
     "id": "msg_empty",
     "cn": "暂无留言，和我说点什么！",
     "en": "No messages yet — say something!",
-    "jp": "まだメッセージはありません。ぜひ一言どうぞ！"
+    "jp": "まだメッセージはありません。ぜひ一言どうぞ！",
+    "kr": "아직 메시지가 없습니다. 한마디 남겨주세요!"
   },
   {
     "id": "msg_error",
     "cn": "加载留言失败，请稍后再试。",
     "en": "Could not load messages. Try again later.",
-    "jp": "メッセージを読み込めませんでした。後ほどお試しください。"
+    "jp": "メッセージを読み込めませんでした。後ほどお試しください。",
+    "kr": "메시지를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요."
   },
   {
     "id": "msg_load_more",
     "cn": "加载更多",
     "en": "Load more",
-    "jp": "もっと見る"
+    "jp": "もっと見る",
+    "kr": "더 보기"
   },
   {
     "id": "msg_warn_nickname",
     "cn": "请输入昵称",
     "en": "Please enter a nickname",
-    "jp": "ニックネームを入力してください"
+    "jp": "ニックネームを入力してください",
+    "kr": "닉네임을 입력해 주세요"
   },
   {
     "id": "msg_warn_content",
     "cn": "请输入留言内容",
     "en": "Please enter a message",
-    "jp": "メッセージ内容を入力してください"
+    "jp": "メッセージ内容を入力してください",
+    "kr": "메시지 내용을 입력해 주세요"
   },
   {
     "id": "msg_success_title",
     "cn": "留言已发送！",
     "en": "Message sent!",
-    "jp": "送信完了！"
+    "jp": "送信完了！",
+    "kr": "메시지를 보냈습니다!"
   },
   {
     "id": "msg_submit_error",
     "cn": "发送失败，请稍后再试",
     "en": "Failed to send. Please try again later.",
-    "jp": "送信に失敗しました。後ほどもう一度お試しください。"
+    "jp": "送信に失敗しました。後ほどもう一度お試しください。",
+    "kr": "전송에 실패했습니다. 잠시 후 다시 시도해 주세요."
   },
   {
     "id": "msg_reply_btn",
     "cn": "评论",
     "en": "Reply",
-    "jp": "返信"
+    "jp": "返信",
+    "kr": "댓글"
   },
   {
     "id": "msg_reply_submit_btn",
     "cn": "发送评论",
     "en": "Send Reply",
-    "jp": "返信を送信"
+    "jp": "返信を送信",
+    "kr": "댓글 보내기"
   },
   {
     "id": "msg_reply_content_placeholder",
     "cn": "写下你的评论…",
     "en": "Write your reply...",
-    "jp": "返信を書いてください…"
+    "jp": "返信を書いてください…",
+    "kr": "댓글을 적어보세요…"
   },
   {
     "id": "msg_reply_success",
     "cn": "评论已发送！",
     "en": "Reply sent!",
-    "jp": "返信を送信しました！"
+    "jp": "返信を送信しました！",
+    "kr": "댓글을 보냈습니다!"
   },
   {
     "id": "msg_reply_reply_btn",
     "cn": "回复",
     "en": "Reply",
-    "jp": "返信"
+    "jp": "返信",
+    "kr": "답글"
   },
   {
     "id": "msg_replying_to",
     "cn": "回复",
     "en": "Replying to",
-    "jp": "返信先："
+    "jp": "返信先：",
+    "kr": "답글 대상"
   },
   {
     "id": "msg_reply_cancel_btn",
     "cn": "取消",
     "en": "Cancel",
-    "jp": "キャンセル"
+    "jp": "キャンセル",
+    "kr": "취소"
   },
   {
     "id": "msg_time_minutes_ago",
     "cn": "{0}分钟前",
     "en": "{0}m ago",
-    "jp": "{0}分前"
+    "jp": "{0}分前",
+    "kr": "{0}분 전"
   },
   {
     "id": "msg_time_hours_ago",
     "cn": "{0}小时前",
     "en": "{0}h ago",
-    "jp": "{0}時間前"
+    "jp": "{0}時間前",
+    "kr": "{0}시간 전"
   },
   {
     "id": "post_publish_date",
     "cn": "发布时间：{0}",
     "en": "Published: {0}",
-    "jp": "公開日：{0}"
+    "jp": "公開日：{0}",
+    "kr": "게시일: {0}"
   },
   {
     "id": "game_quality_6",
     "cn": "大师之作",
     "en": "Masterpiece",
-    "jp": "傑作"
+    "jp": "傑作",
+    "kr": "걸작"
   },
   {
     "id": "game_quality_5",
     "cn": "奇佳",
     "en": "Outstanding",
-    "jp": "秀逸"
+    "jp": "秀逸",
+    "kr": "수작"
   },
   {
     "id": "game_quality_4",
     "cn": "卓越",
     "en": "Excellent",
-    "jp": "卓越"
+    "jp": "卓越",
+    "kr": "탁월"
   },
   {
     "id": "game_quality_3",
     "cn": "优秀",
     "en": "Great",
-    "jp": "優秀"
+    "jp": "優秀",
+    "kr": "우수"
   },
   {
     "id": "game_quality_2",
     "cn": "尚可",
     "en": "Decent",
-    "jp": "まずまず"
+    "jp": "まずまず",
+    "kr": "무난"
   },
   {
     "id": "game_quality_1",
     "cn": "平庸",
     "en": "Mediocre",
-    "jp": "平凡"
+    "jp": "平凡",
+    "kr": "평범"
   },
   {
     "id": "game_type_1",
     "cn": "竞技类",
     "en": "Competitive",
-    "jp": "対戦"
+    "jp": "対戦",
+    "kr": "대전"
   },
   {
     "id": "game_type_2",
     "cn": "动作&沙盒类",
     "en": "Action & Sandbox",
-    "jp": "アクション＆サンドボックス"
+    "jp": "アクション＆サンドボックス",
+    "kr": "액션 & 샌드박스"
   },
   {
     "id": "game_type_3",
     "cn": "模拟经营类",
     "en": "Simulation & Management",
-    "jp": "シミュレーション＆経営"
+    "jp": "シミュレーション＆経営",
+    "kr": "시뮬레이션 & 경영"
   },
   {
     "id": "game_type_4",
     "cn": "独立游戏&Roguelike",
     "en": "Indie & Roguelike",
-    "jp": "インディー＆ローグライク"
+    "jp": "インディー＆ローグライク",
+    "kr": "인디 & 로그라이크"
   },
   {
     "id": "game_type_5",
     "cn": "RTS",
     "en": "RTS",
-    "jp": "RTS"
+    "jp": "RTS",
+    "kr": "RTS"
   },
   {
     "id": "game_type_6",
     "cn": "集换式卡牌&自走棋",
     "en": "TCG & Auto Chess",
-    "jp": "TCG＆オートチェス"
+    "jp": "TCG＆オートチェス",
+    "kr": "TCG & 오토체스"
   },
   {
     "id": "game_type_7",
     "cn": "手游",
     "en": "Mobile Games",
-    "jp": "モバイルゲーム"
+    "jp": "モバイルゲーム",
+    "kr": "모바일 게임"
   },
   {
     "id": "game_type_8",
     "cn": "其他网游",
     "en": "Other Online Games",
-    "jp": "その他のオンラインゲーム"
+    "jp": "その他のオンラインゲーム",
+    "kr": "기타 온라인 게임"
   },
   {
     "id": "game_no_series",
     "cn": "无系列",
     "en": "No Series",
-    "jp": "シリーズなし"
+    "jp": "シリーズなし",
+    "kr": "시리즈 없음"
   },
   {
     "id": "game_unknown_quality",
     "cn": "未定义评级（{0}）",
     "en": "Undefined Rating ({0})",
-    "jp": "未定義の評価（{0}）"
+    "jp": "未定義の評価（{0}）",
+    "kr": "정의되지 않은 등급 ({0})"
   },
   {
     "id": "game_load_error",
     "cn": "数据加载失败，请刷新页面",
     "en": "Failed to load data. Please refresh the page.",
-    "jp": "データの読み込みに失敗しました。ページを更新してください。"
+    "jp": "データの読み込みに失敗しました。ページを更新してください。",
+    "kr": "데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요."
   },
   {
     "id": "game_sort_legend",
     "cn": "排序",
     "en": "Sort By",
-    "jp": "並べ替え"
+    "jp": "並べ替え",
+    "kr": "정렬"
   },
   {
     "id": "popup_lang_legend",
     "cn": "语言",
     "en": "Language",
-    "jp": "言語"
+    "jp": "言語",
+    "kr": "언어"
   },
   {
     "id": "crt_level_normal",
     "cn": "正常",
     "en": "Normal",
-    "jp": "通常"
+    "jp": "通常",
+    "kr": "보통"
   },
   {
     "id": "crt_level_light",
     "cn": "轻微",
     "en": "Light",
-    "jp": "控えめ"
+    "jp": "控えめ",
+    "kr": "약하게"
   },
   {
     "id": "crt_level_off",
     "cn": "关闭",
     "en": "Off",
-    "jp": "オフ"
+    "jp": "オフ",
+    "kr": "끄기"
+  },
+  {
+    "id": "msg_location_unknown",
+    "cn": "未知地区",
+    "en": "Unknown region",
+    "jp": "不明な地域",
+    "kr": "알 수 없는 지역"
   }
 ]

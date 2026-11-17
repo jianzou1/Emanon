@@ -16,7 +16,10 @@
     "story_en": "If you're feeling healthy, just go to sleep.",
     "story_jp": "体力があるなら、もう寝ろ。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "카운터스트라이크: 글로벌 오펜시브 / 카운터스트라이크 2",
+    "story_kr": "몸이 좋으면 그냥 잠이나 자라",
+    "spacialAchievements_kr": null
   },
   {
     "id": 2,
@@ -35,7 +38,10 @@
     "story_en": "They put their heart into the cinematics and their feet into the game itself.",
     "story_jp": "CGには全力、ゲーム本体は足で作った。",
     "spacialAchievements_en": "CN server, Season 2: 3508 SR.",
-    "spacialAchievements_jp": "中国サーバー第2シーズン：3508 SR。"
+    "spacialAchievements_jp": "中国サーバー第2シーズン：3508 SR。",
+    "name_kr": "오버워치",
+    "story_kr": "CG는 정성껏, 게임은 발로 만들었다",
+    "spacialAchievements_kr": "중국 서버 시즌 2 3508점."
   },
   {
     "id": 3,
@@ -54,7 +60,10 @@
     "story_en": "Looted an entire city just to donate it all to one guy.",
     "story_jp": "一つの街を漁り尽くして、全部ひとりに献上した。",
     "spacialAchievements_en": "2018 Season 5: Top 500 on Asia server.2018 Season 6: Top 100 on both Asia and North America servers.",
-    "spacialAchievements_jp": "2018年第5シーズン：アジアサーバーTOP500。2018年第6シーズン：アジアサーバー・北米サーバーともにTOP100。"
+    "spacialAchievements_jp": "2018年第5シーズン：アジアサーバーTOP500。2018年第6シーズン：アジアサーバー・北米サーバーともにTOP100。",
+    "name_kr": "PUBG: 배틀그라운드",
+    "story_kr": "도시 하나를 다 뒤져서 한 사람에게 다 바쳤다",
+    "spacialAchievements_kr": "2018 시즌 5 아시아 서버 톱 500.\r\r\n2018 시즌 6 아시아·북미 서버 톱 100."
   },
   {
     "id": 4,
@@ -73,7 +82,10 @@
     "story_en": "So even idiots can become game designers?",
     "story_jp": "バカでもゲームプランナーになれるの？",
     "spacialAchievements_en": "S2–S3: Reached 1700 rating on the Shadow Isles server.S5: Reached Diamond I on the Ionia server.",
-    "spacialAchievements_jp": "S2〜S3：シャドウアイルズサーバーでレート1700到達。S5：アイオニアサーバーでダイヤモンドI到達。"
+    "spacialAchievements_jp": "S2〜S3：シャドウアイルズサーバーでレート1700到達。S5：アイオニアサーバーでダイヤモンドI到達。",
+    "name_kr": "리그 오브 레전드",
+    "story_kr": "머저리도 기획자가 되나?",
+    "spacialAchievements_kr": "S2-S3 시즌 그림자 군도 서버 랭크 1700점.\r\r\nS5 시즌 아이오니아 서버 찬란한 다이아몬드 I 달성."
   },
   {
     "id": 5,
@@ -92,7 +104,10 @@
     "story_en": "At launch, overseas players roasted the Specialist system as “APEX 2042.”",
     "story_jp": "海外コミュニティでは、発売当初のスペシャリスト制が「APEX 2042」とまで言われていた。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "배틀필드 2042",
+    "story_kr": "출시 당시 해외 커뮤니티는 전문가 시스템을 두고 에이펙스 2042라고 조롱했다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 6,
@@ -111,7 +126,10 @@
     "story_en": "Great fun—the infantry combat was the best in the series.",
     "story_jp": "普通に面白い。歩兵戦がいちばん楽しい回だった。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "배틀필드 3",
+    "story_kr": "재밌다, 보병전이 가장 재밌는 한 편",
+    "spacialAchievements_kr": null
   },
   {
     "id": 7,
@@ -130,7 +148,10 @@
     "story_en": "Your G7 isn't as long as my G8.",
     "story_jp": "お前のG7、俺のG8ほど長くないな。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "Apex 레전드",
+    "story_kr": "네 G7은 내 G8만큼 길지 않아",
+    "spacialAchievements_kr": null
   },
   {
     "id": 8,
@@ -149,7 +170,10 @@
     "story_en": "A lifelong pension plan for internet café owners.",
     "story_jp": "ネカフェ店主の生涯年金。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "카운터스트라이크 1.6",
+    "story_kr": "PC방 사장님의 평생 연금 보험",
+    "spacialAchievements_kr": null
   },
   {
     "id": 9,
@@ -168,7 +192,10 @@
     "story_en": "A shooter game that Korean devs modded into something else entirely.",
     "story_jp": "韓国人が魔改造した銃撃ゲーム。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "카운터스트라이크 온라인 / 카운터스트라이크 온라인 2",
+    "story_kr": "한국인이 마개조한 총싸움 게임",
+    "spacialAchievements_kr": null
   },
   {
     "id": 10,
@@ -187,7 +214,10 @@
     "story_en": "It felt like an early breeding ground for cheaters.",
     "story_jp": "早期のチーター養成所みたいな空気があった。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "H1Z1: 킹 오브 더 킬",
+    "story_kr": "초창기 핵쟁이의 표본",
+    "spacialAchievements_kr": null
   },
   {
     "id": 11,
@@ -206,7 +236,10 @@
     "story_en": "A free battle royale trial card.",
     "story_jp": "無料バトロワ体験版。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "링 오브 엘리시움",
+    "story_kr": "무료 배틀로얄 체험권",
+    "spacialAchievements_kr": null
   },
   {
     "id": 12,
@@ -225,7 +258,10 @@
     "story_en": "Little Kobe looking for his mom.",
     "story_jp": "ちびコービーがママを探してる。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "발로란트",
+    "story_kr": "꼬마 코비가 엄마를 찾아요",
+    "spacialAchievements_kr": null
   },
   {
     "id": 13,
@@ -244,7 +280,10 @@
     "story_en": "An absurd wasteland world.",
     "story_jp": "ナンセンスな世紀末ワールド。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "보더랜드",
+    "story_kr": "앞뒤 안 맞는 황무지 세계",
+    "spacialAchievements_kr": null
   },
   {
     "id": 14,
@@ -263,7 +302,10 @@
     "story_en": "A god-tier story.",
     "story_jp": "ストーリーが神がかっている。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "보더랜드 2",
+    "story_kr": "스토리로 신의 반열에 오르다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 15,
@@ -282,7 +324,10 @@
     "story_en": "More guns, and even more nonstop chatter.",
     "story_jp": "銃は増えたし、口数もさらに増えた。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "보더랜드 3",
+    "story_kr": "총은 더 많아지고, 입은 더 가벼워졌다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 16,
@@ -301,7 +346,10 @@
     "story_en": "Its life got stolen by Apex.",
     "story_jp": "人生をAPEXに持っていかれた。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "타이탄폴",
+    "story_kr": "에이펙스에게 인생을 빼앗겼다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 17,
@@ -320,7 +368,10 @@
     "story_en": "The Titans had barely taken off before the franchise next door borrowed its life for a battle royale.",
     "story_jp": "タイタンが飛び立ったと思ったら、その人生は隣のバトロワに持っていかれた。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "타이탄폴 2",
+    "story_kr": "메카가 막 날아오르자, 옆집이 인생을 빌려 배틀로얄을 만들었다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 18,
@@ -339,7 +390,10 @@
     "story_en": "You think you're committing crimes, but you're really just living a second life.",
     "story_jp": "犯罪してるつもりが、実際は第二の人生を送ってる。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "그랜드 테프트 오토 V",
+    "story_kr": "범죄를 저지른다고 생각하지만, 실은 두 번째 인생을 사는 중",
+    "spacialAchievements_kr": null
   },
   {
     "id": 19,
@@ -358,7 +412,10 @@
     "story_en": "Cousin still hasn't paid back the money.",
     "story_jp": "いとこがまだ金を返してくれない。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "그랜드 테프트 오토 IV",
+    "story_kr": "사촌이 빌린 돈을 갚지 않는다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 20,
@@ -377,7 +434,10 @@
     "story_en": "Gym simulator.",
     "story_jp": "筋トレシミュレーター。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "그랜드 테프트 오토: 산 안드레아스",
+    "story_kr": "헬스 시뮬레이터",
+    "spacialAchievements_kr": null
   },
   {
     "id": 21,
@@ -396,7 +456,10 @@
     "story_en": "PANZER, SEAWAYS.",
     "story_jp": "PANZER、SEAWAYS。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "그랜드 테프트 오토: 바이스 시티",
+    "story_kr": "PANZER, SEAWAYS",
+    "spacialAchievements_kr": null
   },
   {
     "id": 22,
@@ -415,7 +478,10 @@
     "story_en": "Slashing enemies with sakura particle effects.",
     "story_jp": "斬るたびに桜エフェクトが舞う。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "고스트 오브 쓰시마",
+    "story_kr": "베면 벚꽃 이펙트가 붙는다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 23,
@@ -434,7 +500,10 @@
     "story_en": "Manhattan is cold, but the potato servers are even colder.",
     "story_jp": "マンハッタンは寒いが、ポテトサーバーはもっと寒い。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "디비전",
+    "story_kr": "맨해튼은 춥고, 감자 서버는 더 춥다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 24,
@@ -453,7 +522,10 @@
     "story_en": "The Division Banwave 2.0.",
     "story_jp": "ディビジョンBAN祭り2.0。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "디비전 2",
+    "story_kr": "디비전 이용정지 2.0",
+    "spacialAchievements_kr": null
   },
   {
     "id": 25,
@@ -472,7 +544,10 @@
     "story_en": "Cult retreat simulator.",
     "story_jp": "カルト団体の社員旅行シミュレーター。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "파크라이 5",
+    "story_kr": "사이비 종교 단합대회 시뮬레이터",
+    "spacialAchievements_kr": null
   },
   {
     "id": 26,
@@ -491,7 +566,10 @@
     "story_en": "The forefather of the canned sandbox formula.",
     "story_jp": "缶詰サンドボックスの元祖みたいな存在。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "파크라이 4",
+    "story_kr": "정형화된 오픈월드의 원조",
+    "spacialAchievements_kr": null
   },
   {
     "id": 27,
@@ -510,7 +588,10 @@
     "story_en": "The photo system is more fun than the main story.",
     "story_jp": "写真システムのほうが本編より面白い。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "데드 라이징 4",
+    "story_kr": "카메라 시스템이 본편보다 재밌다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 28,
@@ -529,7 +610,10 @@
     "story_en": "A chainsaw perpetual-motion machine.",
     "story_jp": "チェーンソー永久機関。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "데드 라이징 3",
+    "story_kr": "전기톱 영구기관",
+    "spacialAchievements_kr": null
   },
   {
     "id": 29,
@@ -548,7 +632,10 @@
     "story_en": "Combo weapons are the real game.",
     "story_jp": "合成武器こそ本体。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "데드 라이징 2",
+    "story_kr": "무기 조합이 진짜 본체",
+    "spacialAchievements_kr": null
   },
   {
     "id": 30,
@@ -567,7 +654,10 @@
     "story_en": "Gabe can't count to three.",
     "story_jp": "Gabeは3まで数えられない。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "레프트 4 데드 2",
+    "story_kr": "Gabe은 3을 못 센다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 31,
@@ -586,7 +676,10 @@
     "story_en": "A failed case in Gabe's early education on counting to three.",
     "story_jp": "Gabeの「3を数える教育」が失敗した初期事例。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "레프트 4 데드",
+    "story_kr": "Gabe의 숫자 3 교육 실패 사례",
+    "spacialAchievements_kr": null
   },
   {
     "id": 32,
@@ -605,7 +698,10 @@
     "story_en": "Zombie waves like a tsunami, gunfire like the overtime bell.",
     "story_jp": "ゾンビの波は津波みたいで、銃声は残業開始のベルみたい。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "월드 워 Z",
+    "story_kr": "좀비 떼는 쓰나미, 총성은 야근 종소리",
+    "spacialAchievements_kr": null
   },
   {
     "id": 33,
@@ -624,7 +720,10 @@
     "story_en": "Suffer for three hours, clear it in five minutes.",
     "story_jp": "3時間苦しんで、5分でクリア。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "레먼트: 프롬 디 애쉬스",
+    "story_kr": "3시간 고생하고 5분 만에 클리어",
+    "spacialAchievements_kr": null
   },
   {
     "id": 34,
@@ -643,7 +742,10 @@
     "story_en": "Beep-beep, you bastard!",
     "story_jp": "ピーピー、この野郎！",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "사이버펑크 2077",
+    "story_kr": "삐빅, 이 망할 자식아!",
+    "spacialAchievements_kr": null
   },
   {
     "id": 35,
@@ -662,7 +764,10 @@
     "story_en": "The world-famous fridge.",
     "story_jp": "あの有名な冷蔵庫。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "아토믹 하트",
+    "story_kr": "그 유명한 냉장고",
+    "spacialAchievements_kr": null
   },
   {
     "id": 36,
@@ -681,7 +786,10 @@
     "story_en": "Tiger Vanguard shattered my Great Sage dream in three punches.",
     "story_jp": "虎先鋒に3発で、大聖になる夢を砕かれた。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "검은 신화: 오공",
+    "story_kr": "호선봉의 주먹 세 방에 대성의 꿈이 박살났다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 37,
@@ -700,7 +808,10 @@
     "story_en": "Watch_Downgrade.",
     "story_jp": "ウォッチダウングレード。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "워치독스",
+    "story_kr": "다운그레이드 독스",
+    "spacialAchievements_kr": null
   },
   {
     "id": 38,
@@ -719,7 +830,10 @@
     "story_en": "Hacker simulator.",
     "story_jp": "ハッカーシミュレーター。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "워치독스 2",
+    "story_kr": "해커 시뮬레이터",
+    "spacialAchievements_kr": null
   },
   {
     "id": 39,
@@ -738,7 +852,10 @@
     "story_en": "Alex Mercer eats people in an action movie while New York civilians collectively evaporate.",
     "story_jp": "A哥が人を食いまくるアクション映画、その裏でニューヨーク市民は集団蒸発。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "프로토타입",
+    "story_kr": "A 형이 사람을 삼키는 액션 영화, 뉴욕 시민은 단체로 증발",
+    "spacialAchievements_kr": null
   },
   {
     "id": 40,
@@ -757,7 +874,10 @@
     "story_en": "Once Heller starts throwing hands, nobody can stop him.",
     "story_jp": "ヘラーが本気で殴り始めたら、もう誰にも止められない。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "프로토타입 2",
+    "story_kr": "형님이 무술을 하면 아무도 못 말린다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 41,
@@ -776,7 +896,10 @@
     "story_en": "Parkour and zombie-smashing.",
     "story_jp": "パルクールでゾンビ退治。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "다잉 라이트",
+    "story_kr": "파쿠르로 좀비 때려잡기",
+    "spacialAchievements_kr": null
   },
   {
     "id": 42,
@@ -795,7 +918,10 @@
     "story_en": "Officially designated gear of the Wild West Photographers Association.",
     "story_jp": "西部写真家協会公認機材。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "레드 데드 리뎀션 2",
+    "story_kr": "서부 사진작가협회 지정 장비",
+    "spacialAchievements_kr": null
   },
   {
     "id": 43,
@@ -814,7 +940,10 @@
     "story_en": "A vacation island turned zombie island.",
     "story_jp": "リゾート島がゾンビ島になった。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "데드 아일랜드",
+    "story_kr": "휴양지가 좀비 섬이 되었다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 44,
@@ -833,7 +962,10 @@
     "story_en": "Not as good as the first one.",
     "story_jp": "初代には及ばない。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "데드 아일랜드 2",
+    "story_kr": "1편만 못하다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 45,
@@ -852,7 +984,10 @@
     "story_en": "Hong Kong GTA.",
     "story_jp": "香港版GTA。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "슬리핑 독스",
+    "story_kr": "홍콩 GTA",
+    "spacialAchievements_kr": null
   },
   {
     "id": 46,
@@ -871,7 +1006,10 @@
     "story_en": "Ghost's mask—same model available on Taobao.",
     "story_jp": "Ghostのマスク、淘宝で同款あり。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "콜 오브 듀티: 모던 워페어 2",
+    "story_kr": "고스트 가면은 타오바오 동일 상품",
+    "spacialAchievements_kr": null
   },
   {
     "id": 47,
@@ -890,7 +1028,10 @@
     "story_en": "Great game, and the TV series is great too.",
     "story_jp": "ゲームも面白いし、ドラマも良かった。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "더 라스트 오브 어스",
+    "story_kr": "게임도 재밌고 드라마도 재밌다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 48,
@@ -909,7 +1050,10 @@
     "story_en": "Drive for ten minutes, take photos for two hours.",
     "story_jp": "10分走って、2時間写真を撮る。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "포르자 호라이즌 4",
+    "story_kr": "운전 10분, 사진 2시간",
+    "spacialAchievements_kr": null
   },
   {
     "id": 49,
@@ -928,7 +1072,10 @@
     "story_en": "A tourism ad for Mexico, where one dump truck can wreck your insurance.",
     "story_jp": "メキシコ観光PR動画みたいな顔をして、ダンプ一台で保険が吹き飛ぶ。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "포르자 호라이즌 5",
+    "story_kr": "멕시코 관광 홍보 영상, 덤프트럭이 차량 보험을 박살낸다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 50,
@@ -947,7 +1094,10 @@
     "story_en": "If you don't break up over this, I lose.",
     "story_jp": "これで別れなかったら俺の負け。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "오버쿡드 2",
+    "story_kr": "헤어지지 않으면 내가 진다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 51,
@@ -966,7 +1116,10 @@
     "story_en": "Koreans can't make management sims? Think again.",
     "story_jp": "韓国人は経営シムを作れない？ そんなことはなかった。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "데이브 더 다이버",
+    "story_kr": "한국인은 경영 시뮬을 못 만든다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 52,
@@ -985,7 +1138,10 @@
     "story_en": "Story of Seasons, but upgraded.",
     "story_jp": "強化版牧場物語。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "스타듀 밸리",
+    "story_kr": "강화판 목장 이야기",
+    "spacialAchievements_kr": null
   },
   {
     "id": 53,
@@ -1004,7 +1160,10 @@
     "story_en": "The mine is the real game.",
     "story_jp": "鉱山こそ本体。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "목장 이야기: 광산 마을의 친구들",
+    "story_kr": "광산이 진짜 본체",
+    "spacialAchievements_kr": null
   },
   {
     "id": 54,
@@ -1023,7 +1182,10 @@
     "story_en": "Cosmic assembly-line worker.",
     "story_jp": "宇宙ライン工。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "디슨 스피어 프로그램",
+    "story_kr": "우주 컨베이어벨트 노동자",
+    "spacialAchievements_kr": null
   },
   {
     "id": 55,
@@ -1042,7 +1204,10 @@
     "story_en": "Plumber-and-electrician simulator.",
     "story_jp": "水道工兼電気工シミュレーター。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "옥시즌 낫 인클루디드",
+    "story_kr": "배관공 시뮬레이터",
+    "spacialAchievements_kr": null
   },
   {
     "id": 56,
@@ -1061,7 +1226,10 @@
     "story_en": "Traffic jam simulator, with a whole city full of road rage.",
     "story_jp": "渋滞シミュレーター、市民全員がロードレイジ気味。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "심시티 4: 러시아워",
+    "story_kr": "정체 시뮬레이터, 시민 모두 로드레이지",
+    "spacialAchievements_kr": null
   },
   {
     "id": 57,
@@ -1080,7 +1248,10 @@
     "story_en": "A timeless classic that just refuses to run on Win10.",
     "story_jp": "永遠の名作、でもWin10ではまともに動かない。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "심시티 3000",
+    "story_kr": "클래식은 영원하지만 윈도10에서는 안 돌아간다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 58,
@@ -1099,7 +1270,10 @@
     "story_en": "It takes a special kind of genius to think online-only SimCity was a good idea.",
     "story_jp": "SimCityをオンライン前提にしようと考えたのは、ある意味で特別な発想。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "심시티: 빌드잇",
+    "story_kr": "머리에 혹이 생길 만한 심시티 온라인 발상",
+    "spacialAchievements_kr": null
   },
   {
     "id": 59,
@@ -1118,7 +1292,10 @@
     "story_en": "Drinking sewage water as performance art.",
     "story_jp": "下水を飲む行為芸術。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "시티즈: 스카이라인",
+    "story_kr": "오수를 마시는 행위 예술",
+    "spacialAchievements_kr": null
   },
   {
     "id": 60,
@@ -1137,7 +1314,10 @@
     "story_en": "DLC hell returns.",
     "story_jp": "DLC地獄、再び。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "시티즈: 스카이라인 II",
+    "story_kr": "DLC 지옥의 재림",
+    "spacialAchievements_kr": null
   },
   {
     "id": 61,
@@ -1156,7 +1336,10 @@
     "story_en": "A machine for interrogating humanity—the more you govern, the more it feels like a fascism simulator.",
     "story_jp": "人間性を問い詰める装置。統治すればするほど、ファシズムシミュレーターっぽくなる。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "프로스트펑크",
+    "story_kr": "인간성 심문기, 운영할수록 파시즘 시뮬레이터",
+    "spacialAchievements_kr": null
   },
   {
     "id": 62,
@@ -1175,7 +1358,10 @@
     "story_en": "Ruthless hospital director simulator, where hallways matter more than wards.",
     "story_jp": "闇院長シミュレーター。病室より廊下のほうが大事。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "투 포인트 호스피탈",
+    "story_kr": "악덕 원장 시뮬레이터, 병실보다 복도가 중요하다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 63,
@@ -1194,7 +1380,10 @@
     "story_en": "It starts like a desperate escape and ends like a fireworks factory.",
     "story_jp": "序盤は命からがら逃げて、終盤は花火工場になる。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "뱀파이어 서바이벌",
+    "story_kr": "초반엔 도망, 후반엔 불꽃놀이 공장",
+    "spacialAchievements_kr": null
   },
   {
     "id": 64,
@@ -1213,7 +1402,10 @@
     "story_en": "You think you're playing cards, but you're really performing dark arts on probability.",
     "story_jp": "カードゲームしてるつもりが、実際は確率に呪術をかけている。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "발라트로",
+    "story_kr": "카드 게임인 줄 알았는데 확률과 굿을 하는 중",
+    "spacialAchievements_kr": null
   },
   {
     "id": 65,
@@ -1232,7 +1424,10 @@
     "story_en": "Underworld 996: die, restart the next shift, and get beaten by dad simulator.",
     "story_jp": "冥界996。死んでは次のシフトに入り直し、親父にしばかれるシミュレーター。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "하데스",
+    "story_kr": "명계 996, 죽으면 다음 근무조, 아빠 보면 때리는 시뮬레이터",
+    "spacialAchievements_kr": null
   },
   {
     "id": 66,
@@ -1251,7 +1446,10 @@
     "story_en": "The Underworld family business is hiring again—this time little sis is the one working overtime.",
     "story_jp": "冥界の家族経営が増員中。今回は妹が残業担当。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "하데스 II",
+    "story_kr": "명계 가족기업 증원, 이번엔 여동생이 야근",
+    "spacialAchievements_kr": null
   },
   {
     "id": 67,
@@ -1270,7 +1468,10 @@
     "story_en": "The Pinduoduo of roguelites.",
     "story_jp": "ローグライト界の拼多多。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "브로타토",
+    "story_kr": "로그라이크판 핀둬둬",
+    "spacialAchievements_kr": null
   },
   {
     "id": 68,
@@ -1289,7 +1490,10 @@
     "story_en": "God-tier mechanics.",
     "story_jp": "システムが神。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "럭키 랜들러",
+    "story_kr": "메커니즘의 신",
+    "spacialAchievements_kr": null
   },
   {
     "id": 69,
@@ -1308,7 +1512,10 @@
     "story_en": "A floppy-bodied creature gains sentience.",
     "story_jp": "軟体動物が知性を持ってしまった。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "휴먼: 폴 플랫",
+    "story_kr": "연체동물이 요괴가 되었다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 70,
@@ -1327,7 +1534,10 @@
     "story_en": "Even junk collecting comes with KPI targets.",
     "story_jp": "ゴミ拾いにもKPIがある。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "리썰 컴퍼니",
+    "story_kr": "쓰레기 줍기에도 KPI가 있다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 71,
@@ -1346,7 +1556,10 @@
     "story_en": "Conjoined parkour.",
     "story_jp": "連結体パルクール。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "체인드 투게더",
+    "story_kr": "샴쌍둥이 파쿠르",
+    "spacialAchievements_kr": null
   },
   {
     "id": 72,
@@ -1365,7 +1578,10 @@
     "story_en": "Wherever the tracks go, friendship breaks there.",
     "story_jp": "線路を敷いた先から友情が壊れていく。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "언레일드!",
+    "story_kr": "철로가 닿는 곳까지 우정이 끊어진다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 73,
@@ -1384,7 +1600,10 @@
     "story_en": "Derpy PUBG.",
     "story_jp": "おバカPUBG。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "토탈리 어큐레이트 배틀그라운즈",
+    "story_kr": "어딘가 이상한 배틀그라운드",
+    "spacialAchievements_kr": null
   },
   {
     "id": 74,
@@ -1403,7 +1622,10 @@
     "story_en": "Stack enough items to collapse the universe.",
     "story_jp": "アイテムを積みすぎて宇宙が崩壊する。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "리스크 오브 레인 리턴즈",
+    "story_kr": "아이템을 쌓다 우주가 붕괴",
+    "spacialAchievements_kr": null
   },
   {
     "id": 75,
@@ -1422,7 +1644,10 @@
     "story_en": "It's morning already.",
     "story_jp": "もう朝だ。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "문명 IV",
+    "story_kr": "날이 밝았다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 76,
@@ -1441,7 +1666,10 @@
     "story_en": "Chop-chop-chop-chop, lumberjack.",
     "story_jp": "伐って伐って伐って伐る木こり。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "에이지 오브 엠파이어 2",
+    "story_kr": "벌 벌 벌 벌 벌목꾼",
+    "spacialAchievements_kr": null
   },
   {
     "id": 77,
@@ -1460,7 +1688,10 @@
     "story_en": "My name is Magnet Rod.",
     "story_jp": "俺の名は磁力棒。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "커맨드 앤 컨커: 레드 얼럿 2",
+    "story_kr": "내 이름은 자석 막대",
+    "spacialAchievements_kr": null
   },
   {
     "id": 78,
@@ -1479,7 +1710,10 @@
     "story_en": "I would buy osmanthus and carry wine with you once more, yet it can never be the same as in our youth.",
     "story_jp": "桂花を買って酒を携え、ともに往年を味わいたい。だが、あの少年の日々にはもう戻れない。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "스트롱홀드",
+    "story_kr": "계화주를 사 함께 술을 나누려 해도, 끝내 소년의 나들이 같지 않네",
+    "spacialAchievements_kr": null
   },
   {
     "id": 79,
@@ -1498,7 +1732,10 @@
     "story_en": "Korea's heirloom imperial seal of esports.",
     "story_jp": "韓国eスポーツの伝国の玉璽。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "스타크래프트",
+    "story_kr": "한국 e스포츠의 국새",
+    "spacialAchievements_kr": null
   },
   {
     "id": 80,
@@ -1517,7 +1754,10 @@
     "story_en": "It's still alive today almost entirely thanks to player-made content.",
     "story_jp": "今日まで生きているのは、ほぼ全部プレイヤー制作のおかげ。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "워크래프트 III",
+    "story_kr": "지금까지 살아있는 건 유저 제작 덕분",
+    "spacialAchievements_kr": null
   },
   {
     "id": 81,
@@ -1536,7 +1776,10 @@
     "story_en": "The CIA's year-end performance review.",
     "story_jp": "CIAの年末査定。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "트로피코 5",
+    "story_kr": "CIA 연말 평가",
+    "spacialAchievements_kr": null
   },
   {
     "id": 82,
@@ -1555,7 +1798,10 @@
     "story_en": "Crying really does solve problems.",
     "story_jp": "泣けばだいたい解決する。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "더 바인딩 오브 아이작",
+    "story_kr": "울면 문제가 해결된다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 83,
@@ -1574,7 +1820,10 @@
     "story_en": "Ah yes, death and robots.",
     "story_jp": "はいはい、死とロボット。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "슬레이 더 스파이어",
+    "story_kr": "아, 죽음과 로봇",
+    "spacialAchievements_kr": null
   },
   {
     "id": 84,
@@ -1593,7 +1842,10 @@
     "story_en": "Note: this change is extremely bold.",
     "story_jp": "注：この変更は極めて大胆です。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "하스스톤",
+    "story_kr": "주: 이 변경은 대단히 대담합니다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 85,
@@ -1612,7 +1864,10 @@
     "story_en": "Torpedoes blowing up planes.",
     "story_jp": "魚雷で飛行機を落とす。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "KARDS",
+    "story_kr": "어뢰로 비행기를 폭격",
+    "spacialAchievements_kr": null
   },
   {
     "id": 86,
@@ -1631,7 +1886,10 @@
     "story_en": "Skins hold their value better than rank does.",
     "story_jp": "スキンのほうが段位より価値が落ちない。",
     "spacialAchievements_en": "Highest rank: Onmyo Grand Rank (阴阳大允).",
-    "spacialAchievements_jp": "最高ランク：陰陽大允。"
+    "spacialAchievements_jp": "最高ランク：陰陽大允。",
+    "name_kr": "결전! 헤이안쿄",
+    "story_kr": "스킨이 랭크보다 가치가 높다",
+    "spacialAchievements_kr": "최고 티어: 음양대윤"
   },
   {
     "id": 87,
@@ -1650,7 +1908,10 @@
     "story_en": "Apparently everyone loves doing farm work.",
     "story_jp": "みんな農作業が好きらしい。",
     "spacialAchievements_en": "Highest rank: King, 10 stars.",
-    "spacialAchievements_jp": "最高ランク：王者10星。"
+    "spacialAchievements_jp": "最高ランク：王者10星。",
+    "name_kr": "왕자영요",
+    "story_kr": "농사일이 좋다",
+    "spacialAchievements_kr": "최고 티어: 왕자 10성"
   },
   {
     "id": 88,
@@ -1669,7 +1930,10 @@
     "story_en": "Honkai Impact 3 on PC.",
     "story_jp": "崩壊3rdのPC版みたいなもの。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "젠레스 존 제로",
+    "story_kr": "붕괴3 PC판",
+    "spacialAchievements_kr": null
   },
   {
     "id": 89,
@@ -1688,7 +1952,10 @@
     "story_en": "Proud of it, are you? For what? It's just a tiny two-minute casual game. If you tell people you spend all day grinding this kind of thing, who isn't going to think you're kind of an idiot?",
     "story_jp": "そんなに誇らしいの？ 何が？ 1試合2分の小さなカジュアルゲームじゃん。こんなのを一日中やり込んでるって言ったら、心の中で「バカかな」って思われても仕方ない。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "브롤스타즈",
+    "story_kr": "그래서 뭐? 자랑할 일인가? 2분이면 한 판인 4399급 망겜을 붙잡고 매일 연습한다고 자랑하면, 누가 속으로 한심하다고 안 여기겠나?",
+    "spacialAchievements_kr": null
   },
   {
     "id": 90,
@@ -1707,7 +1974,10 @@
     "story_en": "Riot made this?",
     "story_jp": "これ、本当にRiot製？",
     "spacialAchievements_en": "Highest rank: Platinum.",
-    "spacialAchievements_jp": "最高ランク：プラチナ。"
+    "spacialAchievements_jp": "最高ランク：プラチナ。",
+    "name_kr": "리그 오브 레전드: 와일드 리프트",
+    "story_kr": "라이엇이 만들었다고?",
+    "spacialAchievements_kr": "최고 티어: 플래티넘"
   },
   {
     "id": 91,
@@ -1726,7 +1996,10 @@
     "story_en": "NetEase really loves hiring top students who don't play games to be planners.",
     "story_jp": "NetEaseって、本当にゲームをやらない優等生プランナーを採るのが好きだよな。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "음양사",
+    "story_kr": "넷이지는 게임 안 하는 명문대 기획자만 뽑는다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 92,
@@ -1745,7 +2018,10 @@
     "story_en": "Absurd for the sake of absurdity.",
     "story_jp": "ひたすらナンセンス。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "최강 달팽이",
+    "story_kr": "영문 모를 전개",
+    "spacialAchievements_kr": null
   },
   {
     "id": 93,
@@ -1764,7 +2040,10 @@
     "story_en": "So you're just never going to add male characters?",
     "story_jp": "男性キャラは、結局ずっと実装しないの？",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "붕괴3rd",
+    "story_kr": "남자 캐릭터는 안 내나?",
+    "spacialAchievements_kr": null
   },
   {
     "id": 94,
@@ -1783,7 +2062,10 @@
     "story_en": "Launching.",
     "story_jp": "起動。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "원신",
+    "story_kr": "실행",
+    "spacialAchievements_kr": null
   },
   {
     "id": 95,
@@ -1802,7 +2084,10 @@
     "story_en": "Waifu collector.",
     "story_jp": "嫁コレクター。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "소녀전선",
+    "story_kr": "아내 수집기",
+    "spacialAchievements_kr": null
   },
   {
     "id": 96,
@@ -1821,7 +2106,10 @@
     "story_en": "Yuuka's math class.",
     "story_jp": "ユウカの算数教室。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "블루 아카이브",
+    "story_kr": "유우카 산수 교실",
+    "spacialAchievements_kr": null
   },
   {
     "id": 97,
@@ -1840,7 +2128,10 @@
     "story_en": "They put their heart into the game and their feet into balance.",
     "story_jp": "ゲーム作りには本気、バランス調整は足でやってる。",
     "spacialAchievements_en": "Golden Spatula: Master.Teamfight Tactics: Diamond.",
-    "spacialAchievements_jp": "金铲铲之战：マスター。チームファイト タクティクス：ダイヤモンド。"
+    "spacialAchievements_jp": "金铲铲之战：マスター。チームファイト タクティクス：ダイヤモンド。",
+    "name_kr": "전략적 팀 전투",
+    "story_kr": "게임은 정성껏, 밸런스는 발로",
+    "spacialAchievements_kr": "금삽삽 전투: 초월 마스터\r\r\n전략적 팀 전투: 찬란한 다이아몬드"
   },
   {
     "id": 98,
@@ -1859,7 +2150,10 @@
     "story_en": "A cyber Yiwu wholesale market.",
     "story_jp": "サイバー義烏小商品市場。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "던전 앤 파이터",
+    "story_kr": "사이버 이우 소상품 시장",
+    "spacialAchievements_kr": null
   },
   {
     "id": 99,
@@ -1878,7 +2172,10 @@
     "story_en": "Every grade-school kid's first QQ Show outfit set.",
     "story_jp": "小学生時代、最初のQQショー一式。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "라테일",
+    "story_kr": "초등학생의 첫 QQ 코디",
+    "spacialAchievements_kr": null
   },
   {
     "id": 100,
@@ -1897,7 +2194,10 @@
     "story_en": "Every dragon slayer becomes paying fodder in the end.",
     "story_jp": "竜を狩った者も、最後は養分になる。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "드래곤네스트",
+    "story_kr": "용을 잡던 자, 결국 개미가 되다",
+    "spacialAchievements_kr": null
   },
   {
     "id": 101,
@@ -1916,7 +2216,10 @@
     "story_en": "The shooting dream of 300 million mouse users.",
     "story_jp": "3億のマウスが抱いた銃撃の夢。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "크로스파이어",
+    "story_kr": "3억 마우스의 총싸움 꿈",
+    "spacialAchievements_kr": null
   },
   {
     "id": 102,
@@ -1935,6 +2238,9 @@
     "story_en": "Some are looting, some are fighting, and some are still asking where the extraction point is.",
     "story_jp": "漁ってるやつもいれば、撃ち合ってるやつもいて、まだ脱出地点どこって聞いてるやつもいる。",
     "spacialAchievements_en": null,
-    "spacialAchievements_jp": null
+    "spacialAchievements_jp": null,
+    "name_kr": "델타 포스",
+    "story_kr": "누군가 뒤지고, 누군가 싸우고, 누군가 탈출 지점을 묻는다",
+    "spacialAchievements_kr": null
   }
 ]

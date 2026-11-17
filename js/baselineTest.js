@@ -4,42 +4,42 @@
 // 时间窗口：00:13:55 – 00:15:03（以 00:13:55.960 为 t=0）
 import langManager from '/js/langManager.js';
 
-// 时间轴（秒，相对起点）+ 中英文。日语回退英文。
+// 时间轴（秒，相对起点）+ 中英韩文。日语回退英文。
 const SCRIPT = [
-    { t: 0,  cn: '跟读基准测试用语',                                en: 'Recite your baseline.' },
-    { t: 2,  cn: '黑暗虚无于空中旋转',                              en: 'And blood-black nothingness began to spin.' },
-    { t: 7,  cn: '系统测试：细胞间相连',                            en: 'A system of cells interlinked within cells...' },
-    { t: 9,  cn: '细胞间相连 细胞间相连',                           en: '...interlinked within cells interlinked within one stem.' },
-    { t: 16, cn: '惊恐的站在黑暗之前 一座又白又高的喷泉',              en: 'And dreadfully distinct against the dark, a tall white fountain played.' },
-    { t: 22, cn: '细胞',                                        en: 'Cells.' },
-    { t: 23, b:1, cn: '- 细胞',                                        en: '- Cells.' },
-    { t: 24, cn: '此机构你可曾到访过？细胞',                      en: 'Have you ever been in an institution? Cells.' },
-    { t: 25, b:1, cn: '- 细胞',                                        en: '- Cells.' },
-    { t: 27, cn: '- 他们是否把你关进囚室？细胞',                   en: '- Do they keep you in a cell? Cells.' },
-    { t: 28, b:1, cn: '- 细胞',                                        en: '- Cells.' },
-    { t: 29, cn: '你未完成任务后 他们是否把你关进囚室？细胞',              en: "When you're not performing your duties, do they keep you in a little box? Cells." },
-    { t: 30, b:1, cn: '- 细胞',                                        en: '- Cells.' },
-    { t: 33, cn: '相连',                                        en: 'Interlinked.' },
-    { t: 34, b:1, cn: '- 相连',                                        en: '- Interlinked.' },    
-    { t: 35, cn: '别人牵你手的时候你有爱的感觉吗？相连',              en: "What's it like to hold the hand of someone you love? Interlinked." },
-    { t: 36, b:1, cn: '- 相连',                                        en: '- Interlinked.' },    
-    { t: 38, cn: '他们告诉过你指尖相触是什么感受吗？相连',            en: 'Did they teach you how to feel finger to finger? Interlinked.' },
-    { t: 39, b:1, cn: '- 相连',                                        en: '- Interlinked.' },    
-    { t: 42, cn: '你想有一颗心吗？相连',                            en: 'Do you long for having your heart interlinked?' },
-    { t: 43, b:1, cn: '- 相连',                                        en: '- Interlinked.' },    
-    { t: 45, cn: '你梦到相连是什么样的吗？相连',                     en: '- Do you dream about being interlinked?' },
-    { t: 46, b:1, cn: '- 相连',                                        en: '- Interlinked.' },    
-    { t: 47, cn: '你怀中抱着一个孩子是什么感受？相连',                en: "What's it like to hold your child in your arms? Interlinked." },
-    { t: 48, b:1, cn: '- 相连',                                        en: '- Interlinked.' },    
-    { t: 50, cn: '有没有感觉若有所失 相连',                         en: "Do you feel that there's a part of you that's missing? Interlinked." },
-    { t: 51, b:1, cn: '- 相连',                                        en: '- Interlinked.' },    
-    { t: 53, cn: '细胞间 相连',                                en: 'Within cells interlinked.' },
-    { t: 54, b:1, cn: '- 细胞间 相连',                                en: '- Within cells interlinked.' },
-    { t: 56, cn: '为什么不把"细胞间 相连"这句话重复三遍',              en: "Why don't you say that three times?" },
-    { t: 58, b:1, cn: '- 细胞间 相连',                                 en: '- Within cells interlinked.' },
-    { t: 59, b:1, cn: '- 细胞间 相连',                                 en: '- Within cells interlinked.' },
-    { t: 60, b:1, cn: '- 细胞间 相连',                                 en: '- Within cells interlinked.' },
-    { t: 66, cn: '测试完成',                                     en: "We're done." },
+    { t: 0,  cn: '跟读基准测试用语',                                en: 'Recite your baseline.', kr: '기준선을 암송하라.' },
+    { t: 2,  cn: '黑暗虚无于空中旋转',                              en: 'And blood-black nothingness began to spin.', kr: '그리고 피처럼 검은 허무가 회전하기 시작했다.' },
+    { t: 7,  cn: '系统测试：细胞间相连',                            en: 'A system of cells interlinked within cells...', kr: '시스템 테스트: 세포 사이의 연결' },
+    { t: 9,  cn: '细胞间相连 细胞间相连',                           en: '...interlinked within cells interlinked within one stem.', kr: '세포 사이 연결, 세포 사이 연결' },
+    { t: 16, cn: '惊恐的站在黑暗之前 一座又白又高的喷泉',              en: 'And dreadfully distinct against the dark, a tall white fountain played.', kr: '그리고 어둠 앞에 무섭도록 선명하게, 높고 하얀 분수가 뿜어져 나왔다.' },
+    { t: 22, cn: '细胞',                                        en: 'Cells.', kr: '세포' },
+    { t: 23, b:1, cn: '- 细胞',                                        en: '- Cells.', kr: '- 세포' },
+    { t: 24, cn: '此机构你可曾到访过？细胞',                      en: 'Have you ever been in an institution? Cells.', kr: '그 기관에 가본 적 있나? 세포.' },
+    { t: 25, b:1, cn: '- 细胞',                                        en: '- Cells.', kr: '- 세포' },
+    { t: 27, cn: '- 他们是否把你关进囚室？细胞',                   en: '- Do they keep you in a cell? Cells.', kr: '- 세포에 가둬두나? 세포.' },
+    { t: 28, b:1, cn: '- 细胞',                                        en: '- Cells.', kr: '- 세포' },
+    { t: 29, cn: '你未完成任务后 他们是否把你关进囚室？细胞',              en: "When you're not performing your duties, do they keep you in a little box? Cells.", kr: '임무를 완수하지 못하면 작은 상자에 가두나? 세포.' },
+    { t: 30, b:1, cn: '- 细胞',                                        en: '- Cells.', kr: '- 세포' },
+    { t: 33, cn: '相连',                                        en: 'Interlinked.', kr: '연결' },
+    { t: 34, b:1, cn: '- 相连',                                        en: '- Interlinked.', kr: '- 연결' },
+    { t: 35, cn: '别人牵你手的时候你有爱的感觉吗？相连',              en: "What's it like to hold the hand of someone you love? Interlinked.", kr: '누군가 손을 잡아줄 때 사랑을 느끼나? 연결.' },
+    { t: 36, b:1, cn: '- 相连',                                        en: '- Interlinked.', kr: '- 연결' },
+    { t: 38, cn: '他们告诉过你指尖相触是什么感受吗？相连',            en: 'Did they teach you how to feel finger to finger? Interlinked.', kr: '손끝이 닿는 느낌을 가르쳐 줬나? 연결.' },
+    { t: 39, b:1, cn: '- 相连',                                        en: '- Interlinked.', kr: '- 연결' },
+    { t: 42, cn: '你想有一颗心吗？相连',                            en: 'Do you long for having your heart interlinked?', kr: '심장이 연결되기를 갈망하나?' },
+    { t: 43, b:1, cn: '- 相连',                                        en: '- Interlinked.', kr: '- 연결' },
+    { t: 45, cn: '你梦到相连是什么样的吗？相连',                     en: '- Do you dream about being interlinked?', kr: '- 연결되는 꿈을 꾸나? 연결.' },
+    { t: 46, b:1, cn: '- 相连',                                        en: '- Interlinked.', kr: '- 연결' },
+    { t: 47, cn: '你怀中抱着一个孩子是什么感受？相连',                en: "What's it like to hold your child in your arms? Interlinked.", kr: '아이를 품에 안으면 어떤 느낌인가? 연결.' },
+    { t: 48, b:1, cn: '- 相连',                                        en: '- Interlinked.', kr: '- 연결' },
+    { t: 50, cn: '有没有感觉若有所失 相连',                         en: "Do you feel that there's a part of you that's missing? Interlinked.", kr: '자신의 일부가 빠져 있다고 느끼나? 연결.' },
+    { t: 51, b:1, cn: '- 相连',                                        en: '- Interlinked.', kr: '- 연결' },
+    { t: 53, cn: '细胞间 相连',                                en: 'Within cells interlinked.', kr: '세포 사이, 연결' },
+    { t: 54, b:1, cn: '- 细胞间 相连',                                en: '- Within cells interlinked.', kr: '- 세포 사이, 연결' },
+    { t: 56, cn: '为什么不把"细胞间 相连"这句话重复三遍',              en: "Why don't you say that three times?", kr: '왜 그 문장을 세 번 말하지 않나?' },
+    { t: 58, b:1, cn: '- 细胞间 相连',                                 en: '- Within cells interlinked.', kr: '- 세포 사이, 연결' },
+    { t: 59, b:1, cn: '- 细胞间 相连',                                 en: '- Within cells interlinked.', kr: '- 세포 사이, 연결' },
+    { t: 60, b:1, cn: '- 细胞间 相连',                                 en: '- Within cells interlinked.', kr: '- 세포 사이, 연결' },
+    { t: 66, cn: '测试完成',                                     en: "We're done.", kr: '끝났다.' },
 ];
 
 // 打字机字符间隔（ms/字）
@@ -58,12 +58,11 @@ const clearAll = () => {
 };
 
 /**
- * 根据当前语言取对应字段（jp 回退到 en）
+ * 根据当前语言取对应字段（日语回退英文，韩语缺失时同样回退英文）
  */
 const pickText = (entry) => {
     const lang = langManager.getCurrentLang ? langManager.getCurrentLang() : 'cn';
-    if (lang === 'cn') return entry.cn;
-    return entry.en;
+    return entry[lang] || entry.en;
 };
 
 /**

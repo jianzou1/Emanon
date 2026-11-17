@@ -44,6 +44,12 @@
   --z-toast: 9999;
 }
 
+/* 韩语：中/日字体不含 Hangul，切到韩语时改用系统韩文字体（不污染其他语种的字形回退） */
+:root:lang(ko) {
+  --font-ui: "Pixelated MS Sans Serif", "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+  --font-body: "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", Microsoft Yahei, SimSun, sans-serif;
+}
+
 :root.css-loading body {
   visibility: hidden;
   opacity: 0;
@@ -64,6 +70,11 @@ body {
   justify-content: center;
   background-color: var(--color-bg);
   overflow-wrap: break-word;
+}
+
+/* 韩语：Hangul 按词换行更自然，关掉 CJK 默认的逐字断行 */
+:root:lang(ko) body {
+  word-break: keep-all;
 }
 
 menu[role=tablist] > li {

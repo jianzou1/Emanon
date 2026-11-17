@@ -24,6 +24,9 @@ class LangManager {
     placeholderFormats: ['braced', 'numbered']
   };
 
+  // 内部语言码 → BCP 47：供 <html lang> 与 CSS :lang() 使用
+  static LANG_ATTR = { cn: 'zh-CN', en: 'en', jp: 'ja', kr: 'ko' };
+
   constructor(config = {}) {
     this.config = { ...LangManager.DEFAULT_CONFIG, ...config };
     this.currentLang = this.config.fallbackLang;
@@ -199,8 +202,17 @@ class LangManager {
       this.currentLang = lang;
       localStorage.setItem(this.config.storageKey, lang);
       this.paramCache.clear();
+      this.#syncHtmlLang();
       this.#applyTranslations();
     });
+  }
+
+  // 同步 <html lang>，让断行规则、:lang() 样式与朗读器拿到正确语种
+  #syncHtmlLang() {
+    const tag = LangManager.LANG_ATTR[this.currentLang] || this.currentLang;
+    if (document.documentElement.lang !== tag) {
+      document.documentElement.lang = tag;
+    }
   }
 
   #startSmartObserver() {
@@ -314,6 +326,7 @@ class LangManager {
     this.currentLang = localStorage.getItem(this.config.storageKey) || defaultLang;
     await this.#loadLanguageData();
     
+    this.#syncHtmlLang();
     this.#applyTranslations();
     this.#safeBindSwitcher();
     this.#startSmartObserver();
@@ -336,6 +349,7 @@ class LangManager {
     this.currentLang = lang;
     localStorage.setItem(this.config.storageKey, lang);
     this.paramCache.clear();
+    this.#syncHtmlLang();
     
     this.dynamicParams.forEach((params, id) => {
       const elements = document.querySelectorAll(`[data-lang-id="${id}"]`);

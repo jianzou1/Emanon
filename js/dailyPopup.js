@@ -53,6 +53,7 @@ function displayPopup() {
           <option value="en">English</option>
           <option value="cn">简体中文</option>
           <option value="jp">にほんご</option>
+          <option value="kr">한국어</option>
         </select>
       </div>
     </fieldset>

@@ -32,14 +32,14 @@ export function getSystemValue(systemData, id) {
 }
 
 /** 语言代码 → JSON 字段后缀映射 */
-const LANG_SUFFIX = { en: '_en', jp: '_jp' };
+const LANG_SUFFIX = { en: '_en', jp: '_jp', kr: '_kr' };
 
 /**
  * 从对象中读取多语言字段
  * 优先读 field_{lang}（如 name_en），无则 fallback 到原始字段（中文）
  * @param {Object} obj - 数据对象
  * @param {string} field - 字段名
- * @param {string} lang - 当前语言代码（如 'en', 'jp', 'zh'）
+ * @param {string} lang - 当前语言代码（如 'en', 'jp', 'kr'）
  * @returns {string}
  */
 export function getLocalizedField(obj, field, lang) {
