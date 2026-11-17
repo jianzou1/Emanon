@@ -10,8 +10,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
-  // 构建时间戳，用于缓存破坏（替代手动维护的版本号）
-  const buildHash = Date.now().toString(36);
+  // 构建时间戳：既用于缓存破坏，也作为页脚"最后更新"时间
+  // （取代原先运行时请求 api.github.com 拿仓库 updated_at 的做法）
+  const buildTimestamp = Date.now();
+  const buildHash = buildTimestamp.toString(36);
+  const buildTime = new Date(buildTimestamp).toISOString();
 
   // 读取统一 CDN 配置
   const cdnConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'cfg/cdn.json'), 'utf-8'));
@@ -116,6 +119,7 @@ module.exports = (env, argv) => {
     plugins: [
       new webpack.DefinePlugin({
         __BUILD_HASH__: JSON.stringify(buildHash),
+        __BUILD_TIME__: JSON.stringify(buildTime),
         __DEV__: JSON.stringify(!isProduction)
       }),
       new MiniCssExtractPlugin({

@@ -20,7 +20,6 @@
   "dnsPrefetch": [
     "https://github.elemecdn.com",
     "https://cdn.bootcdn.net",
-    "https://cdn.staticfile.net",
-    "https://api.github.com"
+    "https://cdn.staticfile.net"
   ]
 }

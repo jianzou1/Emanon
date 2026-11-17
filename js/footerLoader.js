@@ -69,22 +69,12 @@ export function footerLoader(isTabSwitch = false) {
         const lastUpdatedElement = document.getElementById('last-updated');
         if (!lastUpdatedElement) return;
 
-        const handleParameters = async () => {
-            try {
-                const lastUpdated = await getLastUpdatedDateFromGitHub();
-                langManager.applyParameters(
-                    lastUpdatedElement,
-                    'footer_update_time',
-                    lastUpdated
-                );
-            } catch (error) {
-                console.error('[Footer] update time fetch failed');
-                langManager.applyParameters(
-                    lastUpdatedElement,
-                    'footer_update_time',
-                    '---'
-                );
-            }
+        const handleParameters = () => {
+            langManager.applyParameters(
+                lastUpdatedElement,
+                'footer_update_time',
+                getBuildTime()
+            );
         };
 
         if (!langManager.isInitialized) {
@@ -95,95 +85,31 @@ export function footerLoader(isTabSwitch = false) {
     }
 }
 
-// 从GitHub获取最后更新时间的函数
-async function getLastUpdatedDateFromGitHub() {
-    const url = 'https://api.github.com/repos/jianzou1/drunkfrog';
-    const cacheKey = 'lastUpdatedDate';
-    const cacheExpiration = 86400000; // 24小时缓存（增加从1小时）
-    const fallbackDate = new Date().toLocaleString([], {
+// 页脚"最后更新"时间：直接取构建期注入的 __BUILD_TIME__。
+// 早期版本在运行时请求 api.github.com 拿仓库 updated_at，带来三个问题：
+//   1. 每次整页加载都打一个外部请求（含 60 次/小时的未认证限流风险）
+//   2. URL 里写死的是旧仓库名 drunkfrog，改名后靠 GitHub 的重定向兜着
+//   3. 需要 AbortController 超时 + localStorage 24 小时缓存一整套兜底逻辑
+// 现在构建时就把时间戳写进产物，上面三项全部消失。
+function getBuildTime() {
+    const iso = typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : null;
+    if (!iso) return '---';
+
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return '---';
+
+    return date.toLocaleString([], {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit'
     });
-
-    // 检查缓存
-    let cachedData = null;
-    try {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) {
-            cachedData = JSON.parse(cached);
-        }
-    } catch (e) {
-        console.warn('[Footer] 缓存读取失败:', e);
-    }
-
-    // 如果缓存有效，直接返回
-    if (cachedData) {
-        const { timestamp, date } = cachedData;
-        if (Date.now() - timestamp < cacheExpiration) {
-            console.log('[Footer] 使用缓存的更新时间:', date);
-            return date;
-        }
-    }
-
-    // 获取最新数据
-    try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒超时
-
-        const response = await fetch(url, { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-            // 403 或 429 是速率限制，返回过期缓存而不是报错
-            if ((response.status === 403 || response.status === 429) && cachedData) {
-                console.warn(`[Footer] API 返回 ${response.status}，使用过期缓存`);
-                return cachedData.date;
-            }
-            throw new Error(`HTTP ${response.status}`);
-        }
-        
-        const data = await response.json();
-        const lastUpdated = new Date(data.updated_at).toLocaleString([], {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-
-        // 更新缓存
-        try {
-            localStorage.setItem(cacheKey, JSON.stringify({
-                timestamp: Date.now(),
-                date: lastUpdated
-            }));
-            console.log('[Footer] 缓存已更新:', lastUpdated);
-        } catch (e) {
-            console.warn('[Footer] 缓存写入失败:', e);
-        }
-
-        return lastUpdated;
-    } catch (error) {
-        console.error('[Footer] GitHub API 调用失败:', error.message);
-        
-        // 如果有任何缓存（即使过期），优先返回它
-        if (cachedData) {
-            console.log('[Footer] API 失败，返回最后一次缓存:', cachedData.date);
-            return cachedData.date;
-        }
-
-        // 所有都失败，返回当前日期作为最后降级
-        console.log('[Footer] 返回当前日期作为降级方案');
-        return fallbackDate;
-    }
 }
 
 /**
  * Tab 缓存切换时 footer 已存在的轻量刷新：
- * 仅检查并填充动态数据（GitHub 更新时间），跳过 DOM 重建。
+ * 仅检查并填充构建时间，跳过 DOM 重建。
  */
 function refreshFooterData(footerEl) {
     const isPostPage = window.location.href.includes('post');
@@ -192,13 +118,8 @@ function refreshFooterData(footerEl) {
     const lastUpdatedElement = footerEl.querySelector('#last-updated');
     if (!lastUpdatedElement || lastUpdatedElement.innerHTML.trim()) return; // 已有内容则跳过
 
-    const handleParameters = async () => {
-        try {
-            const lastUpdated = await getLastUpdatedDateFromGitHub();
-            langManager.applyParameters(lastUpdatedElement, 'footer_update_time', lastUpdated);
-        } catch {
-            langManager.applyParameters(lastUpdatedElement, 'footer_update_time', '---');
-        }
+    const handleParameters = () => {
+        langManager.applyParameters(lastUpdatedElement, 'footer_update_time', getBuildTime());
     };
 
     if (langManager.isInitialized) {
