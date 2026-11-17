@@ -1,5 +1,5 @@
 // main.js
-import { loadPjax } from '/js/cdnLoader.js';
+import Pjax from 'pjax';
 import { TabHandler } from '/js/tabHandler.js';
 import { cleanupProgressBar } from '/js/progressBar.js';
 import { footerLoader } from '/js/footerLoader.js';
@@ -32,34 +32,21 @@ let gameRollCleanup = null;
 // baselineTest 返回的 cleanup 函数引用
 let baselineCleanup = null;
 
-// ── pjax 惰性单例 ──
-// 首屏渲染完全不需要 pjax：页签切换走 TabHandler 的内存缓存，
+// ── pjax 单例 ──
+// pjax 已作为 npm 依赖打进主包，不再从 CDN 竞速下载，
+// 因此这里只是「首次真正需要时创建一个实例」，没有任何异步加载过程。
+// 首屏渲染仍然不需要它：页签切换走 TabHandler 的内存缓存，
 // 只有文章详情页、密码页跳转、文章列表点击才用得上。
-// 因此把它从首屏关键路径上摘掉，改为首次真正需要时再加载，
-// 空闲时段（见文件末尾）会顺手把它热身好。
 let pjaxInstance = null;
-let pjaxLoading = null;
 
 const getPjax = () => {
-  if (pjaxInstance) return Promise.resolve(pjaxInstance);
-  if (!pjaxLoading) {
-    pjaxLoading = loadPjax()
-      .then(Pjax => {
-        if (typeof Pjax !== 'function') {
-          throw new Error('Pjax 未正确挂载到 window');
-        }
-        pjaxInstance = new Pjax({
-          selectors: ['head title', '#main'],
-          cacheBust: false,
-        });
-        return pjaxInstance;
-      })
-      .catch(error => {
-        pjaxLoading = null; // 失败后允许下次重试
-        throw error;
-      });
+  if (!pjaxInstance) {
+    pjaxInstance = new Pjax({
+      selectors: ['head title', '#main'],
+      cacheBust: false,
+    });
   }
-  return pjaxLoading;
+  return pjaxInstance;
 };
 
 const bindGlobalPjaxNavigation = (getTabHandler) => {
@@ -68,7 +55,7 @@ const bindGlobalPjaxNavigation = (getTabHandler) => {
    * preventDefault 必须同步执行（否则浏览器默认跳转已经开始），
    * 之后才 await pjax 加载；加载失败则回退整页跳转，保证链接不会点了没反应。
    */
-  const navigateByPjax = async (url, event) => {
+  const navigateByPjax = (url, event) => {
     const targetUrl = new URL(url, window.location.origin);
 
     if (targetUrl.origin !== window.location.origin) {
@@ -83,11 +70,11 @@ const bindGlobalPjaxNavigation = (getTabHandler) => {
     const target = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
 
     try {
-      const pjax = await getPjax();
+      const pjax = getPjax();
       pjax.loadUrl(target);
       getTabHandler()?.updateSelectedTab(targetUrl.pathname);
     } catch (error) {
-      console.error('[Nav] pjax 加载失败，回退整页跳转:', error);
+      console.error('[Nav] pjax 导航失败，回退整页跳转:', error);
       window.location.href = targetUrl.href;
     }
   };
@@ -268,13 +255,11 @@ const initializeApp = async () => {
           return;
         }
 
-        // 非页签页面：pjax 已就绪时交给它自己的 popstate 处理器。
-        // pjax 尚未加载时它没有任何处理器，需要在这里主动接管这次前进/后退，
+        // 非页签页面：pjax 已实例化时交给它自己的 popstate 处理器。
+        // 还没实例化时它没有任何处理器，需要在这里主动接管这次前进/后退，
         // 否则 URL 变了而 DOM 没变。
         if (!pjaxInstance) {
-          getPjax()
-            .then(pjax => pjax.loadUrl(`${url}${window.location.search}`))
-            .catch(() => window.location.reload());
+          getPjax().loadUrl(`${url}${window.location.search}`);
         }
       }, true); // ← 捕获阶段
 
@@ -287,21 +272,16 @@ const initializeApp = async () => {
     // 静默预取留言板第 1 页数据（后台请求，不阻塞页面）
     prefetchMessages();
 
-    // 非关键预取：空闲时先把 pjax 热身好（文章详情页需要），
-    // 再预热其余几个配置 JSON。省流模式或 2G 级网络下整体跳过。
-    // 链式执行而非并发，避免两批请求同时抢带宽。
+    // 非关键预取：空闲时预热几个配置文件，省流模式或 2G 级网络下整体跳过。
+    // pjax 已打进主包，不再需要「先热身 pjax 再预热 JSON」的链式等待。
     if (!shouldSkipPrefetch()) {
       onIdle(() => {
-        getPjax()
-          .catch(() => {})
-          .then(() => {
-            warmUpCache([
-              '/cfg/article_cfg.json',
-              '/cfg/game_time_cfg.json',
-              '/cfg/system_cfg.json',
-              '/cfg/gallery_cfg.json',
-            ]);
-          });
+        warmUpCache([
+          '/cfg/article_cfg.json',
+          '/cfg/game_time_cfg.json',
+          '/cfg/system_cfg.json',
+          '/cfg/gallery_cfg.json',
+        ]);
       }, { timeout: 5000, fallbackDelay: 2000 });
     }
   } catch (error) {
