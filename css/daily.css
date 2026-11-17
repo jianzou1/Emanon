@@ -46,21 +46,37 @@
   width: 450px;
 }
 
-.version-date {
-  background: linear-gradient(to bottom, #0b8525, #076607);
-  line-height: 1.8;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* ── 每日弹窗内容：两个分组框 ── */
+.popup-lead {
+  margin-bottom: 8px;
+}
+
+.popup-fieldset {
+  margin: 11px 0 6px;
+  padding: 6px 8px 4px;
+}
+
+.popup-fieldset legend {
+  padding: 0 3px;
+  /* fieldset 用 border-image 时浏览器不会把 legend 抬到边框上，
+     这里手动抬 5px，让标题正好压在框线上（Win98 分组框的样子） */
+  transform: translateY(-5px);
+}
+
+.popup-fieldset .field-row + .field-row {
+  margin-top: 4px;
 }
 
 #lang-switcher {
-  margin-top: 15px;
-  margin-bottom: 15px;
+  min-width: 140px;
 }
 
 @media (max-width: 768px) {
-  .popup-window {
-    width: auto !important;
+  /* fixed + left:50% 的元素用 width:auto 会被压成半个屏宽，
+     改为按内容撑开、再由 max-width 兜住视口；
+     用 .window.popup-window 提高优先级，压过 style.css 里 .window 的 max-width */
+  .window.popup-window {
+    width: max-content !important;
     max-width: calc(100vw - 32px);
   }
   .popup-window p {

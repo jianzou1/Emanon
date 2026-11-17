@@ -13,6 +13,7 @@
  * @param {boolean} [options.overlayClose] - 点击遮罩关闭，默认 true
  * @param {Function} [options.onClose]     - 关闭后的回调
  * @param {Function} [options.onReady]     - DOM 注入后的回调（接收 { popup, overlay, close }）
+ * @param {Function} [options.onHelp]      - 提供时标题栏渲染 ? 按钮，点击回调（接收 { popup, overlay, close }）
  * @returns {{ close: Function }} 返回含 close 方法的对象，可供外部手动关闭
  */
 export function showPopup({
@@ -25,6 +26,7 @@ export function showPopup({
   overlayClose = true,
   onClose = null,
   onReady = null,
+  onHelp = null,
 }) {
   // 防重复打开
   if (document.getElementById(id)) {
@@ -41,12 +43,13 @@ export function showPopup({
   popup.id = id;
   popup.className = 'window popup-window';
   popup.innerHTML = `
-    <header class="title-bar">
+    <div class="title-bar">
       <div class="title-bar-text"${titleLangId ? ` data-lang-id="${titleLangId}"` : ''}>${title}</div>
       <div class="title-bar-controls">
+        ${onHelp ? '<button aria-label="Help" class="popup-help-icon"></button>' : ''}
         <button aria-label="Close" class="popup-close-icon"></button>
       </div>
-    </header>
+    </div>
     <section class="window-body">
       ${bodyHTML}
     </section>
@@ -70,9 +73,11 @@ export function showPopup({
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Escape' || e.key === 'Enter') {
-      close();
-    }
+    if (e.key !== 'Escape' && e.key !== 'Enter') return;
+    // 只让最上层弹窗响应，避免多层弹窗被一次按键全部关掉
+    const popups = document.querySelectorAll('.popup-window');
+    if (popups[popups.length - 1] !== popup) return;
+    close();
   };
 
   // ── 事件绑定 ──
@@ -80,6 +85,9 @@ export function showPopup({
 
   popup.querySelector('.popup-confirm-btn').addEventListener('click', close);
   popup.querySelector('.popup-close-icon')?.addEventListener('click', close);
+  popup.querySelector('.popup-help-icon')?.addEventListener('click', () => {
+    onHelp?.({ popup, overlay, close });
+  });
 
   if (overlayClose) {
     overlay.addEventListener('click', close);

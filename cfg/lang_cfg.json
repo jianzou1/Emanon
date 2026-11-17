@@ -85,9 +85,9 @@
   },
   {
     "id": "dailty_popup_text",
-    "cn": "请选择你的语言：",
-    "en": "Please select your language:",
-    "jp": "言語を選択してください："
+    "cn": "欢迎回来。下面这些设置只影响这台设备，改动即时生效。",
+    "en": "Welcome back. These settings only affect this device, and apply instantly.",
+    "jp": "おかえりなさい。設定はこの端末にのみ保存され、すぐに反映されます。"
   },
   {
     "id": "btn_ok",
@@ -538,5 +538,29 @@
     "cn": "排序",
     "en": "Sort By",
     "jp": "並べ替え"
+  },
+  {
+    "id": "popup_lang_legend",
+    "cn": "语言",
+    "en": "Language",
+    "jp": "言語"
+  },
+  {
+    "id": "crt_level_normal",
+    "cn": "正常",
+    "en": "Normal",
+    "jp": "通常"
+  },
+  {
+    "id": "crt_level_light",
+    "cn": "轻微",
+    "en": "Light",
+    "jp": "控えめ"
+  },
+  {
+    "id": "crt_level_off",
+    "cn": "关闭",
+    "en": "Off",
+    "jp": "オフ"
   }
 ]

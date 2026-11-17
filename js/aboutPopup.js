@@ -1,5 +1,6 @@
 // aboutPopup.js — 使用通用弹窗组件
 import { showPopup } from '/js/popup.js';
+import { showDailyPopup } from '/js/dailyPopup.js';
 import langManager from '/js/langManager.js';
 
 /**
@@ -29,6 +30,11 @@ export function showAboutPopup() {
         confirmLangId: 'btn_ok',
         confirmText: 'OK',
         overlayClose: true,
+        // 标题栏 ? 按钮：先关掉关于窗口，再强制打开每日弹窗（欢迎/更新信息）
+        onHelp: ({ close: closeAbout }) => {
+            closeAbout();
+            showDailyPopup({ force: true });
+        },
         onReady: ({ popup }) => {
             // 多语言翻译
             langManager.applyTranslationsIn(popup);

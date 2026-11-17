@@ -1,57 +1,43 @@
 // crtEffect.js
 // CRT 叠加层 — WebGL 片元着色器实现（高分辨率下 Canvas 2D 光栅化瓶颈，改用 GPU 并行）
+import { getCrtSettings, setCrtLevel, subscribeCrtSettings } from '/js/crtSettings.js';
 
 const CONFIG = {
     CANVAS_CLASS: 'crt-effect',
-    CHECKBOX_ID: 'crtToggle',
-    STORAGE_KEY: 'crtEffectEnabled',
+    // 可随档位变化的参数在 js/crtSettings.js（CRT_PRESETS）里，这里只保留结构常量，
+    // 避免同一数值在两个文件里各写一份、改了一个忘另一个。
     VISUAL: {
         BACKGROUND_ALPHA: 0.05,
         SCAN_LINE: {
-            INTERVAL: 4.2,
-            SPEED: 0.06,
             LINE_WIDTH: 1.1,
-            COLORS: [
-                'rgba(255, 0, 0, 0.08)',
-                'rgba(0, 255, 0, 0.08)',
-                'rgba(0, 0, 255, 0.08)'
-            ],
             OSCILLATION: { FREQ: 50, AMP: 0.2 }
         },
         BARREL_DISTORTION: {
-            ENABLED: true,
             EDGE_COMPRESS: 0.1,
-            CURVE_STRENGTH: 0.05,
             POWER: 1.7,
             OVERSCAN: 0.04
         },
         EDGE_VIGNETTE: {
-            ENABLED: true,
             HEIGHT_RATIO: 0.12,
-            ALPHA: 0.11,
-            FLICKER_DEPTH: 0.04
+            FLICKER_DEPTH: 0.04 // 闪烁倍率 = 1 时的呼吸幅度
         },
         CORNER_DISTORTION: {
-            ENABLED: true,
             RADIUS_RATIO: 0.22,
             SHADOW_ALPHA: 0.22,
             HIGHLIGHT_ALPHA: 0.12,
-            CHROMA_OFFSET: 0.015,
             FLICKER_SPEED: 0.035,
-            FLICKER_DEPTH: 0.07,
+            FLICKER_DEPTH: 0.07, // 闪烁倍率 = 1 时的四角闪烁幅度
             CENTER_OFFSET_RATIO: 0.28,
             SOFT_EDGE_RATIO: 1.28
         }
     }
 };
 
-// 扫描线 alpha（从 COLORS[0] 解析，三通道相同）
-const SCAN_ALPHA = 0.08;
-
 // GLSL float 字面量转换（整数加 .0，避免 #define 50 被解析为 int 导致 float/int 类型错误）
 const glslF = (n) => Number.isInteger(n) ? n + '.0' : String(n);
 
 // ==== 着色器源码（从 CONFIG 注入常量）====
+// 固定不变的结构常量走 #define（编译期折叠）；用户可调的 7 项走 uniform，改设置无需重编译
 const VERT_SRC = `
 attribute vec2 a_position;
 varying vec2 v_uv;
@@ -68,33 +54,35 @@ uniform vec2 u_resolution;
 uniform float u_scanOffset;
 uniform float u_phase;
 
-#define INTERVAL ${glslF(CONFIG.VISUAL.SCAN_LINE.INTERVAL)}
+// ── 随档位变化的参数（crtSettings.js 的 CRT_PRESETS 注入，normal 档等于原始画面）──
+uniform float u_scanAlpha;     // 扫描线强度
+uniform float u_interval;      // 扫描线间距
+uniform float u_curve;         // 桶形弯曲强度
+uniform float u_vigAlpha;      // 边缘暗角强度
+uniform float u_vigFlicker;    // 暗角呼吸幅度
+uniform float u_cornerFlicker; // 四角闪烁幅度
+uniform float u_chroma;        // 四角色差偏移
+
 #define LINE_WIDTH ${glslF(CONFIG.VISUAL.SCAN_LINE.LINE_WIDTH)}
 #define FREQ ${glslF(CONFIG.VISUAL.SCAN_LINE.OSCILLATION.FREQ)}
 #define AMP ${glslF(CONFIG.VISUAL.SCAN_LINE.OSCILLATION.AMP)}
 #define EDGE_COMPRESS ${glslF(CONFIG.VISUAL.BARREL_DISTORTION.EDGE_COMPRESS)}
-#define CURVE_STRENGTH ${glslF(CONFIG.VISUAL.BARREL_DISTORTION.CURVE_STRENGTH)}
 #define POWER ${glslF(CONFIG.VISUAL.BARREL_DISTORTION.POWER)}
 #define OVERSCAN ${glslF(CONFIG.VISUAL.BARREL_DISTORTION.OVERSCAN)}
 #define BG_ALPHA ${glslF(CONFIG.VISUAL.BACKGROUND_ALPHA)}
-#define SCAN_ALPHA ${glslF(SCAN_ALPHA)}
 #define VIG_HEIGHT ${glslF(CONFIG.VISUAL.EDGE_VIGNETTE.HEIGHT_RATIO)}
-#define VIG_ALPHA ${glslF(CONFIG.VISUAL.EDGE_VIGNETTE.ALPHA)}
-#define VIG_FLICKER ${glslF(CONFIG.VISUAL.EDGE_VIGNETTE.FLICKER_DEPTH)}
 #define CORNER_RADIUS ${glslF(CONFIG.VISUAL.CORNER_DISTORTION.RADIUS_RATIO)}
 #define CORNER_SHADOW ${glslF(CONFIG.VISUAL.CORNER_DISTORTION.SHADOW_ALPHA)}
 #define CORNER_HL ${glslF(CONFIG.VISUAL.CORNER_DISTORTION.HIGHLIGHT_ALPHA)}
-#define CHROMA_OFFSET ${glslF(CONFIG.VISUAL.CORNER_DISTORTION.CHROMA_OFFSET)}
-#define CORNER_FLICKER ${glslF(CONFIG.VISUAL.CORNER_DISTORTION.FLICKER_DEPTH)}
 #define CENTER_OFFSET ${glslF(CONFIG.VISUAL.CORNER_DISTORTION.CENTER_OFFSET_RATIO)}
 #define SOFT_EDGE ${glslF(CONFIG.VISUAL.CORNER_DISTORTION.SOFT_EDGE_RATIO)}
 
 // 直线扫描线 alpha（已做桶形畸变 Y 补偿）
 float scanlineAlpha(float y, float offset) {
     float wave = sin(y / FREQ) * AMP;
-    float pos = mod(y + offset + wave, INTERVAL);
-    float dist = min(pos, INTERVAL - pos);
-    return SCAN_ALPHA * (1.0 - smoothstep(0.0, LINE_WIDTH * 0.5, dist));
+    float pos = mod(y + offset + wave, u_interval);
+    float dist = min(pos, u_interval - pos);
+    return u_scanAlpha * (1.0 - smoothstep(0.0, LINE_WIDTH * 0.5, dist));
 }
 
 // 暗角渐变（复刻 Canvas2D stops: 0→1, 0.24→0.62, 0.58→0.21, 1→0）
@@ -134,7 +122,7 @@ void main() {
     float intensity = pow(absN, POWER);
     float xInset = w * EDGE_COMPRESS * intensity;
     float overscan = w * OVERSCAN;
-    float bowOffset = h * CURVE_STRENGTH * normalizedY * intensity;
+    float bowOffset = h * u_curve * normalizedY * intensity;
     float startX = -overscan - xInset;
     float endX = w + overscan + xInset;
     float t = clamp((px - startX) / (endX - startX), 0.0, 1.0);
@@ -164,8 +152,8 @@ void main() {
     }
 
     // ==== 暗角（multiply 黑色 → rgb *= (1-vignette)）====
-    float vigFlicker = 1.0 + sin(u_phase * 0.82 + 1.1) * VIG_FLICKER;
-    float vigA = VIG_ALPHA * vigFlicker;
+    float vigFlicker = 1.0 + sin(u_phase * 0.82 + 1.1) * u_vigFlicker;
+    float vigA = u_vigAlpha * vigFlicker;
     float edgeH = max(14.0, h * VIG_HEIGHT);
     float topT = py / edgeH;
     float botT = (h - py) / edgeH;
@@ -177,10 +165,10 @@ void main() {
     // ==== 四角畸变 ====
     float minSize = min(w, h);
     float radius = minSize * CORNER_RADIUS;
-    float cFlicker = 1.0 + sin(u_phase) * CORNER_FLICKER;
+    float cFlicker = 1.0 + sin(u_phase) * u_cornerFlicker;
     float centerOff = radius * CENTER_OFFSET;
     float edgeR = radius * SOFT_EDGE;
-    float chromaOff = radius * CHROMA_OFFSET;
+    float chromaOff = radius * u_chroma;
 
     float shadowAcc = 0.0;
     float hlAcc = 0.0;
@@ -302,22 +290,31 @@ export function initCRT() {
     const uScanOffset = gl.getUniformLocation(program, 'u_scanOffset');
     const uPhase = gl.getUniformLocation(program, 'u_phase');
 
+    // 用户可调参数的 uniform 句柄
+    const uTunables = {
+        scanAlpha: gl.getUniformLocation(program, 'u_scanAlpha'),
+        interval: gl.getUniformLocation(program, 'u_interval'),
+        curve: gl.getUniformLocation(program, 'u_curve'),
+        vigAlpha: gl.getUniformLocation(program, 'u_vigAlpha'),
+        vigFlicker: gl.getUniformLocation(program, 'u_vigFlicker'),
+        cornerFlicker: gl.getUniformLocation(program, 'u_cornerFlicker'),
+        chroma: gl.getUniformLocation(program, 'u_chroma')
+    };
+
     const VISUAL = CONFIG.VISUAL;
-    const SCAN_LINE = VISUAL.SCAN_LINE;
     const CORNER = VISUAL.CORNER_DISTORTION;
 
-    let isEffectEnabled = true;
+    let settings = getCrtSettings();
+    let isEffectEnabled = settings.enabled;
     let animationId = null;
     let isAnimating = false;
-    let checkbox = null;
-    let observer = null;
     let scanOffset = 0;
     let distortionPhase = 0;
+    let unsubscribeSettings = null;
 
     const eventRegistry = {
         resize: { handler: null, target: window },
-        domReady: { handler: null, target: document },
-        checkbox: { handler: null, target: null }
+        domReady: { handler: null, target: document }
     };
 
     const resizeCanvas = () => {
@@ -330,7 +327,24 @@ export function initCRT() {
         return true;
     };
 
+    // 把设置写进 uniform：改参数只需一次 uniform 调用，不重编译着色器
+    const applyTunables = () => {
+        const p = settings.params;
+        gl.useProgram(program);
+        gl.uniform1f(uTunables.scanAlpha, p.scanAlpha);
+        gl.uniform1f(uTunables.interval, p.interval);
+        gl.uniform1f(uTunables.curve, p.curve);
+        gl.uniform1f(uTunables.vigAlpha, p.vignette);
+        gl.uniform1f(uTunables.vigFlicker, VISUAL.EDGE_VIGNETTE.FLICKER_DEPTH * p.flicker);
+        gl.uniform1f(uTunables.cornerFlicker, CORNER.FLICKER_DEPTH * p.flicker);
+        gl.uniform1f(uTunables.chroma, p.chroma);
+    };
+
+    // 扫描线静止 + 不闪烁时画面是常量，没必要每帧重绘
+    const isStaticFrame = () => settings.params.speed === 0 && settings.params.flicker === 0;
+
     const renderFrame = () => {
+        animationId = null;
         if (!isEffectEnabled) {
             isAnimating = false;
             return;
@@ -351,7 +365,13 @@ export function initCRT() {
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
 
-        scanOffset += SCAN_LINE.SPEED;
+        // 静止模式：画完这一帧就停，等下次设置变化再画
+        if (isStaticFrame()) {
+            isAnimating = false;
+            return;
+        }
+
+        scanOffset += settings.params.speed;
         distortionPhase += CORNER.FLICKER_SPEED;
         animationId = requestAnimationFrame(renderFrame);
     };
@@ -372,60 +392,26 @@ export function initCRT() {
         gl.clear(gl.COLOR_BUFFER_BIT);
     };
 
-    // ==== 状态管理 ====
-    const loadSettings = () => {
-        try {
-            const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
-            return saved !== null ? JSON.parse(saved) : true;
-        } catch (error) {
-            console.warn('[CRT] Settings load error:', error);
-            return true;
+    // ==== 状态管理：设置变化即时生效 ====
+    const applySettings = (next) => {
+        settings = next;
+        isEffectEnabled = next.enabled;
+
+        if (!isEffectEnabled) {
+            stopAnimation();
+            return;
         }
-    };
 
-    const saveSettings = (enabled) => {
-        try {
-            localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(enabled));
-        } catch (error) {
-            console.error('[CRT] Settings save error:', error);
-        }
-    };
-
-    // ==== DOM元素管理 ====
-    const setupCheckbox = (element) => {
-        if (checkbox) return;
-        checkbox = element;
-        eventRegistry.checkbox.target = checkbox;
-        eventRegistry.checkbox.handler = (e) => {
-            const newState = e.target.checked;
-            if (newState === isEffectEnabled) return;
-            isEffectEnabled = newState;
-            saveSettings(newState);
-            if (newState) startAnimation();
-            else stopAnimation();
-        };
-        checkbox.addEventListener('change', eventRegistry.checkbox.handler);
-        checkbox.checked = isEffectEnabled;
-    };
-
-    const initObserver = () => {
-        if (observer) return;
-        observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                if (mutation.type === 'childList') {
-                    const target = document.getElementById(CONFIG.CHECKBOX_ID);
-                    if (target) setupCheckbox(target);
-                }
-            }
-        });
-        observer.observe(document.body, { childList: true, subtree: true, attributeFilter: ['id'] });
+        applyTunables();
+        // 循环在跑时下一帧就会用上新 uniform；已停下（静止模式）则补画一帧
+        if (!isAnimating) startAnimation();
     };
 
     // ==== 事件管理 ====
     const initEventListeners = () => {
         eventRegistry.resize.handler = () => {
             if (!isEffectEnabled) return;
-            resizeCanvas();
+            if (resizeCanvas() && !isAnimating) renderFrame();
         };
         eventRegistry.resize.target.addEventListener('resize', eventRegistry.resize.handler, { passive: true });
 
@@ -449,14 +435,10 @@ export function initCRT() {
 
     // ==== 初始化 ====
     const initialize = () => {
-        isEffectEnabled = loadSettings();
+        isEffectEnabled = settings.enabled;
+        applyTunables();
         resizeCanvas();
-        const existingCheckbox = document.getElementById(CONFIG.CHECKBOX_ID);
-        if (existingCheckbox) {
-            setupCheckbox(existingCheckbox);
-        } else {
-            initObserver();
-        }
+        unsubscribeSettings = subscribeCrtSettings(applySettings);
         if (isEffectEnabled) startAnimation();
     };
 
@@ -464,11 +446,10 @@ export function initCRT() {
     const cleanup = () => {
         stopAnimation();
         removeEventListeners();
-        if (observer) {
-            observer.disconnect();
-            observer = null;
+        if (unsubscribeSettings) {
+            unsubscribeSettings();
+            unsubscribeSettings = null;
         }
-        checkbox = null;
         if (quadBuf) gl.deleteBuffer(quadBuf);
         if (program) gl.deleteProgram(program);
         instance = null;
@@ -477,18 +458,13 @@ export function initCRT() {
     // ==== 公共API ====
     const api = {
         enable() {
-            if (isEffectEnabled) return;
-            isEffectEnabled = true;
-            saveSettings(true);
-            if (checkbox) checkbox.checked = true;
-            startAnimation();
+            setCrtLevel('normal');
         },
         disable() {
-            if (!isEffectEnabled) return;
-            isEffectEnabled = false;
-            saveSettings(false);
-            if (checkbox) checkbox.checked = false;
-            stopAnimation();
+            setCrtLevel('off');
+        },
+        getSettings() {
+            return getCrtSettings();
         },
         destroy() {
             cleanup();
