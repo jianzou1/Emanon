@@ -1,4 +1,7 @@
 // cdn-loader.js
+// 负责在运行时从多个 CDN 源加载 pjax。
+// 98.css 已改为在 HTML head 中通过 <link rel="preload" as="style"> 异步应用
+// （见 ejs/templates/header.ejs），不再走 JS 注入，这里只保留脚本加载能力。
 import CDN_CONFIG from '../cfg/cdn.json';
 
 // 通用加载函数 - 支持多个备用源
@@ -61,65 +64,9 @@ const loadScript = (urls) => {
     });
 };
 
-const loadStylesheet = async (urls, id) => {
-  const orderedUrls = Array.isArray(urls) ? [...urls] : [urls];
-
-  if (id && document.getElementById(id)) {
-    return;
-  }
-
-  return new Promise((resolve, reject) => {
-    let idx = 0;
-
-    const tryLoad = () => {
-      if (idx >= orderedUrls.length) {
-        reject(new Error(`Failed to load stylesheet from all sources: ${orderedUrls.join(', ')}`));
-        return;
-      }
-
-      const url = orderedUrls[idx++];
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = url;
-      if (id) {
-        link.id = id;
-      }
-
-      link.onload = () => {
-        resolve();
-      };
-      link.onerror = () => {
-        link.remove();
-        tryLoad();
-      };
-
-      document.head.appendChild(link);
-    };
-
-    tryLoad();
-  });
-};
-
-export const loadExternal98Css = async (id = 'external-98css') => {
-  return loadStylesheet(CDN_CONFIG.css98, id);
-};
-
-// 动态加载资源
-const loadPjax = () => loadScript(CDN_CONFIG.pjax).then(() => window.Pjax);
-const loadExternalStyle = () => loadExternal98Css('external-98css');
-
-// 统一加载所有资源
-export const loadResources = async () => {
-  try {
-    // 98.css 失败不阻塞主流程，保证页面逻辑仍可执行
-    await loadExternalStyle().catch(error => {
-      console.warn('Failed to load external style resources:', error);
-    });
-
-    const Pjax = await loadPjax();
-    return { Pjax };
-  } catch (error) {
-    console.error('Failed to load resources:', error);
-    throw error;
-  }
-};
+/**
+ * 按需加载 pjax 并返回其构造器。
+ * 调用方通常通过 main.js 的 getPjax() 惰性单例间接使用，
+ * 以保证首屏渲染不被这 5 个 CDN 源的下载阻塞。
+ */
+export const loadPjax = () => loadScript(CDN_CONFIG.pjax).then(() => window.Pjax);

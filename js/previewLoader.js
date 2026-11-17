@@ -7,7 +7,7 @@ import { escHtml, escAttr } from '/js/utils.js';
 let cachedLinks = null;
 let boundContainer = null; // 已绑定事件的容器引用，防止重复绑定
 
-export async function loadPreviewLinks(pjax) {
+export async function loadPreviewLinks(getPjax) {
     const links = cachedLinks || (cachedLinks = await fetchLinks());
 
     const linksContainer = document.getElementById('links-container');
@@ -27,7 +27,7 @@ export async function loadPreviewLinks(pjax) {
 
     // 事件委托只绑定一次
     if (boundContainer !== linksContainer) {
-        setupLinksContainer(linksContainer, pjax);
+        setupLinksContainer(linksContainer, getPjax);
         boundContainer = linksContainer;
     }
 }
@@ -59,12 +59,21 @@ const createLinkDiv = (title, url, icon) => {
     return div;
 };
 
-const setupLinksContainer = (linksContainer, pjax) => {
-    linksContainer.addEventListener('click', event => {
+const setupLinksContainer = (linksContainer, getPjax) => {
+    linksContainer.addEventListener('click', async event => {
         const target = event.target.closest('.link-preview');
-        if (target?.dataset.url) {
-            event.preventDefault();
-            pjax.loadUrl(target.dataset.url);
+        if (!target?.dataset.url) return;
+
+        // preventDefault 必须先同步执行，之后才等 pjax 就绪
+        event.preventDefault();
+        const url = target.dataset.url;
+
+        try {
+            const pjax = await getPjax();
+            pjax.loadUrl(url);
+        } catch (error) {
+            console.error('[Preview] pjax 加载失败，回退整页跳转:', error);
+            window.location.href = url;
         }
     });
 };

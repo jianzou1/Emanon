@@ -22,8 +22,8 @@ export const PAGE_MODULE_REGISTRY = {
     },
   },
   '/page/article.html': {
-    init({ pjax }) {
-      loadPreviewLinks(pjax);
+    init({ getPjax }) {
+      loadPreviewLinks(getPjax);
     },
   },
   '/page/game.html': {
@@ -38,8 +38,8 @@ export const PAGE_MODULE_REGISTRY = {
     },
   },
   '/page/password.html': {
-    init({ pjax }) {
-      initializePassword(pjax);
+    init({ getPjax }) {
+      initializePassword(getPjax);
     },
   },
   '/page/message.html': {

@@ -1,5 +1,5 @@
 // main.js
-import { loadResources } from '/js/cdnLoader.js';
+import { loadPjax } from '/js/cdnLoader.js';
 import { TabHandler } from '/js/tabHandler.js';
 import { cleanupProgressBar } from '/js/progressBar.js';
 import { footerLoader } from '/js/footerLoader.js';
@@ -13,6 +13,7 @@ import { showAboutPopup } from '/js/aboutPopup.js';
 import langManager from '/js/langManager.js';
 import { warmUpCache } from '/js/dataCache.js';
 import { runPageModuleByUrl } from '/js/pageRegistry.js';
+import { shouldSkipPrefetch, onIdle } from '/js/prefetch.js';
 
 const TABLIST_SELECTOR = '[role="tablist"]';
 const TAB_DATA = [
@@ -31,8 +32,43 @@ let gameRollCleanup = null;
 // baselineTest 返回的 cleanup 函数引用
 let baselineCleanup = null;
 
-const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
-  const navigateByPjax = (url, event) => {
+// ── pjax 惰性单例 ──
+// 首屏渲染完全不需要 pjax：页签切换走 TabHandler 的内存缓存，
+// 只有文章详情页、密码页跳转、文章列表点击才用得上。
+// 因此把它从首屏关键路径上摘掉，改为首次真正需要时再加载，
+// 空闲时段（见文件末尾）会顺手把它热身好。
+let pjaxInstance = null;
+let pjaxLoading = null;
+
+const getPjax = () => {
+  if (pjaxInstance) return Promise.resolve(pjaxInstance);
+  if (!pjaxLoading) {
+    pjaxLoading = loadPjax()
+      .then(Pjax => {
+        if (typeof Pjax !== 'function') {
+          throw new Error('Pjax 未正确挂载到 window');
+        }
+        pjaxInstance = new Pjax({
+          selectors: ['head title', '#main'],
+          cacheBust: false,
+        });
+        return pjaxInstance;
+      })
+      .catch(error => {
+        pjaxLoading = null; // 失败后允许下次重试
+        throw error;
+      });
+  }
+  return pjaxLoading;
+};
+
+const bindGlobalPjaxNavigation = (getTabHandler) => {
+  /**
+   * 用 pjax 导航到目标地址。
+   * preventDefault 必须同步执行（否则浏览器默认跳转已经开始），
+   * 之后才 await pjax 加载；加载失败则回退整页跳转，保证链接不会点了没反应。
+   */
+  const navigateByPjax = async (url, event) => {
     const targetUrl = new URL(url, window.location.origin);
 
     if (targetUrl.origin !== window.location.origin) {
@@ -44,8 +80,16 @@ const bindGlobalPjaxNavigation = (pjax, getTabHandler) => {
     }
 
     event.preventDefault();
-    pjax.loadUrl(`${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`);
-    getTabHandler()?.updateSelectedTab(targetUrl.pathname);
+    const target = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
+
+    try {
+      const pjax = await getPjax();
+      pjax.loadUrl(target);
+      getTabHandler()?.updateSelectedTab(targetUrl.pathname);
+    } catch (error) {
+      console.error('[Nav] pjax 加载失败，回退整页跳转:', error);
+      window.location.href = targetUrl.href;
+    }
   };
 
   document.addEventListener('click', event => {
@@ -106,18 +150,9 @@ const initializeApp = async () => {
   try {
     // 初始化多语言管理器
     await langManager.init();
-    
+
     // 初始化随机Logo（仅整页加载）
     initializeRandomLogo();
-
-    // 加载PJAX依赖
-    const { Pjax } = await loadResources();
-
-    // 配置PJAX实例
-    const pjax = new Pjax({
-      selectors: ['head title', '#main'],
-      cacheBust: false,
-    });
 
     let currentTabHandler = null;
     const getTabHandler = () => currentTabHandler;
@@ -155,7 +190,7 @@ const initializeApp = async () => {
 
         // 页面类型判断（通过注册表调度）
         runPageModuleByUrl(currentUrl, {
-          pjax,
+          getPjax,
           setGameRollCleanup: (cleanupFn) => {
             gameRollCleanup = typeof cleanupFn === 'function' ? cleanupFn : null;
           },
@@ -194,12 +229,12 @@ const initializeApp = async () => {
       }
 
       tablist.innerHTML = '';
-      currentTabHandler = new TabHandler(TABLIST_SELECTOR, TAB_DATA, pjax, handlePageLoad);
+      currentTabHandler = new TabHandler(TABLIST_SELECTOR, TAB_DATA, handlePageLoad);
     };
 
     // 全局事件只绑定一次（防止 HMR 重初始化累积）
     if (!globalBindingsDone) {
-      bindGlobalPjaxNavigation(pjax, getTabHandler);
+      bindGlobalPjaxNavigation(getTabHandler);
 
       // PJAX 完成事件（文章详情页等非页签页面仍走 PJAX）
       document.addEventListener('pjax:complete', () => {
@@ -230,8 +265,17 @@ const initializeApp = async () => {
               handlePageLoad(false);
             }
           }
+          return;
         }
-        // 非页签页面：不干预，让 PJAX 正常处理 popstate
+
+        // 非页签页面：pjax 已就绪时交给它自己的 popstate 处理器。
+        // pjax 尚未加载时它没有任何处理器，需要在这里主动接管这次前进/后退，
+        // 否则 URL 变了而 DOM 没变。
+        if (!pjaxInstance) {
+          getPjax()
+            .then(pjax => pjax.loadUrl(`${url}${window.location.search}`))
+            .catch(() => window.location.reload());
+        }
       }, true); // ← 捕获阶段
 
       globalBindingsDone = true;
@@ -243,20 +287,22 @@ const initializeApp = async () => {
     // 静默预取留言板第 1 页数据（后台请求，不阻塞页面）
     prefetchMessages();
 
-    // 低优先级预热 JSON 配置缓存（首屏渲染完成后空闲时段触发）
-    // lang_cfg.json 已在 langManager.init() 中最高优先级加载，此处仅预热其余 4 个配置文件
-    const scheduleWarmUp = () => warmUpCache([
-      '/cfg/article_cfg.json',
-      '/cfg/game_time_cfg.json',
-      '/cfg/system_cfg.json',
-      '/cfg/gallery_cfg.json',
-    ]);
-
-    if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(scheduleWarmUp, { timeout: 3000 });
-    } else {
-      // Safari 等不支持 requestIdleCallback 的浏览器，用 setTimeout 兜底
-      setTimeout(scheduleWarmUp, 200);
+    // 非关键预取：空闲时先把 pjax 热身好（文章详情页需要），
+    // 再预热其余几个配置 JSON。省流模式或 2G 级网络下整体跳过。
+    // 链式执行而非并发，避免两批请求同时抢带宽。
+    if (!shouldSkipPrefetch()) {
+      onIdle(() => {
+        getPjax()
+          .catch(() => {})
+          .then(() => {
+            warmUpCache([
+              '/cfg/article_cfg.json',
+              '/cfg/game_time_cfg.json',
+              '/cfg/system_cfg.json',
+              '/cfg/gallery_cfg.json',
+            ]);
+          });
+      }, { timeout: 5000, fallbackDelay: 2000 });
     }
   } catch (error) {
     console.error('应用初始化失败:', error);
